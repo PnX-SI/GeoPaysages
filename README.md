@@ -22,5 +22,5 @@ A suivre...
 ## Présentation
 
 - CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-13-CDC-OPPV-PNV.pdf
-- Annexe CCT 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip
+- Annexe CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip
 - Réflexion 2016 : http://geonature.fr/documents/autres/geopaysages/2016-11-OPP-reflexion.pdf
