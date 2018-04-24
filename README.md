@@ -1,7 +1,9 @@
 # GeoPaysages
+
 Application web permettant de publier un observatoire photographique des paysages.
 
 ## Contexte
+
 L'Observatoire photographique des paysages de Vanoise a été mis en place en 2006 pour suivre l'évolution
 des paysages au sein du Parc national de la Vanoise à travers des séries de photographies reconduites, sur
 des sites définis, selon le même cadrage. Les gardes-moniteurs assurent régulièrement les prises de vue.
@@ -16,3 +18,9 @@ effectué depuis la création de l'Observatoire photographique des paysages.
 Le projet est porté par le Parc national de la Vanoise. Le site qui sera développé courant 2018 sera sous licence libre. Dans la même lignée que Geonature, le projet sera générique et disponible pour les autres parcs nationaux et pour d'autres structures depuis ce repository. La prestation de développement par la société Natural Solutions va débuter courant mai 2018.
 
 A suivre...
+
+## Présentation
+
+CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-13-CDC-OPPV-PNV.pdf
+Annexe CCT 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip
+Réflexion 2016 : http://geonature.fr/documents/autres/geopaysages/2016-11-OPP-reflexion.pdf
