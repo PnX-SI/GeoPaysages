@@ -9,10 +9,6 @@
 
 # IDE - VSCode
 .vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 
 # System Files
 .DS_Store
@@ -23,3 +19,11 @@ Thumbs.db
 
 # Conf
 *config.py
+
+# Node
+.npm
+node_modules
+npm-debug.log
+
+# venv
+venv
