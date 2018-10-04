@@ -10,6 +10,7 @@ import geoalchemy2.functions as geo_funcs
 db = SQLAlchemy()
 ma = Marshmallow()
 
+
 class CorSiteStheme(db.Model):
     __tablename__ = 'cor_site_stheme'
 

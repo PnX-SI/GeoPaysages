@@ -3,6 +3,7 @@ import models
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
 
+
 @app.route("/", methods=["GET"])
 def get_dico():
     all_dicos = models.DicoTheme.query.all()

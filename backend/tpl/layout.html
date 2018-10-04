@@ -1,41 +1,74 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}"/>
-    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}"/>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    
-    <script src="{{ url_for('static', filename='vendor/vue/dist/vue.js') }}"></script>
 
-    <!-- Add this after vue.js -->
-    <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
+<head>{% block head %}
+  <meta charset="utf-8" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
-    <script type="text/javascript">
+  <script src="{{ url_for('static', filename='vendor/vue/dist/vue.js') }}"></script>
 
-      window.onload = setTimeout(function() {
-          new Vue({
-            el: '#app',
-            data: {
-                name: 'GéoPaysage'      
-            },
-          })
-       }, 1000)
-        
-    </script>
-    <title>{{ titre }}</title>
-  </head>
-  <body>
+  <!-- Add this after vue.js -->
+  <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
+
+  {% endblock %}
+  <title>{{ titre }}</title>
+</head>
+
+<body>
+  <div id='app'>
+    <header class="container-fluid">
+      <div class="header-logo" >
+      </div>
+      <div class="row nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
+          <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
+            <ul class="navbar-nav">
+              <li class="nav-item ">
+                <a class="nav-link " href="#">Accueil</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Galerie photo</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" href="#" >Carte interactive</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+              </li>
+            </ul>
+          </b-collapse>
+        </nav>
+      </div>
+      <div class="row header-title">{% block header_title %}
+        {% endblock %}
+      </div>
+    </header>
+
     <div id="content">{% block content %}{% endblock %}</div>
-    <div id="footer">
+    <footer>
       {% block footer %}
       &copy; Copyright 2018 by <a href="http://domain.invalid/">Parc National de la Vanoise</a>.
 
-      <div id='app'>
+      <div>
         <b-alert show> Hello {{ '{{ name }}' }} ! </b-alert>
       </div>
       {% endblock %}
-    </div>
-  </body>
+    </footer>
+  </div>
+</body>
+
+<script type="text/javascript">
+  window.onload =
+    new Vue({
+      el: '#app',
+      data: {
+        name: 'GéoPaysage'
+      },
+    })
+</script>
+
 </html>

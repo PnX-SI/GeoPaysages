@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comparateur_style.css') }}">
+{% endblock %}
+
+{% block header_title %}
+<h2>Comparaison de photos</h2>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid ">
+  <div class="row comparaeur-block">
+    <div class="col-lg-6 p-3">
+      <a class="image" style=" background-image: url('../static/assets/images/photo1.jpg')">
+        <img src="../static/assets/images/photo1.jpg" />
+      </a>
+    </div>
+    <div class="col-lg-6 p-3">
+      <a class="image" style=" background-image: url('../static/assets/images/photo2.jpg')">
+        <img src="../static/assets/images/photo2.jpg" />
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

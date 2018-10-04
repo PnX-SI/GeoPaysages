@@ -1,3 +1,62 @@
-html, body {
-    color: blueviolet;
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.nav-link {
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.nav-item {
+    padding: 2px 14px;
+}
+
+.nav-link:hover {
+    color: black;
+}
+
+.navbar-brand {
+    padding: 0;
+}
+
+.bg-light {
+    background-color: transparent !important;
+}
+
+.navbar {
+    padding: 0;
+    justify-content: inherit
+}
+
+.nav-bar {
+    justify-content: flex-end;
+    margin: 0;
+    padding-top: 20px;
+    padding-right: 40px
+}
+
+.header-title {
+    justify-content: center;
+}
+
+.header-logo {
+    position: absolute;
+    width:300px;
+    height: 110.4px;
+    background-size: cover;
+    background-image: url("../assets/images/logo.png");
+    background-position:center ;
+    background-repeat: no-repeat;
+
+}
+
+#collapse ul {
+    align-items: flex-end;
+}
+
+.nav-link.active{
+    font-weight: 600
 }
