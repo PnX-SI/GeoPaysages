@@ -2,6 +2,14 @@
 
 Application web permettant de publier un observatoire photographique des paysages.
 
+## Install
+
+- Créer et activer un environnement virtuel python 3.
+- Exécuter pip install -r ./backend/requirements.txt
+- Dupliquer et renommer ./backend/config.py.tpl vers ./backend/config.py
+- Editer la config
+- Lancer l'app FLASK_APP=./backend/app.py flask run
+
 ## Contexte
 
 L'Observatoire photographique des paysages de Vanoise a été mis en place en 2006 pour suivre l'évolution des paysages au sein du Parc national de la Vanoise à travers des séries de photographies reconduites, sur des sites définis, selon le même cadrage. Les gardes-moniteurs assurent régulièrement les prises de vue.
