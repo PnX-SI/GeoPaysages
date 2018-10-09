@@ -3,24 +3,100 @@
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparateur_style.css') }}">
+<script src="{{ url_for('static', filename='js/comparator.js') }}"></script>
 {% endblock %}
 
 {% block header_title %}
 <h2>Comparaison de photos</h2>
 {% endblock %}
 
+{% block bodyClassNames %}page-comparateur{% endblock %}
+
 {% block content %}
-<div class="container-fluid ">
-  <div class="row comparaeur-block">
-    <div class="col-lg-6 p-3">
-      <a class="image" style=" background-image: url('../static/assets/images/photo1.jpg')">
-        <img src="../static/assets/images/photo1.jpg" />
-      </a>
+<div class="container-fluid" id="js-app-comparator">
+  <div class="row">
+    <div class="col-auto">
+      <ul class="list-unstyled thumbs clearfix">
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+        <li>
+          <img src="../static/assets/images/1px.png" />
+          <span>21/05/1981</span>
+        </li>
+      </ul>
     </div>
-    <div class="col-lg-6 p-3">
-      <a class="image" style=" background-image: url('../static/assets/images/photo2.jpg')">
-        <img src="../static/assets/images/photo2.jpg" />
-      </a>
+    <div class="col col-main">
+      <div class="row compared">
+        <div class="col-lg-6 p-3">
+          <div class="img-wrapper" style=" background-image: url('../static/assets/images/photo1.jpg')">
+            <img src="../static/assets/images/photo1.jpg" />
+          </div>
+        </div>
+        <div class="col-lg-6 p-3">
+          <div class="img-wrapper" style=" background-image: url('../static/assets/images/photo2.jpg')">
+            <img src="../static/assets/images/photo2.jpg" />
+          </div>
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col col-4">
+          <img class="img-fluid" src="../static/assets/images/map-world.jpg" />
+        </div>
+        <div class="col col-8">
+          <h5 v-html="title"></h5>
+          <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut elit lectus. Mauris at ornare lacus. Donec purus eros, consectetur vel purus fermentum, aliquet fringilla urna. Fusce ac ultricies nisi. Cras ut hendrerit ante, nec aliquet turpis. Quisque molestie porta libero sed efficitur. Aliquam et metus sed ipsum hendrerit tristique. Morbi ornare viverra dapibus. Vivamus tincidunt, arcu non rhoncus luctus, ipsum nisl tempus eros, non commodo risus augue a nisi. Pellentesque rhoncus nulla condimentum, molestie risus et, malesuada lacus. Donec ex augue, ultrices eget eleifend nec, bibendum a justo. Mauris ac viverra ipsum. Aliquam consectetur, velit a congue vulputate, eros eros dapibus tortor, eu blandit arcu nunc vitae ipsum. Vivamus efficitur venenatis turpis vehicula placerat. Sed eu magna enim.
+          </p>
+          <h5>Témoignage</h5>
+          <p>
+              Donec porta faucibus dignissim. Proin a mi non tortor egestas feugiat. Donec at rhoncus eros. Cras dignissim porttitor dolor eu tincidunt. Duis posuere in ex nec sollicitudin. Nam euismod ligula a nunc feugiat, at accumsan nulla luctus. Sed ac gravida tortor. Mauris mauris purus, tempor et purus et, posuere consequat urna. Sed eu neque ex. Cras nec pulvinar lorem, et euismod metus. Curabitur tempus, risus et ultricies ornare, nulla elit ultrices nunc, vel bibendum justo nibh hendrerit ante.
+
+In vestibulum vel nunc et accumsan. Maecenas sed mollis dui, et sollicitudin tortor. Suspendisse sit amet massa et eros porttitor vulputate. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tristique consequat diam eu ultricies. Vivamus ut nulla rutrum, commodo ex vitae, mollis dui. Vivamus eget malesuada nisl. Quisque semper consectetur nibh porttitor sollicitudin. Pellentesque lobortis, est nec pellentesque auctor, velit felis ultrices urna, quis mollis mi velit vel risus. Proin vulputate tellus sed metus venenatis accumsan. Morbi non convallis leo. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse mauris augue, convallis et ipsum id, sagittis rutrum nunc. Maecenas arcu sapien, consequat at facilisis vestibulum, elementum vel nibh. Praesent eleifend justo nisi, vel dictum felis tempor eget.
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </div>

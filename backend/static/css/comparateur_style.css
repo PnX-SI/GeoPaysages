@@ -1,10 +1,29 @@
-.comparaeur-block{
-    background-color: #dcdcdc;
-    margin: 0 60px
+.page-comparateur .page-content {
+    margin: 0 60px;
 }
 
+.page-comparateur .page-content .thumbs {
+    width: 260px;
+}
 
-.image{
+.page-comparateur .page-content .thumbs li {
+    margin: 5px;
+    width: calc(50% - 10px);
+    display: block;
+    float: left;
+}
+
+.page-comparateur .page-content .thumbs li img {
+    width: 100%;
+    height: auto;
+    background: #CCC;
+}
+
+.page-comparateur .page-content .compared {
+    background-color: #dcdcdc;
+}
+
+.page-comparateur .page-content .img-wrapper {
     display: block;
     width: 100%;
     height: 100%;
@@ -16,7 +35,7 @@
     background-size: contain;
 }
 
-.image img {
+.page-comparateur .page-content .img-wrapper img {
     display: block;
     width: 100%;
     height: auto;

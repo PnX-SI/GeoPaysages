@@ -17,9 +17,9 @@
   <title>{{ titre }}</title>
 </head>
 
-<body>
-  <div id='app'>
-    <header class="container-fluid">
+<body class="{% block bodyClassNames %}{% endblock %}">
+  <div>
+    <header class="container-fluid" id="header">
       <div class="header-logo" >
       </div>
       <div class="row nav-bar">
@@ -48,27 +48,22 @@
       </div>
     </header>
 
-    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="content" class="page-content">{% block content %}{% endblock %}</div>
     <footer>
       {% block footer %}
       &copy; Copyright 2018 by <a href="http://domain.invalid/">Parc National de la Vanoise</a>.
-
-      <div>
-        <b-alert show> Hello {{ '{{ name }}' }} ! </b-alert>
-      </div>
       {% endblock %}
     </footer>
   </div>
+  <script type="text/javascript">
+    window.onload =
+      new Vue({
+        el: '#header',
+        data: {
+          name: 'GéoPaysage'
+        },
+      })
+  </script>
 </body>
-
-<script type="text/javascript">
-  window.onload =
-    new Vue({
-      el: '#app',
-      data: {
-        name: 'GéoPaysage'
-      },
-    })
-</script>
 
 </html>
