@@ -1,4 +1,4 @@
-footer {
+.app-footer {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -59,4 +59,73 @@ footer {
 
 .nav-link.active{
     font-weight: 600
+}
+
+.async:not(.async-resolved) .visible-async-resolved {
+    display: none;
+}
+.async.async-resolved .hidden-async-resolved {
+    display: none;
+}
+
+.modal-no-footer .modal-footer {
+    display: none;
+}
+
+.modal-fs .modal-backdrop {
+    background: transparent;
+}
+
+.modal-fs .modal-dialog {
+    color: #FFF;
+    margin: 0;
+    max-width: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.modal-fs .modal-content {
+    height: 100%;
+    border: none;
+    border-radius: 0;
+    background: rgba(0,0,0,.8);
+}
+
+.modal-fs .modal-header {
+    border: none;
+}
+
+.modal-fs .modal-header .close {
+    color: #FFF;
+    text-shadow: none;
+    opacity: 1;
+}
+
+.modal-fs.modal-img .modal-body {
+    display: flex;
+}
+
+.modal-fs.modal-img .img-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-fs.modal-img .img-wrapper:not(:first-child) {
+    padding-left: 5px;
+}
+
+.modal-fs.modal-img .img-wrapper:not(:last-child) {
+    padding-right: 5px;
+}
+
+.modal-fs.modal-img .img-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
 }

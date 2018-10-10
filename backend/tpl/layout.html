@@ -3,6 +3,9 @@
 
 <head>{% block head %}
   <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
+
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -49,7 +52,7 @@
     </header>
 
     <div id="content" class="page-content">{% block content %}{% endblock %}</div>
-    <footer>
+    <footer class="app-footer">
       {% block footer %}
       &copy; Copyright 2018 by <a href="http://domain.invalid/">Parc National de la Vanoise</a>.
       {% endblock %}
