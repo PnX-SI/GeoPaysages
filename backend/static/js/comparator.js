@@ -1,30 +1,50 @@
 initComparator = (options) => {
-  let nextSelectedIndex = 0;
   new Vue({
     el: '#js-app-comparator',
     data: () => {
       return {
-        selectedPhotos: [options.site.photos[0], options.site.photos[1]],
+        comparedPhotoIndexes: [0, 1],
+        comparedPhotos: [options.site.photos[0], options.site.photos[1]],
         zoomPhotos: []
       }
     },
     methods: {
+      isCompared(i) {
+        return this.comparedPhotoIndexes.indexOf(i) > -1
+      },
       onThumbClick(i) {
-        this.$set(this.selectedPhotos, nextSelectedIndex, Object.assign({
-          comparedLoaded: false
-        }, options.site.photos[i]))
-        nextSelectedIndex = ++nextSelectedIndex % 2
+        if (this.comparedPhotoIndexes.indexOf(i) > -1)
+          return;
+        this.comparedPhotoIndexes.push(i)
+        this.comparedPhotoIndexes.shift()
+
+        let comparedPhotos = this.comparedPhotoIndexes.map(index => {
+          let photo = options.site.photos[index]
+          return Object.assign({}, photo)
+        })
+
+        comparedPhotos.sort((a, b) => {
+          return a.date < b.date ? -1 : 1
+        })
+
+        this.comparedPhotos = comparedPhotos.map(comparedPhoto => {
+          const oldComparedPhoto = this.comparedPhotos.find(oldComparedPhoto => {
+            return oldComparedPhoto.date == comparedPhoto.date
+          })
+          comparedPhoto.comparedLoaded = Boolean(oldComparedPhoto)
+          return comparedPhoto;
+        })
       },
       onComparedLoaded(i) {
-        this.$set(this.selectedPhotos, i, Object.assign(this.selectedPhotos[i], {
+        this.$set(this.comparedPhotos, i, Object.assign(this.comparedPhotos[i], {
           comparedLoaded: true
         }))
       },
       onZoomClick(i) {
         if (i === undefined)
-          this.zoomPhotos = this.selectedPhotos
+          this.zoomPhotos = this.comparedPhotos
         else
-          this.zoomPhotos = [this.selectedPhotos[i]]
+          this.zoomPhotos = [this.comparedPhotos[i]]
       }
     }
   })
