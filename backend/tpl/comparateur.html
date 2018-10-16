@@ -20,7 +20,7 @@
     </div>
   </b-modal>
   <div class="row">
-    <div class="col-auto col-thumbs">
+    <!-- <div class="col-auto col-thumbs">
       <ul class="list-unstyled thumbs clearfix">
         {% for photo in site.photos %}
         <li v-on:click="onThumbClick({{ loop.index - 1 }})" v-bind:class="{'selected': isCompared({{ loop.index - 1 }})}">
@@ -29,7 +29,7 @@
         </li>
         {% endfor %}
       </ul>
-    </div>
+    </div> -->
     <div class="col col-main">
       <div class="row compared">
         <div class="col-12 p-0 text-right">
@@ -70,6 +70,16 @@
             Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
           </button>
         </div>
+      </div>
+      <div class="row mt-4">
+        <ul class="list-unstyled thumbs">
+          {% for photo in site.photos %}
+          <li v-on:click="onThumbClick({{ loop.index - 1 }})" v-bind:class="{'selected': isCompared({{ loop.index - 1 }})}">
+            <img src="{{ photo.sm }}" />
+            <div class="img-date">{{ photo.date }}</div>
+          </li>
+          {% endfor %}
+        </ul>
       </div>
       <div class="row mt-5">
         <div class="col-lg-4 mb-5">

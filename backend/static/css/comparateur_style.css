@@ -1,45 +1,51 @@
-.page-comparateur .header-logo {
+/* .page-comparateur .header-logo {
     position: fixed;
-}
+} */
 
 .page-comparateur .page-content {
     margin: 0 60px;
 }
 
 .page-comparateur .page-content .col-thumbs {
-    width: 290px;
+    /* width: 290px; */
 }
 
 .page-comparateur .page-content .thumbs {
-    width: 260px;
+    /* width: 260px;
     height: calc(100vh - 110px);
     overflow: auto;
     position: fixed;
     -ms-overflow-style: none;
-    overflow: -moz-scrollbars-none;
+    overflow: -moz-scrollbars-none; */
+    width: 100%;
+    overflow: auto;
+    white-space: nowrap;
 }
 
-.page-comparateur .page-content .thumbs::-webkit-scrollbar {
+/* .page-comparateur .page-content .thumbs::-webkit-scrollbar {
     width: 0 !important;
-}
+} */
 
 .page-comparateur .page-content .thumbs li {
     margin: 5px;
-    width: calc(50% - 10px);
+    /* width: calc(50% - 10px);
     display: block;
-    float: left;
+    float: left; */
     cursor: pointer;
+    display: inline-block;
 }
 
-.page-comparateur .page-content .thumbs li:nth-child(1),
+/* .page-comparateur .page-content .thumbs li:nth-child(1),
 .page-comparateur .page-content .thumbs li:nth-child(2) {
     margin-top: 0;
-}
+} */
 
 .page-comparateur .page-content .thumbs li img {
-    width: 100%;
-    height: auto;
+    /* width: 100%;
+    height: auto; */
     background: #CCC;
+    height: 100px;
+    width: auto;
 }
 
 .page-comparateur .page-content .img-date {
@@ -79,7 +85,8 @@
 
 .page-comparateur .page-content .compared .img-wrapper img {
     max-width: 100%;
-    max-height: 560px;
+    /* max-height: 560px; */
+    max-height: calc(100vh - 395px);
     width: auto;
     height: auto;
 }
