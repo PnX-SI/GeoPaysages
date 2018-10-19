@@ -7,6 +7,9 @@
 .btn {
     text-transform: uppercase;
 }
+.btn:focus {
+    box-shadow: none !important;
+}
 .btn-sm {
     padding-bottom: 2px;
 }
@@ -18,6 +21,31 @@
 
 .btn-link {
     color: var(--color-primary);
+}
+
+.btn-group-vertical>.btn+.btn {
+    margin-top: 0;
+}
+
+.btn-group-vertical .btn-primary.inverse:not(:last-child) {
+    border-bottom: 1px solid;
+    border-bottom-color: var(--color-primary) !important;
+}
+
+.btn-group-vertical .btn-primary.inverse.active:not(:last-child) {
+    border-bottom-color: #FFF !important;
+}
+
+.btn-primary.inverse {
+    color: var(--color-primary);
+    background-color: #FFF;
+    border-color: #FFF;
+}
+
+.btn-primary.inverse.active {
+    color: #FFF;
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
 }
 
 .progress-bar {

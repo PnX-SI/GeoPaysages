@@ -13,7 +13,7 @@
 {% block bodyClassNames %}page-comparateur{% endblock %}
 
 {% block content %}
-<div class="container-fluid" id="js-app-comparator">
+<div class="page-content container-fluid" id="js-app-comparator">
   <b-modal id="modal1" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <div class="img-wrapper" v-for="photo in zoomPhotos">
       <img :src="photo.lg" />
@@ -41,7 +41,8 @@
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[0].comparedLoaded }">
               <div class="hidden-async-resolved progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100"></div>
               </div>
               <img src="{{ site.photos[0].md }}" :src="comparedPhotos[0].md" @load="onComparedLoaded(0)" />
               <div class="w-100 img-date" v-html="comparedPhotos[0].date">{{ site.photos[0].date }}</div>
@@ -55,7 +56,8 @@
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[1].comparedLoaded }">
               <div class="hidden-async-resolved progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100"></div>
               </div>
               <img src="{{ site.photos[1].md }}" :src="comparedPhotos[1].md" @load="onComparedLoaded(1)" />
               <div class="w-100 img-date" v-html="comparedPhotos[1].date">{{ site.photos[1].date }}</div>
@@ -90,26 +92,31 @@
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut ut elit lectus. Mauris at ornare lacus. Donec
             purus eros, consectetur vel purus fermentum, aliquet fringilla urna. Fusce ac ultricies nisi. Cras ut
-            hendrerit ante, nec aliquet turpis. Quisque molestie porta libero sed efficitur. Aliquam et metus sed ipsum
+            hendrerit ante, nec aliquet turpis. Quisque molestie porta libero sed efficitur. Aliquam et metus sed
+            ipsum
             hendrerit tristique. Morbi ornare viverra dapibus. Vivamus tincidunt, arcu non rhoncus luctus, ipsum nisl
             tempus eros, non commodo risus augue a nisi. Pellentesque rhoncus nulla condimentum, molestie risus et,
             malesuada lacus. Donec ex augue, ultrices eget eleifend nec, bibendum a justo. Mauris ac viverra ipsum.
-            Aliquam consectetur, velit a congue vulputate, eros eros dapibus tortor, eu blandit arcu nunc vitae ipsum.
+            Aliquam consectetur, velit a congue vulputate, eros eros dapibus tortor, eu blandit arcu nunc vitae
+            ipsum.
             Vivamus efficitur venenatis turpis vehicula placerat. Sed eu magna enim.
           </p>
           <h5 class="text-uppercase mt-5">Témoignage</h5>
           <p>
             Donec porta faucibus dignissim. Proin a mi non tortor egestas feugiat. Donec at rhoncus eros. Cras
             dignissim porttitor dolor eu tincidunt. Duis posuere in ex nec sollicitudin. Nam euismod ligula a nunc
-            feugiat, at accumsan nulla luctus. Sed ac gravida tortor. Mauris mauris purus, tempor et purus et, posuere
+            feugiat, at accumsan nulla luctus. Sed ac gravida tortor. Mauris mauris purus, tempor et purus et,
+            posuere
             consequat urna. Sed eu neque ex. Cras nec pulvinar lorem, et euismod metus. Curabitur tempus, risus et
             ultricies ornare, nulla elit ultrices nunc, vel bibendum justo nibh hendrerit ante.
 
             In vestibulum vel nunc et accumsan. Maecenas sed mollis dui, et sollicitudin tortor. Suspendisse sit amet
             massa et eros porttitor vulputate. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris
-            tristique consequat diam eu ultricies. Vivamus ut nulla rutrum, commodo ex vitae, mollis dui. Vivamus eget
+            tristique consequat diam eu ultricies. Vivamus ut nulla rutrum, commodo ex vitae, mollis dui. Vivamus
+            eget
             malesuada nisl. Quisque semper consectetur nibh porttitor sollicitudin. Pellentesque lobortis, est nec
-            pellentesque auctor, velit felis ultrices urna, quis mollis mi velit vel risus. Proin vulputate tellus sed
+            pellentesque auctor, velit felis ultrices urna, quis mollis mi velit vel risus. Proin vulputate tellus
+            sed
             metus venenatis accumsan. Morbi non convallis leo. Interdum et malesuada fames ac ante ipsum primis in
             faucibus. Suspendisse mauris augue, convallis et ipsum id, sagittis rutrum nunc. Maecenas arcu sapien,
             consequat at facilisis vestibulum, elementum vel nibh. Praesent eleifend justo nisi, vel dictum felis
@@ -124,8 +131,8 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-      initComparator({
-        site: {{ site | tojson }}
+      oppv.comparator({
+        site: {{site | tojson}}
       })
     }
   };

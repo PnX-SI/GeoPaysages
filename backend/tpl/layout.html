@@ -51,7 +51,7 @@
       </div>
     </header>
 
-    <div id="content" class="page-content">{% block content %}{% endblock %}</div>
+    {% block content %}{% endblock %}</div>
     <footer class="app-footer">
       {% block footer %}
       <img class="logo" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />

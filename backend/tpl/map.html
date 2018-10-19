@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin="" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block header_title %}
+<h3 class="text-uppercase">La Carte Intéractive</h3>
+{% endblock %}
+
+{% block bodyClassNames %}page-map{% endblock %}
+
+{% block content %}
+
+<div id="js-app-map" class="app-map container-fluid" v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
+  <div class="row h-100 position-relative">
+    <div class="sidebar">
+      <div class="filters">
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion1 variant="info">Commune</b-btn>
+          </b-card-header>
+          <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <b-button-group vertical class="w-100">
+                <b-button class="btn-block btn-primary inverse" v-for="commune in communes" :pressed.sync="commune.isPressed" v-html="commune.label"></b-button>
+              </b-button-group>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion2 variant="info">Accordion 2</b-btn>
+          </b-card-header>
+          <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <p class="card-text">
+                {{ text }}
+              </p>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card no-body class="mb-1">
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block href="#" v-b-toggle.accordion3 variant="info">Accordion 3</b-btn>
+          </b-card-header>
+          <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <p class="card-text">
+                {{ text }}
+              </p>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+      </div>
+      <div class="btn-toggle" @click="isSidebarCollapsed = !isSidebarCollapsed"></div>
+    </div>
+    <div class="col p-0">
+      <div class="map-wrapper h-100" ref="map"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      oppv.map({
+        sites: {{sites | tojson}},
+        communes: {{communes | tojson}}
+      })
+    }
+  };
+
+</script>
+{% endblock %}

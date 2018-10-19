@@ -69,3 +69,28 @@ def comparateur():
         'photos': photos
     }
     return render_template('comparateur.html', titre="Bienvenue !", mots=result, site=site)
+
+@main.route('/map')
+def map():
+    communes = [{
+        'id': 1,
+        'label': 'Arles'
+    }, {
+        'id': 2,
+        'label': 'Marseille'
+    }]
+    sites=[{
+        "title": 'Marseille Vieux-Port',
+        'commune': 2,
+        "latlon": [43.2908575, 5.3630115]
+    }, {
+        "title": "Arles Centre",
+        'commune': 1,
+        "latlon": [43.5444826, 4.5108427]
+    }, {
+        'title': "Camargue",
+        'commune': 1,
+        'latlon': [43.6788978, 4.6047767]
+    }]
+
+    return render_template('map.html', communes=communes, sites=sites)
