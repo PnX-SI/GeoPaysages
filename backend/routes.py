@@ -72,25 +72,76 @@ def comparateur():
 
 @main.route('/map')
 def map():
-    communes = [{
-        'id': 1,
-        'label': 'Arles'
-    }, {
-        'id': 2,
-        'label': 'Marseille'
-    }]
     sites=[{
         "title": 'Marseille Vieux-Port',
         'commune': 2,
-        "latlon": [43.2908575, 5.3630115]
+        "latlon": [43.2908575, 5.3630115],
+        'photos': [{
+            'year': 2000
+        }, {
+            'year': 2001
+        }]
     }, {
         "title": "Arles Centre",
         'commune': 1,
-        "latlon": [43.5444826, 4.5108427]
+        "latlon": [43.5444826, 4.5108427],
+        'photos': [{
+            'year': 2001
+        }, {
+            'year': 2002
+        }]
     }, {
         'title': "Camargue",
         'commune': 1,
-        'latlon': [43.6788978, 4.6047767]
+        'latlon': [43.6788978, 4.6047767],
+        'photos': [{
+            'year': 2002
+        }, {
+            'year': 2003
+        }]
     }]
+    commune_ids = set()
+    years = set()
+    for site in sites:
+        commune_ids.add(site.get('commune'))
+        site_years = set()
+        for photo in site.get('photos'):
+            year = photo.get('year')
+            years.add(year)
+            site_years.add(year)
+        site['years'] = list(site_years)
 
-    return render_template('map.html', communes=communes, sites=sites)
+    db_communes = [{
+        'id': 2,
+        'label': 'Arles'
+    }, {
+        'id': 1,
+        'label': 'Marseille'
+    }]
+    def getCommune(id):
+        commune = next(commune for commune in db_communes if commune.get('id') == id)
+        return {
+            'label': commune.get('label'),
+            'value': commune.get('id')
+        }
+
+    communes = [getCommune(commune_id) for commune_id in commune_ids]
+    communes = sorted(communes, key=lambda k: k['label'])
+
+    years = [{
+        'label': str(year),
+        'value': year
+    } for year in years]
+
+    filters = {
+        'commune': {
+            'label': 'Commune',
+            'items': communes
+        },
+        'years': {
+            'label': 'Année',
+            'items': years
+        }
+    }
+
+    return render_template('map.html', filters=filters, sites=sites)

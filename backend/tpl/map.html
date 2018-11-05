@@ -23,39 +23,15 @@
   <div class="row h-100 position-relative">
     <div class="sidebar">
       <div class="filters">
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion1 variant="info">Commune</b-btn>
+        <b-card no-body class="mb-1" v-for="(filter, filterName) in filters">
+          <b-card-header header-tag="header" class="p-1">
+            <b-btn block href="#" v-b-toggle="'app_map_filter_' + filterName" variant="primary" v-html="filter.label"></b-btn>
           </b-card-header>
-          <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
+          <b-collapse :id="'app_map_filter_' + filterName">
             <b-card-body>
               <b-button-group vertical class="w-100">
-                <b-button class="btn-block btn-primary inverse" v-for="commune in communes" :pressed.sync="commune.isPressed" v-html="commune.label"></b-button>
+                <b-button class="btn-block btn-primary inverse" v-for="item in filter.items" :pressed.sync="item.isSelected" v-on:click="onFilterClick()" v-html="item.label"></b-button>
               </b-button-group>
-            </b-card-body>
-          </b-collapse>
-        </b-card>
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion2 variant="info">Accordion 2</b-btn>
-          </b-card-header>
-          <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
-            <b-card-body>
-              <p class="card-text">
-                {{ text }}
-              </p>
-            </b-card-body>
-          </b-collapse>
-        </b-card>
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion3 variant="info">Accordion 3</b-btn>
-          </b-card-header>
-          <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
-            <b-card-body>
-              <p class="card-text">
-                {{ text }}
-              </p>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -71,9 +47,9 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-      oppv.map({
+      oppv.initMap({
         sites: {{sites | tojson}},
-        communes: {{communes | tojson}}
+        filters: {{filters | tojson}}
       })
     }
   };

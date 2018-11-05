@@ -1,16 +1,23 @@
 var oppv = oppv || {};
-oppv.map = (options) => {
-  options.communes = options.communes.map(commune => {
-    return Object.assign(commune, {
-      isPressed: false
+oppv.initMap = (options) => {
+  let filters = {}
+  for (const filterName in options.filters) {
+    const filter = options.filters[filterName];
+    filters[filterName] = Object.assign(filter, {
+      items: filter.items.map(item => {
+        return Object.assign(item, {
+          isSelected: false
+        })
+      })
     })
-  })
+  }
+
   new Vue({
     el: '#js-app-map',
     data: () => {
       return {
         isSidebarCollapsed: false,
-        communes: options.communes
+        filters: filters
       }
     },
     mounted() {
@@ -37,11 +44,34 @@ oppv.map = (options) => {
         options.sites.forEach(site => {
           lats.push(site.latlon[0])
           lons.push(site.latlon[1])
-          L.marker(site.latlon).addTo(this.map);
+          L.marker(site.latlon).addTo(this.map)
         });
         lats.sort()
         lons.sort()
-        this.map.fitBounds([[lats[0], lons[0]], [lats[lats.length-1], lons[lons.length-1]]]);
+        this.map.fitBounds([
+          [lats[0], lons[0]],
+          [lats[lats.length - 1], lons[lons.length - 1]]
+        ])
+      },
+      onFilterClick() {
+        let selected = []
+        for (const filterName in options.filters) {
+          const filter = options.filters[filterName]
+          filter.items.forEach(item => {
+            if (!item.isSelected)
+              return
+            options.sites.forEach(site => {
+              if (selected.indexOf(site) > -1)
+                return
+              let prop = _.get(site, filterName)
+              if (!Array.isArray(prop))
+                prop = [prop]
+              if (prop.indexOf(item.value) > -1)
+                selected.push(site)
+            })
+          })
+        }
+        console.log(selected)
       }
     }
   })
