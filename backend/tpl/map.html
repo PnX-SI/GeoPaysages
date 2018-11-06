@@ -23,14 +23,14 @@
   <div class="row h-100 position-relative">
     <div class="sidebar">
       <div class="filters">
-        <b-card no-body class="mb-1" v-for="(filter, filterName) in filters">
+        <b-card no-body class="mb-1" v-for="(filter) in filters">
           <b-card-header header-tag="header" class="p-1">
-            <b-btn block href="#" v-b-toggle="'app_map_filter_' + filterName" variant="primary" v-html="filter.label"></b-btn>
+            <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="primary" v-html="filter.label"></b-btn>
           </b-card-header>
-          <b-collapse :id="'app_map_filter_' + filterName">
+          <b-collapse :id="'app_map_filter_' + filter.name">
             <b-card-body>
               <b-button-group vertical class="w-100">
-                <b-button class="btn-block btn-primary inverse" v-for="item in filter.items" :pressed.sync="item.isSelected" v-on:click="onFilterClick()" v-html="item.label"></b-button>
+                <b-button class="btn-block btn-primary inverse" v-for="item in filter.items" :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
               </b-button-group>
             </b-card-body>
           </b-collapse>

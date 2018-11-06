@@ -72,10 +72,13 @@ def comparateur():
 
 @main.route('/map')
 def map():
+    
     sites=[{
         "title": 'Marseille Vieux-Port',
-        'commune': 2,
+        'township': 2,
         "latlon": [43.2908575, 5.3630115],
+        "themes": [1],
+        "subthemes": [1, 2],
         'photos': [{
             'year': 2000
         }, {
@@ -83,8 +86,10 @@ def map():
         }]
     }, {
         "title": "Arles Centre",
-        'commune': 1,
+        'township': 1,
         "latlon": [43.5444826, 4.5108427],
+        "themes": [2],
+        "subthemes": [3],
         'photos': [{
             'year': 2001
         }, {
@@ -92,56 +97,90 @@ def map():
         }]
     }, {
         'title': "Camargue",
-        'commune': 1,
+        'township': 1,
         'latlon': [43.6788978, 4.6047767],
+        "themes": [1],
+        "subthemes": [3],
         'photos': [{
             'year': 2002
         }, {
             'year': 2003
         }]
     }]
-    commune_ids = set()
-    years = set()
-    for site in sites:
-        commune_ids.add(site.get('commune'))
-        site_years = set()
-        for photo in site.get('photos'):
-            year = photo.get('year')
-            years.add(year)
-            site_years.add(year)
-        site['years'] = list(site_years)
 
-    db_communes = [{
-        'id': 2,
-        'label': 'Arles'
-    }, {
-        'id': 1,
-        'label': 'Marseille'
+    filters = [{
+        'name': 'themes',
+        'label': 'Thème',
+        'items': set()
+    },{
+        'name': 'subthemes',
+        'label': 'Sous-thème',
+        'items': set()
+    },{
+        'name': 'township',
+        'label': 'Commune',
+        'items': set()
+    },{
+        'name': 'years',
+        'label': 'Année',
+        'items': set()
     }]
-    def getCommune(id):
-        commune = next(commune for commune in db_communes if commune.get('id') == id)
-        return {
-            'label': commune.get('label'),
-            'value': commune.get('id')
-        }
 
-    communes = [getCommune(commune_id) for commune_id in commune_ids]
-    communes = sorted(communes, key=lambda k: k['label'])
+    for site in sites:
+        #Compute the prop years
+        site['years'] = set()
+        for photo in site.get('photos'):
+            site['years'].add(photo.get('year'))
+        site['years'] = list(site['years'])
 
-    years = [{
-        'label': str(year),
-        'value': year
-    } for year in years]
+        for filter in filters:
+            val = site.get(filter.get('name'))
+            try:
+                filter.get('items').update(val)
+            except:
+                filter.get('items').add(val)
 
-    filters = {
-        'commune': {
-            'label': 'Commune',
-            'items': communes
-        },
-        'years': {
-            'label': 'Année',
-            'items': years
-        }
+    dbs = {
+        'themes':[{
+            'id': 1,
+            'label': 'Theme 1'
+        }, {
+            'id': 2,
+            'label': 'Theme 2'
+        }],
+        'subthemes':[{
+            'id': 1,
+            'themes': [1],
+            'label': 'Subtheme 1'
+        }, {
+            'id': 2,
+            'themes': [1],
+            'label': 'Subtheme 2'
+        }, {
+            'id': 3,
+            'themes': [1, 2],
+            'label': 'Subtheme 3'
+        }],
+        'township':[{
+            'id': 1,
+            'label': 'Arles'
+        }, {
+            'id': 2,
+            'label': 'Marseille'
+        }]
     }
+
+    def getItem(name, id):
+        return next(item for item in dbs.get(name) if item.get('id') == id)
+
+    for filter in filters:
+        if (filter.get('name') == 'years'):
+            filter['items'] = [{
+                'label': str(year),
+                'id': year
+            } for year in filter.get('items')]
+        else:
+            filter['items'] = [getItem(filter.get('name'), item_id) for item_id in filter.get('items')]
+        filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
     return render_template('map.html', filters=filters, sites=sites)
