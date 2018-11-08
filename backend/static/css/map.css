@@ -37,3 +37,14 @@
   color: var(--color-primary);
   padding: 0;
 }
+
+.app-map .leaflet-popup-content {
+    text-align: center;
+}
+
+.app-map .leaflet-popup-content .img {
+    min-width: 100px;
+    height: 100px;
+    background: no-repeat center;
+    background-size: contain;
+}

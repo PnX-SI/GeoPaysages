@@ -1,5 +1,5 @@
 # coding: utf-8
-from flask import Flask, render_template, redirect, Blueprint
+from flask import Flask, render_template, redirect, Blueprint, url_for
 import models
 import random
 from models import (db)
@@ -79,10 +79,13 @@ def map():
         "latlon": [43.2908575, 5.3630115],
         "themes": [1],
         "subthemes": [1, 2],
+        'url': url_for('main.comparateur', _external=True),
         'photos': [{
-            'year': 2000
+            'year': 2000,
+            'url': '/static/images/100.png'
         }, {
-            'year': 2001
+            'year': 2001,
+            'url': '/static/images/100.png'
         }]
     }, {
         "title": "Arles Centre",
@@ -90,10 +93,13 @@ def map():
         "latlon": [43.5444826, 4.5108427],
         "themes": [2],
         "subthemes": [3],
+        'url': url_for('main.comparateur', _external=True),
         'photos': [{
-            'year': 2001
+            'year': 2001,
+            'url': '/static/images/100-0f0.png'
         }, {
-            'year': 2002
+            'year': 2002,
+            'url': '/static/images/100-0f0.png'
         }]
     }, {
         'title': "Camargue",
@@ -101,10 +107,13 @@ def map():
         'latlon': [43.6788978, 4.6047767],
         "themes": [1],
         "subthemes": [3],
+        'url': url_for('main.comparateur', _external=True),
         'photos': [{
-            'year': 2002
+            'year': 2002,
+            'url': '/static/images/100-00f.png'
         }, {
-            'year': 2003
+            'year': 2003,
+            'url': '/static/images/100-00f.png'
         }]
     }]
 

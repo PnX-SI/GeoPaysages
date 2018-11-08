@@ -61,7 +61,7 @@ oppv.initMap = (options) => {
           }).length
         })
 
-        this.filters.find(filter => {
+        filters.find(filter => {
           return filter.name == 'subthemes'
         }).items = selectedSubthemes
       },
@@ -91,7 +91,7 @@ oppv.initMap = (options) => {
         })
 
         markers.forEach(marker => {
-          map.removeLayer(marker);
+          map.removeLayer(marker)
         })
         markers = []
 
@@ -101,6 +101,18 @@ oppv.initMap = (options) => {
           lats.push(site.latlon[0])
           lons.push(site.latlon[1])
           let marker = L.marker(site.latlon)
+          marker.bindPopup(site.title + '<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div>', {
+            closeButton: false
+          })
+          marker.on('mouseover', (e) => {
+            marker.openPopup()
+          })
+          marker.on('mouseout', (e) => {
+            marker.closePopup()
+          })
+          marker.on('click', (e) => {
+            window.location.href = site.url
+          })
           marker.addTo(map)
           markers.push(marker)
         });
