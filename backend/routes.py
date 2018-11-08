@@ -1,40 +1,85 @@
 # coding: utf-8
-from flask import Flask, render_template, redirect, Blueprint
+from flask import Flask, render_template, redirect, Blueprint,jsonify, url_for
 import models
 import random
 from models import (db)
 from config import DATA_IMAGES_PATH
-from PIL import Image, ImageFont, ImageDraw
+from PIL import Image, ImageFont, ImageDraw, ImageOps
 import os
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
+photo_schema = models.TPhotoSchema(many=True)
+site_schema = models.TSiteSchema(many=True)
+licencePhotoSchema= models.LicencePhotoSchema(many=True)
 main = Blueprint('main', __name__, template_folder='tpl')
 
-def getThumbnail(imageUrl):
-    base_img_url = DATA_IMAGES_PATH
-    imageThumbnailUrl = base_img_url+'thumbnail_'+imageUrl
-    imageUrl = base_img_url+imageUrl
-    if not (os.path.exists(imageThumbnailUrl)):
-        try:
-            image = Image.open(imageUrl)
-            image.thumbnail((200, 200))
-            image.save(imageThumbnailUrl)
-        except Exception:
-            print('getThumbnail Invalid image')
+def getImage(photo, prefixe, callback):
+    base_path = './static/' + DATA_IMAGES_PATH
+    input_name = photo.get('path_file_photo')
+    input_path = base_path + input_name
+    if prefixe:
+        output_name = prefixe + '_' + input_name
+    else :
+        output_name = input_name
+    output_path = base_path + output_name
+    image = Image.open(input_path)
+    output_exists = os.path.exists(output_path),
 
-def addWatherMark(imageUrl):
-    font = ImageFont.truetype("./static/fonts/openSans.ttf",14)
-    base_img_url = DATA_IMAGES_PATH
-    imageCopyright = base_img_url+'copyrigh_'+imageUrl
-    if not (os.path.exists(imageCopyright)):
+    img = {
+        'input_exists': os.path.exists(input_path),
+        'output_name': output_name,
+        'output_path': output_path,
+        'image': image
+    }
+
+    if not(callback is None) and not(output_exists):
         try:
-            image = Image.open(base_img_url+imageUrl)
+            callback(img)
+        except Exception as exception:
+            print('getImage Invalid image')
+            print(exception)
+
+    return img
+
+def getThumbnail(photo):
+    h = 100
+    def callback(img):
+        #initW, initH = image.size
+        #ratio = h / initH
+        #image.resize((int(initW*ratio), h))
+        image = img.get('image')
+        image = ImageOps.fit(image, (h, h), Image.ANTIALIAS)
+        image.save(img.get('output_path'))
+
+    return getImage(photo, 'thumbnail', callback)
+
+def getMedium(photo):
+    def callback(img):
+        image = img.get('image')
+        image.thumbnail((800, 800))
+        image.save(img.get('output_path'))
+        addWatherMark(img, photo)
+
+    return getImage(photo, 'medium', callback)
+
+def getLarge(photo):
+    def callback(img):
+        addWatherMark(img, photo)
+    return getImage(photo, 'large', callback)
+
+def addWatherMark(img, photo):
+    copyright_text = photo.get('dico_licence_photo').get('description_licence_photo')
+    font = ImageFont.truetype("./static/fonts/openSans.ttf",14)
+    if img.get('input_exists'):
+        try:
+            image = img.get('image')
             draw = ImageDraw.Draw(image)
             width, height = image.size
-            draw.text((10, height-24),"© Copyright 2018 by Parc National de la Vanoise",font=font,fill=(255,255,255,255))
-            image.save(imageCopyright)
+            draw.text((10, height-24),copyright_text,font=font,fill=(255,255,255,255))
+            image.save(img.get('output_path'))
         except Exception:
             print('addWatherMark Invalid image')
+    return img
 
 @main.route('/')
 def home():
@@ -43,29 +88,27 @@ def home():
     #return render_template('home.html', titre="Bienvenue !", mots=result)
     return redirect("/comparateur", code=302)
 
-@main.route('/comparateur')
-def comparateur():
-
-    filenames = ['oppv-003-00-2007.jpg', 'oppv-003-01-2008.jpg', 'oppv-003-02-2009.jpg', 'oppv-003-03-2010.jpg', 'oppv-003-04-2011.jpg', 'oppv-003-05-2012.jpg', 'oppv-003-06-2013.jpg', 'oppv-003-07-2014.jpg', 'oppv-003-08-2015.jpg', 'oppv-003-09-2016.jpg', 'oppv-003-10-2017.jpg']
-    def getPhoto(n):
-        filename = filenames[n]
-        def url(i, size):
-            base = 'https://res.cloudinary.com/naturalsolutions/image/upload'
-            path = 'v1539596666/Vanoise'
-            return '%s/%s/%s/%s' % (base, size, path, filename)
-
+@main.route('/comparateur/<int:id_site>')
+def comparateur(id_site):
+    get_site_by_id = models.TSite.query.filter_by(id_site = id_site)
+    site=site_schema.dump(get_site_by_id).data[0]
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
+    photos = photo_schema.dump(get_photos_by_site).data
+    def getPhoto(photo):
         return {
-            'sm': url(n, 'c_thumb,w_200,h_200'),
-            'md': url(n, 'c_limit,w_800,h_800'),
-            'lg': url(n, 'c_limit,w_2000,h_2000'),
-            'date': filename.split('-')[3].split('.')[0]
+            'sm': url_for('static', filename=DATA_IMAGES_PATH + getThumbnail(photo).get('output_name')),
+            'md': url_for('static', filename=DATA_IMAGES_PATH + getMedium(photo).get('output_name')),
+            'lg': url_for('static', filename=DATA_IMAGES_PATH + getLarge(photo).get('output_name')),
+            'date': photo.get('date_photo')
         }
 
 
-    all_dicos = models.DicoTheme.query.all()
-    result = dicotheme_schema.dump(all_dicos)
-    photos = [getPhoto(i) for i in range(len(filenames))]
-    site = {
-        'photos': photos
+    result = {
+        'name': site.get('name_site'),
+        'description': site.get('desc_site'),
+        'testimonial': site.get('testim_site'),
+        'geom': '',
+        'photos': [getPhoto(photo) for photo in photos]
     }
-    return render_template('comparateur.html', titre="Bienvenue !", mots=result, site=site)
+
+    return render_template('comparateur.html', titre="Bienvenue !", site=result)
