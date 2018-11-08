@@ -1,4 +1,5 @@
-initComparator = (options) => {
+var  oppv = oppv || {};
+oppv.comparator = (options) => {
   new Vue({
     el: '#js-app-comparator',
     data: () => {

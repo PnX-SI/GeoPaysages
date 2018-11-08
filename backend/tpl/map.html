@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+  crossorigin="" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+
+<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+  crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}
+
+{% block header_title %}
+<h3 class="text-uppercase">La Carte Intéractive</h3>
+{% endblock %}
+
+{% block bodyClassNames %}page-map{% endblock %}
+
+{% block content %}
+
+<div id="js-app-map" class="app-map container-fluid" v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
+  <div class="row h-100 position-relative">
+    <div class="sidebar">
+      <div class="filters">
+        <b-card no-body class="mb-1" v-for="(filter) in filters">
+          <b-card-header header-tag="header" class="p-1">
+            <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="primary" v-html="filter.label"></b-btn>
+          </b-card-header>
+          <b-collapse :id="'app_map_filter_' + filter.name">
+            <b-card-body>
+              <b-button-group vertical class="w-100">
+                <b-button class="btn-block btn-primary inverse" v-for="item in filter.items" :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
+              </b-button-group>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+      </div>
+      <div class="btn-toggle" @click="isSidebarCollapsed = !isSidebarCollapsed"></div>
+    </div>
+    <div class="col p-0">
+      <div class="map-wrapper h-100" ref="map"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      oppv.initMap({
+        sites: {{sites | tojson}},
+        filters: {{filters | tojson}}
+      })
+    }
+  };
+
+</script>
+{% endblock %}

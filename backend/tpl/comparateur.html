@@ -13,7 +13,7 @@
 {% block bodyClassNames %}page-comparateur{% endblock %}
 
 {% block content %}
-<div class="container-fluid" id="js-app-comparator">
+<div class="page-content container-fluid" id="js-app-comparator">
   <b-modal id="modal1" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <div class="img-wrapper" v-for="photo in zoomPhotos">
       <img :src="photo.lg" />
@@ -41,7 +41,8 @@
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[0].comparedLoaded }">
               <div class="hidden-async-resolved progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100"></div>
               </div>
               <img src="{{ site.photos[0].md }}" :src="comparedPhotos[0].md" @load="onComparedLoaded(0)" />
               <div class="w-100 img-date" v-html="comparedPhotos[0].date">{{ site.photos[0].date }}</div>
@@ -55,7 +56,8 @@
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[1].comparedLoaded }">
               <div class="hidden-async-resolved progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+                  aria-valuemin="0" aria-valuemax="100"></div>
               </div>
               <img src="{{ site.photos[1].md }}" :src="comparedPhotos[1].md" @load="onComparedLoaded(1)" />
               <div class="w-100 img-date" v-html="comparedPhotos[1].date">{{ site.photos[1].date }}</div>
@@ -104,8 +106,8 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-      initComparator({
-        site: {{ site | tojson }}
+      oppv.comparator({
+        site: {{site | tojson}}
       })
     }
   };

@@ -110,5 +110,128 @@ def comparateur(id_site):
         'geom': '',
         'photos': [getPhoto(photo) for photo in photos]
     }
-
     return render_template('comparateur.html', titre="Bienvenue !", site=result)
+
+@main.route('/map')
+def map():
+    
+    sites=[{
+        "title": 'Marseille Vieux-Port',
+        'township': 2,
+        "latlon": [43.2908575, 5.3630115],
+        "themes": [1],
+        "subthemes": [1, 2],
+        'url': url_for('main.comparateur', id_site=1, _external=True),
+        'photos': [{
+            'year': 2000,
+            'url': '/static/images/100.png'
+        }, {
+            'year': 2001,
+            'url': '/static/images/100.png'
+        }]
+    }, {
+        "title": "Arles Centre",
+        'township': 1,
+        "latlon": [43.5444826, 4.5108427],
+        "themes": [2],
+        "subthemes": [3],
+        'url': url_for('main.comparateur', id_site=1, _external=True),
+        'photos': [{
+            'year': 2001,
+            'url': '/static/images/100-0f0.png'
+        }, {
+            'year': 2002,
+            'url': '/static/images/100-0f0.png'
+        }]
+    }, {
+        'title': "Camargue",
+        'township': 1,
+        'latlon': [43.6788978, 4.6047767],
+        "themes": [1],
+        "subthemes": [3],
+        'url': url_for('main.comparateur', id_site=1, _external=True),
+        'photos': [{
+            'year': 2002,
+            'url': '/static/images/100-00f.png'
+        }, {
+            'year': 2003,
+            'url': '/static/images/100-00f.png'
+        }]
+    }]
+
+    filters = [{
+        'name': 'themes',
+        'label': 'Thème',
+        'items': set()
+    },{
+        'name': 'subthemes',
+        'label': 'Sous-thème',
+        'items': set()
+    },{
+        'name': 'township',
+        'label': 'Commune',
+        'items': set()
+    },{
+        'name': 'years',
+        'label': 'Année',
+        'items': set()
+    }]
+
+    for site in sites:
+        #Compute the prop years
+        site['years'] = set()
+        for photo in site.get('photos'):
+            site['years'].add(photo.get('year'))
+        site['years'] = list(site['years'])
+
+        for filter in filters:
+            val = site.get(filter.get('name'))
+            try:
+                filter.get('items').update(val)
+            except:
+                filter.get('items').add(val)
+
+    dbs = {
+        'themes':[{
+            'id': 1,
+            'label': 'Theme 1'
+        }, {
+            'id': 2,
+            'label': 'Theme 2'
+        }],
+        'subthemes':[{
+            'id': 1,
+            'themes': [1],
+            'label': 'Subtheme 1'
+        }, {
+            'id': 2,
+            'themes': [1],
+            'label': 'Subtheme 2'
+        }, {
+            'id': 3,
+            'themes': [1, 2],
+            'label': 'Subtheme 3'
+        }],
+        'township':[{
+            'id': 1,
+            'label': 'Arles'
+        }, {
+            'id': 2,
+            'label': 'Marseille'
+        }]
+    }
+
+    def getItem(name, id):
+        return next(item for item in dbs.get(name) if item.get('id') == id)
+
+    for filter in filters:
+        if (filter.get('name') == 'years'):
+            filter['items'] = [{
+                'label': str(year),
+                'id': year
+            } for year in filter.get('items')]
+        else:
+            filter['items'] = [getItem(filter.get('name'), item_id) for item_id in filter.get('items')]
+        filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
+
+    return render_template('map.html', filters=filters, sites=sites)
