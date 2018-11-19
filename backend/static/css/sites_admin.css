@@ -1,36 +1,36 @@
-.sites{
+.page-sitesadmin .sites{
     max-width: inherit !important;
     width: 95%;
     font-family: 'Hind', sans-serif;
     margin-top: 10px !important;
 }
 
-section{
+.page-sitesadmin section{
     padding: 0 !important;
 }
 
-ul{
+.page-sitesadmin ul{
     padding: 0 !important;
 }
 
-li{
+.page-sitesadmin li{
     margin-bottom: 20px;
 }
 
-.image{
+.page-sitesadmin .image{
     text-align: right !important;
     width: 150px;
     height: 150px;;
     overflow: hidden;
 }
 
-.text{
+.page-sitesadmin .text{
     padding-left: 5px;
     display: flex;
     flex-direction: column;
 }
 
-.add-btn{
+.page-sitesadmin .add-btn{
     font-weight: bold;
     font-family: 'Hind', sans-serif;
     text-transform: uppercase;
@@ -42,13 +42,13 @@ li{
     font-size: 13px;
 }
 
-.site img{
+.page-sitesadmin .site img{
     width: 150px;
 }
 
 
 
-.image .img{
+.page-sitesadmin .image .img{
     filter: blur(0);
         -webkit-filter: blur(0);
         -moz-filter: blur(0);
@@ -58,12 +58,12 @@ li{
     cursor: pointer;
 }
 
-.img {
+.page-sitesadmin .img {
     height: 150px;
     width: 150px;
 }
 
-.image:hover .img{
+.page-sitesadmin .image:hover .img{
     filter: blur(5px);
         -webkit-filter: blur(5px);
         -moz-filter: blur(5px);
@@ -71,18 +71,18 @@ li{
         -ms-filter: blur(5px);
 }
 
-.text button{
+.page-sitesadmin .text button{
     display: flex;
     align-items: center;
 }
 
-.text:first-child{
+.page-sitesadmin .text:first-child{
     flex-direction: row !important;
 }
 
 /* EDIT IMAGE BTNS */
 
-.img-btns{
+.page-sitesadmin .img-btns{
     opacity: 0;
     transition: opacity .5s ease;
     width: 150px;
@@ -93,15 +93,15 @@ li{
     left: 0;
 }
 
-.image:hover .img-btns{
+.page-sitesadmin .image:hover .img-btns{
     opacity: 1;
 }
 
-span img{
+.page-sitesadmin span img{
     width: 15px !important;
 }
 
-span.edit img{
+.page-sitesadmin span.edit img{
     border: solid 2px #F9B977;
     border-radius: 25px;
     padding: 8.5px 9px;
@@ -111,7 +111,7 @@ span.edit img{
     width: 35px !important;
 }
 
-span.view img{
+.page-sitesadmin span.view img{
     border: solid 2px #fff;
     color: #fff;
     border-radius: 25px;
@@ -121,7 +121,7 @@ span.view img{
     width: 35px !important;
 }
 
-span.delete img{
+.page-sitesadmin span.delete img{
     border: solid 2px #EC6668;
     border-radius: 25px;
     padding: 7px 9px;
@@ -133,11 +133,11 @@ span.delete img{
 
 /* RIGHT PART */
 
-.RightPart{
+.page-sitesadmin .RightPart{
     position: relative;
 }
 
-.toggle-map{
+.page-sitesadmin .toggle-map{
     position: absolute;
     top: 0;
     bottom: 0;
@@ -152,24 +152,24 @@ span.delete img{
     cursor: pointer;
 }
 
-footer li{
+.page-sitesadmin footer li{
     margin-bottom: 0;
 }
 
 /* MEDIA QUERIES */
 
 @media screen and (min-width: 991px) {
-    .LeftPart, .RightPart{
+    .page-sitesadmin .LeftPart, .page-sitesadmin .RightPart{
         height: calc(100vh - 140px);
     }
-    .LeftPart{
+    .page-sitesadmin .LeftPart{
         overflow-y: scroll;
         overflow-x: hidden;
     }
 }
 
 @media screen and (max-width: 991px) {
-    .toggle-map{
+    .page-sitesadmin .toggle-map{
         display: none;
     }
 }

@@ -1,25 +1,25 @@
-.galery{
+.page-galeryback .galery{
     margin-top: 20px;
 }
 
-.picture{
+.page-galeryback .picture{
     padding: 20px 10px 0px 10px;
     overflow: hidden;
     position: relative;
 }
 
-.picture img{
+.page-galeryback .picture img{
     width: 100%;
     height: 100%;
 }
 
-.picture img:hover{
+.page-galeryback .picture img:hover{
     cursor: pointer;
     outline: 3px solid #fff;
     outline-offset: -10px;
 }
 
-h2{
+.page-galeryback h2{
     width: 100%;
     background: #444;
     color: #fff;

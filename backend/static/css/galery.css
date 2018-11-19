@@ -1,16 +1,16 @@
-.picture{
+.page-galeryback .picture{
     padding: 20px 10px 0px 10px;
     overflow: hidden;
     position: relative;
 }
 
-.picture img{
+.page-galeryback .picture img{
     width: 100%;
     height: 100%;
     transition: filter .5s ease;
 }
 
-.picture:hover img{
+.page-galeryback .picture:hover img{
     filter: brightness(50%);
         -webkit-filter: brightness(50%);
         -moz-filter: brightness(50%);
@@ -18,7 +18,7 @@
         -ms-filter: brightness(50%);
 }
 
-.picture .discover{
+.page-galeryback .picture .discover{
     position: absolute;
     left: 10px;
     right: 10px;
@@ -26,19 +26,19 @@
     transform: translateY(100%);
 }
 
-.picture:hover .discover{
+.page-galeryback .picture:hover .discover{
     transform: translateY(-170%);
 }
 
 @media screen and (max-width: 767px) {
-    .picture:first-child img{
+    .page-galeryback .picture:first-child img{
         filter: brightness(50%);
         -webkit-filter: brightness(50%);
         -moz-filter: brightness(50%);
         -o-filter: brightness(50%);
         -ms-filter: brightness(50%);
     }
-    .picture:first-child .discover{
+    .page-galeryback .picture:first-child .discover{
         transform: translateY(-170%);
     }
 }

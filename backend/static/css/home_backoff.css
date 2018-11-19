@@ -1,4 +1,4 @@
-.blocks {
+.page-homeback .blocks {
     position: relative;
     height: calc(100vh - 190px);
     width: 50%;
@@ -6,9 +6,8 @@
     margin-top: 10px;
 }
 
-.block {
+.page-homeback .block {
     background-color: #777;
-    position: absolute;
     overflow: hidden;
     font-family: 'Hind', sans-serif;
     display: flex;
@@ -17,7 +16,7 @@
     text-align: center;
 }
 
-.block input{
+.page-homeback .block input{
     overflow: visible;
     display: flex;
     position: absolute;
@@ -29,7 +28,7 @@
     cursor: pointer;
 }
 
-.block button{
+.page-homeback .block button{
     background-color: #333;
     color: #fff;
     text-transform: uppercase;
@@ -47,20 +46,20 @@
     transform: scale(1);  
 }
 
-.block p{
+.page-homeback .block p{
     font-weight: bold;
     text-transform: uppercase;
     color: #fff;
     font-size: 1.5em;
     text-shadow: 2px 2px 8px #65696D;
 }
-.block.map{
+.page-homeback .block.map{
     text-align: center;
     padding: 10px;
     display: flex;
 }
 
-.block.map a{
+.page-homeback .block.map a{
     text-align: center;
     color: #fff;
     font-weight: bold;
@@ -71,42 +70,42 @@
     align-items: center;
 }
 
-.block-1{
+.page-homeback .block-1{
     background-color : #CFE09B;
 }
 
-.block-2{
+.page-homeback .block-2{
     background-color : #AFD39A;
 }
 
-.block-3{
+.page-homeback .block-3{
     background-color : #8EC89A;
 }
 
-.block-4{
+.page-homeback .block-4{
     background-color : #89CCCA;
 }
 
-.block-5{
+.page-homeback .block-5{
     background-color : #83D0F5;
 }
 
-.block.map{
+.page-homeback .block.map{
     background-color : #B7B7B7;
 }
 
-.block-7{
+.page-homeback .block-7{
     background-color : #8BADDC;
 }
 
-div.button{
+.page-homeback div.button{
     display: flex;
     justify-content: center;
     margin-top: 20px;
 
 }
 
-button.validate{
+.page-homeback button.validate{
     font-weight: bold;
     font-family: 'Hind', sans-serif;
     text-transform: uppercase;
@@ -117,7 +116,7 @@ button.validate{
     cursor: pointer;
 }
 
-.block:hover button{
+.page-homeback .block:hover button{
     -webkit-transition: all 200ms ease-in;
     -webkit-transform: scale(1.2);
     -ms-transition: all 200ms ease-in;
@@ -126,4 +125,37 @@ button.validate{
     -moz-transform: scale(1.2);
     transition: all 200ms ease-in;
     transform: scale(1.2);
+}
+
+@media screen and (min-width: 800px){
+    .page-homeback .block{
+        position: absolute;
+    }
+}
+@media screen and (max-width: 800px){
+    .page-homeback .block{
+        height: 200px;
+        margin: 10px;
+    }
+
+    .page-homeback .legend{
+        display: none;
+    }
+
+    .page-homeback .discover{
+        display: none;
+    }
+
+    .page-homeback .block-1 img{
+        filter: brightness(50%);
+    -webkit-filter: brightness(50%);
+    -moz-filter: brightness(50%);
+    -o-filter: brightness(50%);
+    -ms-filter: brightness(50%);
+    }
+
+    .page-homeback .block-1 .discover{
+        display: block;
+        transform: translateY(-65px);
+    }
 }

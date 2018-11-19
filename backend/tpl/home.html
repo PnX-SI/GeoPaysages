@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 {% endblock %}
 
+{% block bodyClassNames %}page-home{% endblock %}
+
 {% block header_title %}
 <h1>Observatoire photographique des paysages de vanoise</h1>
 {% endblock %}
@@ -33,7 +35,7 @@
 
   <div class="block block-2">
     <a href="#">
-        <img src="/static/images/vanoise4.jpg" alt="Montagne vanoise">
+      <img src="/static/images/vanoise4.jpg" alt="Montagne vanoise">
     </a>
     <div class="discover">
       <a href="#">Découvrir ce site photographique</a>
@@ -49,7 +51,7 @@
 
   <div class="block block-3">
     <a href="#">
-        <img src="/static/images/vanoise3.jpg" alt="Montagne vanoise">
+      <img src="/static/images/vanoise3.jpg" alt="Montagne vanoise">
     </a>
     <div class="discover">
       <a href="#">Découvrir ce site photographique</a>
@@ -64,79 +66,81 @@
   </div>
 
   <div class="block block-4">
+    <a href="#">
+      <img src="/static/images/vanoise2.jpg" alt="Montagne vanoise">
+    </a>
+    <div class="legend">
       <a href="#">
-          <img src="/static/images/vanoise2.jpg" alt="Montagne vanoise">
+        <h6>Photographie</h6>
+        <span>Homer Dalor</span>
+        Lorem ipsum dolor sin amet color sin paret motor sin baret
       </a>
-      <div class="legend">
-        <a href="#">
-          <h6>Photographie</h6>
-          <span>Homer Dalor</span>
-          Lorem ipsum dolor sin amet color sin paret motor sin baret
-        </a>
-      </div>
+    </div>
   </div>
 
   <div class="block block-5">
+    <a href="#">
+      <img src="/static/images/vanoise6.jpg" alt="Montagne vanoise">
+    </a>
+    <div class="discover">
+      <a href="#">Découvrir ce site photographique</a>
+    </div>
+    <div class="legend">
       <a href="#">
-          <img src="/static/images/vanoise6.jpg" alt="Montagne vanoise">
+        <h6>Photographie</h6>
+        <span>Homer Dalor</span>
+        Lorem ipsum dolor sin amet color sin paret motor sin baret
       </a>
-      <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-      <div class="legend">
-        <a href="#">
-          <h6>Photographie</h6>
-          <span>Homer Dalor</span>
-          Lorem ipsum dolor sin amet color sin paret motor sin baret
-        </a>
-      </div>
+    </div>
   </div>
 
   <div class="block block-7">
+    <a href="#">
+      <img src="/static/images/vanoise.jpeg" alt="Montagne vanoise">
+    </a>
+    <div class="legend">
       <a href="#">
-          <img src="/static/images/vanoise.jpeg" alt="Montagne vanoise">
+        <h6>Photographie</h6>
+        <span>Homer Dalor</span>
+        Lorem ipsum dolor sin amet color sin paret motor sin baret
       </a>
-      <div class="legend">
-        <a href="#">
-          <h6>Photographie</h6>
-          <span>Homer Dalor</span>
-          Lorem ipsum dolor sin amet color sin paret motor sin baret
-        </a>
-      </div>
+    </div>
   </div>
 </div>
 
 <script>
   document.onreadystatechange = () => {
-    if (window.matchMedia("(min-width: 800px)").matches) {
+    var gutter = 20;
+    var container = document.querySelector('.blocks');
 
-      var gutter = 20;
-      var container = document.querySelector('.blocks');
-      
-      var block_1 = document.querySelector('.block-1');
-      var block_2 = document.querySelector('.block-2');
-      var block_3 = document.querySelector('.block-3');
-      var block_4 = document.querySelector('.block-4');
-      var block_5 = document.querySelector('.block-5');
-      var block_6 = document.querySelector('.block-6');
-      var block_7 = document.querySelector('.block-7');
+    var block_1 = document.querySelector('.block-1');
+    var block_2 = document.querySelector('.block-2');
+    var block_3 = document.querySelector('.block-3');
+    var block_4 = document.querySelector('.block-4');
+    var block_5 = document.querySelector('.block-5');
+    var block_6 = document.querySelector('.block-6');
+    var block_7 = document.querySelector('.block-7');
 
-      window.addEventListener('resize', () => {
-        onResize()
-        //var containerW = document.querySelector('.blocks')
-      })
+    window.addEventListener('resize', () => {
       onResize()
-      function onResize() {
-       
+      //var containerW = document.querySelector('.blocks')
+    })
+    onResize()
+    function onResize() {
+      if (window.matchMedia("(min-width: 800px)").matches) {
+
+        container.style.height = null;
+        container.style.width = null;
+
         var containerW = container.clientWidth;
         var containerH = container.clientHeight;
 
-        var blockSM = (containerH * 1/3);
-        var blockBG = (containerH * 2/3);
+        var blockSM = (containerH * 1 / 3);
+        var blockBG = (containerH * 2 / 3);
 
         block_1.style.height = (blockSM * 2) + 'px';
         block_1.style.width = block_1.style.height;
-        
+
         block_2.style.height = blockSM + 'px';
         block_2.style.width = (blockSM * 2 + gutter) + 'px';
         block_2.style.left = (blockBG + gutter) + 'px';
@@ -166,52 +170,48 @@
         block_7.style.top = (blockSM * 2 + gutter) + 'px';
 
         container.style.width = (blockSM * 5 + gutter * 3) + 'px';
+      }
+      else {
+
+        container.style.height = 'auto';
+        container.style.width = 'auto';
+
+        block_1.style.height = null;
+        block_1.style.width = null;
+
+        block_2.style.height = null;
+        block_2.style.width = null;
+        block_2.style.left = null;
+
+        block_3.style.height = null;
+        block_3.style.width = null;
+        block_3.style.left = null;
+
+        block_4.style.height = null;
+        block_4.style.width = null;
+        block_4.style.left = null;
+        block_4.style.top = null;
+
+        block_5.style.height = null;
+        block_5.style.width = null;
+        block_5.style.left = null;
+        block_5.style.top = null;
+
+        block_6.style.height = null;
+        block_6.style.width = null;
+        block_6.style.left = null;
+        block_6.style.top = null;
+
+        block_7.style.height = null;
+        block_7.style.width = null;
+        block_7.style.left = null;
+        block_7.style.top = null;
+
 
       }
-    }
-    else{
-      var block_1 = document.querySelector('.block-1');
-      var block_2 = document.querySelector('.block-2');
-      var block_3 = document.querySelector('.block-3');
-      var block_4 = document.querySelector('.block-4');
-      var block_5 = document.querySelector('.block-5');
-      var block_6 = document.querySelector('.block-6');
-      var block_7 = document.querySelector('.block-7');
-      var container = document.querySelector('.blocks');
-
-      container.style.height = 'auto';
-      container.style.width = 'auto';
-
-      block_1.style.position = 'relative';
-      block_1.style.height = '200px';
-      block_1.style.margin = '10px';
-
-      block_2.style.position = 'relative';
-      block_2.style.height = '200px';
-      block_2.style.margin = '10px';
-      
-      block_3.style.position = 'relative';
-      block_3.style.height = '200px';
-      block_3.style.margin = '10px';
-      
-      block_4.style.position = 'relative';
-      block_4.style.height = '200px';
-      block_4.style.margin = '10px';
-      
-      block_5.style.position = 'relative';
-      block_5.style.height = '200px';
-      block_5.style.margin = '10px';
-      
-      block_6.style.position = 'relative';
-      block_6.style.height = '200px';
-      block_6.style.margin = '10px';
-      
-      block_7.style.position = 'relative';
-      block_7.style.height = '200px';
-      block_7.style.margin = '10px';
-      
 
     }
+
   };
 </script>
 {% endblock %}

@@ -1,24 +1,24 @@
-.blocks {
+.page-home .blocks {
   position: relative;
   height: calc(100vh - 130px);
   width: 50%;
   margin : 0 auto;
 }
 
-.block {
+.page-home .block {
   background-color: #777;
-  position: absolute;
+  
     overflow: hidden;
 }
 
-.block img{
+.page-home .block img{
     width: 100%;
     height: auto;
     transition: filter .5s ease;
     object-fit: cover;
 }
 
-.block:hover img{
+.page-home .block:hover img{
     filter: brightness(50%);
     -webkit-filter: brightness(50%);
     -moz-filter: brightness(50%);
@@ -26,13 +26,13 @@
     -ms-filter: brightness(50%);
 }
 
-.block a{
+.page-home .block a{
     width: 100%;
     height: 100%;
     display: flex;
 }
 
-.legend{
+.page-home .legend{
     position: absolute;
     top: 0;
     left: 0;
@@ -45,11 +45,11 @@
     max-width: 160px;
 }
 
-.block:hover .legend{
+.page-home .block:hover .legend{
     opacity: 1;
 }
 
-.legend a{
+.page-home .legend a{
     font-style: italic;
     display: flex;
     flex-direction: column;
@@ -59,7 +59,7 @@
     line-height: 16px;
 }
 
-.legend a h6{
+.page-home .legend a h6{
     font-size: 12px;
     font-weight: normal;
     font-style: normal;
@@ -69,7 +69,7 @@
     text-transform: uppercase;
 }
 
-.legend a h6:before{
+.page-home .legend a h6:before{
     content : ' ';
     position: absolute;
     left: 0;
@@ -79,7 +79,7 @@
     transform: translateY(25%);
 }
 
-.legend a span{
+.page-home .legend a span{
     font-style: normal;
     text-transform: uppercase;
     font-weight: bold;
@@ -87,7 +87,7 @@
     font-family: 'Hind', sans-serif;
 }
 
-.discover{
+.page-home .discover{
     text-align: center;
     color: #fff;
     font-style: italic;
@@ -95,7 +95,7 @@
     z-index: 9999;
     transition: transform .5s ease;
 }
-.discover a{
+.page-home .discover a{
     height: 100%;
     width: 100%;
     display: flex;
@@ -103,17 +103,17 @@
     padding: 10px 0px;
 }
 
-.block:hover .discover{
+.page-home .block:hover .discover{
     transform: translateY(-65px);
 }
 
-.block.map{
+.page-home .block.map{
     text-align: center;
     padding: 10px;
     display: flex;
 }
 
-.block.map a{
+.page-home .block.map a{
     text-align: center;
     color: #fff;
     font-weight: bold;
@@ -124,4 +124,37 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media screen and (min-width: 800px){
+    .page-home .block{
+        position: absolute;
+    }
+}
+@media screen and (max-width: 800px){
+    .page-home .block{
+        height: 200px;
+        margin: 10px;
+    }
+
+    .page-home .legend{
+        display: none;
+    }
+
+    .page-home .discover{
+        display: none;
+    }
+
+    .page-home .block-1 img{
+        filter: brightness(50%);
+    -webkit-filter: brightness(50%);
+    -moz-filter: brightness(50%);
+    -o-filter: brightness(50%);
+    -ms-filter: brightness(50%);
+    }
+
+    .page-home .block-1 .discover{
+        display: block;
+        transform: translateY(-65px);
+    }
 }

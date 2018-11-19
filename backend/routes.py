@@ -83,8 +83,26 @@ def addWatherMark(img, photo):
 
 @main.route('/')
 def home():
+    return render_template('home.html')
+    #return redirect("/comparateur", code=302)
+
+@main.route('/galery')
+def galery():
     return render_template('galery_back.html')
     #return redirect("/comparateur", code=302)
+
+@main.route('/sites_admin')
+def sites_admin():
+    return render_template('sites_admin.html')
+
+
+@main.route('/add_photos')
+def add_photos():
+    return render_template('add_photos.html')
+
+@main.route('/home_backoff')
+def home_back():
+    return render_template('home_backoff.html')
 
 @main.route('/comparateur/<int:id_site>')
 def comparateur(id_site):

@@ -1,10 +1,10 @@
-.container{
+.page-photos .container{
     min-width: 95%;
     margin-top: 10px !important;
 }
 
 
-.add-photo{
+.page-photos .add-photo{
     width: 150px;
     height: 150px;
     border: solid 2px #888;
@@ -12,7 +12,7 @@
 }
 
 
-input.button{
+.page-photos input.button{
     overflow: visible;
     display: flex;
     position: absolute;
@@ -23,30 +23,30 @@ input.button{
     opacity: 0;
     cursor: pointer;
 }
-.add-photo:first-child{
+.page-photos .add-photo:first-child{
     background-color: #888;
 }
 
-.label{
+.page-photos .label{
     text-transform: uppercase;
     font-weight: bold;
     font-family: 'Hind', sans-serif;
     font-size: 14px;
 }
 
-.form{
+.page-photos .form{
     margin-bottom: 50px;
 }
 
-.green-btn{
+.page-photos .green-btn{
     float: right;
 }
 
-span.edit, span.delete{
+.page-photos span.edit, span.delete{
     float: right;
 }
 
-span.view img{
+.page-photos span.view img{
     border :solid 2px #777;
     color: #777;
     padding: 10px 9px;
@@ -59,14 +59,14 @@ span.view img{
 /* MEDIA QUERIES */
 
 @media screen and (max-width: 1375px) {
-    .add-photo{
+    .page-photos .add-photo{
         width: 100px;
         height: 100px;
     }
 }
 
 @media screen and (max-width: 990px) {
-    .add-photo{
+    .page-photos .add-photo{
         width: 150px;
         height: 150px;
     }
