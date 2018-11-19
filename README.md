@@ -8,7 +8,7 @@ Application web permettant de publier un observatoire photographique des paysage
 - Exécuter pip install -r ./backend/requirements.txt
 - Dupliquer et renommer ./backend/config.py.tpl vers ./backend/config.py
 - Editer la config
-- Lancer l'app FLASK_APP=./backend/app.py FLASK_DEBUG=1 flask run
+- Lancer l'app set FLASK_APP=./backend/app.py set FLASK_DEBUG=1 flask run
 
 ## Contexte
 

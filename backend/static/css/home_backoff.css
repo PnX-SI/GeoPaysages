@@ -1,0 +1,129 @@
+.blocks {
+    position: relative;
+    height: calc(100vh - 190px);
+    width: 50%;
+    margin : 0 auto;
+    margin-top: 10px;
+}
+
+.block {
+    background-color: #777;
+    position: absolute;
+    overflow: hidden;
+    font-family: 'Hind', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.block input{
+    overflow: visible;
+    display: flex;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.block button{
+    background-color: #333;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border: none;
+    width: fit-content;
+    margin: 0 auto;
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1); 
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1); 
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1);
+    transition: all 200ms ease-in;
+    transform: scale(1);  
+}
+
+.block p{
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 1.5em;
+    text-shadow: 2px 2px 8px #65696D;
+}
+.block.map{
+    text-align: center;
+    padding: 10px;
+    display: flex;
+}
+
+.block.map a{
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    font-family: 'Hind', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.block-1{
+    background-color : #CFE09B;
+}
+
+.block-2{
+    background-color : #AFD39A;
+}
+
+.block-3{
+    background-color : #8EC89A;
+}
+
+.block-4{
+    background-color : #89CCCA;
+}
+
+.block-5{
+    background-color : #83D0F5;
+}
+
+.block.map{
+    background-color : #B7B7B7;
+}
+
+.block-7{
+    background-color : #8BADDC;
+}
+
+div.button{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+
+}
+
+button.validate{
+    font-weight: bold;
+    font-family: 'Hind', sans-serif;
+    text-transform: uppercase;
+    color: #fff;
+    background-color: #78BE20;
+    border: none !important;
+    padding: 5px 30px;
+    cursor: pointer;
+}
+
+.block:hover button{
+    -webkit-transition: all 200ms ease-in;
+    -webkit-transform: scale(1.2);
+    -ms-transition: all 200ms ease-in;
+    -ms-transform: scale(1.2);   
+    -moz-transition: all 200ms ease-in;
+    -moz-transform: scale(1.2);
+    transition: all 200ms ease-in;
+    transform: scale(1.2);
+}

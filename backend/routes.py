@@ -83,10 +83,8 @@ def addWatherMark(img, photo):
 
 @main.route('/')
 def home():
-    all_dicos = models.DicoTheme.query.all()
-    result = dicotheme_schema.dump(all_dicos)
-    #return render_template('home.html', titre="Bienvenue !", mots=result)
-    return redirect("/comparateur", code=302)
+    return render_template('galery_back.html')
+    #return redirect("/comparateur", code=302)
 
 @main.route('/comparateur/<int:id_site>')
 def comparateur(id_site):

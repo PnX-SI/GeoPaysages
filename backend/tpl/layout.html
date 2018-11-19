@@ -23,7 +23,7 @@
 </head>
 
 <body class="{% block bodyClassNames %}{% endblock %}">
-  <div>
+
     <header class="container-fluid" id="header">
       <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
       <div class="row nav-bar">
@@ -35,7 +35,7 @@
                 <a class="nav-link " href="#">Accueil</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Galerie photo</a>
+                <a class="nav-link" href="">Galerie photo</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="#" >Carte interactive</a>
@@ -52,15 +52,69 @@
       </div>
     </header>
 
-    {% block content %}{% endblock %}</div>
+    {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
-      <img class="logo" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+      <div>
+        <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+
+        <div class="footer-menu">
+          <h6>LE SITE</h6>
+          <ul class="mb-4">
+            <li>
+              <a href="#">
+                Accueil
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Galerie
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Carte interactive
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Site du Parc National de Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Rando Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                BiodiVanoise
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h6>NOUS CONTACTER</h6>
+          <span>
+            <a href="#">
+              Formulaire de contact
+            </a>
+          <ul class="mb-4">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      
+
       <hr class="mt-4" />
+
       <div class="text-light">&copy;2018 Parc national de la Vanoise</div>
       {% endblock %}
     </footer>
-  </div>
+    
   <script type="text/javascript">
     window.onload =
       new Vue({

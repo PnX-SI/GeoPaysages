@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/add_photos.css') }}">
+{% endblock %}
+
+{% block header_title %}
+<h1>Ajouter un site photographique</h1>
+{% endblock %}
+
+{% block content %}
+
+<div class="container" style="margin: 0 auto;">
+  <div class="row">
+   <section class="LeftPart col-lg-6 col-md-12">
+      <div class="row">
+        <div class="col-lg-12" style="text-align: right; margin-bottom: 10px;">
+          <span class="delete"><img src="/static/images/delete.svg"></span>
+          <span class="view"><img src="/static/images/view.svg"></span>
+        </div>
+         
+        <!-- Add images -->
+        <div class="col-lg-12 d-flex justify-content-between flex-wrap" style="margin-bottom: 10px;">
+          <div class="add-photo">
+            <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+          </div>
+          <div class="add-photo">
+            <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+          </div>
+          <div class="add-photo">
+            <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+          </div>
+          <div class="add-photo">
+            <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+          </div>
+        </div>
+        <!-- Forms -->
+        <div class="col-lg-9 form">
+          <span class="label">Description</span>
+          <input type="text" id="description" class="form-control" placeholder="Ecrivez ici la description du site">
+        </div>
+        <div class="col-lg-3 form">
+          <span class="label">Thème</span>
+          <input type="text" id="theme" class="form-control" placeholder="Ecrivez ici le thème du site">
+        </div>
+        <div class="col-lg-9 form">
+            <span class="label">Infos pratiques</span>
+            <input type="text" id="infos" class="form-control" placeholder="Ecrivez ici les informations pratiques">
+          </div>
+          <div class="col-lg-3 form">
+            <span class="label">Sous-thème</span>
+            <input type="text" id="ss-theme" class="form-control" placeholder="Ecrivez ici le sous-thème du site">
+          </div>
+          <!-- BUTTONS -->
+          <div class="col-lg-12 flex-column">
+            <span class="label">Notice technique pour le photographe</span>
+            <br>
+            <button id="notice" class="blue-btn">Importer la notice technique</button>
+            <br>
+            <button id="valid-site" class="green-btn">Valider la création du site photographique</button>
+          </div>
+      </div>
+    
+   </section>
+
+   <section class="RightPart col-lg-6">
+
+  </section>
+  </div>
+</div>
+
+<!--   <script>
+    document.onreadystatechange = () => {
+      if (document.readyState == 'complete') {
+  
+        var picture = document.querySelector('.picture');
+        var container = document.querySelector('.container');
+        var width = container.clientWidth;
+        window.addEventListener('resize', () => {
+          onResize()
+
+        })
+        onResize()
+        function onResize() {
+          var calc = "calc(" + width + " / 6)";
+          picture.style.width = calc + 'px';
+          picture.style.height = picture.style.width;
+          console.log('width', picture.style.width)
+  
+        }
+      }
+    };
+  </script> -->
+
+{% endblock %}
