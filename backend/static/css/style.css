@@ -203,7 +203,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     align-items: flex-end;
 }
 
-.nav-link.active{
+.nav-item.active .nav-link {
     font-weight: 600;
 }
 
