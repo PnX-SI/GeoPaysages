@@ -1,11 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request,Blueprint,jsonify
+from routes import main as main_blueprint
+#fnauth = importlib.import_module("apptax.UsersHub-authentification-module.routes")
+from pypnusershub import routes
 import models
+from flask_cors import CORS
+ 
 
-dicotheme_schema = models.DicoThemeSchema(many=True)
-
-
-@app.route("/", methods=["GET"])
-def get_dico():
-    all_dicos = models.DicoTheme.query.all()
-    result = dicotheme_schema.dump(all_dicos)
-    return jsonify(result)
+api = Blueprint('api', __name__)

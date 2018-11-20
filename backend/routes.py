@@ -7,11 +7,17 @@ from config import DATA_IMAGES_PATH
 from PIL import Image, ImageFont, ImageDraw, ImageOps
 import os
 
+main = Blueprint('main', __name__, template_folder='tpl')
+
+
+
 dicotheme_schema = models.DicoThemeSchema(many=True)
+dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
+themes_sthemes_schema=models.CorSthemeThemeSchema(many=True)
 licencePhotoSchema= models.LicencePhotoSchema(many=True)
-main = Blueprint('main', __name__, template_folder='tpl')
+
 
 def getImage(photo, prefixe, callback):
     base_path = './static/' + DATA_IMAGES_PATH
@@ -23,7 +29,7 @@ def getImage(photo, prefixe, callback):
         output_name = input_name
     output_path = base_path + output_name
     image = Image.open(input_path)
-    output_exists = os.path.exists(output_path),
+    output_exists = os.path.exists(output_path)
 
     img = {
         'input_exists': os.path.exists(input_path),
@@ -71,6 +77,7 @@ def addWatherMark(img, photo):
     copyright_text = photo.get('dico_licence_photo').get('description_licence_photo')
     font = ImageFont.truetype("./static/fonts/openSans.ttf",14)
     if img.get('input_exists'):
+        print('ok',photo)
         try:
             image = img.get('image')
             draw = ImageDraw.Draw(image)
@@ -80,6 +87,7 @@ def addWatherMark(img, photo):
         except Exception:
             print('addWatherMark Invalid image')
     return img
+
 
 @main.route('/')
 def home():
@@ -114,52 +122,54 @@ def comparateur(id_site):
 
 @main.route('/map')
 def map():
-    
-    sites=[{
-        "title": 'Marseille Vieux-Port',
-        'township': 2,
-        "latlon": [43.2908575, 5.3630115],
-        "themes": [1],
-        "subthemes": [1, 2],
-        'url': url_for('main.comparateur', id_site=1, _external=True),
-        'photos': [{
-            'year': 2000,
-            'url': '/static/images/100.png'
-        }, {
-            'year': 2001,
-            'url': '/static/images/100.png'
-        }]
-    }, {
-        "title": "Arles Centre",
-        'township': 1,
-        "latlon": [43.5444826, 4.5108427],
-        "themes": [2],
-        "subthemes": [3],
-        'url': url_for('main.comparateur', id_site=1, _external=True),
-        'photos': [{
-            'year': 2001,
-            'url': '/static/images/100-0f0.png'
-        }, {
-            'year': 2002,
-            'url': '/static/images/100-0f0.png'
-        }]
-    }, {
-        'title': "Camargue",
-        'township': 1,
-        'latlon': [43.6788978, 4.6047767],
-        "themes": [1],
-        "subthemes": [3],
-        'url': url_for('main.comparateur', id_site=1, _external=True),
-        'photos': [{
-            'year': 2002,
-            'url': '/static/images/100-00f.png'
-        }, {
-            'year': 2003,
-            'url': '/static/images/100-00f.png'
-        }]
-    }]
 
-    filters = [{
+    sites=site_schema.dump(models.TSite.query.all()).data
+    for site in sites:
+        cor_sthemes_themes=site.get('cor_site_stheme_themes')
+        cor_list=[]
+        themes_list=[]
+        subthemes_list=[]
+        for cor in cor_sthemes_themes:
+            cor_list.append(cor.get('id_stheme_theme')) 
+        query = models.CorSthemeTheme.query.filter(models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
+        themes_sthemes = themes_sthemes_schema.dump(query).data  
+       
+        for item in themes_sthemes:
+            if item.get('dico_theme').get('id_theme') not in themes_list :
+                themes_list.append(item.get('dico_theme').get('id_theme')) 
+            if item.get('dico_stheme').get('id_stheme') not in subthemes_list :
+                subthemes_list.append(item.get('dico_stheme').get('id_stheme')) 
+        
+        get_photos_by_site = models.TPhoto.query.filter_by(id_site = site.get('id_site'))
+        photos = photo_schema.dump(get_photos_by_site).data
+
+        site['link'] = url_for('main.comparateur', id_site=site.get('id_site'), _external=True)
+        site['latlon'] = site.get('geom')
+        site['themes'] = themes_list
+        site['subthemes'] = subthemes_list
+        site['township'] = site.get('code_city_site')
+
+        site['years'] = set()
+        for photo in photos:
+            year = str(photo.get('filter_date')).split('-')[0]
+            site['years'].add(year)
+            photo['year'] = year
+            photo['url'] = url_for('static', filename=DATA_IMAGES_PATH + getThumbnail(photo).get('output_name'))
+        site['years'] = list(site['years'])
+        site['photos'] = photos
+
+   
+    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+    subthemes = dicostheme_schema.dump(models.DicoStheme.query.all()).data
+    for sub in subthemes:
+        themes=[]
+        for item in sub.get('cor_stheme_themes'):
+            themes.append(item.get('id_theme'))
+        sub['themes']=themes
+        print('subthem',sub)
+    
+    '''   
+      filters = [{
         'name': 'themes',
         'label': 'Thème',
         'items': set()
@@ -176,7 +186,8 @@ def map():
         'label': 'Année',
         'items': set()
     }]
-
+    '''
+    
     for site in sites:
         #Compute the prop years
         site['years'] = set()

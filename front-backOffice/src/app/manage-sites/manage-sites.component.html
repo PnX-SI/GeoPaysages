@@ -1,0 +1,27 @@
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-5 col-table">
+      <h4 class="title">Gérer les sites photographiques</h4>
+      <button class=" green-btn btn-add"> Ajouter un site photo</button>
+      <div>
+        <ngx-datatable class="material" [rows]="rows"
+        [loadingIndicator]="loadingIndicator"
+        [columns]="columns"
+        [columnMode]="'force'"
+        [headerHeight]="40"
+        [summaryPosition]="'bottom'"
+        [footerHeight]="40"
+        [limit]="10"
+        [rowHeight]="'auto'"
+        [reorderable]="reorderable">
+        </ngx-datatable>
+      </div>
+    </div>
+    <div class="col-7 col-map">
+      <div class="map" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)">
+      </div>
+    </div>
+  </div>
+
+</div>

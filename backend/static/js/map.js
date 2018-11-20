@@ -1,5 +1,6 @@
 var oppv = oppv || {};
 oppv.initMap = (options) => {
+  console.log(options.sites)
   options.filters.forEach(filter => {
     filter.items.forEach(item => {
       Object.assign(item, {
@@ -40,7 +41,7 @@ oppv.initMap = (options) => {
         this.setFilters()
       },
       onFilterClick(filter, item) {
-        this.updateFilters()
+        //this.updateFilters()
         this.setFilters()
       },
       updateFilters() {
@@ -101,7 +102,7 @@ oppv.initMap = (options) => {
           lats.push(site.latlon[0])
           lons.push(site.latlon[1])
           let marker = L.marker(site.latlon)
-          marker.bindPopup(site.title + '<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div>', {
+          marker.bindPopup(site.name_site + '<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div>', {
             closeButton: false
           })
           marker.on('mouseover', (e) => {
@@ -111,7 +112,7 @@ oppv.initMap = (options) => {
             marker.closePopup()
           })
           marker.on('click', (e) => {
-            window.location.href = site.url
+            window.location.href = site.link
           })
           marker.addTo(map)
           markers.push(marker)

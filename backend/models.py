@@ -6,7 +6,7 @@ from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import geoalchemy2.functions as geo_funcs
-
+from marshmallow import fields
 
 db = SQLAlchemy()
 ma = Marshmallow()
@@ -23,7 +23,7 @@ class TSite(db.Model):
     alti_site = db.Column(db.Integer)
     path_file_guide_site = db.Column(db.String(1))
     publish_site = db.Column(db.Boolean)
-    #geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
+    geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
 
 
 
@@ -107,7 +107,8 @@ class TPhoto(db.Model):
     id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
-    date_photo = db.Column(db.Date)
+    date_photo = db.Column(db.String)
+    filter_date = db.Column(db.Date)
     legende_photo = db.Column(db.String)
     display_gal_photo = db.Column(db.Boolean)
     id_licence_photo = db.Column(db.ForeignKey('geopaysages.dico_licence_photo.id_licence_photo'))
@@ -116,11 +117,33 @@ class TPhoto(db.Model):
     t_role = db.relationship('TRole', primaryjoin='TPhoto.id_role == TRole.id_role', backref='t_photos')
     t_site = db.relationship('TSite', primaryjoin='TPhoto.id_site == TSite.id_site', backref='t_photos')
 
+class GeographySerializationField(fields.String):
+    def _serialize(self, value, attr, obj):
+        if value is None:
+            return value
+        else:
+            if attr == 'geom':
+                return [db.session.scalar(geo_funcs.ST_Y(value)), db.session.scalar(geo_funcs.ST_X(value))]
+            else:
+                return None
+
+    def _deserialize(self, value, attr, data):
+        if value is None:
+            return value
+        else:
+            if attr == 'geom':
+                return WKTGeographyElement('POINT({0} {1})'.format(str(value.get('longitude')), str(value.get('latitude'))))
+            else:
+                return None
 
 #schemas#
 class DicoThemeSchema(ma.ModelSchema):
     class Meta:
-        model = DicoTheme
+        fields = ('id_theme','name_theme')
+
+class DicoSthemeSchema(ma.ModelSchema):
+    class Meta:
+        model = DicoStheme
 
 class LicencePhotoSchema(ma.ModelSchema):
     class Meta:
@@ -131,10 +154,15 @@ class TPhotoSchema(ma.ModelSchema):
     class Meta:
         model = TPhoto
     
-    
+class CorSthemeThemeSchema(ma.ModelSchema):
+    dico_theme = ma.Nested(DicoThemeSchema,only=["id_theme","name_theme"] ) 
+    dico_stheme = ma.Nested(DicoSthemeSchema,only=["id_stheme","name_stheme"] ) 
+    class Meta:
+        fields = ('dico_theme', 'dico_stheme')
+        #model = CorSthemeTheme
+     
 class TSiteSchema(ma.ModelSchema):
+    geom = GeographySerializationField(attribute='geom')
     class Meta:
         model = TSite
     
-    
-
