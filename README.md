@@ -5,10 +5,11 @@ Application web permettant de publier un observatoire photographique des paysage
 ## Install
 
 - Créer et activer un environnement virtuel python 3.
-- Exécuter pip install -r ./backend/requirements.txt
-- Dupliquer et renommer ./backend/config.py.tpl vers ./backend/config.py
+- cd ./backend
+- Exécuter pip install -r ./requirements.txt
+- Dupliquer et renommer ./config.py.tpl vers ./config.py
 - Editer la config
-- Lancer l'app FLASK_APP=./backend/app.py FLASK_DEBUG=1 flask run
+- Lancer l'app FLASK_APP=./app.py FLASK_DEBUG=1 flask run
 
 ## Contexte
 
