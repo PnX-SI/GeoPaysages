@@ -94,7 +94,24 @@ def addWatherMark(img, photo):
 
 @main.route('/')
 def home():
-    return render_template('home.html')
+    id_photos = [1, 10, 6, 21, 23, 2]
+    get_photos = models.TPhoto.query.filter(models.TPhoto.id_photo.in_(id_photos))
+    dump_pĥotos = photo_schema.dump(get_photos).data
+    photos = []
+    site_ids = []
+    for id_photo in id_photos:
+        photo = next(photo for photo in dump_pĥotos if photo.get('id_photo') == id_photo)
+        photos.append(photo)
+        site_ids.append(photo.get('t_site'))
+    
+    get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
+    dump_sites = site_schema.dump(get_sites).data
+
+    for photo in photos:
+        site = next(site for site in dump_sites if site.get('id_site') == photo.get('t_site'))
+        photo['site'] = site
+    
+    return render_template('home.html', photos=photos)
 
 @main.route('/galery')
 def galery():
