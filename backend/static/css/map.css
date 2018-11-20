@@ -14,6 +14,8 @@
     color: #FFF;
     padding: 20px;
     transition: transform .3s;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 .app-map .sidebar .btn-toggle {
@@ -36,6 +38,11 @@
 .app-map .sidebar .filters .card-body {
   color: var(--color-primary);
   padding: 0;
+}
+
+.app-map .sidebar .btn-filter {
+    white-space: normal;
+    font-size: 12px;
 }
 
 .app-map .leaflet-popup-content {

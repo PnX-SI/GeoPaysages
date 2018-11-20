@@ -1,5 +1,7 @@
 # coding: utf-8
 from flask import Flask, render_template, redirect, Blueprint,jsonify, url_for
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import models
 import random
 from models import (db)
@@ -9,6 +11,7 @@ import os
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
+db = SQLAlchemy()
 
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
@@ -159,18 +162,15 @@ def map():
         site['years'] = list(site['years'])
         site['photos'] = photos
 
-   
-    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+
     subthemes = dicostheme_schema.dump(models.DicoStheme.query.all()).data
     for sub in subthemes:
-        themes=[]
+        themes_of_subthemes=[]
         for item in sub.get('cor_stheme_themes'):
-            themes.append(item.get('id_theme'))
-        sub['themes']=themes
-        print('subthem',sub)
+            themes_of_subthemes.append(item.get('id_theme'))
+        sub['themes']=themes_of_subthemes
     
-    '''   
-      filters = [{
+    filters = [{
         'name': 'themes',
         'label': 'Thème',
         'items': set()
@@ -187,8 +187,7 @@ def map():
         'label': 'Année',
         'items': set()
     }]
-    '''
-    
+
     for site in sites:
         #Compute the prop years
         site['years'] = set()
@@ -198,39 +197,32 @@ def map():
 
         for filter in filters:
             val = site.get(filter.get('name'))
-            try:
+            if isinstance(val, (list, set)):
                 filter.get('items').update(val)
-            except:
+            else:
                 filter.get('items').add(val)
 
+    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+    themes = [{
+        'id': item['id_theme'],
+        'label': item['name_theme']
+    } for item in themes]
+    
+    subthemes = [{
+        'id': item['id_stheme'],
+        'label': item['name_stheme']
+    } for item in subthemes]
+
+    filter_township = [filter for filter in filters if filter.get('name') == 'township'][0]
+    str_map_in = ["'" + township + "'" for township in filter_township.get('items')]
+    sql_map_str = "SELECT ville_code_commune AS id, ville_nom_reel AS label FROM geopaysages.villes_france WHERE ville_code_commune IN (" + ",".join(str_map_in) + ")"
+    sql_map = text(sql_map_str)
+    townships_result = db.engine.execute(sql_map).fetchall()
+    townships = [dict(row) for row in townships_result]
     dbs = {
-        'themes':[{
-            'id': 1,
-            'label': 'Theme 1'
-        }, {
-            'id': 2,
-            'label': 'Theme 2'
-        }],
-        'subthemes':[{
-            'id': 1,
-            'themes': [1],
-            'label': 'Subtheme 1'
-        }, {
-            'id': 2,
-            'themes': [1],
-            'label': 'Subtheme 2'
-        }, {
-            'id': 3,
-            'themes': [1, 2],
-            'label': 'Subtheme 3'
-        }],
-        'township':[{
-            'id': 1,
-            'label': 'Arles'
-        }, {
-            'id': 2,
-            'label': 'Marseille'
-        }]
+        'themes': themes,
+        'subthemes': subthemes,
+        'township': townships
     }
 
     def getItem(name, id):
