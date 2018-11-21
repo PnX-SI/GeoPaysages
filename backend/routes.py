@@ -8,6 +8,7 @@ from models import (db)
 from config import DATA_IMAGES_PATH
 from PIL import Image, ImageFont, ImageDraw, ImageOps
 import os
+import json
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -38,6 +39,7 @@ def getImage(photo, prefixe, callback):
         'input_exists': os.path.exists(input_path),
         'output_name': output_name,
         'output_path': output_path,
+        'output_url': url_for('static', filename=DATA_IMAGES_PATH + output_name),
         'image': image
     }
 
@@ -94,24 +96,34 @@ def addWatherMark(img, photo):
 
 @main.route('/')
 def home():
-    id_photos = [1, 10, 6, 21, 23, 2]
+    sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
+    rows = db.engine.execute(sql).fetchall()
+    id_photos = json.loads(rows[0]['value'])
     get_photos = models.TPhoto.query.filter(models.TPhoto.id_photo.in_(id_photos))
     dump_pĥotos = photo_schema.dump(get_photos).data
-    photos = []
-    site_ids = []
-    for id_photo in id_photos:
-        photo = next(photo for photo in dump_pĥotos if photo.get('id_photo') == id_photo)
-        photos.append(photo)
-        site_ids.append(photo.get('t_site'))
     
+    site_ids = [photo.get('t_site') for photo in dump_pĥotos]
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
     dump_sites = site_schema.dump(get_sites).data
 
-    for photo in photos:
-        site = next(site for site in dump_sites if site.get('id_site') == photo.get('t_site'))
-        photo['site'] = site
+    def get_photo_block(id_photo):
+        try:
+            photo = next(photo for photo in dump_pĥotos if photo.get('id_photo') == id_photo)
+            photo['url'] = url_for('static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo'))
+            site = next(site for site in dump_sites if site.get('id_site') == photo.get('t_site'))
+            return {
+                'photo': photo,
+                'site': site
+            }
+        except Exception as exception:
+            pass
+        
+    blocks = [
+        get_photo_block(id_photo)
+        for id_photo in id_photos
+    ]
     
-    return render_template('home.html', photos=photos)
+    return render_template('home.html', blocks=blocks)
 
 @main.route('/galery')
 def galery():
