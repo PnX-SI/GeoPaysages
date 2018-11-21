@@ -11,9 +11,22 @@ oppv.comparator = (options) => {
       }
     },
     mounted() {
+      this.initSwiperThumbs()
       this.initMap()
     },
     methods: {
+      initSwiperThumbs() {
+        new Swiper('.swiper-container', {
+          slidesPerView: 'auto',
+          centeredSlides: true,
+          spaceBetween: 30,
+          freeMode: true,
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+        });
+      },
       initMap() {
         map = L.map(this.$refs.map, {
           center: options.site.geom,

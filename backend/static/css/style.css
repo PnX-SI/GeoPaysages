@@ -5,6 +5,10 @@
     --color-green : #7AB929;
 }
 
+.swiper-pagination-bullet-active {
+    background: var(--color-primary);
+}
+
 /**/
 
 .important {

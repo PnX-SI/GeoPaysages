@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Index{% endblock %}
 {% block head %}
-{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
+{{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparateur_style.css') }}" />
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
@@ -63,14 +63,18 @@
         {% endfor %}
       </div>
       <div class="row mt-4">
-        <ul class="list-unstyled thumbs">
+        <div class="swiper-container">
+          <div class="swiper-wrapper thumbs">
           {% for photo in photos %}
-          <li v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
-            <img src="{{ photo.sm }}" />
-            <div class="img-date">{{ photo.date }}</div>
-          </li>
+            <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
+              <img src="{{ photo.sm }}" />
+              <div class="img-date">{{ photo.date }}</div>
+            </div>
           {% endfor %}
-        </ul>
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+        </div>
       </div>
       <div class="row mt-5">
         <div class="col-lg-5 mb-5 text-right">
