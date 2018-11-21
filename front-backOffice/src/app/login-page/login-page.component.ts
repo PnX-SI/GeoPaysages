@@ -35,6 +35,7 @@ export class LoginPageComponent implements OnInit {
       .subscribe(
         (currentUser) => {
           this.currentUser = currentUser.user;
+          this.loginForm.reset();
           this.route.navigate(['gererLesSites']);
         },
         (err) => {
