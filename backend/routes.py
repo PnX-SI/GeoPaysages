@@ -137,6 +137,7 @@ def comparateur(id_site):
     photos = photo_schema.dump(get_photos_by_site).data
     def getPhoto(photo):
         return {
+            'id': photo.get('id_photo'),
             'sm': url_for('static', filename=DATA_IMAGES_PATH + getThumbnail(photo).get('output_name')),
             'md': url_for('static', filename=DATA_IMAGES_PATH + getMedium(photo).get('output_name')),
             'lg': url_for('static', filename=DATA_IMAGES_PATH + getLarge(photo).get('output_name')),

@@ -1,10 +1,11 @@
-var  oppv = oppv || {};
+var oppv = oppv || {};
 oppv.comparator = (options) => {
   new Vue({
     el: '#js-app-comparator',
     data: () => {
       return {
-        comparedPhotoIndexes: [0, 1],
+        pinned: -1,
+        nextComparedIndex: 0,
         comparedPhotos: [options.photos[0], options.photos[1]],
         zoomPhotos: []
       }
@@ -27,31 +28,38 @@ oppv.comparator = (options) => {
         tileLayer.addTo(map)
         L.marker(options.site.geom).addTo(map)
       },
+      isPinned(i) {
+        return this.pinned == i
+      },
+      onPinClick(i) {
+        if (!this.isPinned(i))
+          this.pinned = i
+        else {
+          this.nextComparedIndex = this.pinned
+          this.pinned = -1
+        }
+      },
+      getUnpinned(i) {
+        return (this.pinned + 1) % 2
+      },
       isCompared(i) {
-        return this.comparedPhotoIndexes.indexOf(i) > -1
+        const photo = options.photos[i]
+        return this.comparedPhotos.find(comparedPhoto => {
+          return comparedPhoto.id == photo.id
+        })
       },
       onThumbClick(i) {
-        if (this.comparedPhotoIndexes.indexOf(i) > -1)
-          return;
-        this.comparedPhotoIndexes.push(i)
-        this.comparedPhotoIndexes.shift()
+        if (this.isCompared(i))
+          return
+        
+        const photo = options.photos[i]
+        let comparedIndex = this.nextComparedIndex
+        if (this.pinned > -1)
+          comparedIndex = this.getUnpinned()
+        else //increment nextComparedIndex and back to 0 if > comparedPhotos.length
+          this.nextComparedIndex = ++this.nextComparedIndex % this.comparedPhotos.length
 
-        let comparedPhotos = this.comparedPhotoIndexes.map(index => {
-          let photo = options.photos[index]
-          return Object.assign({}, photo)
-        })
-
-        comparedPhotos.sort((a, b) => {
-          return a.date < b.date ? -1 : 1
-        })
-
-        this.comparedPhotos = comparedPhotos.map(comparedPhoto => {
-          const oldComparedPhoto = this.comparedPhotos.find(oldComparedPhoto => {
-            return oldComparedPhoto.date == comparedPhoto.date
-          })
-          comparedPhoto.comparedLoaded = Boolean(oldComparedPhoto)
-          return comparedPhoto;
-        })
+        this.$set(this.comparedPhotos, comparedIndex, Object.assign({}, photo))
       },
       onComparedLoaded(i) {
         this.$set(this.comparedPhotos, i, Object.assign(this.comparedPhotos[i], {

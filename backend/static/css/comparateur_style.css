@@ -89,6 +89,7 @@
     max-height: calc(100vh - 395px);
     width: auto;
     height: auto;
+    cursor: pointer;
 }
 
 .page-comparateur .page-content .compared .img-wrapper .btn-zoom {
