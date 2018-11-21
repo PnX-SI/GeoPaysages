@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthInterceptor } from './services/authinterceptor';
 import { LoginService } from './services/lgoin.service';
-import { CookieService } from 'ng2-cookies';
 import { LoginPageComponent } from './login-page/login-page.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { InputFeedBackDirective } from './shared/input-feed-back.directive';
@@ -17,6 +16,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AddSiteComponent } from './add-site/add-site.component';
+import { SitesService } from './services/sites.service';
 
 @NgModule({
   declarations: [
@@ -41,12 +41,7 @@ import { AddSiteComponent } from './add-site/add-site.component';
   ],
   providers: [
     LoginService,
-    CookieService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+    SitesService,
   ],
   bootstrap: [AppComponent]
 })
