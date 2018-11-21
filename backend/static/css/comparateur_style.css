@@ -101,3 +101,8 @@
     text-shadow: #fff;
     text-shadow: 1px 1px 0 #FFF;
 }
+
+.page-comparateur .page-content .map-wrapper {
+    height: 300px;
+    margin-bottom: 20px;
+}

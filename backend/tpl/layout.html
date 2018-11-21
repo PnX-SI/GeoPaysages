@@ -22,8 +22,10 @@
   <title>{{ titre }}</title>
 </head>
 
+{% set active_page = active_page|default('home') -%}
+
 <body class="{% block bodyClassNames %}{% endblock %}">
-  <div>
+
     <header class="container-fluid" id="header">
       <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
       <div class="row nav-bar">
@@ -31,16 +33,16 @@
           <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
           <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
             <ul class="navbar-nav sans-serif">
-              <li class="nav-item ">
-                <a class="nav-link " href="#">Accueil</a>
+              <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
+                <a class="nav-link " href="/">Accueil</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Galerie photo</a>
+              <li class="nav-item {% if active_page == 'galery' %}active{% endif %}">
+                <a class="nav-link" href="/galery">Galerie photo</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link active" href="#" >Carte interactive</a>
+              <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
+                <a class="nav-link" href="/map" >Carte interactive</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item {% if active_page == 'contact' %}active{% endif %}">
                 <a class="nav-link" href="#">Contact</a>
               </li>
             </ul>
@@ -52,15 +54,69 @@
       </div>
     </header>
 
-    {% block content %}{% endblock %}</div>
+    {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
-      <img class="logo" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+      <div>
+        <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+
+        <div class="footer-menu">
+          <h6>LE SITE</h6>
+          <ul class="mb-4">
+            <li>
+              <a href="/">
+                Accueil
+              </a>
+            </li>
+            <li>
+              <a href="/galery">
+                Galerie
+              </a>
+            </li>
+            <li>
+              <a href="/map">
+                Carte interactive
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Site du Parc National de Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Rando Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                BiodiVanoise
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h6>NOUS CONTACTER</h6>
+          <span>
+            <a href="#">
+              Formulaire de contact
+            </a>
+          <ul class="mb-4">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      
+
       <hr class="mt-4" />
+
       <div class="text-light">&copy;2018 Parc national de la Vanoise</div>
       {% endblock %}
     </footer>
-  </div>
+    
   <script type="text/javascript">
     window.onload =
       new Vue({

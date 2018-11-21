@@ -19,7 +19,7 @@ class TSite(db.Model):
     name_site = db.Column(db.String)
     desc_site = db.Column(db.String)
     testim_site = db.Column(db.String)
-    code_city_site = db.Column(db.Integer)
+    code_city_site = db.Column(db.String)
     alti_site = db.Column(db.Integer)
     path_file_guide_site = db.Column(db.String(1))
     publish_site = db.Column(db.Boolean)

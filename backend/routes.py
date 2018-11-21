@@ -1,14 +1,18 @@
 # coding: utf-8
 from flask import Flask, render_template, redirect, Blueprint,jsonify, url_for
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import models
 import random
 from models import (db)
 from config import DATA_IMAGES_PATH
 from PIL import Image, ImageFont, ImageDraw, ImageOps
 import os
+import json
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
+db = SQLAlchemy()
 
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
@@ -35,6 +39,7 @@ def getImage(photo, prefixe, callback):
         'input_exists': os.path.exists(input_path),
         'output_name': output_name,
         'output_path': output_path,
+        'output_url': url_for('static', filename=DATA_IMAGES_PATH + output_name),
         'image': image
     }
 
@@ -91,10 +96,38 @@ def addWatherMark(img, photo):
 
 @main.route('/')
 def home():
-    all_dicos = models.DicoTheme.query.all()
-    result = dicotheme_schema.dump(all_dicos)
-    #return render_template('home.html', titre="Bienvenue !", mots=result)
-    return redirect("/comparateur", code=302)
+    sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
+    rows = db.engine.execute(sql).fetchall()
+    id_photos = json.loads(rows[0]['value'])
+    get_photos = models.TPhoto.query.filter(models.TPhoto.id_photo.in_(id_photos))
+    dump_pĥotos = photo_schema.dump(get_photos).data
+    
+    site_ids = [photo.get('t_site') for photo in dump_pĥotos]
+    get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
+    dump_sites = site_schema.dump(get_sites).data
+
+    def get_photo_block(id_photo):
+        try:
+            photo = next(photo for photo in dump_pĥotos if photo.get('id_photo') == id_photo)
+            photo['url'] = url_for('static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo'))
+            site = next(site for site in dump_sites if site.get('id_site') == photo.get('t_site'))
+            return {
+                'photo': photo,
+                'site': site
+            }
+        except Exception as exception:
+            pass
+        
+    blocks = [
+        get_photo_block(id_photo)
+        for id_photo in id_photos
+    ]
+    
+    return render_template('home.html', blocks=blocks)
+
+@main.route('/galery')
+def galery():
+    return render_template('galery.html')
 
 @main.route('/comparateur/<int:id_site>')
 def comparateur(id_site):
@@ -110,15 +143,9 @@ def comparateur(id_site):
             'date': photo.get('date_photo')
         }
 
-
-    result = {
-        'name': site.get('name_site'),
-        'description': site.get('desc_site'),
-        'testimonial': site.get('testim_site'),
-        'geom': '',
-        'photos': [getPhoto(photo) for photo in photos]
-    }
-    return render_template('comparateur.html', titre="Bienvenue !", site=result)
+    photos = [getPhoto(photo) for photo in photos]
+    
+    return render_template('comparateur.html', titre="Bienvenue !", site=site, photos=photos)
 
 @main.route('/map')
 def map():
@@ -158,18 +185,15 @@ def map():
         site['years'] = list(site['years'])
         site['photos'] = photos
 
-   
-    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+
     subthemes = dicostheme_schema.dump(models.DicoStheme.query.all()).data
     for sub in subthemes:
-        themes=[]
+        themes_of_subthemes=[]
         for item in sub.get('cor_stheme_themes'):
-            themes.append(item.get('id_theme'))
-        sub['themes']=themes
-        print('subthem',sub)
+            themes_of_subthemes.append(item.get('id_theme'))
+        sub['themes']=themes_of_subthemes
     
-    '''   
-      filters = [{
+    filters = [{
         'name': 'themes',
         'label': 'Thème',
         'items': set()
@@ -186,8 +210,7 @@ def map():
         'label': 'Année',
         'items': set()
     }]
-    '''
-    
+
     for site in sites:
         #Compute the prop years
         site['years'] = set()
@@ -197,39 +220,32 @@ def map():
 
         for filter in filters:
             val = site.get(filter.get('name'))
-            try:
+            if isinstance(val, (list, set)):
                 filter.get('items').update(val)
-            except:
+            else:
                 filter.get('items').add(val)
 
+    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+    themes = [{
+        'id': item['id_theme'],
+        'label': item['name_theme']
+    } for item in themes]
+    
+    subthemes = [{
+        'id': item['id_stheme'],
+        'label': item['name_stheme']
+    } for item in subthemes]
+
+    filter_township = [filter for filter in filters if filter.get('name') == 'township'][0]
+    str_map_in = ["'" + township + "'" for township in filter_township.get('items')]
+    sql_map_str = "SELECT ville_code_commune AS id, ville_nom_reel AS label FROM geopaysages.villes_france WHERE ville_code_commune IN (" + ",".join(str_map_in) + ")"
+    sql_map = text(sql_map_str)
+    townships_result = db.engine.execute(sql_map).fetchall()
+    townships = [dict(row) for row in townships_result]
     dbs = {
-        'themes':[{
-            'id': 1,
-            'label': 'Theme 1'
-        }, {
-            'id': 2,
-            'label': 'Theme 2'
-        }],
-        'subthemes':[{
-            'id': 1,
-            'themes': [1],
-            'label': 'Subtheme 1'
-        }, {
-            'id': 2,
-            'themes': [1],
-            'label': 'Subtheme 2'
-        }, {
-            'id': 3,
-            'themes': [1, 2],
-            'label': 'Subtheme 3'
-        }],
-        'township':[{
-            'id': 1,
-            'label': 'Arles'
-        }, {
-            'id': 2,
-            'label': 'Marseille'
-        }]
+        'themes': themes,
+        'subthemes': subthemes,
+        'township': townships
     }
 
     def getItem(name, id):

@@ -5,11 +5,28 @@ oppv.comparator = (options) => {
     data: () => {
       return {
         comparedPhotoIndexes: [0, 1],
-        comparedPhotos: [options.site.photos[0], options.site.photos[1]],
+        comparedPhotos: [options.photos[0], options.photos[1]],
         zoomPhotos: []
       }
     },
+    mounted() {
+      this.initMap()
+    },
     methods: {
+      initMap() {
+        map = L.map(this.$refs.map, {
+          center: options.site.geom,
+          zoom: 8
+        })
+        const tileLayer = L.tileLayer(
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+          }
+        )
+        tileLayer.addTo(map)
+        L.marker(options.site.geom).addTo(map)
+      },
       isCompared(i) {
         return this.comparedPhotoIndexes.indexOf(i) > -1
       },
@@ -20,7 +37,7 @@ oppv.comparator = (options) => {
         this.comparedPhotoIndexes.shift()
 
         let comparedPhotos = this.comparedPhotoIndexes.map(index => {
-          let photo = options.site.photos[index]
+          let photo = options.photos[index]
           return Object.assign({}, photo)
         })
 
