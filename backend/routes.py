@@ -143,15 +143,9 @@ def comparateur(id_site):
             'date': photo.get('date_photo')
         }
 
-
-    result = {
-        'name': site.get('name_site'),
-        'description': site.get('desc_site'),
-        'testimonial': site.get('testim_site'),
-        'geom': '',
-        'photos': [getPhoto(photo) for photo in photos]
-    }
-    return render_template('comparateur.html', titre="Bienvenue !", site=result)
+    photos = [getPhoto(photo) for photo in photos]
+    
+    return render_template('comparateur.html', titre="Bienvenue !", site=site, photos=photos)
 
 @main.route('/map')
 def map():
