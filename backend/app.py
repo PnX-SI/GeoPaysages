@@ -5,23 +5,16 @@ from models import (db)
 import models
 from flask import Flask
 from flask_cors import CORS
+from api import api
 
 app = Flask(__name__)
-
-
-
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-
-app.config.from_pyfile('config.py')
-
-db.init_app(app)
+CORS(app, supports_credentials=True)
 
 app.register_blueprint(main_blueprint)
-app.register_blueprint(api, url_prefix='/api/auth')
-
-import api  # noqa
-app.register_blueprint(api.api)
-api.init_app(app)
+app.register_blueprint(api)
+#app.register_blueprint(routes.routes, url_prefix='/api/auth')
+app.config.from_pyfile('config.py')
+db.init_app(app)
 
 
 if __name__ == "__main__":
