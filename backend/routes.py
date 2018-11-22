@@ -125,9 +125,9 @@ def home():
     
     return render_template('home.html', blocks=blocks)
 
-@main.route('/galery')
-def galery():
-    return render_template('galery.html')
+@main.route('/gallery')
+def gallery():
+    return render_template('gallery.html')
 
 @main.route('/comparateur/<int:id_site>')
 def comparateur(id_site):
