@@ -226,8 +226,8 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 .nav-bar {
     justify-content: flex-end;
     margin: 0;
-    padding-top: 20px;
-    padding-right: 40px
+    padding-top: 10px;
+    padding-right: 40px;
 }
 
 #header {
