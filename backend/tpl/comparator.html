@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/comparateur_style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/swiper/swiper.min.js') }}"></script>
@@ -15,7 +15,7 @@
 <h3 class="text-uppercase">Comparaison de photos - <span class="light">{{ site.name_site }}</span></h3>
 {% endblock %}
 
-{% block bodyClassNames %}page-comparateur{% endblock %}
+{% block bodyClassNames %}page-comparator{% endblock %}
 
 {% block content %}
 <div class="page-content container-fluid" id="js-app-comparator">

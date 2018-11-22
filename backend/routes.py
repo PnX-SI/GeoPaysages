@@ -129,8 +129,8 @@ def home():
 def gallery():
     return render_template('gallery.html')
 
-@main.route('/comparateur/<int:id_site>')
-def comparateur(id_site):
+@main.route('/comparator/<int:id_site>')
+def comparator(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site)
     site=site_schema.dump(get_site_by_id).data[0]
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
@@ -146,7 +146,7 @@ def comparateur(id_site):
 
     photos = [getPhoto(photo) for photo in photos]
     
-    return render_template('comparateur.html', titre="Bienvenue !", site=site, photos=photos)
+    return render_template('comparator.html', titre="Bienvenue !", site=site, photos=photos)
 
 @main.route('/map')
 def map():
@@ -171,7 +171,7 @@ def map():
         get_photos_by_site = models.TPhoto.query.filter_by(id_site = site.get('id_site'))
         photos = photo_schema.dump(get_photos_by_site).data
 
-        site['link'] = url_for('main.comparateur', id_site=site.get('id_site'), _external=True)
+        site['link'] = url_for('main.comparator', id_site=site.get('id_site'), _external=True)
         site['latlon'] = site.get('geom')
         site['themes'] = themes_list
         site['subthemes'] = subthemes_list

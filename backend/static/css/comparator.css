@@ -1,16 +1,16 @@
-/* .page-comparateur .header-logo {
+/* .page-comparator .header-logo {
     position: fixed;
 } */
 
-.page-comparateur .page-content {
+.page-comparator .page-content {
     padding: 0 90px;
 }
 
-.page-comparateur .page-content .col-thumbs {
+.page-comparator .page-content .col-thumbs {
     /* width: 290px; */
 }
 
-.page-comparateur .page-content .thumbs {
+.page-comparator .page-content .thumbs {
     /* width: 260px;
     height: calc(100vh - 110px);
     overflow: auto;
@@ -22,11 +22,11 @@
     white-space: nowrap; */
 }
 
-/* .page-comparateur .page-content .thumbs::-webkit-scrollbar {
+/* .page-comparator .page-content .thumbs::-webkit-scrollbar {
     width: 0 !important;
 } */
 
-.page-comparateur .page-content .thumbs .thumb {
+.page-comparator .page-content .thumbs .thumb {
     margin: 5px;
     /* width: calc(50% - 10px);
     display: block;
@@ -35,12 +35,12 @@
     display: inline-block;
 }
 
-/* .page-comparateur .page-content .thumbs .thumb:nth-child(1),
-.page-comparateur .page-content .thumbs .thumb:nth-child(2) {
+/* .page-comparator .page-content .thumbs .thumb:nth-child(1),
+.page-comparator .page-content .thumbs .thumb:nth-child(2) {
     margin-top: 0;
 } */
 
-.page-comparateur .page-content .thumbs .thumb img {
+.page-comparator .page-content .thumbs .thumb img {
     /* width: 100%;
     height: auto; */
     background: #CCC;
@@ -48,21 +48,21 @@
     width: auto;
 }
 
-.page-comparateur .page-content .img-date {
+.page-comparator .page-content .img-date {
     font-family: 'Hind', sans-serif;
     font-weight: 500;
 }
 
-.page-comparateur .page-content .thumbs .thumb.selected .img-date {
+.page-comparator .page-content .thumbs .thumb.selected .img-date {
     color: var(--color-primary);
     font-weight: bold;
 }
 
-.page-comparateur .page-content .compared {
+.page-comparator .page-content .compared {
     background-color: #dcdcdc;
 }
 
-.page-comparateur .page-content .compared .progress {
+.page-comparator .page-content .compared .progress {
     width: 150px;
     position: absolute;
     top: 50%;
@@ -70,11 +70,11 @@
     transform: translate(-50%, -50%);
 }
 
-.page-comparateur .page-content .compared .progress-bar {
+.page-comparator .page-content .compared .progress-bar {
     width: 100%;
 }
 
-.page-comparateur .page-content .compared .img-wrapper {
+.page-comparator .page-content .compared .img-wrapper {
     position: relative;
     flex: 1;
     display: flex;
@@ -83,7 +83,7 @@
     justify-content: center;
 }
 
-.page-comparateur .page-content .compared .img-wrapper img {
+.page-comparator .page-content .compared .img-wrapper img {
     max-width: 100%;
     /* max-height: 560px; */
     max-height: calc(100vh - 395px);
@@ -92,18 +92,18 @@
     cursor: pointer;
 }
 
-.page-comparateur .page-content .compared .img-wrapper .btn-zoom {
+.page-comparator .page-content .compared .img-wrapper .btn-zoom {
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.page-comparateur .page-content .compared .btn-zoom {
+.page-comparator .page-content .compared .btn-zoom {
     text-shadow: #fff;
     text-shadow: 1px 1px 0 #FFF;
 }
 
-.page-comparateur .page-content .map-wrapper {
+.page-comparator .page-content .map-wrapper {
     height: 300px;
     margin-bottom: 20px;
 }
