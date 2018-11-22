@@ -1,7 +1,21 @@
 :root {
     --color-primary: #00188F;
+    --color-primary-light: #303f8a;
     --color-blue : #283371;
     --color-green : #7AB929;
+}
+
+.swiper-pagination-bullet-active {
+    background: var(--color-primary);
+}
+
+@keyframes blink-3 {
+    0%   {opacity: 0;}
+    20%  {opacity: 1;}
+    40%  {opacity: 0;}
+    60% {opacity: 1;}
+    80%  {opacity: 0;}
+    100% {opacity: 1;}
 }
 
 /**/
@@ -77,6 +91,36 @@ button{
     color: #FFF;
     background-color: var(--color-primary) !important;
     border-color: var(--color-primary) !important;
+}
+
+.btn-outline-primary {
+    color: var(--color-primary);
+    background-color: transparent;
+    background-image: none;
+    border-color: var(--color-primary);
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active,
+.btn-outline-primary:not(:disabled):not(.disabled):active,
+.show>.btn-outline-primary.dropdown-toggle {
+    color: #FFF;
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-outline-primary.btn-toggle:hover:not(.active) {
+    color: #fff;
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
+}
+
+.btn-big-icon {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.btn-big-icon .icon {
+    font-size: 1.5em;
 }
 
 .blue-btn {
@@ -182,16 +226,22 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 .nav-bar {
     justify-content: flex-end;
     margin: 0;
-    padding-top: 20px;
-    padding-right: 40px
+    padding-top: 10px;
+    padding-right: 40px;
 }
 
 #header {
     height: 110px;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
 .header-title {
     justify-content: center;
+    margin-bottom: -8px;
 }
 
 .header-logo {

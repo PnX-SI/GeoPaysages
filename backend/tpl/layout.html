@@ -22,7 +22,7 @@
   <title>{{ titre }}</title>
 </head>
 
-{% set active_page = active_page|default('home') -%}
+{% set active_page = active_page|default('') -%}
 
 <body class="{% block bodyClassNames %}{% endblock %}">
 
@@ -36,8 +36,8 @@
               <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
                 <a class="nav-link " href="/">Accueil</a>
               </li>
-              <li class="nav-item {% if active_page == 'galery' %}active{% endif %}">
-                <a class="nav-link" href="/galery">Galerie photo</a>
+              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+                <a class="nav-link" href="/gallery">Galerie photo</a>
               </li>
               <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
                 <a class="nav-link" href="/map" >Carte interactive</a>
@@ -69,7 +69,7 @@
               </a>
             </li>
             <li>
-              <a href="/galery">
+              <a href="/gallery">
                 Galerie
               </a>
             </li>

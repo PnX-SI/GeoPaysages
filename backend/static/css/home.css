@@ -1,6 +1,6 @@
 .page-home .blocks {
   position: relative;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 160px);
   width: 50%;
   margin : 0 auto;
 }
