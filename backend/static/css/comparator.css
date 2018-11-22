@@ -39,7 +39,7 @@
 .page-comparator .page-content .compared .img-wrapper img {
     max-width: 100%;
     /* max-height: 560px; */
-    max-height: calc(100vh - 395px);
+    max-height: calc(100vh - 370px);
     width: auto;
     height: auto;
     cursor: pointer;

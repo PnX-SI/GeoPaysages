@@ -232,10 +232,16 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 #header {
     height: 110px;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
 .header-title {
     justify-content: center;
+    margin-bottom: -8px;
 }
 
 .header-logo {
