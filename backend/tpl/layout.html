@@ -22,7 +22,7 @@
   <title>{{ titre }}</title>
 </head>
 
-{% set active_page = active_page|default('home') -%}
+{% set active_page = active_page|default('') -%}
 
 <body class="{% block bodyClassNames %}{% endblock %}">
 
