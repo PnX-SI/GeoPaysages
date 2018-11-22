@@ -12,7 +12,7 @@
 }
 
 .page-comparator .page-content .compared {
-    background-color: #dcdcdc;
+    background-color: #EFEFEF;
 }
 
 .page-comparator .page-content .compared .progress {
@@ -39,7 +39,7 @@
 .page-comparator .page-content .compared .img-wrapper img {
     max-width: 100%;
     /* max-height: 560px; */
-    max-height: calc(100vh - 370px);
+    max-height: calc(100vh - 382px);
     width: auto;
     height: auto;
     cursor: pointer;

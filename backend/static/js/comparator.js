@@ -18,7 +18,7 @@ oppv.comparator = (options) => {
       initSwiperThumbs() {
         let swiper = new Swiper(this.$refs.swiperThumbs, {
           slidesPerView: 'auto',
-          spaceBetween: 30,
+          spaceBetween: 16,
           freeMode: true,
           navigation: {
             nextEl: this.$refs.swiperThumbsNext,
