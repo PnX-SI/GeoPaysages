@@ -1,0 +1,57 @@
+.page-map .app-footer {
+    display: none;
+}
+
+.app-map {
+    height: calc(100vh - 135px);
+}
+
+.app-map .sidebar {
+    position: absolute;
+    z-index: 10000;
+    height: 100%;
+    background: rgba(0, 0, 0, .8);
+    color: #FFF;
+    padding: 20px;
+    transition: transform .3s;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.app-map .sidebar .btn-toggle {
+  position: absolute;
+  width: 30px;
+  height: 100%;
+  top: 0;
+  left: 100%;
+  background: rgba(0, 0, 0, .9);
+}
+
+.app-map.sidebar-collapsed .sidebar {
+    transform: translateX(-100%);
+}
+
+.app-map .sidebar .filters {
+  width: 220px;
+}
+
+.app-map .sidebar .filters .card-body {
+  color: var(--color-primary);
+  padding: 0;
+}
+
+.app-map .sidebar .btn-filter {
+    white-space: normal;
+    font-size: 12px;
+}
+
+.app-map .leaflet-popup-content {
+    text-align: center;
+}
+
+.app-map .leaflet-popup-content .img {
+    min-width: 100px;
+    height: 100px;
+    background: no-repeat center;
+    background-size: contain;
+}

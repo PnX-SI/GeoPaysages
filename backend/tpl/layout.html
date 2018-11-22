@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+
+<head>{% block head %}
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/vue/dist/vue.js') }}"></script>
+
+  <!-- Add this after vue.js -->
+  <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
+
+  {% endblock %}
+  <title>{{ titre }}</title>
+</head>
+
+{% set active_page = active_page|default('') -%}
+
+<body class="{% block bodyClassNames %}{% endblock %}">
+
+    <header class="container-fluid" id="header">
+      <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
+      <div class="row nav-bar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
+          <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
+            <ul class="navbar-nav sans-serif">
+              <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
+                <a class="nav-link " href="/">Accueil</a>
+              </li>
+              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+                <a class="nav-link" href="/gallery">Galerie photo</a>
+              </li>
+              <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
+                <a class="nav-link" href="/map" >Carte interactive</a>
+              </li>
+              <li class="nav-item {% if active_page == 'contact' %}active{% endif %}">
+                <a class="nav-link" href="#">Contact</a>
+              </li>
+            </ul>
+          </b-collapse>
+        </nav>
+      </div>
+      <div class="row header-title">{% block header_title %}
+        {% endblock %}
+      </div>
+    </header>
+
+    {% block content %}{% endblock %}
+    <footer class="app-footer">
+      {% block footer %}
+      <div>
+        <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+
+        <div class="footer-menu">
+          <h6>LE SITE</h6>
+          <ul class="mb-4">
+            <li>
+              <a href="/">
+                Accueil
+              </a>
+            </li>
+            <li>
+              <a href="/gallery">
+                Galerie
+              </a>
+            </li>
+            <li>
+              <a href="/map">
+                Carte interactive
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Site du Parc National de Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                Rando Vanoise
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                BiodiVanoise
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h6>NOUS CONTACTER</h6>
+          <span>
+            <a href="#">
+              Formulaire de contact
+            </a>
+          <ul class="mb-4">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+      
+
+      <hr class="mt-4" />
+
+      <div class="text-light">&copy;2018 Parc national de la Vanoise</div>
+      {% endblock %}
+    </footer>
+    
+  <script type="text/javascript">
+    window.onload =
+      new Vue({
+        el: '#header',
+        data: {
+          name: 'GéoPaysage'
+        },
+      })
+  </script>
+</body>
+
+</html>

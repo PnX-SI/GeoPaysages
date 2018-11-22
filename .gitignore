@@ -1,0 +1,51 @@
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+jsconfig.json
+
+# IDE - VSCode
+.vscode/*
+
+# System Files
+.DS_Store
+Thumbs.db
+*.pyc
+*.pyo
+*.swp
+
+# Conf
+*config.py
+*config.ts
+
+# Typings file.
+typings/
+pylintrc
+
+# Node
+.npm
+node_modules
+npm-debug.log
+coverage/
+node_modules/
+tmp/
+npm-debug.log*
+yarn-error.log*
+.ng_pkg_build/
+
+# venv
+venv
+
+# Outputs
+bazel-*
+test-project-host-*
+dist/
+dist-schema/
+
+
+#doc
+documentation
