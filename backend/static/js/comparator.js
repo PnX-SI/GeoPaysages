@@ -16,15 +16,17 @@ oppv.comparator = (options) => {
     },
     methods: {
       initSwiperThumbs() {
-        new Swiper('.swiper-container', {
+        let swiper = new Swiper(this.$refs.swiperThumbs, {
           slidesPerView: 'auto',
-          centeredSlides: true,
           spaceBetween: 30,
           freeMode: true,
-          pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-          },
+          navigation: {
+            nextEl: this.$refs.swiperThumbsNext,
+            prevEl: this.$refs.swiperThumbsPrev
+          }
+        });
+        window.addEventListener('resize', () => {
+          swiper.update();
         });
       },
       initMap() {
@@ -64,7 +66,7 @@ oppv.comparator = (options) => {
       onThumbClick(i) {
         if (this.isCompared(i))
           return
-        
+
         const photo = options.photos[i]
         let comparedIndex = this.nextComparedIndex
         if (this.pinned > -1)

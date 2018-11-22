@@ -63,17 +63,24 @@
         {% endfor %}
       </div>
       <div class="row mt-4">
-        <div class="swiper-container">
-          <div class="swiper-wrapper thumbs">
-          {% for photo in photos %}
-            <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
-              <img src="{{ photo.sm }}" />
-              <div class="img-date">{{ photo.date }}</div>
+        <div class="thumbs">
+          <button class="btn btn-lg btn-link btn-big-icon btn-arrow btn-prev swiper-button-disabled" ref="swiperThumbsPrev">
+            <i class="icon ion-ios-arrow-back"></i>
+          </button>
+          <div class="swiper-container" ref="swiperThumbs">
+            <div class="swiper-wrapper">
+              {% for photo in photos %}
+              <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
+                <img src="{{ photo.sm }}" />
+                <div class="img-date">{{ photo.date }}</div>
+              </div>
+              {% endfor %}
             </div>
-          {% endfor %}
           </div>
-          <!-- Add Pagination -->
-          <div class="swiper-pagination"></div>
+          <!-- .swiper-button-disabled prevent some blink, it will be removed by Swiper -->
+          <button class="btn btn-lg btn-link btn-big-icon btn-arrow btn-next swiper-button-disabled" ref="swiperThumbsNext">
+            <span class="icon ion-ios-arrow-forward"></span>
+          </button>
         </div>
       </div>
       <div class="row mt-5">

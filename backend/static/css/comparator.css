@@ -6,56 +6,9 @@
     padding: 0 90px;
 }
 
-.page-comparator .page-content .col-thumbs {
-    /* width: 290px; */
-}
-
-.page-comparator .page-content .thumbs {
-    /* width: 260px;
-    height: calc(100vh - 110px);
-    overflow: auto;
-    position: fixed;
-    -ms-overflow-style: none;
-    overflow: -moz-scrollbars-none; */
-    /* width: 100%;
-    overflow: auto;
-    white-space: nowrap; */
-}
-
-/* .page-comparator .page-content .thumbs::-webkit-scrollbar {
-    width: 0 !important;
-} */
-
-.page-comparator .page-content .thumbs .thumb {
-    margin: 5px;
-    /* width: calc(50% - 10px);
-    display: block;
-    float: left; */
-    cursor: pointer;
-    display: inline-block;
-}
-
-/* .page-comparator .page-content .thumbs .thumb:nth-child(1),
-.page-comparator .page-content .thumbs .thumb:nth-child(2) {
-    margin-top: 0;
-} */
-
-.page-comparator .page-content .thumbs .thumb img {
-    /* width: 100%;
-    height: auto; */
-    background: #CCC;
-    height: 100px;
-    width: auto;
-}
-
 .page-comparator .page-content .img-date {
     font-family: 'Hind', sans-serif;
     font-weight: 500;
-}
-
-.page-comparator .page-content .thumbs .thumb.selected .img-date {
-    color: var(--color-primary);
-    font-weight: bold;
 }
 
 .page-comparator .page-content .compared {
@@ -108,28 +61,60 @@
     margin-bottom: 20px;
 }
 
+/* .page-comparator .page-content .thumbs .thumb:nth-child(1),
+.page-comparator .page-content .thumbs .thumb:nth-child(2) {
+    margin-top: 0;
+} */
 
-
-.swiper-container {
-    width: 100%;
-    height: 170px;
+.page-comparator .page-content .thumbs .thumb img {
+    /* width: 100%;
+    height: auto; */
+    background: #CCC;
+    height: 100px;
+    width: auto;
 }
 
-.swiper-slide {
-    background: #fff;
-    /* Center slide text vertically */
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
+.page-comparator .page-content .thumbs .thumb.selected .img-date {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.page-comparator .thumbs {
+    width: 100%;
+    position: relative;
+}
+
+.page-comparator .thumbs .btn-arrow {
+    position: absolute;
+    top: 50px;
+    transform: translateY(-50%);
+}
+
+.page-comparator .thumbs .btn-arrow:not(.swiper-button-disabled) {
+    animation-name: blink-3;
+    animation-duration: .5s;
+}
+
+.page-comparator .thumbs .btn-prev {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.page-comparator .thumbs .btn-next {
+    left: 100%;
+    margin-left: 10px;
+}
+
+.page-comparator .thumbs .swiper-button-disabled {
+    visibility: hidden;
+}
+
+.page-comparator .thumbs .swiper-container {
+    width: 100%;
+}
+
+.page-comparator .thumbs .swiper-slide {
+    display: inline-block;
     width: 100px;
-    height: 100px;
+    cursor: pointer;
 }
