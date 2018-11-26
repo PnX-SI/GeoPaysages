@@ -21,21 +21,39 @@
 <div id="js-app-map" class="app-map container-fluid" v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
   <div class="row h-100 position-relative">
     <div class="sidebar">
-      <div class="filters">
-        <b-card no-body class="mb-1" v-for="(filter) in filters">
-          <b-card-header header-tag="header" class="p-1">
-            <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="primary" v-html="filter.label"></b-btn>
+      <div class="sidebar-content">
+        <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
+          <b-card-header header-tag="header" class="p-0">
+            <b-btn block href="#" v-b-toggle="'app_map_filters'" variant="secondary" class="rounded-0">FILTRER PAR</b-btn>
           </b-card-header>
-          <b-collapse :id="'app_map_filter_' + filter.name">
-            <b-card-body>
-              <b-button-group vertical class="w-100">
-                <b-button class="btn-block btn-primary inverse btn-filter" v-for="item in filter.items" :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
-              </b-button-group>
+          <b-collapse :id="'app_map_filters'" visible>
+            <b-card-body class="p-1">
+              <div class="filters">
+                <b-card no-body class="m-0 rounded-0" v-for="(filter) in filters">
+                  <b-card-header header-tag="header" class="p-0 border-0">
+                    <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0" v-html="filter.label"></b-btn>
+                  </b-card-header>
+                  <b-collapse :id="'app_map_filter_' + filter.name">
+                    <b-card-body>
+                      <b-button-group vertical class="w-100">
+                        <b-button class="btn-block btn-primary inverse btn-filter" v-for="item in filter.items"
+                          :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
+                      </b-button-group>
+                    </b-card-body>
+                  </b-collapse>
+                </b-card>
+              </div>
             </b-card-body>
           </b-collapse>
         </b-card>
+
+
+
       </div>
-      <div class="btn-toggle" @click="isSidebarCollapsed = !isSidebarCollapsed"></div>
+      <div class="btn-toggle btn-big-icon" @click="isSidebarCollapsed = !isSidebarCollapsed">
+        <i class="icon ion-ios-arrow-back" v-if="!isSidebarCollapsed"></i>
+        <i class="icon ion-ios-arrow-forward" v-if="isSidebarCollapsed"></i>
+      </div>
     </div>
     <div class="col p-0">
       <div class="map-wrapper h-100" ref="map"></div>

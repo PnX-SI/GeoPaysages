@@ -10,39 +10,92 @@
     position: absolute;
     z-index: 10000;
     height: 100%;
-    background: rgba(0, 0, 0, .8);
     color: #FFF;
-    padding: 20px;
+    width: 230px;
     transition: transform .3s;
-    overflow: auto;
-    overflow-x: hidden;
-}
-
-.app-map .sidebar .btn-toggle {
-  position: absolute;
-  width: 30px;
-  height: 100%;
-  top: 0;
-  left: 100%;
-  background: rgba(0, 0, 0, .9);
 }
 
 .app-map.sidebar-collapsed .sidebar {
     transform: translateX(-100%);
 }
 
+.app-map .sidebar .btn-toggle {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .9);
+}
+
+.app-map .sidebar-content {
+    background: rgba(0, 0, 0, .8);
+    overflow: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
 .app-map .sidebar .filters {
-  width: 220px;
+  width: 100%;
+}
+
+.app-map .sidebar .filters .card {
+    border: none;
+    background: transparent;
+}
+
+.app-map .sidebar .filters .card-header .btn {
+    text-decoration: none;
+    color: #FFF;
+    /* border: 1px solid #FFF; */
+}
+
+.app-map .sidebar .filters .card-header .btn.collapsed {
+    border: 1px solid #FFF;
+}
+
+.app-map .sidebar .filters .card:not(:last-child) .btn {
+    border-bottom: none;
+}
+
+.app-map .sidebar .filters .card-header .btn:not(.collapsed) {
+    background: #FFF;
+    border-color: #FFF;
+    border-bottom-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.app-map .sidebar .filters .collapse.show .btn-group-vertical,
+.app-map .sidebar .filters .collapsing .btn-group-vertical {
+    border-top: 1px solid var(--color-primary);
 }
 
 .app-map .sidebar .filters .card-body {
   color: var(--color-primary);
   padding: 0;
+  border: 1px solid #FFF;
+}
+
+.app-map .sidebar .filters .collapse.show .card-body,
+.app-map .sidebar .filters .collapsing .card-body {
+    border-bottom: 1px solid var(--secondary);
 }
 
 .app-map .sidebar .btn-filter {
     white-space: normal;
     font-size: 12px;
+}
+
+.app-map .sidebar .card-group {
+    background: transparent;
+}
+
+.app-map .sidebar .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
 }
 
 .app-map .leaflet-popup-content {
