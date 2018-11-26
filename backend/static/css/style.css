@@ -76,12 +76,12 @@ button{
     margin-top: 0;
 }
 
-.btn-group-vertical .btn-primary.inverse:not(:last-child) {
+.btn-group-vertical .btn-primary.inverse {
     border-bottom: 1px solid;
     border-bottom-color: var(--color-primary) !important;
 }
 
-.btn-group-vertical .btn-primary.inverse.active:not(:last-child) {
+.btn-group-vertical .btn-primary.inverse.active {
     border-bottom-color: #FFF !important;
 }
 

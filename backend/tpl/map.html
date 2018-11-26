@@ -24,14 +24,22 @@
       <div class="sidebar-content">
         <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
           <b-card-header header-tag="header" class="p-0">
-            <b-btn block href="#" v-b-toggle="'app_map_filters'" variant="secondary" class="rounded-0">FILTRER PAR</b-btn>
+            <b-btn block href="#" class="rounded-0 card-group-header-btn" v-b-toggle="'app_map_filters'" variant="secondary">
+              <span>FILTRER PAR</span> 
+              <i class="icon ion-ios-arrow-down visible-collapsed"></i>
+              <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
+            </b-btn>
           </b-card-header>
           <b-collapse :id="'app_map_filters'" visible>
-            <b-card-body class="p-1">
+            <b-card-body class="p-3">
               <div class="filters">
                 <b-card no-body class="m-0 rounded-0" v-for="(filter) in filters">
                   <b-card-header header-tag="header" class="p-0 border-0">
-                    <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0" v-html="filter.label"></b-btn>
+                    <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0 text-left">
+                      <span v-html="filter.label"></span>
+                      <i class="icon ion-md-add visible-collapsed"></i>
+                      <i class="icon ion-ios-remove hidden-collapsed"></i>
+                    </b-btn>
                   </b-card-header>
                   <b-collapse :id="'app_map_filter_' + filter.name">
                     <b-card-body>

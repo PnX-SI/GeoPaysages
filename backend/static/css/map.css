@@ -38,6 +38,22 @@
     height: 100%;
 }
 
+.app-map .sidebar .card-group-header-btn {
+    background: #000;
+    border: 1px solid #000;
+    font-weight: 700;
+}
+
+.app-map .sidebar .card-header .btn.collapsed .hidden-collapsed,
+.app-map .sidebar .card-header .btn:not(.collapsed) .visible-collapsed {
+    display: none;
+}
+
+.app-map .sidebar .card-header .btn .icon {
+    position: absolute;
+    right: 10px;
+}
+
 .app-map .sidebar .filters {
   width: 100%;
 }
@@ -53,35 +69,38 @@
     /* border: 1px solid #FFF; */
 }
 
-.app-map .sidebar .filters .card-header .btn.collapsed {
-    border: 1px solid #FFF;
+.app-map .sidebar .filters .card:not(:first-child) .card-header .btn {
+    border-top: none;
 }
 
-.app-map .sidebar .filters .card:not(:last-child) .btn {
-    border-bottom: none;
+.app-map .sidebar .filters .card-header .btn.collapsed {
+    border: 1px solid #FFF;
 }
 
 .app-map .sidebar .filters .card-header .btn:not(.collapsed) {
     background: #FFF;
     border-color: #FFF;
     border-bottom-color: var(--color-primary);
-    color: var(--color-primary);
-}
-
-.app-map .sidebar .filters .collapse.show .btn-group-vertical,
-.app-map .sidebar .filters .collapsing .btn-group-vertical {
-    border-top: 1px solid var(--color-primary);
+    color: #000;
 }
 
 .app-map .sidebar .filters .card-body {
   color: var(--color-primary);
   padding: 0;
-  border: 1px solid #FFF;
+  border: none;
 }
+
+.app-map .sidebar .filters .card-body .btn {
+    text-transform: none;
+}
+
+/* .app-map .sidebar .filters .card:not(:last-child) .card-body .btn {
+    border-bottom: none;
+} */
 
 .app-map .sidebar .filters .collapse.show .card-body,
 .app-map .sidebar .filters .collapsing .card-body {
-    border-bottom: 1px solid var(--secondary);
+    border-bottom: 1px solid #FFF;
 }
 
 .app-map .sidebar .btn-filter {
