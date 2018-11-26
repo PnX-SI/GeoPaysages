@@ -112,7 +112,7 @@ oppv.initMap = (options) => {
             marker.closePopup()
           })
           marker.on('click', (e) => {
-            window.location.href = site.link
+            window.location.href = site.link.replace('http://127.0.0.1:8000', '')
           })
           marker.addTo(map)
           markers.push(marker)
