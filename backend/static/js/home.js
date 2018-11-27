@@ -1,5 +1,6 @@
 var oppv = oppv || {};
 oppv.initHome = (options) => {
+
   let gutter = 20;
   let container = document.querySelector('.blocks');
 
@@ -13,9 +14,40 @@ oppv.initHome = (options) => {
 
   window.addEventListener('resize', () => {
     onResize()
-    //let containerW = document.querySelector('.blocks')
   })
   onResize()
+
+  const map = L.map(document.getElementsByClassName('js-map-wrapper')[0], {
+    attributionControl: false,
+    boxZoom: false,
+    doubleClickZoom: false,
+    dragging: false,
+    keyboard: false,
+    scrollWheelZoom: false,
+    tap: false,
+    zoomControl: false
+  })
+  const tileLayer = L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 18,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }
+  )
+  tileLayer.addTo(map)
+
+  const lats = []
+  const lons = []
+  options.sites.forEach(site => {
+    lats.push(site.geom[0])
+    lons.push(site.geom[1])
+    L.marker(site.geom).addTo(map)
+    lats.sort()
+    lons.sort()
+    map.fitBounds([
+      [lats[0], lons[0]],
+      [lats[lats.length - 1], lons[lons.length - 1]]
+    ])
+  })
 
   function onResize() {
     if (window.matchMedia("(min-width: 800px)").matches) {

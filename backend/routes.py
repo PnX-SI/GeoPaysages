@@ -122,8 +122,10 @@ def home():
         get_photo_block(id_photo)
         for id_photo in id_photos
     ]
+
+    sites=site_schema.dump(models.TSite.query.all()).data
     
-    return render_template('home.html', blocks=blocks)
+    return render_template('home.html', blocks=blocks, sites=sites)
 
 @main.route('/gallery')
 def gallery():
