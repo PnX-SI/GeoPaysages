@@ -3,6 +3,7 @@
     --color-primary-light: #303f8a;
     --color-blue : #283371;
     --color-green : #7AB929;
+    --color-secondary: #6db61e;
 }
 
 .swiper-pagination-bullet-active {
@@ -51,6 +52,7 @@ button{
 
 .btn {
     text-transform: uppercase;
+    border-radius: 0;
 }
 .btn:focus {
     box-shadow: none !important;
@@ -64,12 +66,13 @@ button{
     border-color: var(--color-primary);
 }
 
-.btn-link {
-    color: var(--color-primary);
+.btn-secondary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
 }
 
-.btn-group-vertical>.btn {
-    border-radius: 0;
+.btn-link {
+    color: var(--color-primary);
 }
 
 .btn-group-vertical>.btn+.btn {
