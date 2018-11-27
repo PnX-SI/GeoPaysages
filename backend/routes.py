@@ -151,7 +151,7 @@ def comparator(id_site):
 @main.route('/map')
 def map():
 
-    sites=site_schema.dump(models.TSite.query.all()).data
+    sites=site_schema.dump(models.TSite.query.order_by('name_site').all()).data
     for site in sites:
         cor_sthemes_themes=site.get('cor_site_stheme_themes')
         cor_list=[]
