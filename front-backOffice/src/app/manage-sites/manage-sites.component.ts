@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { tileLayer, latLng, marker, Marker } from 'leaflet';
 import { SitesService } from '../services/sites.service';
+import * as _ from 'lodash';
+import { _appIdRandomProviderFactory } from '@angular/core/src/application_tokens';
+import { Conf } from './../config';
 
 @Component({
   selector: 'app-manage-sites',
@@ -17,35 +20,16 @@ export class ManageSitesComponent implements OnInit {
     zoom: 6,
     center: latLng(46.879966, -121.726909)
   };
-
-  rows = [
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Molly', gender: 'Female', company: 'Burger King' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Molly', gender: 'Female', company: 'Burger King' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Molly', gender: 'Female', company: 'Burger King' },
-    { name: 'Austin', gender: 'Male', company: 'Swimlane' },
-    { name: 'Dany', gender: 'Male', company: 'KFC' },
-    { name: 'Molly', gender: 'Female', company: 'Burger King' },
-  ];
-  columns = [
-    { name: 'Photo', prop: 'main_photo' },
-    { name: 'Nom du site', prop: 'name_site' },
-    { name: 'Code postal', prop: 'code_city_site'},
-    { name: 'Site publié', prop: 'publish_site' }
-  ];
+  rows = [];
+  sitesLoaded = false;
+  addSite = false;
 
   constructor(private siteService: SitesService) { }
 
   ngOnInit() {
-
     this.getAllSites();
-
   }
+
   onMapReady(map) {
     // get a local reference to the map as we need it later
     this.map = map;
@@ -54,8 +38,27 @@ export class ManageSitesComponent implements OnInit {
   getAllSites() {
     this.siteService.getAllSites()
       .subscribe(
-        (sites) => console.log('sites', sites)
+        (sites) => {
+          _.forEach(sites, (site) => {
+            site.main_photo = Conf.staticPicturesUrl + site.main_photo;
+            this.rows.push(_.pick(site, ['main_photo', 'name_site', 'code_city_site', 'publish_site', 'geom']));
+          });
+          this.sitesLoaded = true;
+        },
+        (err) => console.log('get site error: ', err),
       );
   }
+
+  onSelect({ selected }) {
+    console.log('Select Event', selected);
+  }
+  onAddSite() {
+    this.addSite = true;
+  }
+
+  onCancel(event) {
+    this.addSite = event;
+  }
+
 
 }

@@ -1,0 +1,62 @@
+<button class="image-btn" (click)="openPhotoModal(content)"><i class="icon-cross"></i></button>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Ajouter une photo</h5>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="photoForm">
+      <div class="inner-checkbox form-group">
+        <div class="label">Afficher la photo :</div>
+        <label class="switch ">
+          <input type="checkbox" class="success">
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="row form-item">
+        <div class="col ">
+          <label class="label" for="auteur">Auteur</label>
+          <select id="auteur" class="form-control">
+            <option selected>Auteur...</option>
+            <option>...</option>
+          </select>
+        </div>
+        <div class="col">
+          <label class="label" for="licence">Licence</label>
+          <select id="licence" class="form-control">
+            <option selected>Licence...</option>
+            <option>...</option>
+          </select>
+        </div>
+      </div>
+      <div class="row form-item">
+        <div class="col ">
+          <label class="label" for="datePhoto">Date de prise de la photo</label>
+          <input type="text" id="datePhoto" class="form-control" placeholder="Date Photo">
+        </div>
+        <div class="col ">
+          <label class="label" for="sousTheme">Date filtre</label>
+          <div class="input-group">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="dp"  ngbDatepicker #d="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                <i class="icon-calendar"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="label" for="desc">Commentaire</label>
+        <textarea class="form-control" placeholder="Ecrivez ici le commentaire" id="desc" rows="2"></textarea>
+      </div>
+    </form>
+    <input style="display: none" accept="image/x-png,image/gif,image/jpeg" type="file" (change)=onFileSelected($event)
+      multiple #iamgeInput>
+    <button class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer une pohto</button>
+  </div>
+  <div class="modal-footer">
+    <button class="red-btn" style="margin-right: 10px" (click)="modal.close('Close click')">Annuler</button>
+    <button class="green-btn">Ajouter</button>
+  </div>
+</ng-template>

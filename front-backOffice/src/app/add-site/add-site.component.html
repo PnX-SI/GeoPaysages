@@ -1,49 +1,71 @@
-<div class="container" style="margin: 0 auto;">
-    <div class="row">
-     <section class="LeftPart ">
-        <div class="row">   
-          <!-- Add images -->
-          <div class="col-lg-12 d-flex justify-content-between flex-wrap" style="margin-bottom: 10px;">
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-          </div>
-          <!-- Forms -->
-          <div class="col-lg-9 form">
-            <span class="label">Description</span>
-            <input type="text" id="description" class="form-control" placeholder="Ecrivez ici la description du site">
-          </div>
-          <div class="col-lg-3 form">
-            <span class="label">Thème</span>
-            <input type="text" id="theme" class="form-control" placeholder="Ecrivez ici le thème du site">
-          </div>
-          <div class="col-lg-9 form">
-              <span class="label">Infos pratiques</span>
-              <input type="text" id="infos" class="form-control" placeholder="Ecrivez ici les informations pratiques">
-            </div>
-            <div class="col-lg-3 form">
-              <span class="label">Sous-thème</span>
-              <input type="text" id="ss-theme" class="form-control" placeholder="Ecrivez ici le sous-thème du site">
-            </div>
-            <!-- BUTTONS -->
-            <div class="col-lg-12 flex-column">
-              <span class="label">Notice technique pour le photographe</span>
-              <br>
-              <button id="notice" class="blue-btn">Importer la notice technique</button>
-              <br>
-            </div>
+<div *ngIf="loadForm" class="site-block">
+  <form [formGroup]="siteForm">
+      <div class="inner-checkbox form-group">
+          <div class="label">Publier le site :</div>
+          <label class="switch ">
+            <input formControlName="publish_site" type="checkbox" class="success">
+            <span class="slider round"></span>
+          </label>
         </div>
-        <button id="valid-site" class="green-btn">Valider la création du site photographique</button>
-     </section>
-  
+    <div class="row form-item">
+      <div class="col ">
+        <label class="label" for="site-name">Nom du site</label>
+        <input type="text" formControlName="name_site" id="site-name" class="form-control" placeholder="nom du site">
+      </div>
+      <div class="col">
+        <label class="label" for="city-code">Code postal</label>
+        <input type="text" formControlName="code_city_site" id="city-code" class="form-control" placeholder="code postal">
+      </div>
     </div>
+    <div class="row form-item">
+      <div class="col ">
+        <label class="label" for="theme">Thème</label>
+        <select  formControlName="id_theme" id="theme" class="form-control">
+          <option  selected>Select...</option>
+          <option *ngFor="let theme of themes" value="{{theme.id_theme}}">{{theme.name_theme}}</option>
+        </select>
+      </div>
+      <div class="col ">
+        <label class="label" for="sousTheme">Sous-thème</label>
+        <select formControlName="id_stheme" id="sousTheme" class="form-control">
+          <option selected>Select...</option>
+          <option>...</option>
+        </select>
+      </div>
+    </div>
+    <div class="row form-item">
+      <div class="col ">
+        <label class="label" for="longitude">Longitude</label>
+        <input type="number" formControlName="longitude" id="longitude" class="form-control" placeholder="longitude">
+      </div>
+      <div class="col">
+        <label class="label" for="latitude">Latitude</label>
+        <input type="number" formControlName="latitude" id="latitude" class="form-control" placeholder="latitude">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="label" for="desc">DESCRIPTION</label>
+      <textarea class="form-control" formControlName="desc_site" placeholder="Ecrivez ici la description du site" id="desc" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="label" for="testim">TÉMOIGNAGE</label>
+      <textarea class="form-control" formControlName="testim_site"  placeholder="Ecrivez ici les témoignages" id="testim" rows="3"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="label">Ajouter les Photos</label>
+        <app-add-photo style="display :block" ></app-add-photo>
+    </div>
+    <div>
+      <input class="form-group" formControlName="notice" style="display: none" type="file" (change)=noticeSelect($event)
+        accept="application/pdf" #noticeInput>
+      <button class="blue-btn" (click)="noticeInput.click()"><i class="icon-download"></i> Importer la notice
+        technique</button>
+      <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash" (click)="celarNotice()"></i></div>
+    </div>
+  </form>
+
+  <div class="submit-btn">
+    <button class="red-btn" style="margin-right: 15px" (click)=onCancel()>Annuler</button>
+    <button class="green-btn">Ajouter</button>
   </div>
+</div>

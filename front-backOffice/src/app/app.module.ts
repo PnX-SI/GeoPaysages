@@ -17,6 +17,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AddSiteComponent } from './add-site/add-site.component';
 import { SitesService } from './services/sites.service';
+import { AddPhotoComponent } from './add-photo/add-photo.component';
+
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { SitesService } from './services/sites.service';
     ManageSitesComponent,
     HomePageComponent,
     AddSiteComponent,
+    AddPhotoComponent,
   ],
   imports: [
     BrowserModule,

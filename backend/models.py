@@ -99,6 +99,13 @@ class TRole(db.Model):
     date_update = db.Column(db.DateTime)
 
 
+class VTest(db.Model):
+    __tablename__ = 'VTest'
+    __table_args__ = {'schema': 'geopaysages'}
+
+    id = db.Column(db.Integer,primary_key=True)
+
+
 class TPhoto(db.Model):
     __tablename__ = 't_photo'
     __table_args__ = {'schema': 'geopaysages'}
@@ -147,10 +154,11 @@ class DicoSthemeSchema(ma.ModelSchema):
 
 class LicencePhotoSchema(ma.ModelSchema):
     class Meta:
-        model = DicoLicencePhoto
+        fields =('id_licence_photo','name_licence_photo','description_licence_photo')
+  
 
 class TPhotoSchema(ma.ModelSchema):
-    dico_licence_photo = ma.Nested(LicencePhotoSchema ,exclude=['t_photos']) 
+    dico_licence_photo = ma.Nested(LicencePhotoSchema) 
     class Meta:
         model = TPhoto
     

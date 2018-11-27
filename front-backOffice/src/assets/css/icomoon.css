@@ -103,4 +103,7 @@
   .icon-information:before {
     content: "\e918";
   }
+  .icon-calendar:before {
+    content: "\e91a";
+  }
   
