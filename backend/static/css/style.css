@@ -336,16 +336,21 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 .modal-fs .modal-header {
     border: none;
+    padding-bottom: 0;
 }
 
-.modal-fs .modal-header .close {
+.modal-fs .modal-header .close,
+.modal-fs .modal-header .close:hover {
     color: #FFF;
     text-shadow: none;
     opacity: 1;
+    margin: 0;
+    padding: 10px;
 }
 
 .modal-fs.modal-img .modal-body {
     display: flex;
+    padding-top: 0;
 }
 
 .modal-fs.modal-img .img-wrapper {
