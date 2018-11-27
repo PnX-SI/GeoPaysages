@@ -42,6 +42,7 @@
     background: #000;
     border: 1px solid #000;
     font-weight: 700;
+    text-transform: uppercase;
 }
 
 .app-map .sidebar .card-header .btn.collapsed .hidden-collapsed,
@@ -92,6 +93,8 @@
 
 .app-map .sidebar .filters .card-body .btn {
     text-transform: none;
+    white-space: normal;
+    font-size: 12px;
 }
 
 /* .app-map .sidebar .filters .card:not(:last-child) .card-body .btn {
@@ -103,11 +106,6 @@
     border-bottom: 1px solid #FFF;
 }
 
-.app-map .sidebar .btn-filter {
-    white-space: normal;
-    font-size: 12px;
-}
-
 .app-map .sidebar .card-group {
     background: transparent;
 }
@@ -115,6 +113,17 @@
 .app-map .sidebar .card-header {
     background-color: transparent;
     border-bottom: 1px solid transparent;
+}
+
+.app-map .sidebar .btn-site {
+    text-align: left;
+    text-transform: none;
+    white-space: normal;
+    border-radius: 0;
+}
+
+.app-map .sidebar .btn-site:hover {
+    background: #111;
 }
 
 .app-map .leaflet-popup-content {
