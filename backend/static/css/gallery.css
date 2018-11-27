@@ -1,16 +1,20 @@
-.page-galleryback .picture{
+.page-gallery .container {
+    min-height: calc(100vh - 472px);
+}
+
+.page-gallery .picture{
     padding: 20px 10px 0px 10px;
     overflow: hidden;
     position: relative;
 }
 
-.page-galleryback .picture img{
+.page-gallery .picture img{
     width: 100%;
     height: 100%;
     transition: filter .5s ease;
 }
 
-.page-galleryback .picture:hover img{
+.page-gallery .picture:hover img{
     filter: brightness(50%);
         -webkit-filter: brightness(50%);
         -moz-filter: brightness(50%);
@@ -18,7 +22,7 @@
         -ms-filter: brightness(50%);
 }
 
-.page-galleryback .picture .discover{
+.page-gallery .picture .discover{
     position: absolute;
     left: 10px;
     right: 10px;
@@ -26,19 +30,19 @@
     transform: translateY(100%);
 }
 
-.page-galleryback .picture:hover .discover{
+.page-gallery .picture:hover .discover{
     transform: translateY(-170%);
 }
 
 @media screen and (max-width: 767px) {
-    .page-galleryback .picture:first-child img{
+    .page-gallery .picture:first-child img{
         filter: brightness(50%);
         -webkit-filter: brightness(50%);
         -moz-filter: brightness(50%);
         -o-filter: brightness(50%);
         -ms-filter: brightness(50%);
     }
-    .page-galleryback .picture:first-child .discover{
+    .page-gallery .picture:first-child .discover{
         transform: translateY(-170%);
     }
 }

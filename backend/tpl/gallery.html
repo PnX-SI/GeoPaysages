@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 {% endblock %}
 
-{% block bodyClassNames %}page-galleryback{% endblock %}
+{% block bodyClassNames %}page-gallery{% endblock %}
 
 {% block header_title %}
 <h1>GALERIE PHOTOS</h1>
@@ -13,152 +13,18 @@
 
 {% block content %}
 
-<div class="container gallery">
+<div class="container">
   <div class="row">
+  {% for photo in photos %}
     <div class="picture col-lg-2 col-md-3 col-6">
-      <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
+      <a href="/comparator/{{ photo.id_site }}">
+        <img src="{{ photo.sm }}" alt="Montagne vanoise">
       </a>
       <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
+        <a href="/comparator/{{ photo.id_site }}">Découvrir ce site photographique</a>
       </div>
     </div>
-    <div class="picture col-lg-2 col-md-3 col-6">
-      <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-      <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-    </div>
-    <div class="picture col-lg-2 col-md-3 col-6">
-      <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-      <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-    </div>
-    <div class="picture col-lg-2 col-md-3 col-6">
-      <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-      <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-    </div>
-    <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-          <a href="#">
-            <img src="/static/images/100.png" alt="Montagne vanoise">
-          </a>
-          <div class="discover">
-            <a href="#">Découvrir ce site photographique</a>
-          </div>
-        </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-        <a href="#">Découvrir ce site photographique</a>
-      </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-          <img src="/static/images/100.png" alt="Montagne vanoise">
-        </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
-      <div class="picture col-lg-2 col-md-3 col-6">
-        <a href="#">
-        <img src="/static/images/100.png" alt="Montagne vanoise">
-      </a>
-        <div class="discover">
-          <a href="#">Découvrir ce site photographique</a>
-        </div>
-      </div>
+  {% endfor %}
   </div>
 </div>
 

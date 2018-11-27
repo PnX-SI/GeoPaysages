@@ -127,7 +127,15 @@ def home():
 
 @main.route('/gallery')
 def gallery():
-    return render_template('gallery.html')
+    get_photos = models.TPhoto.query.all()
+    dump_photos = photo_schema.dump(get_photos).data
+    print(dump_photos)
+    photos = [{
+        'id_site': photo.get('t_site'),
+        'sm': getThumbnail(photo).get('output_url')
+    } for photo in dump_photos]
+
+    return render_template('gallery.html', photos=photos)
 
 @main.route('/comparator/<int:id_site>')
 def comparator(id_site):
