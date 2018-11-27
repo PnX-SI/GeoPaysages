@@ -11,7 +11,7 @@
     z-index: 10000;
     height: 100%;
     color: #FFF;
-    width: 230px;
+    width: 320px;
     transition: transform .3s;
 }
 
@@ -67,7 +67,7 @@
 .app-map .sidebar .filters .card-header .btn {
     text-decoration: none;
     color: #FFF;
-    /* border: 1px solid #FFF; */
+    font-weight: 600;
 }
 
 .app-map .sidebar .filters .card:not(:first-child) .card-header .btn {
@@ -95,6 +95,7 @@
     text-transform: none;
     white-space: normal;
     font-size: 12px;
+    text-align: left;
 }
 
 /* .app-map .sidebar .filters .card:not(:last-child) .card-body .btn {
@@ -119,7 +120,6 @@
     text-align: left;
     text-transform: none;
     white-space: normal;
-    border-radius: 0;
 }
 
 .app-map .sidebar .btn-site:hover {
@@ -128,11 +128,23 @@
 
 .app-map .leaflet-popup-content {
     text-align: center;
+    margin: 0;
+}
+
+.app-map .leaflet-popup-content-wrapper {
+    border-radius: 0;
+}
+
+.app-map .leaflet-popup-content .title {
+    width: 150px;
+    text-align: left;
+    padding: 3px;
+    font-size: 14px;
 }
 
 .app-map .leaflet-popup-content .img {
-    min-width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
     background: no-repeat center;
     background-size: contain;
 }

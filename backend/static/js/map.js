@@ -29,9 +29,9 @@ oppv.initMap = (options) => {
           zoomControl: false
         })
         const tileLayer = L.tileLayer(
-          'https://cartodb-basemaps-{s}.global.ssl.fastly.net/rastertiles/voyager/{z}/{x}/{y}.png', {
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attribution">CARTO</a>',
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
           }
         )
         L.control.zoom({
@@ -102,7 +102,7 @@ oppv.initMap = (options) => {
           lats.push(site.latlon[0])
           lons.push(site.latlon[1])
           let marker = L.marker(site.latlon)
-          marker.bindPopup(site.name_site + '<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div>', {
+          marker.bindPopup('<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div><div class="title">' + site.name_site + '</div>', {
             closeButton: false
           })
           marker.on('mouseover', (e) => {

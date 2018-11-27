@@ -53,7 +53,7 @@ def getImage(photo, prefixe, callback):
     return img
 
 def getThumbnail(photo):
-    h = 100
+    h = 150
     def callback(img):
         #initW, initH = image.size
         #ratio = h / initH
@@ -122,12 +122,22 @@ def home():
         get_photo_block(id_photo)
         for id_photo in id_photos
     ]
+
+    sites=site_schema.dump(models.TSite.query.all()).data
     
-    return render_template('home.html', blocks=blocks)
+    return render_template('home.html', blocks=blocks, sites=sites)
 
 @main.route('/gallery')
 def gallery():
-    return render_template('gallery.html')
+    get_photos = models.TPhoto.query.all()
+    dump_photos = photo_schema.dump(get_photos).data
+    print(dump_photos)
+    photos = [{
+        'id_site': photo.get('t_site'),
+        'sm': getThumbnail(photo).get('output_url')
+    } for photo in dump_photos]
+
+    return render_template('gallery.html', photos=photos)
 
 @main.route('/comparator/<int:id_site>')
 def comparator(id_site):

@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}Index{% endblock %}
+{% block title %}{{ site.name_site }}{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
@@ -21,7 +21,13 @@
 <div class="page-content container-fluid" id="js-app-comparator">
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <div class="img-wrapper" v-for="photo in zoomPhotos">
-      <img :src="photo.lg" />
+      <figure>
+          <img :src="photo.lg" />
+          <figcaption class="sans-serif font-weight-bold mt-2">
+            <span class="d-block" v-html="photo.date"></span>
+            <span class="d-block">{{ site.name_site }}</span>
+          </figcaption>
+      </figure>
     </div>
   </b-modal>
   <div class="row">
@@ -92,12 +98,28 @@
         </div>
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">Description</h5>
-          <div>
-            {{ site.desc_site }}
+          <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
+            <div class="target font-italic">
+              {{ site.desc_site }}
+            </div>
+            <div class="gradient text-right visible-text-collapsable pt-3">
+              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+                <span class="visible-text-collapsed">Lire plus</span>
+                <span class="hidden-text-collapsed">Lire moins</span>
+              </button>
+            </div>
           </div>
-          <h5 class="text-uppercase mt-5">Témoignage</h5>
-          <div>
-            {{ site.testim_site }}
+          <h5 class="text-uppercase mt-4">Témoignage</h5>
+          <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
+            <div class="target font-italic">
+              {{ site.testim_site }}
+            </div>
+            <div class="gradient text-right visible-text-collapsable pt-3">
+              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+                <span class="visible-text-collapsed">Lire plus</span>
+                <span class="hidden-text-collapsed">Lire moins</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

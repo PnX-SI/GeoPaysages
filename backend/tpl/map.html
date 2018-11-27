@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% set active_page = 'map' %}
-{% block title %}Index{% endblock %}
+{% block title %}Carte Intéractive{% endblock %}
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
@@ -44,7 +44,7 @@
                   <b-collapse :id="'app_map_filter_' + filter.name">
                     <b-card-body>
                       <b-button-group vertical class="w-100">
-                        <b-button class="btn-block btn-primary inverse" v-for="item in filter.items"
+                        <b-button class="btn-block inverse" variant="primary" v-for="item in filter.items"
                           :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
                       </b-button-group>
                     </b-card-body>

@@ -7,14 +7,61 @@ oppv.comparator = (options) => {
         pinned: -1,
         nextComparedIndex: 0,
         comparedPhotos: [options.photos[0], options.photos[1]],
-        zoomPhotos: []
+        zoomPhotos: [],
+        textCollapses: ['description', 'testimonial'],
+        textCollapsables: [],
+        textCollapseds: []
       }
     },
     mounted() {
+      this.initTextCollapses()
       this.initSwiperThumbs()
       this.initMap()
     },
+    computed: {
+      textCollapseClsDescription() {
+        return {
+          'text-collapsable': this.textCollapsables.indexOf('description') > -1,
+          'text-collapsed': this.textCollapseds.indexOf('description') > -1
+        }
+      },
+      textCollapseClsTestimonial() {
+        return {
+          'text-collapsable': this.textCollapsables.indexOf('testimonial') > -1,
+          'text-collapsed': this.textCollapseds.indexOf('testimonial') > -1
+        }
+      }
+    },
     methods: {
+      initTextCollapses() {
+        this.textCollapseds = this.textCollapses.slice()
+        let setCollapsables = () => {
+          let collapseds = this.textCollapseds.slice();
+          this.textCollapsables = this.textCollapses.slice()
+          this.textCollapseds = this.textCollapses.slice()
+          this.$nextTick(() => {
+            this.textCollapsables = []
+            this.textCollapses.forEach(name => {
+              let el = this.$refs['text_collapse_' + name]
+              let target = el.getElementsByClassName('target')[0]
+              if (target.scrollHeight > target.clientHeight)
+              this.textCollapsables.push(name)
+            })
+            this.textCollapseds = collapseds
+          })
+        }
+        window.addEventListener('resize', () => {
+          setCollapsables()
+        })
+        setCollapsables()
+      },
+      toggleTextCollapse(name) {
+        let i = this.textCollapseds.indexOf(name)
+        if (i > -1)
+          this.textCollapseds.splice(i, 1)
+        else
+          this.textCollapseds.push(name)
+      },
       initSwiperThumbs() {
         let swiper = new Swiper(this.$refs.swiperThumbs, {
           slidesPerView: 'auto',
