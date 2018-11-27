@@ -10,39 +10,120 @@
     position: absolute;
     z-index: 10000;
     height: 100%;
-    background: rgba(0, 0, 0, .8);
     color: #FFF;
-    padding: 20px;
+    width: 230px;
     transition: transform .3s;
-    overflow: auto;
-    overflow-x: hidden;
-}
-
-.app-map .sidebar .btn-toggle {
-  position: absolute;
-  width: 30px;
-  height: 100%;
-  top: 0;
-  left: 100%;
-  background: rgba(0, 0, 0, .9);
 }
 
 .app-map.sidebar-collapsed .sidebar {
     transform: translateX(-100%);
 }
 
+.app-map .sidebar .btn-toggle {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, .9);
+}
+
+.app-map .sidebar-content {
+    background: rgba(0, 0, 0, .8);
+    overflow: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.app-map .sidebar .card-group-header-btn {
+    background: #000;
+    border: 1px solid #000;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.app-map .sidebar .card-header .btn.collapsed .hidden-collapsed,
+.app-map .sidebar .card-header .btn:not(.collapsed) .visible-collapsed {
+    display: none;
+}
+
+.app-map .sidebar .card-header .btn .icon {
+    position: absolute;
+    right: 10px;
+}
+
 .app-map .sidebar .filters {
-  width: 220px;
+  width: 100%;
+}
+
+.app-map .sidebar .filters .card {
+    border: none;
+    background: transparent;
+}
+
+.app-map .sidebar .filters .card-header .btn {
+    text-decoration: none;
+    color: #FFF;
+    /* border: 1px solid #FFF; */
+}
+
+.app-map .sidebar .filters .card:not(:first-child) .card-header .btn {
+    border-top: none;
+}
+
+.app-map .sidebar .filters .card-header .btn.collapsed {
+    border: 1px solid #FFF;
+}
+
+.app-map .sidebar .filters .card-header .btn:not(.collapsed) {
+    background: #FFF;
+    border-color: #FFF;
+    border-bottom-color: var(--color-primary);
+    color: #000;
 }
 
 .app-map .sidebar .filters .card-body {
   color: var(--color-primary);
   padding: 0;
+  border: none;
 }
 
-.app-map .sidebar .btn-filter {
+.app-map .sidebar .filters .card-body .btn {
+    text-transform: none;
     white-space: normal;
     font-size: 12px;
+}
+
+/* .app-map .sidebar .filters .card:not(:last-child) .card-body .btn {
+    border-bottom: none;
+} */
+
+.app-map .sidebar .filters .collapse.show .card-body,
+.app-map .sidebar .filters .collapsing .card-body {
+    border-bottom: 1px solid #FFF;
+}
+
+.app-map .sidebar .card-group {
+    background: transparent;
+}
+
+.app-map .sidebar .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid transparent;
+}
+
+.app-map .sidebar .btn-site {
+    text-align: left;
+    text-transform: none;
+    white-space: normal;
+    border-radius: 0;
+}
+
+.app-map .sidebar .btn-site:hover {
+    background: #111;
 }
 
 .app-map .leaflet-popup-content {

@@ -1,6 +1,5 @@
 var oppv = oppv || {};
 oppv.initMap = (options) => {
-  console.log(options.sites)
   options.filters.forEach(filter => {
     filter.items.forEach(item => {
       Object.assign(item, {
@@ -17,7 +16,8 @@ oppv.initMap = (options) => {
     data: () => {
       return {
         isSidebarCollapsed: false,
-        filters: filters
+        filters: filters,
+        sites: options.sites
       }
     },
     mounted() {
