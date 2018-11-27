@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 {% set active_page = 'gallery' %}
+{% block title %}Galerie photos{% endblock %}
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 {% endblock %}
 
+
 {% block bodyClassNames %}page-gallery{% endblock %}
 
 {% block header_title %}
-<h1>GALERIE PHOTOS</h1>
+<h1>Galerie photos</h1>
 {% endblock %}
 
 {% block content %}

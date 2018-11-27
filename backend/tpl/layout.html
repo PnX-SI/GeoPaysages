@@ -19,7 +19,7 @@
   <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
 
   {% endblock %}
-  <title>{{ titre }}</title>
+  <title>{% block title %}Observatoire photographique des paysages de vanoise{% endblock %}</title>
 </head>
 
 {% set active_page = active_page|default('') -%}
