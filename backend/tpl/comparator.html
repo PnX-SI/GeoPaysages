@@ -21,7 +21,13 @@
 <div class="page-content container-fluid" id="js-app-comparator">
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <div class="img-wrapper" v-for="photo in zoomPhotos">
-      <img :src="photo.lg" />
+      <figure>
+          <img :src="photo.lg" />
+          <figcaption class="sans-serif font-weight-bold mt-2">
+            <span class="d-block" v-html="photo.date"></span>
+            <span class="d-block">{{ site.name_site }}</span>
+          </figcaption>
+      </figure>
     </div>
   </b-modal>
   <div class="row">
