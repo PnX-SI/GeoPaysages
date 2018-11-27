@@ -279,7 +279,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 
 .text-collapse.text-collapsable.text-collapsed .target {
-    max-height: 90px;
+    max-height: 60px;
     overflow: hidden;
 }
 

@@ -53,7 +53,7 @@ def getImage(photo, prefixe, callback):
     return img
 
 def getThumbnail(photo):
-    h = 100
+    h = 150
     def callback(img):
         #initW, initH = image.size
         #ratio = h / initH
