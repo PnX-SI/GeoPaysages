@@ -4,6 +4,7 @@
     --color-blue : #283371;
     --color-green : #7AB929;
     --color-secondary: #6db61e;
+    --color-secondary-light: #72d409;
 }
 
 .swiper-pagination-bullet-active {
@@ -69,6 +70,10 @@ button{
 .btn-secondary {
     background-color: var(--color-secondary);
     border-color: var(--color-secondary);
+}
+.btn-secondary:hover {
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-secondary-light);
 }
 
 .btn-link {
@@ -268,6 +273,38 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     display: none;
 }
 .async.async-resolved .hidden-async-resolved {
+    display: none;
+}
+
+
+.text-collapse.text-collapsable.text-collapsed .target {
+    max-height: 90px;
+    overflow: hidden;
+}
+
+.text-collapse .gradient {
+    /* box-shadow: -1px -5px 10px 0px #ffffff; */
+    z-index: 1;
+    position: relative;
+}
+
+.text-collapse.text-collapsable.text-collapsed .gradient:before {
+    content: "";
+    display: block;
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    bottom: 100%;
+}
+
+.text-collapse.text-collapsable .hidden-text-collapsable,
+.text-collapse:not(.text-collapsable) .visible-text-collapsable {
+    display: none;
+}
+
+.text-collapsable.text-collapsed .hidden-text-collapsed,
+.text-collapsable:not(.text-collapsed) .visible-text-collapsed {
     display: none;
 }
 

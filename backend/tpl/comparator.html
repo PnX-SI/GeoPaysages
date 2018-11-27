@@ -92,12 +92,28 @@
         </div>
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">Description</h5>
-          <div>
-            {{ site.desc_site }}
+          <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
+            <div class="target">
+              {{ site.desc_site }}
+            </div>
+            <div class="gradient text-right visible-text-collapsable pt-3">
+              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+                <span class="visible-text-collapsed">Lire plus</span>
+                <span class="hidden-text-collapsed">Lire moins</span>
+              </button>
+            </div>
           </div>
           <h5 class="text-uppercase mt-5">Témoignage</h5>
-          <div>
-            {{ site.testim_site }}
+          <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
+            <div class="target">
+              {{ site.testim_site }}
+            </div>
+            <div class="gradient text-right visible-text-collapsable pt-3">
+              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+                <span class="visible-text-collapsed">Lire plus</span>
+                <span class="hidden-text-collapsed">Lire moins</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
