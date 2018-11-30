@@ -2,6 +2,7 @@
 @import '~@swimlane/ngx-datatable/release/index.css';
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";
 @import './assets/css/icomoon.css';
 @import './assets/css/custom_ngx_table.scss';
 
@@ -98,10 +99,16 @@ button:focus {
 }
 
 ::placeholder {
+  color: #aaa !important;
   font-style: italic;
   font-size: 14px;
 }
-
+ng-select{
+  .ng-placeholder{
+    font-style: italic;
+    font-size: 14px;
+  }
+}
 .form-control {
   border: none;
   border-radius: 0px;
@@ -162,6 +169,12 @@ button:focus {
 .block:hover .discover {
   transform: translateY(-65px);
 }
+
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  color: #fff;
+  background-color: #47518c;
+}
+
 
 /* End of bootstrap */
 

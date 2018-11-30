@@ -23,7 +23,6 @@ def getImage(photo, prefixe, callback):
         'output_url': url_for('static', filename=DATA_IMAGES_PATH + output_name),
         'image': image
     }
-
     if not(callback is None) and not(output_exists):
         try:
             callback(img)

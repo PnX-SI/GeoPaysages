@@ -13,11 +13,13 @@ import { HeaderComponent } from './header/header.component';
 import { FormErrorComponent } from './shared/form-error.component';
 import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { HomePageComponent } from './home-page/home-page.component';
 import { AddSiteComponent } from './add-site/add-site.component';
 import { SitesService } from './services/sites.service';
 import { AddPhotoComponent } from './add-photo/add-photo.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
@@ -40,7 +42,9 @@ import { AddPhotoComponent } from './add-photo/add-photo.component';
     ReactiveFormsModule,
     NgbModule,
     LeafletModule.forRoot(),
+    LeafletDrawModule.forRoot(),
     NgxDatatableModule,
+    NgSelectModule,
   ],
   providers: [
     LoginService,

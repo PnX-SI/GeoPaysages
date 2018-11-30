@@ -152,6 +152,10 @@ class DicoSthemeSchema(ma.ModelSchema):
     class Meta:
         model = DicoStheme
 
+class CorThemeSthemeSchema(ma.ModelSchema):
+    class Meta:
+        fields = ('id_stheme_theme',)
+
 class LicencePhotoSchema(ma.ModelSchema):
     class Meta:
         fields =('id_licence_photo','name_licence_photo','description_licence_photo')

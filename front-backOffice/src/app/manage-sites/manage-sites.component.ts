@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { tileLayer, latLng, marker, Marker } from 'leaflet';
+import { tileLayer, latLng, Map } from 'leaflet';
 import { SitesService } from '../services/sites.service';
 import * as _ from 'lodash';
 import { _appIdRandomProviderFactory } from '@angular/core/src/application_tokens';
 import { Conf } from './../config';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-manage-sites',
@@ -17,21 +19,20 @@ export class ManageSitesComponent implements OnInit {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
     ],
-    zoom: 6,
-    center: latLng(46.879966, -121.726909)
+    zoom: 10,
+    center: latLng(45.372167, 6.819077)
   };
   rows = [];
   sitesLoaded = false;
-  addSite = false;
 
-  constructor(private siteService: SitesService) { }
+  constructor(private siteService: SitesService,
+    protected router: Router, ) { }
 
   ngOnInit() {
     this.getAllSites();
   }
 
-  onMapReady(map) {
-    // get a local reference to the map as we need it later
+  onMapReady(map: Map) {
     this.map = map;
   }
 
@@ -52,13 +53,12 @@ export class ManageSitesComponent implements OnInit {
   onSelect({ selected }) {
     console.log('Select Event', selected);
   }
+
   onAddSite() {
-    this.addSite = true;
+    this.router.navigate(['sites/form']);
+
   }
 
-  onCancel(event) {
-    this.addSite = event;
-  }
 
 
 }

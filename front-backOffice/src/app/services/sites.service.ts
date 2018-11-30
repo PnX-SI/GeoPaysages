@@ -12,8 +12,8 @@ export class SitesService {
     return this.http.get<any>(Conf.apiUrl + 'sites');
   }
 
-  uploadImage(image) {
-    return this.http.post(Conf.apiUrl + 'upload', image, { reportProgress: true, observe: 'events' });
+  addPhotos(image) {
+    return this.http.post(Conf.apiUrl + 'addPhotos', image, { reportProgress: true, observe: 'events' });
   }
 
   getThemes() {
@@ -22,6 +22,21 @@ export class SitesService {
 
   getSubthemes() {
     return this.http.get<any>(Conf.apiUrl + 'subThemes');
+  }
+
+  getLicences() {
+    return this.http.get<any>(Conf.apiUrl + 'licences');
+  }
+
+  getUsers() {
+    return this.http.get<any>(Conf.apiUrl + 'users');
+  }
+
+  addSite(site) {
+    return this.http.post<any>(Conf.apiUrl + 'addSite', site);
+  }
+  addThemes(themes) {
+    return this.http.post<any>(Conf.apiUrl + 'addThemes', themes);
   }
 }
 

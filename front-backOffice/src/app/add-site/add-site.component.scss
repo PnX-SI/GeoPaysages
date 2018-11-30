@@ -42,3 +42,36 @@
   padding-top: 15px;
 }
 
+.map {
+  height: calc(100vh - 98px);
+  width: 100%;
+}
+
+.col-map {
+  padding: 0;
+  background-color: #e8e8e8;
+}
+
+.col-table {
+  padding: 20px;
+  background-color: #e8e8e8
+}
+
+.is-invalid {
+  border-radius: 4px;
+  border: 1px solid red;
+}
+
+.preview-img {
+  margin-top: 10px;
+  margin-right: 10px;
+  background: no-repeat center;
+  background-size: cover;
+}
+
+.preview {
+  display: flex;
+  align-items: flex-end;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}

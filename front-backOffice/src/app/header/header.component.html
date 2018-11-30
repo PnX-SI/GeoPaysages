@@ -1,6 +1,6 @@
-<nav  class="navbar navbar-expand-lg navbar-light  justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-light  justify-content-between">
   <a class="navbar-brand" routerLink="home">
-     <img src="../assets/images/logo.png" height="97px"> 
+    <img src="../assets/images/logo.png" height="97px">
   </a>
   <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
     aria-controls="collapse">
@@ -9,28 +9,17 @@
   <div class="collapse navbar-collapse" id="collapse" [ngbCollapse]="isCollapsed">
     <ul class="navbar-nav ml-auto">
       <li class="nav-item ">
-        <a class="nav-link "  routerLinkActive="active">Accueil</a>
+        <a class="nav-link " routerLink="/sites" routerLinkActive="active">Gestion sites photos</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link"  routerLinkActive="active">Observations</a>
+        <a class="nav-link" routerLinkActive="active">Gestion page d'acceuil</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link"  routerLinkActive="active">Observateurs</a>
+      <!-- <li class="nav-item">
+        <a class="nav-link ">
+          <span class="icon-exit"></span>
+        </a>
       </li>
-    
-      <li  class="nav-item">
-        <div ngbDropdown class="d-inline-block">
-          <a class="nav-link " id="dropdownBasic1" ngbDropdownToggle>
-            <span class="icon-user"></span>
-           
-          </a>
-
-          <div ngbDropdownMenu aria-labelledby="dropdownBasic1" #userMenu>
-            <button class="dropdown-item" (click)="myProfil()">Mon profil</button>
-            <button class="dropdown-item" (click)="logout()">Se déconnecter</button>
-          </div>
-        </div>
-      </li>
+      -->
     </ul>
   </div>
 </nav>

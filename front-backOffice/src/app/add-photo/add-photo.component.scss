@@ -11,6 +11,7 @@
 
 .image-btn {
   margin-top: 10px;
+  margin-right: 10px;
   width: 80px;
   height: 80px;
   background-color: #ccc;
@@ -47,4 +48,21 @@
   align-items: center;
   justify-content: flex-end;
   margin-bottom: 34px
+}
+
+.icon-trash {
+  color: #777777;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.ng-select.custom ::ng-deep .ng-select-container  {            
+  min-height: 0px;
+  border-radius: 0;
+ 
+}
+
+.is-invalid {
+  border-radius: 4px;
+  border: 1px solid red;
 }

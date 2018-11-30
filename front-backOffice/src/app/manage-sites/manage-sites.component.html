@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-6 col-table">
-      <div *ngIf="!addSite">
+      <div >
         <h4 class="title">Gérer les sites photographiques</h4>
         <button class=" green-btn btn-add" (click)="onAddSite()"> Ajouter un site photo</button>
         <div>
@@ -35,10 +35,9 @@
           </ngx-datatable>
         </div>
       </div>
-      <app-add-site *ngIf="addSite" (cancel)="onCancel($event)"></app-add-site>
     </div>
     <div class="col-6 col-map">
-      <div class="map" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)">
+      <div class="map" leaflet [leafletOptions]="options"  (leafletMapReady)="onMapReady($event)">
       </div>
     </div>
   </div>

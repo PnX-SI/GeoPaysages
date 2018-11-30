@@ -106,4 +106,7 @@
   .icon-calendar:before {
     content: "\e91a";
   }
+  .icon-exit:before {
+    content: "\e91b";
+  }
   
