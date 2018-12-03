@@ -49,7 +49,7 @@
           </b-btn>
         </div>
         {% for i in [0, 1] %}
-        <div class="d-flex align-items-center col-lg-6">
+        <div class="d-flex align-items-end col-lg-6">
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
               <div class="hidden-async-resolved progress">
@@ -95,6 +95,9 @@
           <button class="btn btn-sm btn-primary text-uppercase">
             Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
           </button>
+          <a class="btn btn-sm btn-primary text-uppercase mt-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
+            Faire une observation <i class="icon ion-ios-eye ml-2"></i>
+          </a>
         </div>
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">Description</h5>
