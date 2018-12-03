@@ -410,6 +410,7 @@ footer div:first-child{
 
 footer img{
     height: fit-content;
+    align-self: center;
 }
 
 footer ul{
