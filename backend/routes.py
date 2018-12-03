@@ -59,13 +59,30 @@ def home():
 
 @main.route('/gallery')
 def gallery():
-    get_photos = models.TPhoto.query.all()
+    #TODO query group_by t_site order_by date_photo desc
+    get_photos = models.TPhoto.query.order_by('date_photo').all()
     dump_photos = photo_schema.dump(get_photos).data
-    print(dump_photos)
-    photos = [{
+    #print(dump_photos)
+    
+    photos = []
+    def getPhotoBySite(id):
+        try:
+            photo = next(item for item in photos if item.get('id_site') == id)
+            print(photo is None)
+            return photo
+        except Exception as exception:
+            pass
+
+    for photo in dump_photos:
+        if (getPhotoBySite(photo.get('t_site')) is None):
+            photos.append({
+                'id_site': photo.get('t_site'),
+                'sm': utils.getThumbnail(photo).get('output_url')
+            })
+    """ photos = [{
         'id_site': photo.get('t_site'),
         'sm': utils.getThumbnail(photo).get('output_url')
-    } for photo in dump_photos]
+    } for photo in dump_photos if next(item for item in photos if item.get('id_site') == photo.get('t_site')) is None] """
 
     return render_template('gallery.html', photos=photos)
 
