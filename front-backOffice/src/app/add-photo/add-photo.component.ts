@@ -3,7 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SitesService } from '../services/sites.service';
 import { NgbDatepickerConfig, NgbDatepickerI18n, NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
+
 
 const I18N_VALUES = {
   'fr': {
@@ -77,7 +77,6 @@ export class AddPhotoComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.sitesService.getLicences()
       .subscribe(
         (licences) => {
@@ -115,9 +114,8 @@ export class AddPhotoComponent implements OnInit {
   submitPhoto(photoForm) {
     this.disableButton = true;
     if (photoForm.valid) {
-      photoForm.value.filter_date = moment(photoForm.value.filter_date)
-        .month(photoForm.value.filter_date.month - 1)
-        .format('YYYY-MM-DD');
+      photoForm.value.filter_date = photoForm.value.filter_date.year + '-' + photoForm.value.filter_date.month + '-' +
+       photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
       this.photoModal.emit(photoForm.value);

@@ -33,7 +33,7 @@ export class SitesService {
   }
 
   addSite(site) {
-    return this.http.post<any>(Conf.apiUrl + 'addSite', site);
+    return this.http.post<any>(Conf.apiUrl + 'addSite', site, {withCredentials: true});
   }
   addThemes(themes) {
     return this.http.post<any>(Conf.apiUrl + 'addThemes', themes);

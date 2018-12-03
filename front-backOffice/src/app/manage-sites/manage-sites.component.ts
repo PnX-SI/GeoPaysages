@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { _appIdRandomProviderFactory } from '@angular/core/src/application_tokens';
 import { Conf } from './../config';
 import { Router } from '@angular/router';
-
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-manage-sites',
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./manage-sites.component.scss']
 })
 export class ManageSitesComponent implements OnInit {
-
+  markers = [];
   map;
   options = {
     layers: [
@@ -42,6 +42,7 @@ export class ManageSitesComponent implements OnInit {
         (sites) => {
           _.forEach(sites, (site) => {
             site.main_photo = Conf.staticPicturesUrl + site.main_photo;
+            this.markers.push(L.marker(site.geom));
             this.rows.push(_.pick(site, ['main_photo', 'name_site', 'code_city_site', 'publish_site', 'geom']));
           });
           this.sitesLoaded = true;

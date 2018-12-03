@@ -109,4 +109,6 @@
   .icon-exit:before {
     content: "\e91b";
   }
-  
+  .icon-logout:before {
+    content: "\e91c";
+  }

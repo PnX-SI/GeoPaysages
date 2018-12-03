@@ -49,6 +49,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
   providers: [
     LoginService,
     SitesService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
 })

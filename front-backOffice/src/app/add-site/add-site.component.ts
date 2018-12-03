@@ -61,6 +61,7 @@ export class AddSiteComponent implements OnInit {
   drawControl = new L.Control.Draw();
   previewImage: string | ArrayBuffer;
   cor: any;
+  alert: { type: string; message: string; };
 
 
   constructor(
@@ -184,12 +185,12 @@ export class AddSiteComponent implements OnInit {
   }
 
   submitSite(siteForm) {
+    this.alert = null;
     this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
     this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
     this.sitesService.addSite(this.siteJson).subscribe(
       (site) => {
-        this.addPhotos(Number(site.id_site));
-        this.addThemes(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
+        this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
       }
     );
   }
@@ -206,24 +207,24 @@ export class AddSiteComponent implements OnInit {
   }
 
 
-/*
-  uploadImage() {
-    console.log('this.selectedFile,', this.selectedFiles);
-    const image: FormData = new FormData();
-    _.forEach(this.selectedFiles, (filesItem) => {
-      image.append('image', filesItem, filesItem.name);
-    });
-    this.sitesService.addPhotos(image).subscribe(
-      (event) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          console.log('resUplod', event.loaded);
+  /*
+    uploadImage() {
+      console.log('this.selectedFile,', this.selectedFiles);
+      const image: FormData = new FormData();
+      _.forEach(this.selectedFiles, (filesItem) => {
+        image.append('image', filesItem, filesItem.name);
+      });
+      this.sitesService.addPhotos(image).subscribe(
+        (event) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            console.log('resUplod', event.loaded);
+          }
         }
-      }
-    );
-  }
-*/
+      );
+    }
+  */
 
-  addPhotos(id_site) {
+  addPhotos(id_site, id_theme, id_stheme) {
     const photosData: FormData = new FormData();
     let photoJson;
     _.forEach(this.photos, (photo) => {
@@ -236,8 +237,15 @@ export class AddSiteComponent implements OnInit {
       (event) => {
         if (event.type === HttpEventType.UploadProgress) {
           console.log('resUplod', event.loaded);
+
         }
-      }
+      },
+      err => {
+        console.log('err upload photo', err);
+        this.setAlert(err.error.image);
+      },
+      () => this.addThemes(id_site, id_theme, id_stheme)
+
     );
   }
 
@@ -260,7 +268,20 @@ export class AddSiteComponent implements OnInit {
     this.sitesService.addThemes({ 'data': stheme_theme }).subscribe(
       (response) => {
         console.log('response', response);
+        this.router.navigate(['sites']);
       }
     );
   }
+
+  setAlert(message) {
+    this.alert = {
+      type: 'danger',
+      message: 'La ' + message + ' existe déjà',
+    };
+  }
+
+  close(alert) {
+    this.alert = null;
+  }
 }
+

@@ -3,6 +3,7 @@
   <div class="row">
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="site-block">
+        <ngb-alert *ngIf="alert" [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
         <form [formGroup]="siteForm" (submit)="submitSite(siteForm)">
           <div class="inner-checkbox form-group">
             <div class="label">Publier le site :</div>
@@ -76,7 +77,7 @@
             <div class="preview">
               <app-add-photo (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
               <div *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="80" height="80"
-                  [style.background-image]="'url(' + photo.imgUrl + ')'"></div> 
+                  [style.background-image]="'url(' + photo.imgUrl + ')'"></div>
             </div>
           </div>
           <div>

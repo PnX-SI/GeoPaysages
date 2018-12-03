@@ -10,8 +10,13 @@ export class LoginService {
   }
 
   login(user) {
-    return this.http.post<UserResponse>(Conf.apiUrl + 'auth/login', user);
+    return this.http.post<UserResponse>(Conf.apiUrl + 'auth/login', user, { withCredentials: true });
   }
+
+  logout() {
+    return this.http.get<any>(Conf.apiUrl + 'auth/logout', { withCredentials: true });
+  }
+
 }
 
 

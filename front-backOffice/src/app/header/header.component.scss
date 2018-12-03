@@ -47,7 +47,7 @@ li {
 }
 
 #collapse.show ul li {
-  padding: 5px;
+  padding: 5px 10px;
 }
 
 #collapse.show ul li:first-child {
@@ -55,7 +55,8 @@ li {
 }
 
 #collapse.show ul li:last-child {
-  padding-right: 15px;
+  padding-right: 20px;
+  padding-bottom: 0
 }
 
 .active {
@@ -67,6 +68,6 @@ li {
   font-size: 20px;
 }
 
-.icon-exit{
-  font-size: 24px
+.icon-logout{
+  font-size: 22px
 }
