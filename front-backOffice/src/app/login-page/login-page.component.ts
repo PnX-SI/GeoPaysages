@@ -36,7 +36,7 @@ export class LoginPageComponent implements OnInit {
         (currentUser) => {
           this.currentUser = currentUser.user;
           this.loginForm.reset();
-          this.route.navigate(['gererLesSites']);
+          this.route.navigate(['sites']);
         },
         (err) => {
           console.log('err', err.error);

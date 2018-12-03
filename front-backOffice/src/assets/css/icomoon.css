@@ -103,4 +103,12 @@
   .icon-information:before {
     content: "\e918";
   }
-  
+  .icon-calendar:before {
+    content: "\e91a";
+  }
+  .icon-exit:before {
+    content: "\e91b";
+  }
+  .icon-logout:before {
+    content: "\e91c";
+  }

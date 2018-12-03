@@ -1,27 +1,41 @@
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-5 col-table">
-      <h4 class="title">Gérer les sites photographiques</h4>
-      <button class=" green-btn btn-add"> Ajouter un site photo</button>
+    <div class="col-6 col-table">
       <div>
-        <ngx-datatable class="material" [rows]="rows"
-        [loadingIndicator]="loadingIndicator"
-        [columns]="columns"
-        [columnMode]="'force'"
-        [headerHeight]="40"
-        [summaryPosition]="'bottom'"
-        [footerHeight]="40"
-        [limit]="10"
-        [rowHeight]="'auto'"
-        [reorderable]="reorderable">
+        <button class=" green-btn btn-add" (click)="onAddSite()"> Ajouter un site photo</button>
+        <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" [loadingIndicator]="loadingIndicator"
+          [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
+          [reorderable]="reorderable" [selectionType]="'single'" (select)='onSelect($event)'>
+          <ngx-datatable-column name="Photo">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <img class="main-photo" src="{{row.main_photo}}" alt="" width="80">
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Nom du site" width="400">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.name_site}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Code postal">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.code_city_site}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Publié">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <label class="switch ">
+                <input type="checkbox" class="success" [checked]="row.publish_site" disabled>
+                <span class="slider round"></span>
+              </label>
+            </ng-template>
+          </ngx-datatable-column>
         </ngx-datatable>
       </div>
     </div>
-    <div class="col-7 col-map">
+    <div class="col-6 col-map">
       <div class="map" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)">
       </div>
     </div>
   </div>
-
 </div>

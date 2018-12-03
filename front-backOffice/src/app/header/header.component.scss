@@ -3,7 +3,6 @@
   font-weight: 400;
   padding-bottom: 4px;
   cursor: pointer;
-  text-transform: uppercase
 }
 
 .nav-item {
@@ -25,6 +24,7 @@
 }
 
 .nav-link.active {
+  margin-bottom: -2px;
   border-bottom: 2px solid #00048d
 }
 
@@ -47,7 +47,7 @@ li {
 }
 
 #collapse.show ul li {
-  padding: 5px;
+  padding: 5px 10px;
 }
 
 #collapse.show ul li:first-child {
@@ -55,7 +55,8 @@ li {
 }
 
 #collapse.show ul li:last-child {
-  padding-bottom: 10px;
+  padding-right: 20px;
+  padding-bottom: 0
 }
 
 .active {
@@ -65,4 +66,8 @@ li {
 .icon-user {
   color: gray;
   font-size: 20px;
+}
+
+.icon-logout{
+  font-size: 22px
 }

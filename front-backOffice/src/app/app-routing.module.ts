@@ -7,8 +7,8 @@ import { AddSiteComponent } from './add-site/add-site.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'gererLesSites', component: ManageSitesComponent },
-  { path: 'ajouterUnSite', component: AddSiteComponent },
+  { path: 'sites', component: ManageSitesComponent },
+  { path: 'sites/form', component: AddSiteComponent },
 ];
 
 @NgModule({

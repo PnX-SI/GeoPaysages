@@ -1,77 +1,77 @@
-.container{
-    min-width: 95%;
-    margin-top: 10px !important;
-}
-.LeftPart{
-    background-color: white;
-    padding: 20px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+.site-block {
+  padding: 30px 40px;
+  background: #FFF;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
 }
 
-.add-photo{
-    width: 150px;
-    height: 150px;
-    border: solid 2px #888;
-    position: relative;
+.form-item {
+  margin-bottom: 30px;
+}
+
+.label {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: 'Hind', sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding-right: 12px;
+}
+
+.icon-download {
+  font-size: 12px;
+  padding-right: 6px
 }
 
 
-input.button{
-    overflow: visible;
-    display: flex;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-.add-photo:first-child{
-    background-color: #888;
+.icon-trash {
+  color: #777777;
+  padding-left: 10px;
+  cursor: pointer;
 }
 
-.label{
-    text-transform: uppercase;
-    font-weight: bold;
-    font-family: 'Hind', sans-serif;
-    font-size: 14px;
+.inner-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 34px
 }
 
-.form{
-    margin-bottom: 50px;
+.submit-btn {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 15px;
 }
 
-.green-btn{
-    float: right;
+.map {
+  height: calc(100vh - 98px);
+  width: 100%;
 }
 
-span.edit, span.delete{
-    float: right;
+.col-map {
+  padding: 0;
+  background-color: #e8e8e8;
 }
 
-span.view img{
-    border :solid 2px #777;
-    color: #777;
-    padding: 10px 9px;
+.col-table {
+  padding: 20px;
+  background-color: #e8e8e8
 }
 
-/* RIGHT PART */
-
-
-
-/* MEDIA QUERIES */
-
-@media screen and (max-width: 1375px) {
-    .add-photo{
-        width: 100px;
-        height: 100px;
-    }
+.is-invalid {
+  border-radius: 4px;
+  border: 1px solid red;
 }
 
-@media screen and (max-width: 990px) {
-    .add-photo{
-        width: 150px;
-        height: 150px;
-    }
+.preview-img {
+  margin-top: 10px;
+  margin-right: 10px;
+  background: no-repeat center;
+  background-size: cover;
+}
+
+.preview {
+  display: flex;
+  align-items: flex-end;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
 }

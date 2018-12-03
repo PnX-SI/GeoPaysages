@@ -4,7 +4,8 @@
 }
 
 .col-map {
-  padding: 0
+  padding: 0;
+  background-color: #e8e8e8;
 }
 
 .col-table {
@@ -13,9 +14,16 @@
 }
 
 .title {
-  margin-bottom: 20px
+  margin-bottom: 16px;
+  font-size: 20px;
 }
 
 .btn-add {
   margin-bottom: 20px
 }
+
+.main-photo {
+  margin-left: -14px
+}
+
+

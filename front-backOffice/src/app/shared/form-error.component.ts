@@ -25,15 +25,31 @@ export class FormErrorComponent {
       if (this.errorKey === 'login') {
         return 'Identifant incorrect';
       } else if (this.errorKey === 'required') {
-        return 'Ce champs est requis';
+        return '* Champs requis';
       }
-    } else if (this.controlName === 'password') {
+    }
+    if (this.controlName === 'password') {
       if (this.errorKey === 'password') {
         return 'Mot de passe incorrect';
       } else if (this.errorKey === 'required') {
-        return 'Ce champs est requis';
+        return '* Champs requis';
       }
     }
+    if (this.controlName === 'lat') {
+      if (this.errorKey === 'lat') {
+        return 'Entrer une latitude valide';
+      } else if (this.errorKey === 'required') {
+        return '* Champs requis';
+      }
+    }
+    if (this.controlName === 'lng') {
+      if (this.errorKey === 'lng') {
+        return 'Entrer une longitude valide';
+      } else if (this.errorKey === 'required') {
+        return '* Champs requis';
+      }
+    }
+    return '* Champs requis';
 
   }
 }
