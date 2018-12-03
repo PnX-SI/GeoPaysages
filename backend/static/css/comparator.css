@@ -53,13 +53,13 @@
     cursor: pointer;
 }
 
-.page-comparator .page-content .compared .img-wrapper .btn-zoom {
+.page-comparator .page-content .compared .img-wrapper .img-tools {
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.page-comparator .page-content .compared .btn-zoom {
+.page-comparator .page-content .compared .img-tools .btn {
     text-shadow: #fff;
     text-shadow: 1px 1px 0 #FFF;
 }

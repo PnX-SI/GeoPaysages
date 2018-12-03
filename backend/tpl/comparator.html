@@ -68,6 +68,14 @@
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
               </div>
+              <div class="img-tools">
+                <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
+                  <i class="icon ion-md-download"></i>
+                </b-btn>
+                <b-btn v-on:click="onZoomClick({{ i }})" :size="'lg'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
+                    <i class="icon ion-ios-expand"></i>
+                </b-btn>
+              </div>
             </span>
           </div>
         </div>
