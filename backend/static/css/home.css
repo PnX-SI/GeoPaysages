@@ -37,7 +37,8 @@
     top: 0;
     left: 0;
     display: flex;
-    position: absolute
+    position: absolute;
+    z-index: 2;
 }
 
 .page-home .legend{
@@ -94,7 +95,7 @@
     color: #fff;
     font-style: italic;
     background-color : rgba(103,233,255,0.5);
-    z-index: 9999;
+    z-index: 1;
     transition: transform .5s ease;
 }
 .page-home .discover {
