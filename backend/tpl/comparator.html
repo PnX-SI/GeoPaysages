@@ -42,14 +42,14 @@
       </ul>
     </div> -->
     <div class="col col-main">
-      <div class="row compared">
-        <div class="col-12 p-0 text-right">
+      <div class="row compared pt-3">
+        <!-- <div class="col-12 p-0 text-right">
           <b-btn v-on:click="onZoomClick()" :size="'sm'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
             <i class="material-icons align-middle">fullscreen</i>
           </b-btn>
-        </div>
+        </div> -->
         {% for i in [0, 1] %}
-        <div class="d-flex align-items-end col-lg-6">
+        <div class="d-flex align-items-end col-sm-6">
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
               <div class="hidden-async-resolved progress">
