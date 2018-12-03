@@ -44,6 +44,8 @@ oppv.comparator = (options) => {
             this.textCollapsables = []
             this.textCollapses.forEach(name => {
               let el = this.$refs['text_collapse_' + name]
+              if (!el)
+                return;
               let target = el.getElementsByClassName('target')[0]
               if (target.scrollHeight > target.clientHeight)
                 this.textCollapsables.push(name)

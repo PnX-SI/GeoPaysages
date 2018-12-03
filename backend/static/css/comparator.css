@@ -2,6 +2,14 @@
     position: fixed;
 } */
 
+.page-comparator #header {
+    margin-bottom: 0;
+}
+
+.page-comparator:not(.with-testimonial) .text-collapse.text-collapsable.text-collapsed .target {
+    max-height: 220px;
+}
+
 .page-comparator .page-content {
     padding: 0 90px;
 }

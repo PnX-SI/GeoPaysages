@@ -18,6 +18,7 @@ class TSite(db.Model):
     id_site = db.Column(db.Integer, primary_key=True, server_default=db.FetchedValue())
     name_site = db.Column(db.String)
     desc_site = db.Column(db.String)
+    legend_site = db.Column(db.String)
     testim_site = db.Column(db.String)
     code_city_site = db.Column(db.String)
     alti_site = db.Column(db.Integer)
