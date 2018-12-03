@@ -6,6 +6,7 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />
 
+<script src="{{ url_for('static', filename='vendor/FileSaver.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/swiper/swiper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator.js') }}"></script>
@@ -24,9 +25,12 @@
     <div class="img-wrapper" v-for="photo in zoomPhotos">
       <figure>
           <img :src="photo.lg" />
-          <figcaption class="sans-serif font-weight-bold mt-2">
-            <span class="d-block" v-html="photo.date"></span>
-            <span class="d-block">{{ site.name_site }}</span>
+          <figcaption class="sans-serif font-weight-bold mt-2 clearfix d-flex">
+            <div class="w-100">
+              <span class="d-block" v-html="photo.date"></span>
+              <span class="d-block">{{ site.name_site }}</span>
+            </div>
+            <button class="btn btn-lg btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
           </figcaption>
       </figure>
     </div>

@@ -156,6 +156,9 @@ oppv.comparator = (options) => {
           this.zoomPhotos = this.comparedPhotos
         else
           this.zoomPhotos = [this.comparedPhotos[i]]
+      },
+      onDownloadClick(photo) {
+        window.saveAs(photo.lg, photo.lg.split('/').pop());
       }
     }
   })
