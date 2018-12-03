@@ -1,0 +1,65 @@
+.datatable-scroll {
+  width: 100% !important;
+}
+
+.datatable-row-wrapper {
+  width: 100% !important;
+}
+
+.datatable-body-row {
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  width: 100% !important;
+
+}
+
+.datatable-body-cell {
+  padding: 6px  20px !important;
+}
+
+.datatable-row-wrapper:last-child {
+
+  .datatable-body-row {
+    border-bottom: none !important
+  }
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active,
+.ngx-datatable.material.single-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-selection .datatable-body-row.active .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active .datatable-row-group {
+  background-color: #e8e8e8;
+  color: #FFF;
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.single-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:hover .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:hover,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:hover .datatable-row-group {
+  background-color: #e8e8e8;
+  color: #FFF;
+}
+
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus,
+.ngx-datatable.material.single-selection .datatable-body-row.active:focus .datatable-row-group,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:focus,
+.ngx-datatable.material.multi-selection .datatable-body-row.active:focus .datatable-row-group,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:focus,
+.ngx-datatable.material.multi-click-selection .datatable-body-row.active:focus .datatable-row-group {
+  background-color: #e8e8e8;
+  color: #FFF;
+}
+
+.datatable-row-group {
+  cursor: pointer;
+}
+
+.datatable-body-cell {
+  display: flex !important;
+  align-items: center !important;
+
+}

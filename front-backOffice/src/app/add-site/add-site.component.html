@@ -1,49 +1,105 @@
-<div class="container" style="margin: 0 auto;">
-    <div class="row">
-     <section class="LeftPart ">
-        <div class="row">   
-          <!-- Add images -->
-          <div class="col-lg-12 d-flex justify-content-between flex-wrap" style="margin-bottom: 10px;">
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6 col-table">
+      <div *ngIf="loadForm" class="site-block">
+        <ngb-alert *ngIf="alert" [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+        <form [formGroup]="siteForm" (submit)="submitSite(siteForm)">
+          <div class="inner-checkbox form-group">
+            <div class="label">Publier le site :</div>
+            <label class="switch ">
+              <input formControlName="publish_site" type="checkbox" class="success">
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="row form-item">
+            <div class="col ">
+              <label class="label" for="site-name">Nom du site*</label>
+              <input InputFeedBack type="text" formControlName="name_site" id="site-name" class="form-control"
+                placeholder="nom du site">
+              <app-form-error controlName="name_site" errorKey="required"></app-form-error>
             </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
-            </div>
-            <div class="add-photo">
-              <input type="file" name="Package" accept="image/x-png,image/gif,image/jpeg" class="button">
+            <div class="col">
+              <label class="label" for="city-code">Code postal*</label>
+              <input InputFeedBack type="text" formControlName="code_city_site" id="city-code" class="form-control"
+                placeholder="code postal">
+              <app-form-error controlName="code_city_site" errorKey="required"></app-form-error>
             </div>
           </div>
-          <!-- Forms -->
-          <div class="col-lg-9 form">
-            <span class="label">Description</span>
-            <input type="text" id="description" class="form-control" placeholder="Ecrivez ici la description du site">
+          <div class="row form-item">
+            <div class="col ">
+              <label class="label" for="theme">Thèmes*</label>
+              <ng-select InputFeedBack formControlName="id_theme" [items]="themes" [multiple]="true" [closeOnSelect]="false"
+                bindValue="id_theme" bindLabel="name_theme" placeholder="select thèmes">
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" [checked]="item$.selected" type="checkbox"> {{item.name_theme}}
+                </ng-template>
+              </ng-select>
+              <app-form-error controlName="id_theme" errorKey="required"></app-form-error>
+            </div>
+            <div class="col ">
+              <label class="label" for="sousTheme">Sous-thèmes*</label>
+              <ng-select InputFeedBack formControlName="id_stheme" [items]="selectedSubthemes" [multiple]="true"
+                [closeOnSelect]="false" bindValue="id_stheme" bindLabel="name_stheme" placeholder="select sous-thèmes">
+                <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+                  <input id="item-{{index}}" [checked]="item$.selected" type="checkbox"> {{item.name_stheme}}
+                </ng-template>
+              </ng-select>
+              <app-form-error controlName="id_stheme" errorKey="required"></app-form-error>
+            </div>
           </div>
-          <div class="col-lg-3 form">
-            <span class="label">Thème</span>
-            <input type="text" id="theme" class="form-control" placeholder="Ecrivez ici le thème du site">
+          <div class="row form-item">
+            <div class="col ">
+              <label class="label" for="longitude">Longitude*</label>
+              <input InputFeedBack type="number" formControlName="lng" id="longitude" class="form-control" placeholder="longitude">
+              <app-form-error controlName="lng" errorKey="lng"></app-form-error>
+            </div>
+            <div class="col">
+              <label class="label" for="latitude">Latitude*</label>
+              <input InputFeedBack type="number" formControlName="lat" id="latitude" class="form-control" placeholder="latitude">
+              <app-form-error controlName="lat" errorKey="lat"></app-form-error>
+            </div>
           </div>
-          <div class="col-lg-9 form">
-              <span class="label">Infos pratiques</span>
-              <input type="text" id="infos" class="form-control" placeholder="Ecrivez ici les informations pratiques">
+          <div class="form-group">
+            <label class="label" for="desc">DESCRIPTION*</label>
+            <textarea InputFeedBack class="form-control" formControlName="desc_site" placeholder="Ecrivez ici la description du site"
+              id="desc" rows="3"></textarea>
+            <app-form-error controlName="desc_site" errorKey="required"></app-form-error>
+          </div>
+          <div class="form-group">
+            <label class="label" for="testim">TÉMOIGNAGE*</label>
+            <textarea InputFeedBack class="form-control" formControlName="testim_site" placeholder="Ecrivez ici les témoignages"
+              id="testim" rows="3"></textarea>
+            <app-form-error controlName="testim_site" errorKey="required"></app-form-error>
+          </div>
+          <div class="form-group">
+            <label class="label">Ajouter les Photos</label>
+            <div class="preview">
+              <app-add-photo (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
+              <div *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="80" height="80"
+                  [style.background-image]="'url(' + photo.imgUrl + ')'"></div>
             </div>
-            <div class="col-lg-3 form">
-              <span class="label">Sous-thème</span>
-              <input type="text" id="ss-theme" class="form-control" placeholder="Ecrivez ici le sous-thème du site">
-            </div>
-            <!-- BUTTONS -->
-            <div class="col-lg-12 flex-column">
-              <span class="label">Notice technique pour le photographe</span>
-              <br>
-              <button id="notice" class="blue-btn">Importer la notice technique</button>
-              <br>
-            </div>
-        </div>
-        <button id="valid-site" class="green-btn">Valider la création du site photographique</button>
-     </section>
-  
+          </div>
+          <div>
+            <input class="form-group" formControlName="notice" style="display: none" type="file" (change)=noticeSelect($event)
+              accept="application/pdf" #noticeInput>
+            <button class="blue-btn" (click)="noticeInput.click()"><i class="icon-download"></i> Importer la notice
+              technique</button>
+            <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash" (click)="removeNotice()"></i></div>
+          </div>
+          <div class="submit-btn">
+            <button class="red-btn" type="button" style="margin-right: 15px" (click)=onCancel()>Annuler</button>
+            <button class="green-btn" type="submit">Ajouter</button>
+          </div>
+        </form>
+
+
+      </div>
+    </div>
+    <div class="col-6 col-map">
+      <div class="map " leaflet leafletDraw [leafletOptions]="options" [leafletDrawOptions]="drawOptions"
+        (leafletDrawReady)="onDrawReady($event)" (leafletMapReady)="onMapReady($event)">
+      </div>
     </div>
   </div>
+</div>
