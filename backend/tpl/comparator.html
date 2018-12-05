@@ -6,26 +6,31 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />
 
+<script src="{{ url_for('static', filename='vendor/FileSaver.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/swiper/swiper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator.js') }}"></script>
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">Comparaison de photos - <span class="light">{{ site.name_site }}</span></h3>
+<h3 class="text-uppercase">{{ site.name_site }}</h3>
 {% endblock %}
 
-{% block bodyClassNames %}page-comparator{% endblock %}
+{% block bodyClassNames %}page-comparator {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
 
 {% block content %}
 <div class="page-content container-fluid" id="js-app-comparator">
+  <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <div class="img-wrapper" v-for="photo in zoomPhotos">
       <figure>
           <img :src="photo.lg" />
-          <figcaption class="sans-serif font-weight-bold mt-2">
-            <span class="d-block" v-html="photo.date"></span>
-            <span class="d-block">{{ site.name_site }}</span>
+          <figcaption class="sans-serif font-weight-bold mt-2 clearfix d-flex">
+            <div class="w-100">
+              <span class="d-block" v-html="photo.date"></span>
+              <span class="d-block">{{ site.name_site }}</span>
+            </div>
+            <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
           </figcaption>
       </figure>
     </div>
@@ -42,14 +47,14 @@
       </ul>
     </div> -->
     <div class="col col-main">
-      <div class="row compared">
-        <div class="col-12 p-0 text-right">
+      <div class="row compared pt-3">
+        <!-- <div class="col-12 p-0 text-right">
           <b-btn v-on:click="onZoomClick()" :size="'sm'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
             <i class="material-icons align-middle">fullscreen</i>
           </b-btn>
-        </div>
+        </div> -->
         {% for i in [0, 1] %}
-        <div class="d-flex align-items-center col-lg-6">
+        <div class="d-flex align-items-end col-sm-6">
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
               <div class="hidden-async-resolved progress">
@@ -62,6 +67,14 @@
                 <b-button class="btn-sm btn-toggle btn-big-icon" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
+              </div>
+              <div class="img-tools">
+                <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
+                  <i class="icon ion-md-download"></i>
+                </b-btn>
+                <b-btn v-on:click="onZoomClick({{ i }})" :size="'lg'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
+                    <i class="icon ion-ios-expand"></i>
+                </b-btn>
               </div>
             </span>
           </div>
@@ -95,6 +108,9 @@
           <button class="btn btn-sm btn-primary text-uppercase">
             Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
           </button>
+          <a class="btn btn-sm btn-primary text-uppercase mt-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
+            Faire une observation <i class="icon ion-ios-eye ml-2"></i>
+          </a>
         </div>
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">Description</h5>
@@ -109,6 +125,7 @@
               </button>
             </div>
           </div>
+          {% if site.testim_site %}
           <h5 class="text-uppercase mt-4">Témoignage</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
@@ -121,6 +138,7 @@
               </button>
             </div>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>

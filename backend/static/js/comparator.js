@@ -6,6 +6,7 @@ oppv.comparator = (options) => {
       return {
         pinned: -1,
         nextComparedIndex: 0,
+        comparedPhotoIndexes: [0, 1],
         comparedPhotos: [options.photos[0], options.photos[1]],
         zoomPhotos: [],
         textCollapses: ['description', 'testimonial'],
@@ -43,9 +44,11 @@ oppv.comparator = (options) => {
             this.textCollapsables = []
             this.textCollapses.forEach(name => {
               let el = this.$refs['text_collapse_' + name]
+              if (!el)
+                return;
               let target = el.getElementsByClassName('target')[0]
               if (target.scrollHeight > target.clientHeight)
-              this.textCollapsables.push(name)
+                this.textCollapsables.push(name)
             })
             this.textCollapseds = collapseds
           })
@@ -116,12 +119,32 @@ oppv.comparator = (options) => {
 
         const photo = options.photos[i]
         let comparedIndex = this.nextComparedIndex
-        if (this.pinned > -1)
+        if (this.pinned > -1) {
           comparedIndex = this.getUnpinned()
-        else //increment nextComparedIndex and back to 0 if > comparedPhotos.length
-          this.nextComparedIndex = ++this.nextComparedIndex % this.comparedPhotos.length
+          this.$set(this.comparedPhotos, comparedIndex, Object.assign({}, photo))
+        } else {
+          /* //increment nextComparedIndex and back to 0 if > comparedPhotos.length
+          this.nextComparedIndex = ++this.nextComparedIndex % this.comparedPhotos.length */
+          this.comparedPhotoIndexes.push(i)
+          this.comparedPhotoIndexes.shift()
 
-        this.$set(this.comparedPhotos, comparedIndex, Object.assign({}, photo))
+          let comparedPhotos = this.comparedPhotoIndexes.map(index => {
+            let photo = options.photos[index]
+            return Object.assign({}, photo)
+          })
+
+          comparedPhotos.sort((a, b) => {
+            return a.date < b.date ? -1 : 1
+          })
+
+          this.comparedPhotos = comparedPhotos.map(comparedPhoto => {
+            const oldComparedPhoto = this.comparedPhotos.find(oldComparedPhoto => {
+              return oldComparedPhoto.date == comparedPhoto.date
+            })
+            comparedPhoto.comparedLoaded = Boolean(oldComparedPhoto)
+            return comparedPhoto;
+          })
+        }
       },
       onComparedLoaded(i) {
         this.$set(this.comparedPhotos, i, Object.assign(this.comparedPhotos[i], {
@@ -133,6 +156,9 @@ oppv.comparator = (options) => {
           this.zoomPhotos = this.comparedPhotos
         else
           this.zoomPhotos = [this.comparedPhotos[i]]
+      },
+      onDownloadClick(photo) {
+        window.saveAs(photo.lg, photo.lg.split('/').pop());
       }
     }
   })
