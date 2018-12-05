@@ -11,6 +11,11 @@
       min-width: 600px;
   }
 }
+.delete-modal {
+  .modal-content{
+      min-width: 300px;
+  }
+}
 
 .switch {
   position: relative;
@@ -211,3 +216,17 @@ h5 .light,
 h6 .light {
   font-weight: 500;
 }
+
+.leaflet-popup-content {
+  width: fit-content !important;
+  margin: 0;
+
+  p {
+    margin: 1px 0
+  }
+}
+
+
+.custom-popup{
+  bottom: 26px !important;
+ }

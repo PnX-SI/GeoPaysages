@@ -12,8 +12,20 @@ export class SitesService {
     return this.http.get<any>(Conf.apiUrl + 'sites');
   }
 
+  getsiteById(id) {
+    return this.http.get<any>(Conf.apiUrl + 'site/' + id);
+  }
+
+  deleteSite(id) {
+    return this.http.delete<any>(Conf.apiUrl + 'site/' + id, { withCredentials: true });
+  }
+
   addPhotos(image) {
-    return this.http.post(Conf.apiUrl + 'addPhotos', image, { reportProgress: true, observe: 'events' });
+    return this.http.post<any>(Conf.apiUrl + 'addPhotos', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  }
+
+  deletePhotos(images) {
+    return this.http.post<any>(Conf.apiUrl + 'deletePhotos', images, { withCredentials: true });
   }
 
   getThemes() {
@@ -33,10 +45,15 @@ export class SitesService {
   }
 
   addSite(site) {
-    return this.http.post<any>(Conf.apiUrl + 'addSite', site, {withCredentials: true});
+    return this.http.post<any>(Conf.apiUrl + 'addSite', site, { withCredentials: true });
   }
+
+  updateSite(site) {
+    return this.http.patch<any>(Conf.apiUrl + 'updateSite', site, { withCredentials: true });
+  }
+
   addThemes(themes) {
-    return this.http.post<any>(Conf.apiUrl + 'addThemes', themes);
+    return this.http.post<any>(Conf.apiUrl + 'addThemes', themes, { withCredentials: true });
   }
 }
 

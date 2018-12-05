@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { HttpEventType } from '@angular/common/http';
+import { Router, ActivatedRoute } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { tileLayer, latLng, Map } from 'leaflet';
 import { LatlngValidator } from '../shared/latlng-validator';
+import { Conf } from './../config';
 import * as L from 'leaflet';
 import * as _ from 'lodash';
 
@@ -17,6 +19,7 @@ import * as _ from 'lodash';
 })
 export class AddSiteComponent implements OnInit {
   selectedFiles: File[];
+  modalRef: NgbModalRef;
   selectedSubthemes = [];
   photos = [];
   noticeName: any;
@@ -27,6 +30,7 @@ export class AddSiteComponent implements OnInit {
   subthemes: any;
   loadForm = false;
   map;
+  id_site = null;
   markerCoordinates;
   options = {
     layers: [
@@ -62,28 +66,33 @@ export class AddSiteComponent implements OnInit {
   previewImage: string | ArrayBuffer;
   cor: any;
   alert: { type: string; message: string; };
+  site: any;
+  edit_btn = false;
+  edit_btn_text = 'ÉDITER';
+  submit_btn_text = 'Ajouter';
+  initPhotos: any[];
+  deleted_photos = [];
 
 
   constructor(
     private sitesService: SitesService,
     private formBuilder: FormBuilder,
     protected router: Router,
+    private route: ActivatedRoute,
+    private modalService: NgbModal,
   ) {
-    this.siteForm = this.formBuilder.group({
-      name_site: [null, Validators.required],
-      desc_site: [null, Validators.required],
-      testim_site: [null, Validators.required],
-      publish_site: [false, Validators.required],
-      lng: [null, LatlngValidator.lng],
-      lat: [null, LatlngValidator.lat],
-      id_theme: [null, Validators.required],
-      id_stheme: [null, Validators.required],
-      code_city_site: [null, Validators.required],
-      notice: [null],
-    });
   }
 
   ngOnInit() {
+    this.id_site = this.route.snapshot.params['id'];
+
+    if (this.id_site) {
+      this.getSite(this.id_site);
+      this.submit_btn_text = 'Modifier';
+    } else {
+      this.edit_btn = true;
+      this.initForm();
+    }
     this.sitesService.getThemes()
       .subscribe(
         (themes) => {
@@ -99,25 +108,10 @@ export class AddSiteComponent implements OnInit {
         }
       );
 
-    this.siteForm.controls['id_theme'].statusChanges
-      .subscribe(() => {
-        this.selectedSubthemes = [];
-        this.siteForm.controls['id_stheme'].reset();
-        if (this.siteForm.controls['id_theme'].value.length !== 0) {
-          _.forEach(this.subthemes, (subtheme) => {
-            _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
-              if (_.includes(subtheme.themes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
-                this.selectedSubthemes.push(subtheme);
-              }
-            });
-          });
-        } else {
-          this.selectedSubthemes = this.subthemes;
-        }
-      });
   }
 
   onMapReady(map: Map) {
+    map.scrollWheelZoom.disable();
     L.EditToolbar.Delete.include({
       removeAllLayers: false
     });
@@ -185,14 +179,18 @@ export class AddSiteComponent implements OnInit {
   }
 
   submitSite(siteForm) {
+    console.log('siteForm', siteForm);
     this.alert = null;
     this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
     this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
-    this.sitesService.addSite(this.siteJson).subscribe(
-      (site) => {
-        this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
-      }
-    );
+    this.patchSite(this.siteJson);
+    if (!this.id_site) {
+      this.sitesService.addSite(this.siteJson).subscribe(
+        (site) => {
+          this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
+        }
+      );
+    }
   }
 
   getPhoto(photo) {
@@ -249,7 +247,6 @@ export class AddSiteComponent implements OnInit {
     );
   }
 
-
   addThemes(id_site, themes, sthemes) {
     // tslint:disable-next-line:prefer-const
     let tab_stheme = [];
@@ -282,6 +279,127 @@ export class AddSiteComponent implements OnInit {
 
   close(alert) {
     this.alert = null;
+  }
+
+  getSite(id_site) {
+    this.sitesService.getsiteById(id_site).subscribe(
+      (site) => {
+        console.log('site', site);
+        this.site = site.site[0];
+        _.forEach(site.photos, (photo) => {
+          this.photos.push({ 'id_photo': photo.id, 'imgUrl': Conf.serveurUrl + photo.sm });
+          this.initPhotos = this.photos;
+        });
+      },
+      (err) => console.log('err', err),
+      () => {
+        this.siteForm = this.formBuilder.group({
+          name_site: [this.site.name_site, Validators.required],
+          desc_site: [this.site.desc_site, Validators.required],
+          testim_site: [this.site.testim_site, Validators.required],
+          publish_site: [this.site.publish_site, Validators.required],
+          lng: [this.site.geom[1].toFixed(6), LatlngValidator.lng],
+          lat: [this.site.geom[0].toFixed(6), LatlngValidator.lat],
+          id_theme: [this.site.themes, Validators.required],
+          id_stheme: [this.site.subthemes, Validators.required],
+          code_city_site: [this.site.code_city_site, Validators.required],
+          notice: [null],
+        });
+        this.siteForm.disable();
+        this.themes_onChange();
+      }
+    );
+  }
+
+  initForm() {
+    this.siteForm = this.formBuilder.group({
+      name_site: [null, Validators.required],
+      desc_site: [null, Validators.required],
+      testim_site: [null, Validators.required],
+      publish_site: [false, Validators.required],
+      lng: [null, LatlngValidator.lng],
+      lat: [null, LatlngValidator.lat],
+      id_theme: [null, Validators.required],
+      id_stheme: [null, Validators.required],
+      code_city_site: [null, Validators.required],
+      notice: [null],
+    });
+    this.themes_onChange();
+  }
+
+  themes_onChange() {
+    this.siteForm.controls['id_theme'].statusChanges
+      .subscribe(() => {
+        this.selectedSubthemes = [];
+        this.siteForm.controls['id_stheme'].reset();
+        if (this.siteForm.controls['id_theme'].value && this.siteForm.controls['id_theme'].value.length !== 0) {
+          _.forEach(this.subthemes, (subtheme) => {
+            _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
+              if (_.includes(subtheme.themes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
+                this.selectedSubthemes.push(subtheme);
+              }
+            });
+          });
+        } else {
+          this.selectedSubthemes = this.subthemes;
+        }
+      });
+  }
+
+  patchSite(siteJson) {
+    // tslint:disable-next-line:prefer-const
+    let new_photos = [];
+    console.log('patch', siteJson);
+    _.forEach(this.photos, (photo) => {
+      if (_.has(photo, 'filePhoto')) {
+        new_photos.push(photo);
+      }
+    });
+    this.sitesService.updateSite(siteJson).subscribe(
+      (res) => console.log('resp', res)
+    );
+    console.log('this.photos', this.photos);
+    console.log('new_photos', new_photos);
+    console.log('deleted_photos', this.deleted_photos);
+  }
+
+  editForm() {
+    this.edit_btn = !this.edit_btn;
+    if (!this.edit_btn) {
+      this.edit_btn_text = 'ÉDITER';
+      this.siteForm.disable();
+    } else {
+      this.edit_btn_text = 'Annuler';
+      this.siteForm.enable();
+    }
+    this.siteForm.controls['id_stheme'].setValue(this.site.subthemes);
+  }
+
+  openDeleteModal(content) {
+    this.modalRef = this.modalService.open(content, { windowClass: 'delete-modal', centered: true });
+  }
+
+  cancelDelete() {
+    this.modalRef.close();
+  }
+
+  deletePhoto(photo) {
+    _.remove(this.photos, (item) => {
+      return item === photo;
+    });
+    photo.imgUrl = photo.imgUrl.replace(Conf.staticPicturesUrl, '');
+    this.deleted_photos.push(photo);
+  }
+
+  deleteSite() {
+    this.sitesService.deleteSite(this.id_site).subscribe(
+      (res) => {
+        console.log('res', res);
+        this.router.navigate(['sites']);
+      },
+      (err) => console.log('err delete', err)
+    );
+    this.modalRef.close();
   }
 }
 

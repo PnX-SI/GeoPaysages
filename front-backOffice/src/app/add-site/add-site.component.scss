@@ -23,7 +23,7 @@
 }
 
 
-.icon-trash {
+.remove-file {
   color: #777777;
   padding-left: 10px;
   cursor: pointer;
@@ -36,15 +36,21 @@
   margin-bottom: 34px
 }
 
-.submit-btn {
+.submit-btn-group {
   display: flex;
   justify-content: flex-end;
   padding-top: 15px;
 }
 
+.submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
 .map {
-  height: calc(100vh - 98px);
+  min-height: calc(100vh - 98px);
   width: 100%;
+  height: 100%;
 }
 
 .col-map {
@@ -63,8 +69,8 @@
 }
 
 .preview-img {
-  margin-top: 10px;
-  margin-right: 10px;
+  margin-top: 15px;
+  margin-right: 20px;
   background: no-repeat center;
   background-size: cover;
 }
@@ -74,4 +80,61 @@
   align-items: flex-end;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
+}
+
+.icon-pen,
+.delete-site {
+  padding-right: 6px;
+}
+
+.btn-edit {
+  font-size: 14px;
+  font-weight: 600
+}
+
+.btn-delete {
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 15px
+}
+
+.modal-body {
+  padding: 20px
+}
+
+.modal-header {
+  padding: 10px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  background-color: #ff6666
+}
+
+.cancel-btn {
+  background-color: white;
+  border: 1px solid black;
+  box-shadow: none;
+  padding: 4px 38px;
+  text-transform: uppercase;
+  font-size: 13px;
+  width: fit-content;
+  outline: none
+}
+
+.inner-photo {
+  position: relative;
+}
+
+.delete-photo {
+  position: absolute;
+  top: 7px;
+  color: #ff5252;
+  left: calc(100% - 28px);
+  cursor: pointer;
+}
+
+.active_edit {
+  color: #212529 !important;
+  background-color: #ffc107 !important;
+  border-color: #ffc107 !important;
 }

@@ -2,7 +2,8 @@ from flask import Flask, request, Blueprint, jsonify, url_for
 from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH
 from pypnusershub import routes as fnauth
-
+import fnmatch
+import re
 from pypnusershub import routes
 import models
 import json
@@ -20,6 +21,7 @@ subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 users_schema = user_models.usersViewSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
+themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 
 
 @api.route('/api/sites', methods=['GET'])
@@ -33,7 +35,45 @@ def returnAllSites():
         site['main_photo'] = utils.getThumbnail(
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
-    
+
+
+@api.route('/api/site/<int:id_site>', methods=['GET'])
+def returnSiteById(id_site):
+    get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
+    site = site_schema.dump(get_site_by_id).data
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site=id_site)
+    photos = photo_schema.dump(get_photos_by_site).data
+
+    cor_sthemes_themes = site[0].get('cor_site_stheme_themes')
+    cor_list = []
+    themes_list = []
+    subthemes_list = []
+    for cor in cor_sthemes_themes:
+        cor_list.append(cor.get('id_stheme_theme'))
+    query = models.CorSthemeTheme.query.filter(
+        models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
+    themes_sthemes = themes_sthemes_schema.dump(query).data
+
+    for item in themes_sthemes:
+        if item.get('dico_theme').get('id_theme') not in themes_list:
+            themes_list.append(item.get('dico_theme').get('id_theme'))
+        if item.get('dico_stheme').get('id_stheme') not in subthemes_list:
+            subthemes_list.append(item.get('dico_stheme').get('id_stheme'))
+
+    site[0]['themes'] = themes_list
+    site[0]['subthemes'] = subthemes_list
+
+    def getPhoto(photo):
+        return {
+            'id': photo.get('id_photo'),
+            'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
+            'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
+            'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
+            'date': photo.get('date_photo')
+        }
+
+    photos = [getPhoto(photo) for photo in photos]
+    return jsonify(site=site, photos=photos), 200
 
 
 @api.route('/api/themes', methods=['GET'])
@@ -44,6 +84,27 @@ def returnAllThemes():
         return jsonify(themes), 200
     except Exception as exception:
         return jsonify(error=exception), 400
+
+
+@api.route('/api/site/<int:id_site>', methods=['DELETE'])
+@fnauth.check_auth(6, False, None, None)
+def deleteSite(id_site):
+    base_path = './static/' + DATA_IMAGES_PATH
+    models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
+    photos = models.TPhoto.query.filter_by(id_site=id_site).all()
+    photos = photo_schema.dump(photos).data
+    models.TPhoto.query.filter_by(id_site=id_site).delete()
+    site = models.TSite.query.filter_by(id_site=id_site).delete()
+    for photo in photos:
+        photo_name = photo.get('path_file_photo')
+        for fileName in os.listdir(base_path):
+            if fileName.endswith(photo_name):
+                os.remove(base_path + fileName)
+    db.session.commit()
+    if site:
+        return jsonify('site has been deleted'), 200
+    else:
+        return jsonify('error'), 400
 
 
 @api.route('/api/subThemes', methods=['GET'])
@@ -95,7 +156,19 @@ def add_site():
         return jsonify(error=exception), 400
 
 
+@api.route('/api/updateSite', methods=['PATCH'])
+@fnauth.check_auth(6, False, None, None)
+def update_site():
+    data = dict(request.get_json())
+    site = models.TSite(**data)
+    print('site',data)
+    #db.session.add(site)
+    #db.session.commit()
+    return jsonify(id_site=site.id_site), 200
+
+
 @api.route('/api/addThemes', methods=['POST'])
+@fnauth.check_auth(6, False, None, None)
 def add_cor_site_theme_stheme():
     try:
         data = request.get_json().get('data')
@@ -114,6 +187,7 @@ def add_cor_site_theme_stheme():
 
 
 @api.route('/api/addPhotos', methods=['POST'])
+@fnauth.check_auth(6, False, None, None)
 def upload_file():
     base_path = './static/' + DATA_IMAGES_PATH
     data = request.form.getlist('data')
@@ -123,7 +197,8 @@ def upload_file():
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+            models.TSite.query.filter_by(
+                id_site=d_serialized.get('id_site')).delete()
             db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
         photo = models.TPhoto(**d_serialized)
@@ -132,4 +207,21 @@ def upload_file():
     for image in uploaded_images:
         image.save(os.path.join(base_path + image.filename))
     return jsonify('photo added successfully'), 200
-   
+
+
+@api.route('/api/deletePhotos', methods=['POST'])
+@fnauth.check_auth(6, False, None, None)
+def deletePhotos():
+    base_path = './static/' + DATA_IMAGES_PATH
+    photos = request.get_json()
+    for photo in photos:
+        photos_query = models.TPhoto.query.filter_by(
+            id_photo=photo.get('id_photo')).all()
+        photo_name = photo_schema.dump(
+            photos_query).data[0].get('path_file_photo')
+        models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).delete()
+        for fileName in os.listdir(base_path):
+            if fileName.endswith(photo_name):
+                os.remove(base_path + fileName)
+    db.session.commit()
+    return jsonify('site has been deleted'), 200

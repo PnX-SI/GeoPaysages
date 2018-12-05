@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/lgoin.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,8 +8,9 @@ import { LoginService } from '../services/lgoin.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor(private loginService: LoginService, ) { }
+  isCollapsed = true;
+  constructor(private loginService: LoginService,
+    protected router: Router, ) { }
 
   ngOnInit() {
   }
@@ -16,7 +18,11 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.loginService.logout().subscribe(
       (res) => console.log('res', res),
-      (err) => console.log('errr', err)
+      (err) => {
+        if (err.status === 200) {
+          this.router.navigate(['login']);
+        }
+      }
     );
   }
 }

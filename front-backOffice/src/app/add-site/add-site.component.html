@@ -4,7 +4,10 @@
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="site-block">
         <ngb-alert *ngIf="alert" [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
-        <form [formGroup]="siteForm" (submit)="submitSite(siteForm)">
+        <button *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn" (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>
+        <button *ngIf="id_site" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)"> <i class="icon-trash delete-site"></i>Supprimer
+          le site</button>
+        <form [formGroup]="siteForm" (submit)="submitSite(siteForm)" disabled>
           <div class="inner-checkbox form-group">
             <div class="label">Publier le site :</div>
             <label class="switch ">
@@ -73,23 +76,25 @@
             <app-form-error controlName="testim_site" errorKey="required"></app-form-error>
           </div>
           <div class="form-group">
-            <label class="label">Ajouter les Photos</label>
+            <label class="label">Photos de site*</label>
             <div class="preview">
-              <app-add-photo (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
-              <div *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="80" height="80"
-                  [style.background-image]="'url(' + photo.imgUrl + ')'"></div>
+              <app-add-photo *ngIf="edit_btn || !id_site" (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
+              <div class="inner-photo" *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="100" height="100"
+                  [src]="photo.imgUrl">
+                  <div *ngIf="edit_btn || !id_site" class="icon-cancel-circle delete-photo" (click)="deletePhoto(photo)"></div>
+                </div>
             </div>
           </div>
-          <div>
+          <div *ngIf="edit_btn || !id_site">
             <input class="form-group" formControlName="notice" style="display: none" type="file" (change)=noticeSelect($event)
               accept="application/pdf" #noticeInput>
             <button class="blue-btn" (click)="noticeInput.click()"><i class="icon-download"></i> Importer la notice
               technique</button>
-            <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash" (click)="removeNotice()"></i></div>
+            <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash remove-file" (click)="removeNotice()"></i></div>
           </div>
-          <div class="submit-btn">
+          <div class="submit-btn-group">
             <button class="red-btn" type="button" style="margin-right: 15px" (click)=onCancel()>Annuler</button>
-            <button class="green-btn" type="submit">Ajouter</button>
+            <button class="submit-btn green-btn" type="submit"  [disabled]="!edit_btn">{{submit_btn_text}}</button>
           </div>
         </form>
 
@@ -103,3 +108,19 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="icon-trash"></i></h5>
+  </div>
+  <div class="modal-body">
+      Êtes-vous sûr de vouloir supprimer ce Site ?
+      <br>
+      Sa suppression sera définitive      
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="cancel-btn" style="margin-right: 10px" (click)="cancelDelete()">ANNULER</button>
+    <button type="button" class="green-btn" (click)="deleteSite()" >OUI</button>
+  </div>
+
+</ng-template>
