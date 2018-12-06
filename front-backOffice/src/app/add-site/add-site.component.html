@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="site-block">
-        <ngb-alert *ngIf="alert" [type]="alert.type" (close)="close(alert)">{{ alert.message }}</ngb-alert>
+        <ngb-alert *ngIf="alert" [dismissible]="false" [type]="alert.type" >{{ alert.message }}</ngb-alert>
         <button *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn" (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>
         <button *ngIf="id_site" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)"> <i class="icon-trash delete-site"></i>Supprimer
           le site</button>
@@ -79,6 +79,7 @@
             <label class="label">Photos de site*</label>
             <div class="preview">
               <app-add-photo *ngIf="edit_btn || !id_site" (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
+              <div *ngIf="photoRequired" class="photo-required">* Champs requis</div>
               <div class="inner-photo" *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="100" height="100"
                   [src]="photo.imgUrl">
                   <div *ngIf="edit_btn || !id_site" class="icon-cancel-circle delete-photo" (click)="deletePhoto(photo)"></div>

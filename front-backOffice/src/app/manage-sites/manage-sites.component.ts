@@ -51,15 +51,14 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
               icon: L.icon({
                 iconSize: [25, 41],
                 iconAnchor: [13, 41],
-                iconUrl: '../../assets/marker-icon.png',
-                shadowUrl: '../../assets/marker-shadow.png'
+                iconUrl: './assets/marker-icon.png',
+                shadowUrl: './assets/marker-shadow.png'
               })
             });
             const customPopup = '<div class="title">' + site.name_site + '</div>'
               + '<div class="img-inner"> <img " src=' + site.main_photo + '> </div>';
             const customOptions = {
               'className': 'custom-popup',
-              'closeButton': false
             };
             site.marker = newMarker.bindPopup(customPopup, customOptions);
             newMarker.bindPopup(customPopup, customOptions).on('mouseover', (ev) => {

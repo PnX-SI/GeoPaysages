@@ -72,7 +72,8 @@ export class AddSiteComponent implements OnInit {
   submit_btn_text = 'Ajouter';
   initPhotos: any[];
   deleted_photos = [];
-
+  photoRequired = false;
+  new_photos = [];
 
   constructor(
     private sitesService: SitesService,
@@ -102,7 +103,6 @@ export class AddSiteComponent implements OnInit {
               (subthemes) => {
                 this.subthemes = subthemes;
                 this.selectedSubthemes = this.subthemes;
-                this.loadForm = true;
               }
             );
         }
@@ -179,21 +179,27 @@ export class AddSiteComponent implements OnInit {
   }
 
   submitSite(siteForm) {
-    console.log('siteForm', siteForm);
     this.alert = null;
-    this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
-    this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
-    this.patchSite(this.siteJson);
-    if (!this.id_site) {
-      this.sitesService.addSite(this.siteJson).subscribe(
-        (site) => {
-          this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
-        }
-      );
+    if (siteForm.valid && this.photos.length > 0) {
+      this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
+      this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
+      if (!this.id_site) {
+        this.sitesService.addSite(this.siteJson).subscribe(
+          (site) => {
+            this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
+          }
+        );
+      } else {
+        this.patchSite(this.siteJson, siteForm.value.id_theme, siteForm.value.id_stheme);
+      }
+    } else if (this.photos.length === 0) {
+      this.photoRequired = true;
     }
   }
 
   getPhoto(photo) {
+    this.alert = null;
+    this.photoRequired = false;
     const reader = new FileReader();
     reader.readAsDataURL(photo.photo_file[0]);
     reader.onload = () => {
@@ -225,7 +231,13 @@ export class AddSiteComponent implements OnInit {
   addPhotos(id_site, id_theme, id_stheme) {
     const photosData: FormData = new FormData();
     let photoJson;
-    _.forEach(this.photos, (photo) => {
+    let photos;
+    if (this.id_site) {
+      photos = this.new_photos;
+    } else {
+      photos = this.photos;
+    }
+    _.forEach(photos, (photo) => {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto']);
       photoJson.id_site = id_site;
       photosData.append('image', photo.filePhoto);
@@ -235,7 +247,6 @@ export class AddSiteComponent implements OnInit {
       (event) => {
         if (event.type === HttpEventType.UploadProgress) {
           console.log('resUplod', event.loaded);
-
         }
       },
       err => {
@@ -243,7 +254,6 @@ export class AddSiteComponent implements OnInit {
         this.setAlert(err.error.image);
       },
       () => this.addThemes(id_site, id_theme, id_stheme)
-
     );
   }
 
@@ -277,14 +287,10 @@ export class AddSiteComponent implements OnInit {
     };
   }
 
-  close(alert) {
-    this.alert = null;
-  }
 
   getSite(id_site) {
     this.sitesService.getsiteById(id_site).subscribe(
       (site) => {
-        console.log('site', site);
         this.site = site.site[0];
         _.forEach(site.photos, (photo) => {
           this.photos.push({ 'id_photo': photo.id, 'imgUrl': Conf.serveurUrl + photo.sm });
@@ -293,6 +299,7 @@ export class AddSiteComponent implements OnInit {
       },
       (err) => console.log('err', err),
       () => {
+        this.loadForm = true;
         this.siteForm = this.formBuilder.group({
           name_site: [this.site.name_site, Validators.required],
           desc_site: [this.site.desc_site, Validators.required],
@@ -312,6 +319,7 @@ export class AddSiteComponent implements OnInit {
   }
 
   initForm() {
+    this.loadForm = true;
     this.siteForm = this.formBuilder.group({
       name_site: [null, Validators.required],
       desc_site: [null, Validators.required],
@@ -346,21 +354,21 @@ export class AddSiteComponent implements OnInit {
       });
   }
 
-  patchSite(siteJson) {
-    // tslint:disable-next-line:prefer-const
-    let new_photos = [];
-    console.log('patch', siteJson);
+  patchSite(siteJson, themes, sthemes) {
+    siteJson.id_site = this.id_site;
     _.forEach(this.photos, (photo) => {
       if (_.has(photo, 'filePhoto')) {
-        new_photos.push(photo);
+        this.new_photos.push(photo);
       }
     });
     this.sitesService.updateSite(siteJson).subscribe(
-      (res) => console.log('resp', res)
+      (res) => {
+        if (this.deleted_photos.length > 0) {
+          this.sitesService.deletePhotos(this.deleted_photos).subscribe();
+        }
+        this.addPhotos(this.id_site, themes, sthemes);
+      }
     );
-    console.log('this.photos', this.photos);
-    console.log('new_photos', new_photos);
-    console.log('deleted_photos', this.deleted_photos);
   }
 
   editForm() {
@@ -394,7 +402,6 @@ export class AddSiteComponent implements OnInit {
   deleteSite() {
     this.sitesService.deleteSite(this.id_site).subscribe(
       (res) => {
-        console.log('res', res);
         this.router.navigate(['sites']);
       },
       (err) => console.log('err delete', err)

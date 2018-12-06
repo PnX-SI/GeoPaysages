@@ -35,7 +35,6 @@
     </div>
     <div class="col-6 col-map">
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" 
-       [(leafletZoom)]="zoom"
       [(leafletCenter)]="center"
       (leafletMapReady)="onMapReady($event)">
       </div>

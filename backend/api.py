@@ -23,7 +23,6 @@ users_schema = user_models.usersViewSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 
-
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
     get_all_sites = models.TSite.query.all()
@@ -35,7 +34,6 @@ def returnAllSites():
         site['main_photo'] = utils.getThumbnail(
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
-
 
 @api.route('/api/site/<int:id_site>', methods=['GET'])
 def returnSiteById(id_site):
@@ -75,7 +73,6 @@ def returnSiteById(id_site):
     photos = [getPhoto(photo) for photo in photos]
     return jsonify(site=site, photos=photos), 200
 
-
 @api.route('/api/themes', methods=['GET'])
 def returnAllThemes():
     try:
@@ -85,6 +82,39 @@ def returnAllThemes():
     except Exception as exception:
         return jsonify(error=exception), 400
 
+@api.route('/api/subThemes', methods=['GET'])
+def returnAllSubthemes():
+    try:
+        get_all_subthemes = models.DicoStheme.query.all()
+        subthemes = subthemes_schema.dump(get_all_subthemes).data
+        for sub in subthemes:
+            themes_of_subthemes = []
+            for item in sub.get('cor_stheme_themes'):
+                themes_of_subthemes.append(item.get('id_theme'))
+            sub['themes'] = themes_of_subthemes
+            del sub['cor_stheme_themes']
+        return jsonify(subthemes), 200
+    except Exception as exception:
+        return jsonify(error=exception), 400
+
+@api.route('/api/licences', methods=['GET'])
+def returnAllLicences():
+    try:
+        get_all_licences = models.DicoLicencePhoto.query.all()
+        licences = licences_schema.dump(get_all_licences).data
+        return jsonify(licences), 200
+    except Exception as exception:
+        return jsonify(error=exception), 400
+
+
+@api.route('/api/users', methods=['GET'])
+def returnAllUsers():
+    try:
+        get_all_users = user_models.UsersView.query.all()
+        users = users_schema.dump(get_all_users).data
+        return jsonify(users), 200
+    except Exception as exception:
+        return jsonify(error=exception), 400
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
@@ -106,43 +136,6 @@ def deleteSite(id_site):
     else:
         return jsonify('error'), 400
 
-
-@api.route('/api/subThemes', methods=['GET'])
-def returnAllSubthemes():
-    try:
-        get_all_subthemes = models.DicoStheme.query.all()
-        subthemes = subthemes_schema.dump(get_all_subthemes).data
-        for sub in subthemes:
-            themes_of_subthemes = []
-            for item in sub.get('cor_stheme_themes'):
-                themes_of_subthemes.append(item.get('id_theme'))
-            sub['themes'] = themes_of_subthemes
-            del sub['cor_stheme_themes']
-        return jsonify(subthemes), 200
-    except Exception as exception:
-        return jsonify(error=exception), 400
-
-
-@api.route('/api/licences', methods=['GET'])
-def returnAllLicences():
-    try:
-        get_all_licences = models.DicoLicencePhoto.query.all()
-        licences = licences_schema.dump(get_all_licences).data
-        return jsonify(licences), 200
-    except Exception as exception:
-        return jsonify(error=exception), 400
-
-
-@api.route('/api/users', methods=['GET'])
-def returnAllUsers():
-    try:
-        get_all_users = user_models.UsersView.query.all()
-        users = users_schema.dump(get_all_users).data
-        return jsonify(users), 200
-    except Exception as exception:
-        return jsonify(error=exception), 400
-
-
 @api.route('/api/addSite', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def add_site():
@@ -159,31 +152,28 @@ def add_site():
 @api.route('/api/updateSite', methods=['PATCH'])
 @fnauth.check_auth(6, False, None, None)
 def update_site():
-    data = dict(request.get_json())
-    site = models.TSite(**data)
-    print('site',data)
-    #db.session.add(site)
-    #db.session.commit()
-    return jsonify(id_site=site.id_site), 200
+    site = request.get_json()
+    print('site',site)
+    models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
+    models.TSite.query.filter_by(id_site= site.get('id_site')).update(site)
+    db.session.commit()
+    return jsonify('site updated successfully'), 200
 
 
 @api.route('/api/addThemes', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def add_cor_site_theme_stheme():
-    try:
-        data = request.get_json().get('data')
-        for d in data:
-            get_id_stheme_theme = models.CorSthemeTheme.query.filter_by(
-                id_theme=d.get('id_theme'), id_stheme=d.get('id_stheme')).all()
-            id_stheme_theme = corThemeStheme_Schema.dump(
-                get_id_stheme_theme).data
-            id_stheme_theme[0]['id_site'] = d.get('id_site')
-            site_theme_stheme = models.CorSiteSthemeTheme(**id_stheme_theme[0])
-            db.session.add(site_theme_stheme)
-            db.session.commit()
-        return jsonify('success'), 200
-    except Exception as exception:
-        return jsonify(error=exception), 400
+    data = request.get_json().get('data')
+    for d in data:
+        get_id_stheme_theme = models.CorSthemeTheme.query.filter_by(
+            id_theme=d.get('id_theme'), id_stheme=d.get('id_stheme')).all()
+        id_stheme_theme = corThemeStheme_Schema.dump(
+            get_id_stheme_theme).data
+        id_stheme_theme[0]['id_site'] = d.get('id_site')
+        site_theme_stheme = models.CorSiteSthemeTheme(**id_stheme_theme[0])
+        db.session.add(site_theme_stheme)
+        db.session.commit()
+    return jsonify('success'), 200
 
 
 @api.route('/api/addPhotos', methods=['POST'])
@@ -197,8 +187,8 @@ def upload_file():
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            models.TSite.query.filter_by(
-                id_site=d_serialized.get('id_site')).delete()
+            models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
+            models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
             db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
         photo = models.TPhoto(**d_serialized)
@@ -220,8 +210,8 @@ def deletePhotos():
         photo_name = photo_schema.dump(
             photos_query).data[0].get('path_file_photo')
         models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).delete()
+        db.session.commit()
         for fileName in os.listdir(base_path):
             if fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
-    db.session.commit()
     return jsonify('site has been deleted'), 200
