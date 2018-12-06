@@ -115,7 +115,7 @@ export class AddPhotoComponent implements OnInit {
     this.disableButton = true;
     if (photoForm.valid) {
       photoForm.value.filter_date = photoForm.value.filter_date.year + '-' + photoForm.value.filter_date.month + '-' +
-       photoForm.value.filter_date.day;
+        photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
       this.photoModal.emit(photoForm.value);

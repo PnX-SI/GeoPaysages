@@ -14,7 +14,7 @@ export class LoginService {
   }
 
   logout() {
-    return this.http.get<any>(Conf.apiUrl + 'auth/logout', { withCredentials: true });
+    return this.http.post<any>(Conf.apiUrl + 'auth/logout', { withCredentials: true });
   }
 
 }

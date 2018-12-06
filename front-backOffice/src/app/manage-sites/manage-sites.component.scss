@@ -1,5 +1,6 @@
 .map {
-  height: calc(100vh - 98px);
+  min-height: calc(100vh - 98px);
+  height: 100%;
   width: 100%;
 }
 
@@ -25,5 +26,4 @@
 .main-photo {
   margin-left: -14px
 }
-
 

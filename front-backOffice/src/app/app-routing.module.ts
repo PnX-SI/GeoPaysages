@@ -9,6 +9,9 @@ const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'sites', component: ManageSitesComponent },
   { path: 'sites/form', component: AddSiteComponent },
+  { path: 'sites/details/:id', component: AddSiteComponent},
+  { path: '', component: LoginPageComponent },
+  { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
