@@ -7,14 +7,19 @@
 @import './assets/css/custom_ngx_table.scss';
 
 .custom-modal {
-  .modal-content{
-      min-width: 600px;
+  .modal-content {
+    min-width: 600px;
   }
-}
-.delete-modal {
-  .modal-content{
-      min-width: 300px;
+
+  .modal-body {
+    padding: 20px
   }
+
+  .modal-header {
+    padding: 15px;
+    background-color: #f8f9fa
+  }
+
 }
 
 .switch {
@@ -108,12 +113,14 @@ button:focus {
   font-style: italic;
   font-size: 14px;
 }
-ng-select{
-  .ng-placeholder{
+
+ng-select {
+  .ng-placeholder {
     font-style: italic;
     font-size: 14px;
   }
 }
+
 .form-control {
   border: none;
   border-radius: 0px;
@@ -140,6 +147,7 @@ ng-select{
   font-size: 13px;
   width: fit-content;
 }
+
 .red-btn {
   background-color: var(--color-red);
   color: #fff;
@@ -148,7 +156,7 @@ ng-select{
   text-transform: uppercase;
   font-size: 13px;
   width: fit-content;
-} 
+}
 
 .progress-bar {
   background-color: var(--color-primary);
@@ -226,7 +234,36 @@ h6 .light {
   }
 }
 
+.delete-modal {
 
-.custom-popup{
+  .modal-content {
+    min-width: 300px;
+  }
+
+  .modal-body {
+    padding: 20px
+  }
+
+  .modal-header {
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    background-color: #ff6666
+  }
+
+  .cancel-btn {
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: none;
+    padding: 4px 38px;
+    text-transform: uppercase;
+    font-size: 13px;
+    width: fit-content;
+    outline: none
+  }
+}
+
+.custom-popup {
   bottom: 26px !important;
- }
+}

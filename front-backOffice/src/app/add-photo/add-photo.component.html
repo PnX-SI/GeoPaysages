@@ -1,11 +1,16 @@
-<button class="image-btn" type="button" (click)="openPhotoModal(content)"><i class="icon-cross"></i></button>
+<button *ngIf="!inputImage" class="image-btn" type="button" (click)="openPhotoModal(content)"><i class="icon-cross"></i></button>
+<button *ngIf="inputImage" class="gallery" [style.background-image]="'url(' + inputImage.sm + ')'" type="button"
+  (click)="openPhotoModal(content)"></button>
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h5 class="modal-title">Ajouter une photo</h5>
+    <h5 class="modal-title">{{title}} </h5>
   </div>
   <form *ngIf="loadForm" [formGroup]="photoForm" (submit)="submitPhoto(photoForm)">
     <div class="modal-body">
+      <button *ngIf="inputImage" type="button" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(photoModal)">
+        <i class="icon-trash delete-photo"></i>Supprimer
+        la photo</button>
       <div class="inner-checkbox form-group">
         <div class="label">Afficher la photo :</div>
         <label class="switch ">
@@ -16,9 +21,9 @@
       <div class="row form-item">
         <div class="col ">
           <label class="label" for="auteur">Auteur*</label>
-          <select  InputFeedBack id="auteur" formControlName="id_role" class="form-control">
+          <select InputFeedBack id="auteur" formControlName="id_role" class="form-control">
             <option class="select-placeholder" value="">---</option>
-            <option  *ngFor="let author of authors" [ngValue]="author.id_role" >{{author.nom_role}}</option>
+            <option *ngFor="let author of authors" [ngValue]="author.id_role">{{author.nom_role}}</option>
           </select>
           <app-form-error controlName="id_role" errorKey="required"></app-form-error>
         </div>
@@ -26,7 +31,7 @@
           <label class="label" for="licence">Licence*</label>
           <select InputFeedBack id="licence" formControlName="id_licence_photo" class="form-control">
             <option class="select-placeholder" value="">---</option>
-            <option *ngFor="let licence of licences"[ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
+            <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
           </select>
           <app-form-error controlName="id_licence_photo" errorKey="required"></app-form-error>
         </div>
@@ -40,7 +45,8 @@
         <div class="col ">
           <label class="label" for="sousTheme">Date filtre*</label>
           <div class="input-group">
-            <input InputFeedBack formControlName="filter_date" type="date" class="form-control" placeholder="yyyy-mm-dd" ngbDatepicker #dto="ngbDatepicker">
+            <input InputFeedBack formControlName="filter_date" type="date" class="form-control" placeholder="yyyy-mm-dd"
+              ngbDatepicker #dto="ngbDatepicker">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" (click)="dto.toggle()" type="button">
                 <i class="icon-calendar"></i>
@@ -52,18 +58,42 @@
       </div>
       <div class="form-group">
         <label class="label" for="desc">Légende photo*</label>
-        <textarea InputFeedBack class="form-control" formControlName="legende_photo" placeholder="Ecrivez ici le commentaire" id="desc" rows="2"></textarea>
+        <textarea InputFeedBack class="form-control" formControlName="legende_photo" placeholder="Ecrivez ici le commentaire"
+          id="desc" rows="2"></textarea>
         <app-form-error controlName="legende_photo" errorKey="required"></app-form-error>
       </div>
-      <input InputFeedBack style="display: none" formControlName="photo_file" accept="image/x-png,image/gif,image/jpeg" type="file"
-        (change)=onFileSelected($event) #iamgeInput>
-      <button class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer une photo</button>
+      <input InputFeedBack style="display: none" formControlName="photo_file" accept="image/x-png,image/gif,image/jpeg"
+        type="file" (change)=onFileSelected($event) #iamgeInput>
+      <button type="button" *ngIf="!imageLaoded" class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer
+        une photo</button>
       <app-form-error controlName="photo_file" errorKey="required"></app-form-error>
-      <div *ngIf="imageLaoded" style="padding: 10px">{{imageName}}<i class="icon-trash" (click)="removeImage()"></i></div>
+      <div *ngIf="imageLaoded" style="color: #00188F;"><i class="icon-camera"></i>{{imageName}}<i class="icon-trash remove-file "
+          (click)="removeImage()"></i></div>
+      <ngb-alert class='alert' *ngIf="alert" [dismissible]="false" type="danger">{{alert}}</ngb-alert>
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox"   formControlName='main_photo' class="custom-control-input" id="customCheck1">
+        <label class="custom-control-label" for="customCheck1">Photo principale</label>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" class="red-btn" style="margin-right: 10px" (click)="onCancel()">Annuler</button>
-      <button type="submit" class="green-btn" [disabled]="disableButton" >Ajouter</button>
+      <button type="submit" class="green-btn" [disabled]="disableButton">{{btn_text}}</button>
     </div>
   </form>
+</ng-template>
+
+
+<ng-template #photoModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="icon-trash"></i></h5>
+  </div>
+  <div class="modal-body">
+    Êtes-vous sûr de vouloir supprimer cette photo ?
+    <br>
+    Sa suppression sera définitive
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="cancel-btn" style="margin-right: 10px" (click)="cancelDelete()">ANNULER</button>
+    <button type="button" class="green-btn" (click)="deletePhoto()">OUI</button>
+  </div>
 </ng-template>

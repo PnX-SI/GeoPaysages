@@ -1,0 +1,60 @@
+.picture {
+  padding: 20px 10px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+
+.thumb {
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.photos {
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-top: 30px;
+  height: fit-content;
+}
+
+.site-title {
+  text-align: left;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #dedede;
+  background-color: #434343;
+  border: 1px solid #7d7b7b;
+}
+
+.site-title:hover {
+  color: white;
+  background-color: #2f2f2f;
+}
+
+.site-title:focus {
+  color: white;
+  background-color: #2f2f2f;
+  border: 1px solid #7d7b7b;
+  outline: 0;
+}
+
+.list-site {
+  background: rgba(0, 0, 0, .8);
+  padding: 30px 15px;
+
+}
+
+.inner {
+  min-height: calc(100vh - 98px);
+}
+
+.icon-star-full {
+  position: absolute;
+  z-index: 999;
+  top: 5px;
+  right: 15px;
+  color: #00188F;
+}

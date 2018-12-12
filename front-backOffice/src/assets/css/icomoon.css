@@ -145,3 +145,10 @@
 .icon-cancel-circle:before {
   content: "\e91d";
 }
+
+.icon-star-full:before {
+  content: "\e91e";
+}
+.icon-eye-blocked:before {
+  content: "\e91f";
+}

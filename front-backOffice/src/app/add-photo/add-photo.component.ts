@@ -1,9 +1,11 @@
-import { Component, OnInit, Injectable, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Injectable, Output, Input, EventEmitter } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import { FormService } from '../services/form.service';
 import { SitesService } from '../services/sites.service';
 import { NgbDatepickerConfig, NgbDatepickerI18n, NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-
+import * as moment from 'moment';
+import * as _ from 'lodash';
 
 const I18N_VALUES = {
   'fr': {
@@ -54,26 +56,20 @@ export class AddPhotoComponent implements OnInit {
   imageLaoded = false;
   private modalRef: NgbModalRef;
   disableButton = false;
+  btn_text = 'Ajouter';
+  title = 'Ajouter une Photo';
+  alert;
   @Output() photoModal = new EventEmitter();
+  @Input() inputImage = null;
 
   constructor(
     private modalService: NgbModal,
     private sitesService: SitesService,
-    private formBuilder: FormBuilder,
+    public formService: FormService,
     public calendar: NgbCalendar,
     datePickerConfig: NgbDatepickerConfig,
   ) {
     datePickerConfig.outsideDays = 'hidden';
-    this.photoForm = this.formBuilder.group({
-      id_role: [null, Validators.required],
-      display_gal_photo: [false, Validators.required],
-      id_licence_photo: [null, Validators.required],
-      date_photo: [null, Validators.required],
-      legende_photo: [null, Validators.required],
-      filter_date: [null, Validators.required],
-      photo_file: [null, Validators.required],
-    });
-
   }
 
   ngOnInit() {
@@ -85,11 +81,46 @@ export class AddPhotoComponent implements OnInit {
             .subscribe(
               (users) => {
                 this.authors = users;
+                this.initForm();
+                if (this.inputImage) {
+                  this.title = 'Modifier la Photo';
+                  this.btn_text = 'Modifier';
+                  this.updateForm();
+                }
                 this.loadForm = true;
               }
             );
         }
       );
+  }
+
+  initForm() {
+    this.loadForm = true;
+    this.photoForm = this.formService.initFormPhoto();
+  }
+
+  updateForm() {
+    const dateF = moment(this.inputImage.filter_date).toDate();
+    const filter_date_format = {
+      'year': moment(dateF).year(),
+      month: moment(dateF).month() + 1,
+      day: Number(moment(dateF).format('DD')),
+    };
+    this.photoForm.patchValue({
+      'id_role': this.inputImage.t_role,
+      'display_gal_photo': this.inputImage.display_gal_photo,
+      'id_licence_photo': this.inputImage.dico_licence_photo.id_licence_photo,
+      'date_photo': this.inputImage.date_photo,
+      'legende_photo': this.inputImage.legende_photo,
+      'filter_date': filter_date_format,
+      'photo_file': this.inputImage.photo_file,
+      'main_photo': this.inputImage.main_photo,
+    });
+    if (this.inputImage.main_photo === true) {
+      this.photoForm.controls['main_photo'].disable();
+    }
+    this.imageLaoded = true;
+    this.imageName = this.inputImage.path_file_photo;
   }
 
   openPhotoModal(content) {
@@ -101,6 +132,7 @@ export class AddPhotoComponent implements OnInit {
     if (event.target.files && event.target.files.length > 0) {
       this.imageName = event.target.files[0].name;
       this.imageLaoded = true;
+      this.alert = null;
     }
   }
 
@@ -112,26 +144,81 @@ export class AddPhotoComponent implements OnInit {
   }
 
   submitPhoto(photoForm) {
-    this.disableButton = true;
-    if (photoForm.valid) {
+    this.alert = null;
+    if (photoForm.valid && this.imageName) {
       photoForm.value.filter_date = photoForm.value.filter_date.year + '-' + photoForm.value.filter_date.month + '-' +
         photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
-      this.photoModal.emit(photoForm.value);
-      this.photoForm.reset();
-      this.removeImage();
-      this.photoForm.controls['display_gal_photo'].setValue(false);
-      this.modalRef.close();
+      if (this.inputImage) {
+        this.updatePhoto(photoForm);
+      } else {
+        this.photoModal.emit(photoForm.value);
+        this.photoForm.reset();
+        this.removeImage();
+        this.photoForm.controls['display_gal_photo'].setValue(false);
+        this.modalRef.close();
+        this.disableButton = false;
+      }
     } else {
       console.log('invalid form');
       this.disableButton = false;
+      if (!this.imageName) {
+        this.alert = 'Veuillez importer une photo ';
+      }
     }
 
   }
   onCancel() {
+    this.alert = null;
     this.modalRef.close();
-    this.photoForm.reset();
+    if (!this.inputImage) {
+      this.photoForm.reset();
+      this.photoForm.controls['display_gal_photo'].setValue(false);
+    } else {
+      this.updateForm();
+    }
+  }
+
+  openDeleteModal(photoModal) {
+    this.modalRef.close();
+    this.modalRef = this.modalService.open(photoModal, { windowClass: 'delete-modal', centered: true });
+  }
+
+  cancelDelete() {
+    this.modalRef.close();
+  }
+
+  deletePhoto() {
+    this.sitesService.deletePhotos([this.inputImage]).subscribe(
+      () => {
+        this.photoModal.emit({ 'type': 'delete', 'data': this.inputImage.id_photo });
+        this.modalRef.close();
+      }
+    );
+  }
+
+  updatePhoto(photoForm) {
+    const photo: FormData = new FormData();
+    let photoJson: any = {};
+    photoJson = photoForm.value;
+    photoJson.id_site = this.inputImage.t_site;
+    photoJson.id_photo = this.inputImage.id_photo;
+    photoJson = _.omit(photoJson, ['photo_file']);
+    if (this.selectedPhoto) {
+      photo.append('image', this.selectedPhoto[0]);
+    }
+    photo.append('data', JSON.stringify(photoJson));
+    this.sitesService.updatePhoto(photo).subscribe(
+      () => {
+        this.modalRef.close();
+        this.disableButton = false;
+      },
+      (err) => console.log('err', err),
+      () => {
+        this.photoModal.emit({ 'type': 'update', 'data': photoJson });
+      }
+    );
   }
 
 }
