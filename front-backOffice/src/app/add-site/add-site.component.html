@@ -23,7 +23,7 @@
               <app-form-error controlName="name_site" errorKey="required"></app-form-error>
             </div>
             <div class="col">
-              <label class="label" for="city-code">Code postal*</label>
+              <label class="label" for="city-code">Code commune*</label>
               <input InputFeedBack type="text" formControlName="code_city_site" id="city-code" class="form-control"
                 placeholder="code postal">
               <app-form-error controlName="code_city_site" errorKey="required"></app-form-error>
@@ -89,7 +89,7 @@
           <div *ngIf="edit_btn || !id_site">
             <input class="form-group" formControlName="notice" style="display: none" type="file" (change)=noticeSelect($event)
               accept="application/pdf" #noticeInput>
-            <button class="blue-btn" (click)="noticeInput.click()"><i class="icon-download"></i> Importer la notice
+            <button class="blue-btn" type="button" (click)="noticeInput.click()"><i class="icon-download"></i> Importer la notice
               technique</button>
             <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash remove-file" (click)="removeNotice()"></i></div>
           </div>
@@ -103,7 +103,7 @@
       </div>
     </div>
     <div class="col-6 col-map">
-      <div class="map " leaflet leafletDraw [leafletOptions]="options" [leafletDrawOptions]="drawOptions"
+      <div class="map " leaflet leafletDraw [leafletOptions]="options" [leafletLayers]="marker" [(leafletCenter)]="center" [leafletDrawOptions]="drawOptions"
         (leafletDrawReady)="onDrawReady($event)" (leafletMapReady)="onMapReady($event)">
       </div>
     </div>
@@ -123,5 +123,4 @@
     <button type="button" class="cancel-btn" style="margin-right: 10px" (click)="cancelDelete()">ANNULER</button>
     <button type="button" class="green-btn" (click)="deleteSite()" >OUI</button>
   </div>
-
 </ng-template>

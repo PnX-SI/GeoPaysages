@@ -15,11 +15,12 @@ import { ManageSitesComponent } from './manage-sites/manage-sites.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { HomePageComponent } from './home-page/home-page.component';
 import { AddSiteComponent } from './add-site/add-site.component';
 import { SitesService } from './services/sites.service';
+import { FormService } from './services/form.service';
 import { AddPhotoComponent } from './add-photo/add-photo.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { GalleryComponent } from './gallery/gallery.component';
 
 
 
@@ -31,9 +32,9 @@ import { NgSelectModule } from '@ng-select/ng-select';
     HeaderComponent,
     FormErrorComponent,
     ManageSitesComponent,
-    HomePageComponent,
     AddSiteComponent,
     AddPhotoComponent,
+    GalleryComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +51,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
   providers: [
     LoginService,
     SitesService,
+    FormService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

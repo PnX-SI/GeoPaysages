@@ -24,6 +24,10 @@ export class SitesService {
     return this.http.post<any>(Conf.apiUrl + 'addPhotos', image, { withCredentials: true, reportProgress: true, observe: 'events' });
   }
 
+  updatePhoto(image) {
+    return this.http.patch<any>(Conf.apiUrl + 'updatePhoto', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  }
+
   deletePhotos(images) {
     return this.http.post<any>(Conf.apiUrl + 'deletePhotos', images, { withCredentials: true });
   }
@@ -54,6 +58,10 @@ export class SitesService {
 
   addThemes(themes) {
     return this.http.post<any>(Conf.apiUrl + 'addThemes', themes, { withCredentials: true });
+  }
+
+  getgallery() {
+    return this.http.get<any>(Conf.apiUrl + 'gallery');
   }
 }
 

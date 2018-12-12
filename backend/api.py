@@ -22,15 +22,25 @@ licences_schema = models.LicencePhotoSchema(many=True)
 users_schema = user_models.usersViewSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+ville_schema = models.VilleSchema(many=True)
+
 
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
-    get_all_sites = models.TSite.query.all()
+    get_all_sites = models.TSite.query.order_by('name_site').all()
     sites = site_schema.dump(get_all_sites).data
     for site in sites:
-        get_photo = models.TPhoto.query.filter_by(
-            id_photo=site.get('t_photos')[0])
-        main_photo = photo_schema.dump(get_photo).data
+        get_main_photo = models.TPhoto.query.filter_by(
+            id_photo=site.get('main_photo'))
+        '''
+        get_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(site.get('t_photos')))
+        dump_photos = photo_schema.dump(get_photos).data
+        for photo in dump_photos :
+            photo['sm'] = utils.getThumbnail(photo).get('output_name'),
+        site['photos'] = dump_photos
+        '''
+        main_photo = photo_schema.dump(get_main_photo).data
         site['main_photo'] = utils.getThumbnail(
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
@@ -39,8 +49,8 @@ def returnAllSites():
 def returnSiteById(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
     site = site_schema.dump(get_site_by_id).data
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site=id_site)
-    photos = photo_schema.dump(get_photos_by_site).data
+    get_photos_by_site = models.TPhoto.query.order_by('filter_date').filter_by(id_site=id_site).all()
+    dump_photos = photo_schema.dump(get_photos_by_site).data
 
     cor_sthemes_themes = site[0].get('cor_site_stheme_themes')
     cor_list = []
@@ -61,17 +71,20 @@ def returnSiteById(id_site):
     site[0]['themes'] = themes_list
     site[0]['subthemes'] = subthemes_list
 
-    def getPhoto(photo):
-        return {
-            'id': photo.get('id_photo'),
-            'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
-            'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
-            'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
-            'date': photo.get('date_photo')
-        }
+    for photo in dump_photos :
+        photo['sm'] = utils.getThumbnail(photo).get('output_name'),
 
-    photos = [getPhoto(photo) for photo in photos]
+    photos = dump_photos
     return jsonify(site=site, photos=photos), 200
+
+@api.route('/api/gallery')
+def gallery():
+  
+    get_photos = models.TPhoto.query.order_by('id_site').all()
+    dump_photos = photo_schema.dump(get_photos).data
+    for photo in dump_photos :
+        photo['sm'] = utils.getThumbnail(photo).get('output_name'),
+    return jsonify(dump_photos), 200
 
 @api.route('/api/themes', methods=['GET'])
 def returnAllThemes():
@@ -153,7 +166,6 @@ def add_site():
 @fnauth.check_auth(6, False, None, None)
 def update_site():
     site = request.get_json()
-    print('site',site)
     models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
     models.TSite.query.filter_by(id_site= site.get('id_site')).update(site)
     db.session.commit()
@@ -199,6 +211,30 @@ def upload_file():
     return jsonify('photo added successfully'), 200
 
 
+@api.route('/api/updatePhoto', methods=['PATCH'])
+@fnauth.check_auth(6, False, None, None)
+def update_photo():
+    base_path = './static/' + DATA_IMAGES_PATH
+    data = request.form.get('data')
+    image = request.files.get('image')
+    data_serialized = json.loads(data)
+    photos_query = models.TPhoto.query.filter_by(id_photo=data_serialized.get('id_photo')).all()
+    photo_name = photo_schema.dump(photos_query).data[0].get('path_file_photo')
+    print('data_serialized', data_serialized)
+    if (data_serialized.get('main_photo') == True):
+        models.TSite.query.filter_by(id_site= data_serialized.get('id_site')).update({models.TSite.main_photo: data_serialized.get('id_photo')})
+    if (data_serialized.get('main_photo')):
+        del data_serialized['main_photo']
+    models.TPhoto.query.filter_by(id_photo = data_serialized.get('id_photo')).update(data_serialized)
+    db.session.commit()
+    if (image):
+        for fileName in os.listdir(base_path):
+            if fileName.endswith(photo_name):
+                os.remove(base_path + fileName)
+        image.save(os.path.join(base_path + image.filename))
+    return jsonify('photo added successfully'), 200
+
+
 @api.route('/api/deletePhotos', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def deletePhotos():
@@ -215,3 +251,15 @@ def deletePhotos():
             if fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
     return jsonify('site has been deleted'), 200
+
+
+
+
+@api.route('/api/villes', methods=['GET'])
+def returnAllville():
+    try:
+        get_all_ville = models.Ville.query.all()
+        ville= ville_schema.dump(get_all_ville).data
+        return jsonify(ville), 200
+    except Exception as exception:
+        return jsonify(error=exception), 400
