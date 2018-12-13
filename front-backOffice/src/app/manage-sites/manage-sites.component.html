@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-6 col-table">
       <div>
-        <button class=" green-btn btn-add" (click)="onAddSite()"> Ajouter un site photo</button>
+        <button class=" blue-btn btn-add" (click)="onAddSite()"> Ajouter un point d'observation</button>
         <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" [loadingIndicator]="loadingIndicator"
           [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
           [reorderable]="reorderable" [selectionType]="'single'" (activate)="onCenterChange($event)" (select)='onSelect($event)'>
@@ -12,12 +12,12 @@
               <img class="main-photo" src="{{row.main_photo}}" alt="" width="80">
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Nom du site" width="400">
+          <ngx-datatable-column name="Nom du point d'observation" width="400">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.name_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Code postal">
+          <ngx-datatable-column name="Code Commune">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.code_city_site}}
             </ng-template>

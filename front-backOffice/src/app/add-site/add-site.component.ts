@@ -53,8 +53,8 @@ export class AddSiteComponent implements OnInit {
         icon: L.icon({
           iconSize: [25, 41],
           iconAnchor: [13, 41],
-          iconUrl: '../../assets/marker-icon.png',
-          shadowUrl: '../../assets/marker-shadow.png'
+          iconUrl: './assets/marker-icon.png',
+          shadowUrl: './assets/marker-shadow.png'
         })
       }
     },
@@ -144,8 +144,8 @@ export class AddSiteComponent implements OnInit {
           icon: L.icon({
             iconSize: [25, 41],
             iconAnchor: [13, 41],
-            iconUrl: '../../assets/marker-icon.png',
-            shadowUrl: '../../assets/marker-shadow.png'
+            iconUrl: './assets/marker-icon.png',
+            shadowUrl: './assets/marker-shadow.png'
           })
         }
       });
@@ -238,6 +238,7 @@ export class AddSiteComponent implements OnInit {
     let photos;
     if (this.id_site) {
       photos = this.new_photos;
+      console.log('this.new_photos', this.new_photos);
     } else {
       photos = this.photos;
     }
@@ -250,12 +251,14 @@ export class AddSiteComponent implements OnInit {
     this.sitesService.addPhotos(photosData).subscribe(
       (event) => {
         if (event.type === HttpEventType.UploadProgress) {
-         // console.log('resUplod', event.loaded);
+          // console.log('resUplod', event.loaded);
         }
       },
       err => {
         console.log('err upload photo', err);
-        this.setAlert(err.error.image);
+        if (err.error.error === 'image_already_exist') {
+          this.setAlert(err.error.image);
+        }
       },
       () => this.addThemes(id_site, id_theme, id_stheme)
     );
@@ -295,7 +298,7 @@ export class AddSiteComponent implements OnInit {
       (site) => {
         this.site = site.site[0];
         _.forEach(site.photos, (photo) => {
-          this.photos.push({ 'id_photo': photo.id, 'imgUrl': Conf.staticPicturesUrl + photo.sm });
+          this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm });
           this.initPhotos = this.photos;
         });
       },
@@ -364,7 +367,7 @@ export class AddSiteComponent implements OnInit {
           this.map.addControl(this.drawControl);
         }
       });
-      this.siteForm.controls['lng'].statusChanges
+    this.siteForm.controls['lng'].statusChanges
       .subscribe(() => {
         this.marker = [];
         if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid) {

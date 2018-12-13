@@ -10,9 +10,9 @@ export class FormService {
     initFormSite(): FormGroup {
         const formSite = this._fb.group({
             name_site: [null, Validators.required],
-            desc_site: [null, Validators.required],
-            testim_site: [null, Validators.required],
-            publish_site: [false, Validators.required],
+            desc_site: [null],
+            testim_site: [null],
+            publish_site: [false],
             lng: [null, {validators: LatlngValidator.lng, updateOn : 'blur'}],
             lat: [null,  {validators: LatlngValidator.lat, updateOn : 'blur'}],
             id_theme: [null, Validators.required],
@@ -30,7 +30,7 @@ export class FormService {
             display_gal_photo: [false, Validators.required],
             id_licence_photo: [null, Validators.required],
             date_photo: [null, Validators.required],
-            legende_photo: [null, Validators.required],
+            legende_photo: [null],
             filter_date: [null, Validators.required],
             photo_file: [null],
             main_photo: [null],

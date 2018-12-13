@@ -192,7 +192,7 @@ export class AddPhotoComponent implements OnInit {
   deletePhoto() {
     this.sitesService.deletePhotos([this.inputImage]).subscribe(
       () => {
-        this.photoModal.emit({ 'type': 'delete', 'data': this.inputImage.id_photo });
+        this.photoModal.emit(this.inputImage.t_site);
         this.modalRef.close();
       }
     );
@@ -216,7 +216,7 @@ export class AddPhotoComponent implements OnInit {
       },
       (err) => console.log('err', err),
       () => {
-        this.photoModal.emit({ 'type': 'update', 'data': photoJson });
+        this.photoModal.emit(this.inputImage.t_site);
       }
     );
   }
