@@ -47,17 +47,8 @@ export class GalleryComponent implements OnInit {
     );
   }
 
-  updatePhotos(event) {
-    _.map(this.sites, (site) => {
-      if (event.type === 'delete') {
-        _.remove(site.photos, (item: any) => {
-          return item.id_photo === event.data;
-        });
-      }
-      if (event.type === 'update') {
-        this.getPhotosSite(event.data.id_site);
-      }
-    });
+  updatePhotos(id_site) {
+        this.getPhotosSite(id_site);
   }
 
 }

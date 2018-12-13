@@ -5,6 +5,10 @@ import os
 
 
 def getImage(photo, prefixe, callback):
+    #here = os.path.dirname(__file__)
+    #newPath = './static/' + DATA_IMAGES_PATH
+    #base_path = os.path.join(here,newPath)
+
     base_path = './static/' + DATA_IMAGES_PATH
     input_name = photo.get('path_file_photo')
     input_path = base_path + input_name

@@ -30,8 +30,10 @@ def returnAllSites():
     get_all_sites = models.TSite.query.order_by('name_site').all()
     sites = site_schema.dump(get_all_sites).data
     for site in sites:
-        get_main_photo = models.TPhoto.query.filter_by(
-            id_photo=site.get('main_photo'))
+        if(site.get('main_photo') == None):
+            get_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('t_photos')[0])
+        else :
+            get_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('main_photo'))
         '''
         get_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(site.get('t_photos')))
@@ -41,6 +43,8 @@ def returnAllSites():
         site['photos'] = dump_photos
         '''
         main_photo = photo_schema.dump(get_main_photo).data
+      
+
         site['main_photo'] = utils.getThumbnail(
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
@@ -199,11 +203,15 @@ def upload_file():
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
-            models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
-            db.session.commit()
+            #models.CorSiteSthemeTheme.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+            #models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+            #db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
+        if (d_serialized.get('main_photo') == True):
+            models.TSite.query.filter_by(id_site= d_serialized.get('id_site')).update({models.TSite.main_photo: d_serialized.get('id_photo')})
+        del d_serialized['main_photo']
         photo = models.TPhoto(**d_serialized)
+        models.TPhoto.query.filter_by(id_photo = d_serialized.get('id_photo')).update(d_serialized)
         db.session.add(photo)
         db.session.commit()
     for image in uploaded_images:
