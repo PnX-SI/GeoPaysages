@@ -4,9 +4,6 @@
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="site-block">
         <ngb-alert *ngIf="alert" [dismissible]="false" [type]="alert.type" >{{ alert.message }}</ngb-alert>
-        <button *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn" (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>
-        <button *ngIf="id_site" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)"> <i class="icon-trash delete-site"></i>Supprimer
-          le site</button>
         <form [formGroup]="siteForm" (submit)="submitSite(siteForm)" disabled>
           <div class="inner-checkbox form-group">
             <div class="label">Publier le site :</div>
@@ -94,8 +91,11 @@
             <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash remove-file" (click)="removeNotice()"></i></div>
           </div>
           <div class="submit-btn-group">
-            <button class="red-btn" type="button" style="margin-right: 15px" (click)=onCancel()>Annuler</button>
-            <button class="submit-btn green-btn" type="submit"  [disabled]="!edit_btn">{{submit_btn_text}}</button>
+              <button type="button" *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn" (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>
+              <button class="btn btn-outline-success btn-submit"  type="submit"  [disabled]="!edit_btn">{{submit_btn_text}}</button>
+              <button type="button" *ngIf="id_site" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)"> <i class="icon-trash delete-site"></i>Supprimer
+                le site</button>
+            <button class="btn btn-outline-secondary  btn-cancel" type="button"  (click)=onCancel()>Retour à la liste</button>
           </div>
         </form>
 
@@ -103,7 +103,7 @@
       </div>
     </div>
     <div class="col-6 col-map">
-      <div class="map " leaflet leafletDraw [leafletOptions]="options" [leafletLayers]="marker" [(leafletCenter)]="center" [leafletDrawOptions]="drawOptions"
+      <div class="map " leaflet leafletDraw [leafletOptions]="options"  [(leafletCenter)]="center" [leafletDrawOptions]="drawOptions"
         (leafletDrawReady)="onDrawReady($event)" (leafletMapReady)="onMapReady($event)">
       </div>
     </div>

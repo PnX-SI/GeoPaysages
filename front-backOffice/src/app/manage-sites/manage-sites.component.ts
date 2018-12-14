@@ -6,6 +6,7 @@ import { _appIdRandomProviderFactory } from '@angular/core/src/application_token
 import { Conf } from './../config';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-manage-sites',

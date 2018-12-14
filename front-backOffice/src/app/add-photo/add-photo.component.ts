@@ -202,7 +202,7 @@ export class AddPhotoComponent implements OnInit {
     const photo: FormData = new FormData();
     let photoJson: any = {};
     photoJson = photoForm.value;
-    photoJson.id_site = this.inputImage.t_site;
+    photoJson.id_site = Number(this.inputImage.t_site);
     photoJson.id_photo = this.inputImage.id_photo;
     photoJson = _.omit(photoJson, ['photo_file']);
     if (this.selectedPhoto) {
