@@ -1,5 +1,5 @@
 .site-block {
-  padding: 30px 40px;
+  padding: 25px 40px;
   background: #FFF;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
 }
@@ -40,10 +40,14 @@
   display: flex;
   justify-content: flex-end;
   padding-top: 15px;
+  margin-top: 20PX;
+  border-top: 1px solid #d0cdcd;
+  margin-left: -40px;
+  margin-right: -40px;
 }
 
-.submit-btn:disabled {
-  opacity: 0.65;
+.btn-submit:disabled {
+  
   cursor: not-allowed;
 }
 
@@ -87,17 +91,15 @@
   padding-right: 6px;
 }
 
-.btn-edit {
-  font-size: 14px;
-  font-weight: 600
-}
 
-.btn-delete {
+.btn-delete,.btn-edit,.btn-submit,.btn-cancel {
   font-size: 14px;
   font-weight: 600;
   margin-left: 15px
 }
-
+.btn-cancel {
+  margin-right: 15px
+}
 
 .inner-photo {
   position: relative;

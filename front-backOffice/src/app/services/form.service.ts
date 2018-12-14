@@ -23,7 +23,6 @@ export class FormService {
         return formSite;
     }
 
-
     initFormPhoto(): FormGroup {
         const formPhoto = this._fb.group({
             id_role: [null, Validators.required],

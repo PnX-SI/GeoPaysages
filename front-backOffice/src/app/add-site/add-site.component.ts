@@ -4,7 +4,7 @@ import { HttpEventType } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { tileLayer, latLng, Map, marker, Layer } from 'leaflet';
+import { tileLayer, latLng, Map, Layer } from 'leaflet';
 import { FormService } from '../services/form.service';
 import { Conf } from './../config';
 import * as L from 'leaflet';
@@ -31,7 +31,16 @@ export class AddSiteComponent implements OnInit {
   loadForm = false;
   map;
   id_site = null;
-  markerCoordinates;
+  markers = [];
+
+  drawnItems = new L.FeatureGroup();
+  markerCoordinates = [];
+  icon = L.icon({
+    iconSize: [25, 41],
+    iconAnchor: [13, 41],
+    iconUrl: './assets/marker-icon.png',
+    shadowUrl: './assets/marker-shadow.png'
+  });
   options = {
     layers: [
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
@@ -50,16 +59,11 @@ export class AddSiteComponent implements OnInit {
       polyline: false,
       circlemarker: false,
       marker: {
-        icon: L.icon({
-          iconSize: [25, 41],
-          iconAnchor: [13, 41],
-          iconUrl: './assets/marker-icon.png',
-          shadowUrl: './assets/marker-shadow.png'
-        })
+        icon: this.icon
       }
     },
     edit: {
-      edit: false
+      featureGroup: this.drawnItems
     }
   };
   drawControl = new L.Control.Draw();
@@ -68,7 +72,7 @@ export class AddSiteComponent implements OnInit {
   alert: { type: string; message: string; };
   site: any;
   edit_btn = false;
-  edit_btn_text = 'ÉDITER';
+  edit_btn_text = 'Éditer';
   submit_btn_text = 'Ajouter';
   initPhotos: any[];
   deleted_photos = [];
@@ -87,15 +91,17 @@ export class AddSiteComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this.id_site = this.route.snapshot.params['id'];
-
-    this.initForm();
+    this.siteForm = this.formService.initFormSite();
     if (this.id_site) {
-
       this.getSite(this.id_site);
-      this.submit_btn_text = 'Modifier';
+      this.submit_btn_text = 'Enregistrer';
     } else {
       this.edit_btn = true;
+      this.loadForm = true;
+      this.themes_onChange();
+      this.latlan_onChange();
     }
     this.sitesService.getThemes()
       .subscribe(
@@ -113,6 +119,7 @@ export class AddSiteComponent implements OnInit {
   }
 
   onMapReady(map: Map) {
+    map.addLayer(this.drawnItems);
     map.scrollWheelZoom.disable();
     L.EditToolbar.Delete.include({
       removeAllLayers: false
@@ -120,9 +127,9 @@ export class AddSiteComponent implements OnInit {
     this.map = map;
     map.on(L.Draw.Event.CREATED, (event) => {
       const layer = (event as any).layer;
-      this.markerCoordinates = layer._latlng;
-      this.siteForm.controls['lat'].setValue(this.markerCoordinates.lat.toFixed(6));
-      this.siteForm.controls['lng'].setValue(this.markerCoordinates.lng.toFixed(6));
+      this.markerCoordinates.push(layer._latlng);
+      this.siteForm.controls['lat'].setValue(this.markerCoordinates[0].lat.toFixed(6));
+      this.siteForm.controls['lng'].setValue(this.markerCoordinates[0].lng.toFixed(6));
       this.drawControl.setDrawingOptions({
         marker: false
       });
@@ -130,31 +137,39 @@ export class AddSiteComponent implements OnInit {
       map.addControl(this.drawControl);
     });
 
+
+    map.on(L.Draw.Event.EDITED, (event) => {
+      let layer = (event as any).layers._layers;
+      layer = layer[Object.keys(layer)[0]];
+      console.log(layer);
+      this.markerCoordinates.push(layer._latlng);
+      this.siteForm.controls['lat'].setValue(this.markerCoordinates[0].lat.toFixed(6));
+      this.siteForm.controls['lng'].setValue(this.markerCoordinates[0].lng.toFixed(6));
+    });
     map.on(L.Draw.Event.DELETED, (event) => {
+      const markers = [];
       map.eachLayer(function (layer) {
         if (layer._latlng) {
-          layer.remove();
+          markers.push(layer._latlng);
         }
       });
-      this.markerCoordinates = null;
-      this.siteForm.controls['lat'].reset();
-      this.siteForm.controls['lng'].reset();
-      this.drawControl.setDrawingOptions({
-        marker: {
-          icon: L.icon({
-            iconSize: [25, 41],
-            iconAnchor: [13, 41],
-            iconUrl: './assets/marker-icon.png',
-            shadowUrl: './assets/marker-shadow.png'
-          })
-        }
-      });
-      map.removeControl(this.drawControl);
-      map.addControl(this.drawControl);
+      if (markers.length === 0) {
+        this.siteForm.controls['lat'].reset();
+        this.siteForm.controls['lng'].reset();
+        this.markerCoordinates = [];
+        map.removeControl(this.drawControl);
+        this.drawControl.setDrawingOptions({
+          marker: {
+            icon: this.icon
+          }
+        });
+        map.addControl(this.drawControl);
+      }
     });
   }
 
   onDrawReady(drawControl) {
+
     this.drawControl = drawControl;
     if (this.id_site) {
       this.map.removeControl(this.drawControl);
@@ -244,7 +259,7 @@ export class AddSiteComponent implements OnInit {
     }
     _.forEach(photos, (photo) => {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto']);
-      photoJson.id_site = id_site;
+      photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
       photosData.append('data', JSON.stringify(photoJson));
     });
@@ -304,28 +319,14 @@ export class AddSiteComponent implements OnInit {
       },
       (err) => console.log('err', err),
       () => {
-        this.siteForm.patchValue({
-          'name_site': this.site.name_site,
-          'desc_site': this.site.desc_site,
-          'testim_site': this.site.testim_site,
-          'publish_site': this.site.publish_site,
-          'lng': this.site.geom[1].toFixed(6),
-          'lat': this.site.geom[0].toFixed(6),
-          'id_theme': this.site.themes,
-          'id_stheme': this.site.subthemes,
-          'code_city_site': this.site.code_city_site,
-          'notice': null,
-        });
+        this.initMarker(this.site.geom[0], this.site.geom[1]);
+        this.patchForm();
+        this.loadForm = true;
         this.siteForm.disable();
+        this.themes_onChange();
+        this.latlan_onChange();
       }
     );
-  }
-
-  initForm() {
-    this.loadForm = true;
-    this.siteForm = this.formService.initFormSite();
-    this.themes_onChange();
-    this.latlan_onChange();
   }
 
   themes_onChange() {
@@ -350,39 +351,33 @@ export class AddSiteComponent implements OnInit {
   latlan_onChange() {
     this.siteForm.controls['lat'].statusChanges
       .subscribe(() => {
-        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid) {
-          this.marker = [];
-          this.marker.push(marker(latLng(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value), {
-            icon: L.icon({
-              iconSize: [25, 41],
-              iconAnchor: [13, 41],
-              iconUrl: './assets/marker-icon.png',
-              shadowUrl: './assets/marker-shadow.png'
-            })
-          }));
-          this.center = this.marker[0]._latlng;
+        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid && this.markerCoordinates.length === 0) {
+          this.drawnItems.clearLayers();
+          this.initMarker(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value);
+        } else if (this.siteForm.controls['lat'].invalid && this.siteForm.controls['lng'].invalid) {
+          this.drawnItems.clearLayers();
           this.map.removeControl(this.drawControl);
-        } else if (this.siteForm.controls['lat'].invalid || this.siteForm.controls['lng'].invalid) {
-          this.marker = [];
+          this.drawControl.setDrawingOptions({
+            marker: {
+              icon: this.icon
+            }
+          });
           this.map.addControl(this.drawControl);
         }
       });
     this.siteForm.controls['lng'].statusChanges
       .subscribe(() => {
-        this.marker = [];
-        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid) {
-          this.marker.push(marker(latLng(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value), {
-            icon: L.icon({
-              iconSize: [25, 41],
-              iconAnchor: [13, 41],
-              iconUrl: './assets/marker-icon.png',
-              shadowUrl: './assets/marker-shadow.png'
-            })
-          }));
-          this.center = this.marker[0]._latlng;
+        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid && this.markerCoordinates.length === 0) {
+          this.drawnItems.clearLayers();
+          this.initMarker(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value);
+        } else if (this.siteForm.controls['lat'].invalid && this.siteForm.controls['lng'].invalid) {
+          this.drawnItems.clearLayers();
           this.map.removeControl(this.drawControl);
-        } else if (this.siteForm.controls['lat'].invalid || this.siteForm.controls['lng'].invalid) {
-          this.marker = [];
+          this.drawControl.setDrawingOptions({
+            marker: {
+              icon: this.icon
+            }
+          });
           this.map.addControl(this.drawControl);
         }
       });
@@ -410,14 +405,26 @@ export class AddSiteComponent implements OnInit {
     this.edit_btn = !this.edit_btn;
     if (!this.edit_btn) {
       this.map.removeControl(this.drawControl);
-      this.edit_btn_text = 'ÉDITER';
+      this.edit_btn_text = 'Éditer';
+      this.patchForm();
       this.siteForm.disable();
+      this.initMarker(this.site.geom[0], this.site.geom[1]);
     } else {
       this.map.addControl(this.drawControl);
       this.edit_btn_text = 'Annuler';
       this.siteForm.enable();
     }
     this.siteForm.controls['id_stheme'].setValue(this.site.subthemes);
+  }
+
+  initMarker(lat, lan) {
+    L.marker(latLng(lat, lan)).addTo(this.drawnItems);
+    this.center = latLng(lat, lan);
+    this.map.removeControl(this.drawControl);
+    this.drawControl.setDrawingOptions({
+      marker: false
+    });
+    this.map.addControl(this.drawControl);
   }
 
   openDeleteModal(content) {
@@ -444,6 +451,22 @@ export class AddSiteComponent implements OnInit {
       (err) => console.log('err delete', err)
     );
     this.modalRef.close();
+  }
+
+
+  patchForm() {
+    this.siteForm.patchValue({
+      'name_site': this.site.name_site,
+      'desc_site': this.site.desc_site,
+      'testim_site': this.site.testim_site,
+      'publish_site': this.site.publish_site,
+      'lng': this.site.geom[1].toFixed(6),
+      'lat': this.site.geom[0].toFixed(6),
+      'id_theme': this.site.themes,
+      'id_stheme': this.site.subthemes,
+      'code_city_site': this.site.code_city_site,
+      'notice': null,
+    });
   }
 }
 

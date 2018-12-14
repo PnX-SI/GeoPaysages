@@ -31,9 +31,9 @@ def returnAllSites():
     sites = site_schema.dump(get_all_sites).data
     for site in sites:
         if(site.get('main_photo') == None):
-            get_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('t_photos')[0])
+            set_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('t_photos')[0])
         else :
-            get_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('main_photo'))
+            set_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('main_photo'))
         '''
         get_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(site.get('t_photos')))
@@ -42,9 +42,7 @@ def returnAllSites():
             photo['sm'] = utils.getThumbnail(photo).get('output_name'),
         site['photos'] = dump_photos
         '''
-        main_photo = photo_schema.dump(get_main_photo).data
-      
-
+        main_photo = photo_schema.dump(set_main_photo).data
         site['main_photo'] = utils.getThumbnail(
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
@@ -207,13 +205,17 @@ def upload_file():
             #models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
             #db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
-        if (d_serialized.get('main_photo') == True):
-            models.TSite.query.filter_by(id_site= d_serialized.get('id_site')).update({models.TSite.main_photo: d_serialized.get('id_photo')})
+        print ('d_serialized', d_serialized)
+        main_photo = d_serialized.get('main_photo')
         del d_serialized['main_photo']
         photo = models.TPhoto(**d_serialized)
-        models.TPhoto.query.filter_by(id_photo = d_serialized.get('id_photo')).update(d_serialized)
         db.session.add(photo)
         db.session.commit()
+        if (main_photo == True):
+            photos_query = models.TPhoto.query.filter_by(path_file_photo = d_serialized.get('path_file_photo')).all()
+            photo_id = photo_schema.dump(photos_query).data[0].get('id_photo')
+            models.TSite.query.filter_by(id_site= d_serialized.get('id_site')).update({models.TSite.main_photo: photo_id})
+            db.session.commit()
     for image in uploaded_images:
         image.save(os.path.join(base_path + image.filename))
     return jsonify('photo added successfully'), 200
@@ -231,6 +233,7 @@ def update_photo():
     print('data_serialized', data_serialized)
     if (data_serialized.get('main_photo') == True):
         models.TSite.query.filter_by(id_site= data_serialized.get('id_site')).update({models.TSite.main_photo: data_serialized.get('id_photo')})
+        db.session.commit()
     if (data_serialized.get('main_photo')):
         del data_serialized['main_photo']
     models.TPhoto.query.filter_by(id_photo = data_serialized.get('id_photo')).update(data_serialized)
@@ -249,11 +252,14 @@ def deletePhotos():
     base_path = './static/' + DATA_IMAGES_PATH
     photos = request.get_json()
     for photo in photos:
-        photos_query = models.TPhoto.query.filter_by(
-            id_photo=photo.get('id_photo')).all()
-        photo_name = photo_schema.dump(
-            photos_query).data[0].get('path_file_photo')
+        photos_query = models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).all()
+        photo_dump = photo_schema.dump(photos_query).data[0]
+        photo_name = photo_dump.get('path_file_photo')
         models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).delete()
+        get_site_by_id = models.TSite.query.filter_by(id_site= photo_dump.get('t_site'))
+        site = site_schema.dump(get_site_by_id).data[0]
+        if (site.get('main_photo') == photo_dump.get('id_photo')):
+            models.TSite.query.filter_by(id_site= photo_dump.get('t_site')).update({models.TSite.main_photo: None})
         db.session.commit()
         for fileName in os.listdir(base_path):
             if fileName.endswith(photo_name):
