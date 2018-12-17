@@ -18,6 +18,7 @@ dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+villes_schema = models.VilleSchema(many=True)
 
 
 
@@ -62,18 +63,31 @@ def home():
 def gallery():
     get_sites = models.TSite.query.order_by('name_site').all()
     dump_sites = site_schema.dump(get_sites).data
-    #TODO get photos by join on sites query
-    photo_ids = [site.get('main_photo') for site in dump_sites]
+    
+    #TODO get photos and cities by join on sites query
+    photo_ids = []
+    ville_codes = []
+    for site in dump_sites:
+        photo_ids.append(site.get('main_photo'))
+        ville_codes.append(site.get('code_city_site'))
+
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
     dump_photos = photo_schema.dump(query_photos).data
-    photos = [{
-        'site': next(site for site in dump_sites if site.get('id_site') == photo.get('t_site')),
-        'sm': utils.getThumbnail(photo).get('output_url')
-    } for photo in dump_photos]
+
+    query_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_(ville_codes)
+    )
+    dump_villes = villes_schema.dump(query_villes).data
+
+    for site in dump_sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = utils.getThumbnail(photo).get('output_url')
+        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
     
-    return render_template('gallery.html', photos=photos)
+    return render_template('gallery.html', sites=dump_sites)
 
 @main.route('/comparator/<int:id_site>')
 def comparator(id_site):

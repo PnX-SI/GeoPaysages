@@ -29,7 +29,9 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
-
+    
+    #TODO
+    #t_ville = db.relationship('Ville', primaryjoin='Ville.ville_code_commune == TSite.code_city_site')
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
@@ -252,5 +254,5 @@ class TSiteSchema(ma.ModelSchema):
 
 class VilleSchema(ma.ModelSchema):
     class Meta:
-         fields = ('ville_nom',)
+         fields = ('ville_id','ville_code_commune','ville_nom')
 

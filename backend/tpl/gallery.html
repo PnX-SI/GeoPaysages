@@ -17,13 +17,13 @@
 
 <div class="container">
   <div class="row justify-content-center">
-  {% for photo in photos %}
+  {% for site in sites %}
     <div class="picture col-lg-2 col-md-3 col-sm-4 col-6">
-      <a href="/comparator/{{ photo.id_site }}">
-        <img src="{{ photo.sm }}" alt="Montagne vanoise">
+      <a href="/comparator/{{ site.id_site }}">
+        <img src="{{ site.photo }}" alt="Montagne vanoise">
       </a>
       <div class="discover">
-        <a href="/comparator/{{ photo.id_site }}">{{ photo.site.name_site }}</a>
+        <a href="/comparator/{{ site.id_site }}">{{ site.name_site }} - {{ site.ville.ville_nom }}</a>
       </div>
     </div>
   {% endfor %}
