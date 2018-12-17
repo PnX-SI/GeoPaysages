@@ -95,6 +95,10 @@ def comparator(id_site):
     site=site_schema.dump(get_site_by_id).data[0]
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
     photos = photo_schema.dump(get_photos_by_site).data
+    get_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_([site.get('code_city_site')])
+    )
+    site['ville'] = villes_schema.dump(get_villes).data[0]
 
     def getPhoto(photo):
         date_diplay = {}

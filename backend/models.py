@@ -254,5 +254,5 @@ class TSiteSchema(ma.ModelSchema):
 
 class VilleSchema(ma.ModelSchema):
     class Meta:
-         fields = ('ville_id','ville_code_commune','ville_nom')
+         fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
 

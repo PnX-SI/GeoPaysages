@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">{{ site.name_site }}</h3>
+<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small class="text-lowercase">(ref: {{ site.ref_site }})</small></h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-comparator {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
@@ -26,8 +26,8 @@
         <img :src="photo.lg" />
         <figcaption>
           <div class="col-6 text-right">
-            <div v-html="photo.date"></div>
-            <div>{{ site.name_site }}</div>
+            <div v-html="photo.date_diplay.md"></div>
+            <div>{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small>(ref: {{ site.ref_site }})</small></div>
           </div>
           <div class="col-6">
             <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
@@ -105,10 +105,10 @@
       <div class="row mt-3">
         <div class="col-lg-5 pl-0 mb-5 text-right">
           <div class="map-wrapper" ref="map"></div>
-          <a class="btn btn-sm btn-primary text-uppercase" href="{{ url_for('static', filename='data/notice-photo/oppv-' + site.ref_site + '-notice.pdf') }}" target="_blank">
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/oppv-' + site.ref_site + '-notice.pdf') }}" target="_blank">
             Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
           </a>
-          <a class="btn btn-sm btn-primary text-uppercase mt-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
             Faire une observation <i class="icon ion-ios-eye ml-2"></i>
           </a>
         </div>
