@@ -254,7 +254,10 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 .header-title {
     justify-content: center;
+    margin-left: 0;
     margin-bottom: -8px;
+    padding-left: 120px;
+    padding-right: 120px;
 }
 
 .header-logo {
@@ -396,9 +399,14 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 /* HEADER */
 
-header h1{
+header h1 {
     text-transform: uppercase;
     font-size: 1.5em;
+    line-height: 20px;
+}
+
+header h3 {
+    line-height: 20px;
 }
 
 .navbar-collapse {
