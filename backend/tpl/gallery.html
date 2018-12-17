@@ -23,7 +23,7 @@
         <img src="{{ photo.sm }}" alt="Montagne vanoise">
       </a>
       <div class="discover">
-        <a href="/comparator/{{ photo.id_site }}">Découvrir ce site photographique</a>
+        <a href="/comparator/{{ photo.id_site }}">{{ photo.site.name_site }}</a>
       </div>
     </div>
   {% endfor %}

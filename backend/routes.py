@@ -60,31 +60,19 @@ def home():
 
 @main.route('/gallery')
 def gallery():
-    #TODO query group_by t_site order_by date_photo desc
-    get_photos = models.TPhoto.query.order_by('filter_date').all()
-    dump_photos = photo_schema.dump(get_photos).data
-    #print(dump_photos)
-    
-    photos = []
-    def getPhotoBySite(id):
-        try:
-            photo = next(item for item in photos if item.get('id_site') == id)
-            print(photo is None)
-            return photo
-        except Exception as exception:
-            pass
-
-    for photo in dump_photos:
-        if (getPhotoBySite(photo.get('t_site')) is None):
-            photos.append({
-                'id_site': photo.get('t_site'),
-                'sm': utils.getThumbnail(photo).get('output_url')
-            })
-    """ photos = [{
-        'id_site': photo.get('t_site'),
+    get_sites = models.TSite.query.order_by('name_site').all()
+    dump_sites = site_schema.dump(get_sites).data
+    #TODO get photos by join on sites query
+    photo_ids = [site.get('main_photo') for site in dump_sites]
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos).data
+    photos = [{
+        'site': next(site for site in dump_sites if site.get('id_site') == photo.get('t_site')),
         'sm': utils.getThumbnail(photo).get('output_url')
-    } for photo in dump_photos if next(item for item in photos if item.get('id_site') == photo.get('t_site')) is None] """
-
+    } for photo in dump_photos]
+    
     return render_template('gallery.html', photos=photos)
 
 @main.route('/comparator/<int:id_site>')
