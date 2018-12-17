@@ -64,7 +64,7 @@
               <img src="{{ photos[i].md }}" :src="comparedPhotos[{{ i }}].md" @load="onComparedLoaded({{ i }})" @click="onZoomClick({{ i }})" v-b-modal.modal_comparator_zoom />
               <div class="d-flex justify-content-between py-1">
                 <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date_diplay.md">{{ photos[i].date_diplay.md }}</div>
-                <b-button class="btn-sm btn-toggle btn-big-icon" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
+                <b-button class="btn-sm btn-toggle btn-big-icon border-0" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
               </div>
@@ -113,26 +113,26 @@
           </a>
         </div>
         <div class="col-lg-7 pr-0">
-          <h5 class="text-uppercase">Description</h5>
+          <h5 class="text-uppercase">Présentation du site</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target font-italic">
               {{ site.desc_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
                 <span class="visible-text-collapsed">Lire plus</span>
                 <span class="hidden-text-collapsed">Lire moins</span>
               </button>
             </div>
           </div>
           {% if site.testim_site %}
-          <h5 class="text-uppercase mt-4">Témoignage</h5>
+          <h5 class="text-uppercase mt-4">Témoignages</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
               {{ site.testim_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
                 <span class="visible-text-collapsed">Lire plus</span>
                 <span class="hidden-text-collapsed">Lire moins</span>
               </button>

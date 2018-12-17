@@ -2,8 +2,8 @@
     --color-primary: #00188F;
     --color-primary-light: #303f8a;
     --color-blue : #283371;
-    --color-green : #7AB929;
-    --color-secondary: #6db61e;
+    --color-green : #78BE20;
+    --color-secondary: #78BE20;
     --color-secondary-light: #72d409;
 }
 
@@ -163,7 +163,7 @@ button{
     text-align: center;
     color: #fff;
     font-style: italic;
-    background-color : rgba(103,233,255,0.5);
+    background-color : rgba(153,214,234,0.5);
     z-index: 9999;
     transition: transform .5s ease;
 }
