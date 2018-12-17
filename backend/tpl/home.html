@@ -26,16 +26,16 @@
 
     {% for block in blocks %}
     <div class="block block-{{ loop.index }}">
-      <div class="img" style="background-image: url('{{ block.get('photo').get('url') }}');"></div>
+      <div class="img" style="background-image: url('{{ block.get('photo') }}');"></div>
       <div class="discover">
-        Découvrir ce site photographique
+        Découvrir ce point d'observation
       </div>
       <div class="legend">
         <h6>Photographie</h6>
-        <h5>{{ block.get('site').get('name_site') }}</h5>
-        {{ block.get('site').get('legend_site') }}
+        <h5>{{ block.get('name_site') }}</h5>
+        {{ block.get('legend_site') }}
       </div>
-      <a href="/comparator/{{ block.get('site').get('id_site') }}"></a>
+      <a href="/comparator/{{ block.get('id_site') }}"></a>
     </div>
     {% endfor %}
     

@@ -24,7 +24,7 @@ villes_schema = models.VilleSchema(many=True)
 
 @main.route('/')
 def home():
-    sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
+    """ sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
     rows = db.engine.execute(sql).fetchall()
     id_photos = json.loads(rows[0]['value'])
     get_photos = models.TPhoto.query.filter(
@@ -33,9 +33,38 @@ def home():
 
     site_ids = [photo.get('t_site') for photo in dump_pĥotos]
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
-    dump_sites = site_schema.dump(get_sites).data
+    dump_sites = site_schema.dump(get_sites).data """
 
-    def get_photo_block(id_photo):
+    sql = text("SELECT * FROM geopaysages.t_site ORDER BY RANDOM() LIMIT 6")
+    sites_proxy = db.engine.execute(sql).fetchall()
+    sites = [dict(row.items()) for row in sites_proxy]
+
+    photo_ids = []
+    ville_codes = []
+    for site in sites:
+        photo_ids.append(site.get('main_photo'))
+        ville_codes.append(site.get('code_city_site'))
+
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos).data
+
+    query_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_(ville_codes)
+    )
+    dump_villes = villes_schema.dump(query_villes).data
+
+    for site in sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = url_for(
+            'static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo')
+        )
+        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
+
+
+    """ def get_photo_block(id_photo):
         try:
             photo = next(photo for photo in dump_pĥotos if photo.get(
                 'id_photo') == id_photo)
@@ -53,11 +82,11 @@ def home():
     blocks = [
         get_photo_block(id_photo)
         for id_photo in id_photos
-    ]
+    ] """
 
-    sites=site_schema.dump(models.TSite.query.all()).data
+    all_sites=site_schema.dump(models.TSite.query.all()).data
     
-    return render_template('home.html', blocks=blocks, sites=sites)
+    return render_template('home.html', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
