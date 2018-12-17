@@ -7,6 +7,7 @@ import random
 from models import (db)
 from config import DATA_IMAGES_PATH
 import json
+from datetime import datetime
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -60,7 +61,7 @@ def home():
 @main.route('/gallery')
 def gallery():
     #TODO query group_by t_site order_by date_photo desc
-    get_photos = models.TPhoto.query.order_by('date_photo').all()
+    get_photos = models.TPhoto.query.order_by('filter_date').all()
     dump_photos = photo_schema.dump(get_photos).data
     #print(dump_photos)
     
@@ -94,12 +95,28 @@ def comparator(id_site):
     photos = photo_schema.dump(get_photos_by_site).data
 
     def getPhoto(photo):
+        date_diplay = {}
+        date_approx = photo.get('date_photo')
+        filter_date = photo.get('filter_date')
+        if date_approx:
+            date_diplay = {
+                'md': date_approx,
+                'sm': date_approx
+            }
+        else:
+            date_obj = datetime.strptime(filter_date, '%Y-%m-%d')
+            date_diplay = {
+                'md': date_obj.strftime('%Y (%d %B)'),
+                'sm': date_obj.strftime('%Y')
+            }
+
         return {
             'id': photo.get('id_photo'),
             'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
             'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
             'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
-            'date': photo.get('date_photo')
+            'date': photo.get('filter_date'),
+            'date_diplay': date_diplay
         }
 
     photos = [getPhoto(photo) for photo in photos]
