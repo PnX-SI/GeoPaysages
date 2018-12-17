@@ -22,18 +22,18 @@
 <div class="page-content container-fluid" id="js-app-comparator">
   <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
-    <div class="img-wrapper" v-for="photo in zoomPhotos">
-      <figure>
-          <img :src="photo.lg" />
-          <figcaption class="sans-serif font-weight-bold mt-2 clearfix d-flex">
-            <div class="w-100">
-              <span class="d-block" v-html="photo.date"></span>
-              <span class="d-block">{{ site.name_site }}</span>
-            </div>
+    <figure v-for="photo in zoomPhotos">
+        <img :src="photo.lg" />
+        <figcaption>
+          <div class="col-6 text-right">
+            <div v-html="photo.date"></div>
+            <div>{{ site.name_site }}</div>
+          </div>
+          <div class="col-6">
             <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
-          </figcaption>
-      </figure>
-    </div>
+          </div>
+        </figcaption>
+    </figure>
   </b-modal>
   <div class="row">
     <!-- <div class="col-auto col-thumbs">
