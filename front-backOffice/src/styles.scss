@@ -43,10 +43,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #ff5252;
   -webkit-transition: .4s;
   transition: .4s;
+  opacity: 1;
 }
+
+
+  .slider-disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
 
 .slider:before {
   position: absolute;
@@ -58,6 +65,7 @@
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+  opacity: 1;
 }
 
 input.success:checked+.slider {

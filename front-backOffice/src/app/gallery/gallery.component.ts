@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { Conf } from './../config';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-gallery',
@@ -16,6 +18,8 @@ export class GalleryComponent implements OnInit {
   photos: any;
   constructor(
     public sitesService: SitesService,
+    protected router: Router,
+    private toastr: ToastrService,
   ) { }
 
   ngOnInit() {
@@ -48,7 +52,27 @@ export class GalleryComponent implements OnInit {
   }
 
   updatePhotos(id_site) {
-        this.getPhotosSite(id_site);
+    this.getPhotosSite(id_site);
   }
 
+  editPhoto(edit_photo) {
+    const photo: FormData = new FormData();
+    let photoJson: any = {};
+    photoJson = {
+      'display_gal_photo': !edit_photo.display_gal_photo,
+      'id_photo': edit_photo.id_photo,
+    };
+    photo.append('data', JSON.stringify(photoJson));
+    this.sitesService.updatePhoto(photo).subscribe(
+      () => {
+        this.getPhotosSite(edit_photo.t_site);
+      },
+      (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
+      },
+    );
+  }
 }

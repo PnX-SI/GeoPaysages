@@ -45,7 +45,11 @@ export class SitesService {
   }
 
   getUsers() {
-    return this.http.get<any>(Conf.apiUrl + 'users');
+    return this.http.get<any>(Conf.apiUrl + 'users/' + Conf.id_application);
+  }
+
+  getCommunes() {
+    return this.http.get<any>(Conf.apiUrl + 'communes');
   }
 
   addSite(site) {

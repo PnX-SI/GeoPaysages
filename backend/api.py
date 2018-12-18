@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint, jsonify, url_for
+from flask import Flask, request, Blueprint,Response, jsonify, url_for
 from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH
 from pypnusershub import routes as fnauth
@@ -122,14 +122,27 @@ def returnAllLicences():
         return jsonify(error=exception), 400
 
 
-@api.route('/api/users', methods=['GET'])
-def returnAllUsers():
+@api.route('/api/users/<int:id_app>', methods=['GET'])
+def returnAllUsers(id_app):
     try:
-        get_all_users = user_models.UsersView.query.all()
+        get_all_users = user_models.UsersView.query.filter_by(id_application=id_app).all()
         users = users_schema.dump(get_all_users).data
         return jsonify(users), 200
     except Exception as exception:
         return jsonify(error=exception), 400
+
+@api.route('/api/me/', methods=['GET'])
+@fnauth.check_auth(2, True, None, None)
+def returnCurrentUser(id_role = None):
+    try:
+        get_current_user = user_models.UsersView.query.filter_by(id_role=id_role).all()
+        current_user = users_schema.dump(get_current_user).data
+        return jsonify(current_user), 200
+    except Exception as exception:
+        return jsonify(error=exception), 400
+
+
+
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
@@ -230,7 +243,6 @@ def update_photo():
     data_serialized = json.loads(data)
     photos_query = models.TPhoto.query.filter_by(id_photo=data_serialized.get('id_photo')).all()
     photo_name = photo_schema.dump(photos_query).data[0].get('path_file_photo')
-    print('data_serialized', data_serialized)
     if (data_serialized.get('main_photo') == True):
         models.TSite.query.filter_by(id_site= data_serialized.get('id_site')).update({models.TSite.main_photo: data_serialized.get('id_photo')})
         db.session.commit()
@@ -269,11 +281,20 @@ def deletePhotos():
 
 
 
-@api.route('/api/villes', methods=['GET'])
-def returnAllville():
+@api.route('/api/communes', methods=['GET'])
+def returnAllcommunes():
     try:
-        get_all_ville = models.Ville.query.all()
-        ville= ville_schema.dump(get_all_ville).data
-        return jsonify(ville), 200
+        get_all_communes = models.Communes.query.order_by('nom_commune').all()
+        print('get_all_communes', get_all_communes)
+        communes= models.CommunesSchema(many=True).dump(get_all_communes).data
+        print('communes', communes)
+        return jsonify(communes), 200
     except Exception as exception:
-        return jsonify(error=exception), 400
+        return ('error'), 400
+
+
+@api.route('/api/logout', methods=['GET'])
+def logout():
+    resp = Response(jsonify({'msg':'logout'}), 200)
+    resp.delete_cookie('token')
+    return resp
