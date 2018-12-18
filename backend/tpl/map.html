@@ -36,9 +36,9 @@
                 <b-card no-body class="m-0 rounded-0" v-for="(filter) in filters">
                   <b-card-header header-tag="header" class="p-0 border-0">
                     <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0 text-left">
+                      <i class="icon ion-ios-arrow-forward ml-1 visible-collapsed"></i>
+                      <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
                       <span v-html="filter.label"></span>
-                      <i class="icon ion-md-add visible-collapsed"></i>
-                      <i class="icon ion-ios-remove hidden-collapsed"></i>
                     </b-btn>
                   </b-card-header>
                   <b-collapse :id="'app_map_filter_' + filter.name">

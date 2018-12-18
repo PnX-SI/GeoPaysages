@@ -59,6 +59,11 @@
   width: 100%;
 }
 
+.app-map .sidebar .filters .card-header .btn .icon {
+    right: auto;
+    left: -10px;
+}
+
 .app-map .sidebar .filters .card {
     border: none;
     background: transparent;
