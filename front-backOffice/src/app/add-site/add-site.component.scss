@@ -47,8 +47,13 @@
 }
 
 .btn-submit:disabled {
-  
   cursor: not-allowed;
+}
+
+
+.photo-ref{
+  width: 120px;
+  font-size: 12px;
 }
 
 .map {
@@ -73,7 +78,7 @@
 }
 
 .preview-img {
-  margin-top: 15px;
+  margin-top: 10px;
   margin-right: 20px;
   background: no-repeat center;
   background-size: cover;
@@ -81,7 +86,7 @@
 
 .preview {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
 }
@@ -103,11 +108,12 @@
 
 .inner-photo {
   position: relative;
+  display: block;
 }
 
 .delete-photo {
   position: absolute;
-  top: 7px;
+  top: 2px;
   color: #ff5252;
   left: calc(100% - 28px);
   cursor: pointer;

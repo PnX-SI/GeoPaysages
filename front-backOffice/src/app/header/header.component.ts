@@ -17,11 +17,9 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.loginService.logout().subscribe(
-      (res) => console.log('res', res),
+      (res) =>  this.router.navigate(['login']),
       (err) => {
-        if (err.status === 200) {
-          this.router.navigate(['login']);
-        }
+        console.log('logout', err);
       }
     );
   }

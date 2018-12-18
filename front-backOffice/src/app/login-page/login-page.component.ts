@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../services/lgoin.service';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -16,8 +19,9 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private route: Router
+    private route: Router,
   ) { }
 
   ngOnInit() {
@@ -30,11 +34,12 @@ export class LoginPageComponent implements OnInit {
   public submit(loginForm) {
     console.log(loginForm);
     this.userForm = loginForm.value;
-    this.userForm.id_application = 3;
+    this.userForm.id_application = 4;
     this.loginService.login(this.userForm)
       .subscribe(
         (currentUser) => {
           this.currentUser = currentUser.user;
+          this.authService.currentUser = this.currentUser;
           this.loginForm.reset();
           this.route.navigate(['sites']);
         },
@@ -62,4 +67,5 @@ export class LoginPageComponent implements OnInit {
     }
     return 'required';
   }
+
 }

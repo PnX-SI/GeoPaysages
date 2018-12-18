@@ -6,6 +6,11 @@ import { SitesService } from '../services/sites.service';
 import { NgbDatepickerConfig, NgbDatepickerI18n, NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import {forkJoin} from 'rxjs';
+import { AuthService } from '../services/auth.service';
+
 
 const I18N_VALUES = {
   'fr': {
@@ -61,37 +66,35 @@ export class AddPhotoComponent implements OnInit {
   alert;
   @Output() photoModal = new EventEmitter();
   @Input() inputImage = null;
+  currentUser: any;
 
   constructor(
     private modalService: NgbModal,
     private sitesService: SitesService,
     public formService: FormService,
+    protected router: Router,
+    private toastr: ToastrService,
     public calendar: NgbCalendar,
     datePickerConfig: NgbDatepickerConfig,
+    private authService: AuthService,
   ) {
     datePickerConfig.outsideDays = 'hidden';
   }
 
   ngOnInit() {
-    this.sitesService.getLicences()
-      .subscribe(
-        (licences) => {
-          this.licences = licences;
-          this.sitesService.getUsers()
-            .subscribe(
-              (users) => {
-                this.authors = users;
-                this.initForm();
-                if (this.inputImage) {
-                  this.title = 'Modifier la Photo';
-                  this.btn_text = 'Modifier';
-                  this.updateForm();
-                }
-                this.loadForm = true;
-              }
-            );
-        }
-      );
+    this.currentUser = this.authService.currentUser;
+    forkJoin([this.sitesService.getLicences(), this.sitesService.getUsers()]).subscribe(results => {
+      this.licences = results[0];
+      this.authors = results[1];
+      this.initForm();
+      if (this.inputImage) {
+        this.title = 'Modifier la Photo';
+        this.btn_text = 'Modifier';
+        this.updateForm();
+      }
+      this.loadForm = true;
+    });
+
   }
 
   initForm() {
@@ -194,6 +197,13 @@ export class AddPhotoComponent implements OnInit {
       () => {
         this.photoModal.emit(this.inputImage.t_site);
         this.modalRef.close();
+      },
+      (err) => {
+        this.modalRef.close();
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
       }
     );
   }
@@ -214,7 +224,13 @@ export class AddPhotoComponent implements OnInit {
         this.modalRef.close();
         this.disableButton = false;
       },
-      (err) => console.log('err', err),
+      (err) => {
+        this.modalRef.close();
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
+      },
       () => {
         this.photoModal.emit(this.inputImage.t_site);
       }

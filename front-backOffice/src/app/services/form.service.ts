@@ -18,6 +18,7 @@ export class FormService {
             id_theme: [null, Validators.required],
             id_stheme: [null, Validators.required],
             code_city_site: [null, Validators.required],
+            legend_site: [null, Validators.required],
             notice: [null],
         });
         return formSite;

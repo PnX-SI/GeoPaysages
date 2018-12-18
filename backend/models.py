@@ -121,19 +121,12 @@ class TRole(db.Model):
     date_update = db.Column(db.DateTime)
 
 
-class VTest(db.Model):
-    __tablename__ = 'VTest'
-    __table_args__ = {'schema': 'geopaysages'}
-
-    id = db.Column(db.Integer, primary_key=True)
-
 
 class TPhoto(db.Model):
     __tablename__ = 't_photo'
     __table_args__ = {'schema': 'geopaysages'}
 
-    id_photo = db.Column(db.Integer, primary_key=True,
-                         server_default=db.FetchedValue())
+    id_photo = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
     id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
@@ -145,19 +138,28 @@ class TPhoto(db.Model):
         'geopaysages.dico_licence_photo.id_licence_photo'))
 
     dico_licence_photo = db.relationship(
-        'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
+'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
     t_role = db.relationship(
         'TRole', primaryjoin='TPhoto.id_role == TRole.id_role', backref='t_photos')
     t_site = db.relationship(
         'TSite', primaryjoin='TPhoto.id_site == TSite.id_site', backref='t_photos')
 
 
+
+class Communes(db.Model):
+    __tablename__ = 'communes'
+    __table_args__ = {'schema': 'geopaysages'}
+    
+    code_commune = db.Column(db.String,primary_key=True,server_default=db.FetchedValue())
+    nom_commune = db.Column(db.String)
+    
+
+
 class Ville(db.Model):
     __tablename__ = 'villes_france'
     __table_args__ = {'schema': 'geopaysages'}
 
-    ville_id = db.Column(db.Integer, primary_key=True,
-                         server_default=db.FetchedValue())
+    ville_id = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
     ville_departement = db.Column(db.String)
     ville_slug = db.Column(db.String)
     ville_nom = db.Column(db.String)
@@ -224,8 +226,7 @@ class CorThemeSthemeSchema(ma.ModelSchema):
 
 class LicencePhotoSchema(ma.ModelSchema):
     class Meta:
-        fields = ('id_licence_photo', 'name_licence_photo',
-                  'description_licence_photo')
+        fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
 
 
 class TPhotoSchema(ma.ModelSchema):
@@ -237,8 +238,7 @@ class TPhotoSchema(ma.ModelSchema):
 
 class CorSthemeThemeSchema(ma.ModelSchema):
     dico_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme"])
-    dico_stheme = ma.Nested(DicoSthemeSchema, only=[
-                            "id_stheme", "name_stheme"])
+    dico_stheme = ma.Nested(DicoSthemeSchema, only=["id_stheme", "name_stheme"])
 
     class Meta:
         fields = ('dico_theme', 'dico_stheme')
@@ -256,3 +256,7 @@ class VilleSchema(ma.ModelSchema):
     class Meta:
          fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
 
+
+class CommunesSchema(ma.ModelSchema):
+    class Meta:
+        model = Communes

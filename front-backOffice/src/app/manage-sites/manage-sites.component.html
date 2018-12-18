@@ -4,8 +4,8 @@
     <div class="col-6 col-table">
       <div>
         <button class=" blue-btn btn-add" (click)="onAddSite()"> Ajouter un point d'observation</button>
-        <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" [loadingIndicator]="loadingIndicator"
-          [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
+        <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" 
+          [headerHeight]="40"  [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
           [reorderable]="reorderable" [selectionType]="'single'" (activate)="onCenterChange($event)" (select)='onSelect($event)'>
           <ngx-datatable-column name="Photo">
             <ng-template let-row="row" ngx-datatable-cell-template>
@@ -17,12 +17,12 @@
               {{row.name_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Code Commune">
+          <ngx-datatable-column name="Commune">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.code_city_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Publié">
+          <ngx-datatable-column name="Publication">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <label class="switch ">
                 <input type="checkbox" class="success" [checked]="row.publish_site" disabled>
@@ -36,6 +36,7 @@
     <div class="col-6 col-map">
       <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" 
       [(leafletCenter)]="center"
+      [(leafletZoom)]="zoom"
       (leafletMapReady)="onMapReady($event)">
       </div>
     </div>

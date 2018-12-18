@@ -9,7 +9,9 @@ import { FormService } from '../services/form.service';
 import { Conf } from './../config';
 import * as L from 'leaflet';
 import * as _ from 'lodash';
-
+import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-add-site',
@@ -80,47 +82,60 @@ export class AddSiteComponent implements OnInit {
   new_photos = [];
   marker: Layer[] = [];
   center: any;
-
+  toast_msg: string;
+  communes: undefined;
+  currentUser: any;
+  zoom: number;
   constructor(
     private sitesService: SitesService,
     public formService: FormService,
     protected router: Router,
     private route: ActivatedRoute,
+    private toastr: ToastrService,
     private modalService: NgbModal,
+    private authService: AuthService,
   ) {
   }
 
   ngOnInit() {
-
+    this.currentUser = this.authService.currentUser;
     this.id_site = this.route.snapshot.params['id'];
     this.siteForm = this.formService.initFormSite();
-    if (this.id_site) {
-      this.getSite(this.id_site);
-      this.submit_btn_text = 'Enregistrer';
-    } else {
-      this.edit_btn = true;
-      this.loadForm = true;
-      this.themes_onChange();
-      this.latlan_onChange();
-    }
-    this.sitesService.getThemes()
-      .subscribe(
-        (themes) => {
-          this.themes = themes;
-          this.sitesService.getSubthemes()
-            .subscribe(
-              (subthemes) => {
-                this.subthemes = subthemes;
-                this.selectedSubthemes = this.subthemes;
-              }
-            );
-        }
-      );
+    this.siteForm.controls['id_stheme'].disable();
+    forkJoin([this.sitesService.getThemes(), this.sitesService.getSubthemes(), this.sitesService.getCommunes()]).subscribe(results => {
+      this.themes = results[0];
+      this.subthemes = results[1];
+      this.communes = results[2];
+      this.selectedSubthemes = this.subthemes;
+      if (this.id_site) {
+        this.getSite(this.id_site);
+        this.submit_btn_text = 'Enregistrer';
+      } else {
+        this.edit_btn = true;
+        this.loadForm = true;
+        this.themes_onChange();
+        this.latlan_onChange();
+      }
+    });
   }
 
   onMapReady(map: Map) {
+    const info = new L.Control();
+    info.setPosition('topleft');
+    info.onAdd = () => {
+      const container = L.DomUtil.create('button', ' btn btn-sm btn-outline-shadow leaflet-bar leaflet-control ');
+      container.innerHTML = '<i style="line-height: unset" class="icon-full_screen"> </i>';
+      container.style.backgroundColor = 'white';
+      container.title = 'Recenter la catre';
+      container.onclick = () => {
+        this.center = latLng(this.site.geom);
+        this.zoom = 10;
+      };
+      return container;
+    };
+    info.addTo(map);
+
     map.addLayer(this.drawnItems);
-    map.scrollWheelZoom.disable();
     L.EditToolbar.Delete.include({
       removeAllLayers: false
     });
@@ -141,7 +156,6 @@ export class AddSiteComponent implements OnInit {
     map.on(L.Draw.Event.EDITED, (event) => {
       let layer = (event as any).layers._layers;
       layer = layer[Object.keys(layer)[0]];
-      console.log(layer);
       this.markerCoordinates.push(layer._latlng);
       this.siteForm.controls['lat'].setValue(this.markerCoordinates[0].lat.toFixed(6));
       this.siteForm.controls['lng'].setValue(this.markerCoordinates[0].lng.toFixed(6));
@@ -206,7 +220,15 @@ export class AddSiteComponent implements OnInit {
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
+            // tslint:disable-next-line:quotemark
+            this.toast_msg = "Point d'observation ajouté avec succès";
             this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
+          },
+          (err) => {
+            if (err.status === 403) {
+              this.router.navigate(['']);
+              this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+            }
           }
         );
       } else {
@@ -226,6 +248,7 @@ export class AddSiteComponent implements OnInit {
       this.previewImage = reader.result;
       photo.imgUrl = this.previewImage;
     };
+    photo.name = photo.path_file_photo;
     photo.filePhoto = photo.photo_file[0];
     this.photos.push(photo);
   }
@@ -247,18 +270,17 @@ export class AddSiteComponent implements OnInit {
     }
   */
 
-  addPhotos(id_site, id_theme, id_stheme) {
+  addPhotos(id_site, id_theme, id_stheme, ) {
     const photosData: FormData = new FormData();
     let photoJson;
     let photos;
     if (this.id_site) {
       photos = this.new_photos;
-      console.log('this.new_photos', this.new_photos);
     } else {
       photos = this.photos;
     }
     _.forEach(photos, (photo) => {
-      photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto']);
+      photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto', 'name']);
       photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
       photosData.append('data', JSON.stringify(photoJson));
@@ -273,6 +295,10 @@ export class AddSiteComponent implements OnInit {
         console.log('err upload photo', err);
         if (err.error.error === 'image_already_exist') {
           this.setAlert(err.error.image);
+        }
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
       },
       () => this.addThemes(id_site, id_theme, id_stheme)
@@ -296,7 +322,16 @@ export class AddSiteComponent implements OnInit {
     });
     this.sitesService.addThemes({ 'data': stheme_theme }).subscribe(
       (response) => {
-        this.router.navigate(['sites']);
+        this.siteForm.disable();
+        this.edit_btn = false;
+        this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+        this.router.navigate(['/sites/details/', id_site]);
+      },
+      (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
       }
     );
   }
@@ -313,7 +348,7 @@ export class AddSiteComponent implements OnInit {
       (site) => {
         this.site = site.site[0];
         _.forEach(site.photos, (photo) => {
-          this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm });
+          this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
           this.initPhotos = this.photos;
         });
       },
@@ -333,17 +368,27 @@ export class AddSiteComponent implements OnInit {
     this.siteForm.controls['id_theme'].statusChanges
       .subscribe(() => {
         this.selectedSubthemes = [];
-        this.siteForm.controls['id_stheme'].reset();
+        // this.siteForm.controls['id_stheme'].reset();
+        console.log('this.subthemes', this.subthemes);
         if (this.siteForm.controls['id_theme'].value && this.siteForm.controls['id_theme'].value.length !== 0) {
+          this.siteForm.controls['id_stheme'].enable();
           _.forEach(this.subthemes, (subtheme) => {
             _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
               if (_.includes(subtheme.themes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
                 this.selectedSubthemes.push(subtheme);
+                console.log('this.selectedSubthemes', this.selectedSubthemes);
               }
             });
           });
+          /*   _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
+               if (_.includes(selectedSubthemes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
+                 this.selectedSubthemes.push(subtheme);
+                 console.log('this.selectedSubthemes', this.selectedSubthemes);
+               }
+             }); */
         } else {
-          this.selectedSubthemes = this.subthemes;
+          this.siteForm.controls['id_stheme'].disable();
+          this.selectedSubthemes = [];
         }
       });
   }
@@ -393,8 +438,19 @@ export class AddSiteComponent implements OnInit {
     });
     this.sitesService.updateSite(siteJson).subscribe(
       (res) => {
+        // tslint:disable-next-line:quotemark
+        this.toast_msg = "Point d'observation mis à jour";
+        this.edit_btn_text = 'Éditer';
         if (this.deleted_photos.length > 0) {
-          this.sitesService.deletePhotos(this.deleted_photos).subscribe();
+          this.sitesService.deletePhotos(this.deleted_photos).subscribe(
+            () => '',
+            (err) => {
+              if (err.status === 403) {
+                this.router.navigate(['']);
+                this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+              }
+            }
+          );
         }
         this.addPhotos(this.id_site, themes, sthemes);
       }
@@ -418,13 +474,16 @@ export class AddSiteComponent implements OnInit {
   }
 
   initMarker(lat, lan) {
-    L.marker(latLng(lat, lan)).addTo(this.drawnItems);
+    L.marker(latLng(lat, lan), { icon: this.icon }).addTo(this.drawnItems);
     this.center = latLng(lat, lan);
     this.map.removeControl(this.drawControl);
     this.drawControl.setDrawingOptions({
       marker: false
     });
     this.map.addControl(this.drawControl);
+    if (this.id_site && !this.edit_btn) {
+      this.map.removeControl(this.drawControl);
+    }
   }
 
   openDeleteModal(content) {
@@ -448,11 +507,15 @@ export class AddSiteComponent implements OnInit {
       (res) => {
         this.router.navigate(['sites']);
       },
-      (err) => console.log('err delete', err)
+      (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
+      }
     );
     this.modalRef.close();
   }
-
 
   patchForm() {
     this.siteForm.patchValue({
@@ -465,8 +528,10 @@ export class AddSiteComponent implements OnInit {
       'id_theme': this.site.themes,
       'id_stheme': this.site.subthemes,
       'code_city_site': this.site.code_city_site,
+      'legend_site': this.site.legend_site,
       'notice': null,
     });
   }
+
 }
 
