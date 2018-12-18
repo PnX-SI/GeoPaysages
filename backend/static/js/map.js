@@ -101,6 +101,7 @@ oppv.initMap = (options) => {
 
         let selectedSites = []
         options.sites.forEach(site => {
+          site.marker = null
           unmatchedProp = selectedFilters.find(filter => {
             let prop = _.get(site, filter.name)
             if (!Array.isArray(prop))
@@ -122,6 +123,7 @@ oppv.initMap = (options) => {
           lats.push(site.latlon[0])
           lons.push(site.latlon[1])
           let marker = L.marker(site.latlon)
+          site.marker = marker
           marker.bindPopup('<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div><div class="title">' + site.name_site + '</div>', {
             closeButton: false
           })
@@ -148,6 +150,13 @@ oppv.initMap = (options) => {
         ], {
           maxZoom: 11
         })
+      },
+      onSiteMousover(site) {
+        site.marker.openPopup()
+        map.panTo(site.latlon)
+      },
+      onSiteMouseout(site) {
+        site.marker.closePopup()
       }
     }
   })

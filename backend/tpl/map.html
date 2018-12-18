@@ -65,7 +65,12 @@
           </b-card-header>
           <b-collapse :id="'app_map_sites'" visible>
             <b-card-body class="p-3">
-              <a v-for="site in sites" class="btn btn-sm btn-block btn-site" :href="'/comparator/' + site.id_site " v-html="site.name_site"></a>
+              <a v-for="site in sites" 
+                class="btn btn-sm btn-block btn-site" 
+                @mouseover="onSiteMousover(site)"
+                @mouseout="onSiteMouseout(site)"
+                :href="'/comparator/' + site.id_site" 
+                v-html="site.name_site"></a>
             </b-card-body>
           </b-collapse>
         </b-card>
