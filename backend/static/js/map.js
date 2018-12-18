@@ -25,19 +25,39 @@ oppv.initMap = (options) => {
     },
     methods: {
       initMap() {
+        const layerConfs = [{
+          label: "OSM classic",
+          layer: L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+          )
+        }, {
+          label: "OSM grayscale",
+          layer: L.tileLayer(
+            'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+              maxZoom: 18,
+              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            }
+          )
+        }]
+        
         map = L.map(this.$refs.map, {
-          zoomControl: false
+          zoomControl: false,
+          layers: [layerConfs[0].layer]
         })
-        const tileLayer = L.tileLayer(
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          }
-        )
+
         L.control.zoom({
           position: 'topright'
         }).addTo(map);
-        tileLayer.addTo(map)
+
+        const controlLayers = {};
+        layerConfs.forEach(layerConf => {
+          controlLayers[layerConf.label] = layerConf.layer
+        })
+        L.control.layers(controlLayers).addTo(map);
+
         this.setFilters()
       },
       onFilterClick(filter, item) {
@@ -112,6 +132,7 @@ oppv.initMap = (options) => {
             marker.closePopup()
           })
           marker.on('click', (e) => {
+            //TODO
             window.location.href = site.link.replace('http://127.0.0.1:8000', '')
           })
           marker.addTo(map)

@@ -39,8 +39,8 @@
 }
 
 .app-map .sidebar .card-group-header-btn {
-    background: #000;
-    border: 1px solid #000;
+    background: rgba(0,0,0,.3);
+    border: none;
     font-weight: 700;
     text-transform: uppercase;
 }
@@ -74,15 +74,8 @@
     border-top: none;
 }
 
-.app-map .sidebar .filters .card-header .btn.collapsed {
-    border: 1px solid #FFF;
-}
-
 .app-map .sidebar .filters .card-header .btn:not(.collapsed) {
-    background: #FFF;
-    border-color: #FFF;
-    border-bottom-color: var(--color-primary);
-    color: #000;
+    color: #FFF;
 }
 
 .app-map .sidebar .filters .card-body {
@@ -94,17 +87,17 @@
 .app-map .sidebar .filters .card-body .btn {
     text-transform: none;
     white-space: normal;
-    font-size: 12px;
+    font-size: 14px;
     text-align: left;
+    background: transparent;
+    color: #FFF;
+    border-color: transparent;
+    margin-bottom: 1px;
 }
-
-/* .app-map .sidebar .filters .card:not(:last-child) .card-body .btn {
-    border-bottom: none;
-} */
-
-.app-map .sidebar .filters .collapse.show .card-body,
-.app-map .sidebar .filters .collapsing .card-body {
-    border-bottom: 1px solid #FFF;
+.app-map .sidebar .filters .card-body .btn:hover,
+.app-map .sidebar .filters .card-body .btn.active {
+    background: #99D6EA;
+    color: #000;
 }
 
 .app-map .sidebar .card-group {
@@ -123,7 +116,7 @@
 }
 
 .app-map .sidebar .btn-site:hover {
-    background: #111;
+    background: #99D6EA;
 }
 
 .app-map .leaflet-popup-content {
@@ -133,6 +126,9 @@
 
 .app-map .leaflet-popup-content-wrapper {
     border-radius: 0;
+    background: rgba(0, 0, 0, .8);
+    color: #FFF;
+    box-shadow: none;
 }
 
 .app-map .leaflet-popup-content .title {

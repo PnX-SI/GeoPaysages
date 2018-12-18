@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% set active_page = 'map' %}
-{% block title %}Carte Intéractive{% endblock %}
+{% block title %}Carte Interactive{% endblock %}
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">La Carte Intéractive</h3>
+<h3 class="text-uppercase">La Carte Interactive</h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-map{% endblock %}
@@ -44,7 +44,7 @@
                   <b-collapse :id="'app_map_filter_' + filter.name">
                     <b-card-body>
                       <b-button-group vertical class="w-100">
-                        <b-button class="btn-block inverse" variant="primary" v-for="item in filter.items"
+                        <b-button class="btn-block" variant="default" v-for="item in filter.items"
                           :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
                       </b-button-group>
                     </b-card-body>
@@ -58,12 +58,12 @@
         <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
           <b-card-header header-tag="header" class="p-0">
             <b-btn block href="#" class="rounded-0 card-group-header-btn" v-b-toggle="'app_map_sites'" variant="secondary">
-              <span>Liste des sites</span> 
+              <span>Point d'observation</span> 
               <i class="icon ion-ios-arrow-down visible-collapsed"></i>
               <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
             </b-btn>
           </b-card-header>
-          <b-collapse :id="'app_map_sites'">
+          <b-collapse :id="'app_map_sites'" visible>
             <b-card-body class="p-3">
               <a v-for="site in sites" class="btn btn-sm btn-block btn-site" :href="'/comparator/' + site.id_site " v-html="site.name_site"></a>
             </b-card-body>
