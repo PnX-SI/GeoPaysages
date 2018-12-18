@@ -17,7 +17,8 @@ oppv.initMap = (options) => {
       return {
         isSidebarCollapsed: false,
         filters: filters,
-        sites: options.sites
+        sites: options.sites,
+        selectedSites: []
       }
     },
     mounted() {
@@ -140,6 +141,7 @@ oppv.initMap = (options) => {
           marker.addTo(map)
           markers.push(marker)
         });
+        this.selectedSites = selectedSites;
         if (!markers.length)
           return
         lats.sort()

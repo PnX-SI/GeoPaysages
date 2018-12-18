@@ -65,7 +65,7 @@
           </b-card-header>
           <b-collapse :id="'app_map_sites'" visible>
             <b-card-body class="p-3">
-              <a v-for="site in sites" 
+              <a v-for="site in selectedSites" 
                 class="btn btn-sm btn-block btn-site" 
                 @mouseover="onSiteMousover(site)"
                 @mouseout="onSiteMouseout(site)"
