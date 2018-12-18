@@ -11,7 +11,7 @@
     z-index: 10000;
     height: 100%;
     color: #FFF;
-    width: 320px;
+    width: 270px;
     transition: transform .3s;
 }
 
@@ -84,7 +84,8 @@
   border: none;
 }
 
-.app-map .sidebar .filters .card-body .btn {
+.app-map .sidebar .filters .card-body .btn,
+.app-map .sidebar .btn-site {
     text-transform: none;
     white-space: normal;
     font-size: 14px;
@@ -95,7 +96,8 @@
     margin-bottom: 1px;
 }
 .app-map .sidebar .filters .card-body .btn:hover,
-.app-map .sidebar .filters .card-body .btn.active {
+.app-map .sidebar .filters .card-body .btn.active,
+.app-map .sidebar .btn-site:hover {
     background: #99D6EA;
     color: #000;
 }
@@ -107,16 +109,6 @@
 .app-map .sidebar .card-header {
     background-color: transparent;
     border-bottom: 1px solid transparent;
-}
-
-.app-map .sidebar .btn-site {
-    text-align: left;
-    text-transform: none;
-    white-space: normal;
-}
-
-.app-map .sidebar .btn-site:hover {
-    background: #99D6EA;
 }
 
 .app-map .leaflet-popup-content {
@@ -135,7 +127,8 @@
     width: 150px;
     text-align: left;
     padding: 3px;
-    font-size: 14px;
+    padding-left: 5px;
+    font-size: 12px;
 }
 
 .app-map .leaflet-popup-content .img {
