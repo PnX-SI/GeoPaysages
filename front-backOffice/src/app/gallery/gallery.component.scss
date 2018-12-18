@@ -4,7 +4,6 @@
   position: relative;
 }
 
-
 .thumb {
   margin-bottom: 20px;
   padding: 0 10px;
@@ -51,10 +50,25 @@
   min-height: calc(100vh - 98px);
 }
 
-.icon-star-full {
+.photo-badges {
+  font-size: 18px;
   position: absolute;
   z-index: 999;
   top: 5px;
   right: 15px;
   color: #00188F;
+  i{
+    padding-left: 5px
+  }
+}
+
+.photo-name{
+  font-size: 14px;
+  text-align: center;
+  padding: 0 6px;
+  padding-bottom: 10px;
+}
+
+.icon-eye-blocked, .icon-eye{
+  cursor: pointer;
 }

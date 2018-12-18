@@ -8,7 +8,7 @@
   </div>
   <form *ngIf="loadForm" [formGroup]="photoForm" (submit)="submitPhoto(photoForm)">
     <div class="modal-body">
-      <button *ngIf="inputImage" type="button" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(photoModal)">
+      <button *ngIf="inputImage && currentUser.id_droit_max > 5" type="button" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(photoModal)">
         <i class="icon-trash delete-photo"></i>Supprimer
         la photo</button>
       <div class="inner-checkbox form-group">
@@ -67,12 +67,12 @@
       <button type="button" *ngIf="!imageLaoded" class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer
         une photo</button>
       <app-form-error controlName="photo_file" errorKey="required"></app-form-error>
-      <div *ngIf="imageLaoded" style="color: #00188F;"><i class="icon-camera"></i>{{imageName}}<i class="icon-trash remove-file "
+      <div *ngIf="imageLaoded" style="color: #00188F;"><i class="icon-camera"></i>{{imageName}}<i *ngIf="currentUser.id_droit_max > 5" class="icon-trash remove-file "
           (click)="removeImage()"></i></div>
       <ngb-alert class='alert' *ngIf="alert" [dismissible]="false" type="danger">{{alert}}</ngb-alert>
       <div class="custom-control custom-checkbox">
         <input type="checkbox"   formControlName='main_photo' class="custom-control-input" id="customCheck1">
-        <label class="custom-control-label" for="customCheck1">Photo principale</label>
+        <label class="custom-control-label" for="customCheck1">Photo affichée dans la gallerie</label>
       </div>
     </div>
     <div class="modal-footer">

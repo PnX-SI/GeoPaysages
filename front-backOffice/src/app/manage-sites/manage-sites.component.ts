@@ -6,7 +6,7 @@ import { _appIdRandomProviderFactory } from '@angular/core/src/application_token
 import { Conf } from './../config';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
-import { ThrowStmt } from '@angular/compiler';
+
 
 @Component({
   selector: 'app-manage-sites',
@@ -26,6 +26,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   sitesLoaded = false;
   markers: Layer[] = [];
   center = latLng(45.372167, 6.819077);
+  zoom: number;
 
   constructor(private siteService: SitesService,
     protected router: Router,
@@ -38,8 +39,21 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   }
 
   onMapReady(map: Map) {
-    map.scrollWheelZoom.disable();
     this.map = map;
+    const info = new L.Control();
+    info.setPosition('topleft');
+    info.onAdd = () => {
+      const container = L.DomUtil.create('button', ' btn btn-sm btn-outline-shadow leaflet-bar leaflet-control ');
+      container.innerHTML = '<i style="line-height: unset" class="icon-full_screen"> </i>';
+      container.style.backgroundColor = 'white';
+      container.title = 'Recenter la catre';
+      container.onclick = () => {
+        this.center = latLng(45.372167, 6.819077);
+        this.zoom = 10;
+      };
+      return container;
+    };
+    info.addTo(map);
   }
 
   getAllSites() {
@@ -98,6 +112,10 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.changeDetector.detach();
   }
+
+
+
+
 
 }
 

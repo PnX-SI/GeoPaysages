@@ -1,35 +1,36 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Conf } from '../config';
+import { AuthService } from './auth.service';
+import { LoginService } from './lgoin.service';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 
 export class AuthGuard implements CanActivate {
 
-    private userProfile;
-    constructor(protected router: Router, private http: HttpClient) {
+    constructor(protected router: Router,
+        private authService: AuthService,
+        private loginService: LoginService) {
     }
+
     canActivate(): Promise<boolean> {
         return new Promise((resolve, reject) => {
-
-            /*  this.http.get(Conf.casBaseUrl + "profile", { params: params })
-                  .subscribe(
-                      (user) => { this.userProfile = user },
-                      (error) => {
-                          this.router.navigate(['home']);
-                          return resolve(false)
-                      },
-                      () => {
-                          return resolve(true)
-                      }
-                  );
-          })*/
+            if (this.authService.currentUser) {
+                return resolve(true);
+            } else {
+                this.loginService.getMe().subscribe(
+                    (user) => {
+                        this.authService.currentUser = user;
+                        return resolve(true);
+                    },
+                    (err) => {
+                        this.router.navigate(['']);
+                        return resolve(false);
+                    }
+                );
+            }
         });
     }
+
 }
-
-
-
-
 
