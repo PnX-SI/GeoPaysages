@@ -82,7 +82,7 @@ oppv.comparator = (options) => {
       initMap() {
         map = L.map(this.$refs.map, {
           center: options.site.geom,
-          zoom: 8
+          zoom: 13
         })
         const tileLayer = L.tileLayer(
           'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

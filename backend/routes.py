@@ -7,6 +7,7 @@ import random
 from models import (db)
 from config import DATA_IMAGES_PATH
 import json
+from datetime import datetime
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -17,12 +18,13 @@ dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+villes_schema = models.VilleSchema(many=True)
 
 
 
 @main.route('/')
 def home():
-    sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
+    """ sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
     rows = db.engine.execute(sql).fetchall()
     id_photos = json.loads(rows[0]['value'])
     get_photos = models.TPhoto.query.filter(
@@ -31,9 +33,38 @@ def home():
 
     site_ids = [photo.get('t_site') for photo in dump_pĥotos]
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
-    dump_sites = site_schema.dump(get_sites).data
+    dump_sites = site_schema.dump(get_sites).data """
 
-    def get_photo_block(id_photo):
+    sql = text("SELECT * FROM geopaysages.t_site ORDER BY RANDOM() LIMIT 6")
+    sites_proxy = db.engine.execute(sql).fetchall()
+    sites = [dict(row.items()) for row in sites_proxy]
+
+    photo_ids = []
+    ville_codes = []
+    for site in sites:
+        photo_ids.append(site.get('main_photo'))
+        ville_codes.append(site.get('code_city_site'))
+
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos).data
+
+    query_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_(ville_codes)
+    )
+    dump_villes = villes_schema.dump(query_villes).data
+
+    for site in sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = url_for(
+            'static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo')
+        )
+        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
+
+
+    """ def get_photo_block(id_photo):
         try:
             photo = next(photo for photo in dump_pĥotos if photo.get(
                 'id_photo') == id_photo)
@@ -51,40 +82,41 @@ def home():
     blocks = [
         get_photo_block(id_photo)
         for id_photo in id_photos
-    ]
+    ] """
 
-    sites=site_schema.dump(models.TSite.query.all()).data
+    all_sites=site_schema.dump(models.TSite.query.all()).data
     
-    return render_template('home.html', blocks=blocks, sites=sites)
+    return render_template('home.html', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
-    #TODO query group_by t_site order_by date_photo desc
-    get_photos = models.TPhoto.query.order_by('date_photo').all()
-    dump_photos = photo_schema.dump(get_photos).data
-    #print(dump_photos)
+    get_sites = models.TSite.query.order_by('name_site').all()
+    dump_sites = site_schema.dump(get_sites).data
     
-    photos = []
-    def getPhotoBySite(id):
-        try:
-            photo = next(item for item in photos if item.get('id_site') == id)
-            print(photo is None)
-            return photo
-        except Exception as exception:
-            pass
+    #TODO get photos and cities by join on sites query
+    photo_ids = []
+    ville_codes = []
+    for site in dump_sites:
+        photo_ids.append(site.get('main_photo'))
+        ville_codes.append(site.get('code_city_site'))
 
-    for photo in dump_photos:
-        if (getPhotoBySite(photo.get('t_site')) is None):
-            photos.append({
-                'id_site': photo.get('t_site'),
-                'sm': utils.getThumbnail(photo).get('output_url')
-            })
-    """ photos = [{
-        'id_site': photo.get('t_site'),
-        'sm': utils.getThumbnail(photo).get('output_url')
-    } for photo in dump_photos if next(item for item in photos if item.get('id_site') == photo.get('t_site')) is None] """
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos).data
 
-    return render_template('gallery.html', photos=photos)
+    query_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_(ville_codes)
+    )
+    dump_villes = villes_schema.dump(query_villes).data
+
+    for site in dump_sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = utils.getThumbnail(photo).get('output_url')
+        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
+    
+    return render_template('gallery.html', sites=dump_sites)
 
 @main.route('/comparator/<int:id_site>')
 def comparator(id_site):
@@ -92,14 +124,34 @@ def comparator(id_site):
     site=site_schema.dump(get_site_by_id).data[0]
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
     photos = photo_schema.dump(get_photos_by_site).data
+    get_villes = models.Ville.query.filter(
+        models.Ville.ville_code_commune.in_([site.get('code_city_site')])
+    )
+    site['ville'] = villes_schema.dump(get_villes).data[0]
 
     def getPhoto(photo):
+        date_diplay = {}
+        date_approx = photo.get('date_photo')
+        filter_date = photo.get('filter_date')
+        if date_approx:
+            date_diplay = {
+                'md': date_approx,
+                'sm': date_approx
+            }
+        else:
+            date_obj = datetime.strptime(filter_date, '%Y-%m-%d')
+            date_diplay = {
+                'md': date_obj.strftime('%Y (%d %B)'),
+                'sm': date_obj.strftime('%Y')
+            }
+
         return {
             'id': photo.get('id_photo'),
             'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
             'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
             'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
-            'date': photo.get('date_photo')
+            'date': photo.get('filter_date'),
+            'date_diplay': date_diplay
         }
 
     photos = [getPhoto(photo) for photo in photos]

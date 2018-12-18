@@ -19,6 +19,7 @@ class TSite(db.Model):
     id_site = db.Column(db.Integer, primary_key=True,
                         server_default=db.FetchedValue())
     name_site = db.Column(db.String)
+    ref_site = db.Column(db.String)
     desc_site = db.Column(db.String)
     legend_site = db.Column(db.String)
     testim_site = db.Column(db.String)
@@ -28,7 +29,9 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
-
+    
+    #TODO
+    #t_ville = db.relationship('Ville', primaryjoin='Ville.ville_code_commune == TSite.code_city_site')
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
@@ -251,5 +254,5 @@ class TSiteSchema(ma.ModelSchema):
 
 class VilleSchema(ma.ModelSchema):
     class Meta:
-         fields = ('ville_nom',)
+         fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
 
