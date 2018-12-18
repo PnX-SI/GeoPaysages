@@ -267,6 +267,10 @@ def map():
     sql_map = text(sql_map_str)
     townships_result = db.engine.execute(sql_map).fetchall()
     townships = [dict(row) for row in townships_result]
+
+    for site in sites:
+        site['ville'] = next(township for township in townships if township.get('id') == site.get('township'))
+    
     dbs = {
         'themes': themes,
         'subthemes': subthemes,

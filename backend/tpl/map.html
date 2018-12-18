@@ -70,7 +70,7 @@
                 @mouseover="onSiteMousover(site)"
                 @mouseout="onSiteMouseout(site)"
                 :href="'/comparator/' + site.id_site" 
-                v-html="site.name_site"></a>
+                v-html="site.name_site + ' | ' + site.ville.label"></a>
             </b-card-body>
           </b-collapse>
         </b-card>
