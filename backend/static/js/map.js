@@ -49,6 +49,11 @@ oppv.initMap = (options) => {
           layers: [layerConfs[0].layer]
         })
 
+        L.control.scale({
+          position: 'bottomright',
+          imperial: false
+        }).addTo(map);
+
         L.control.zoom({
           position: 'topright'
         }).addTo(map);
