@@ -2,8 +2,8 @@
     --color-primary: #00188F;
     --color-primary-light: #303f8a;
     --color-blue : #283371;
-    --color-green : #7AB929;
-    --color-secondary: #6db61e;
+    --color-green : #78BE20;
+    --color-secondary: #78BE20;
     --color-secondary-light: #72d409;
 }
 
@@ -163,7 +163,7 @@ button{
     text-align: center;
     color: #fff;
     font-style: italic;
-    background-color : rgba(103,233,255,0.5);
+    background-color : rgba(153,214,234,0.5);
     z-index: 9999;
     transition: transform .5s ease;
 }
@@ -254,7 +254,10 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 .header-title {
     justify-content: center;
+    margin-left: 0;
     margin-bottom: -8px;
+    padding-left: 120px;
+    padding-right: 120px;
 }
 
 .header-logo {
@@ -317,6 +320,10 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     background: transparent;
 }
 
+.modal-fs .modal-content {
+    overflow: hidden;
+}
+
 .modal-fs .modal-dialog {
     color: #FFF;
     margin: 0;
@@ -337,7 +344,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 .modal-fs .modal-header {
     border: none;
-    padding-bottom: 0;
+    padding: 0;
 }
 
 .modal-fs .modal-header .close,
@@ -350,15 +357,13 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 }
 
 .modal-fs.modal-img .modal-body {
-    display: flex;
-    padding-top: 0;
+    padding: 0;
+    height: calc(100% - 44px);
 }
 
-.modal-fs.modal-img .img-wrapper {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.modal-fs.modal-img figure {
+    height: 100%;
+    margin: 0;
 }
 
 .modal-fs.modal-img .img-wrapper:not(:first-child) {
@@ -369,18 +374,39 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     padding-right: 5px;
 }
 
-.modal-fs.modal-img .img-wrapper img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
+.modal-fs.modal-img figure img {
+    max-width: calc(100% - 60px);
+    max-height: calc(100% - 80px);
     height: auto;
+    width: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: -35px;
+    transform: translate(-50%, -50%);
+}
+
+.modal-fs.modal-img figcaption {
+    font-family: 'Hind', sans-serif;
+    font-weight: 700 !important;
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    margin: 0;
+    display: flex;
+    align-items: center;
 }
 
 /* HEADER */
 
-header h1{
+header h1 {
     text-transform: uppercase;
     font-size: 1.5em;
+    line-height: 20px;
+}
+
+header h3 {
+    line-height: 20px;
 }
 
 .navbar-collapse {

@@ -3,6 +3,7 @@
 
 <head>{% block head %}
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
@@ -27,7 +28,9 @@
 <body class="{% block bodyClassNames %}{% endblock %}">
 
     <header class="container-fluid" id="header">
-      <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
+      <a href="/">
+        <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
+      </a>
       <div class="row nav-bar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
@@ -81,13 +84,18 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="http://rando.vanoise.com">
                 Rando Vanoise
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="http://biodiversite.vanoise-parcnational.fr">
                 BiodiVanoise
+              </a>
+            </li>
+            <li>
+              <a href="https://phototheque.vanoise-parcnational.fr">
+                Photothèque
               </a>
             </li>
           </ul>

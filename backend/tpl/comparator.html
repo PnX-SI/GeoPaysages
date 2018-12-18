@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">{{ site.name_site }}</h3>
+<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small class="text-lowercase">(ref: {{ site.ref_site }})</small></h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-comparator {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
@@ -22,18 +22,18 @@
 <div class="page-content container-fluid" id="js-app-comparator">
   <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
-    <div class="img-wrapper" v-for="photo in zoomPhotos">
-      <figure>
-          <img :src="photo.lg" />
-          <figcaption class="sans-serif font-weight-bold mt-2 clearfix d-flex">
-            <div class="w-100">
-              <span class="d-block" v-html="photo.date"></span>
-              <span class="d-block">{{ site.name_site }}</span>
-            </div>
+    <figure v-for="photo in zoomPhotos">
+        <img :src="photo.lg" />
+        <figcaption>
+          <div class="col-6 text-right">
+            <div v-html="photo.date_diplay.md"></div>
+            <div>{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small>(ref: {{ site.ref_site }})</small></div>
+          </div>
+          <div class="col-6">
             <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
-          </figcaption>
-      </figure>
-    </div>
+          </div>
+        </figcaption>
+    </figure>
   </b-modal>
   <div class="row">
     <!-- <div class="col-auto col-thumbs">
@@ -63,8 +63,8 @@
               </div>
               <img src="{{ photos[i].md }}" :src="comparedPhotos[{{ i }}].md" @load="onComparedLoaded({{ i }})" @click="onZoomClick({{ i }})" v-b-modal.modal_comparator_zoom />
               <div class="d-flex justify-content-between py-1">
-                <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date">{{ photos[i].date }}</div>
-                <b-button class="btn-sm btn-toggle btn-big-icon" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
+                <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date_diplay.md">{{ photos[i].date_diplay.md }}</div>
+                <b-button class="btn-sm btn-toggle btn-big-icon border-0" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
               </div>
@@ -91,7 +91,7 @@
               {% for photo in photos %}
               <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
                 <img src="{{ photo.sm }}" />
-                <div class="img-date">{{ photo.date }}</div>
+                <div class="img-date">{{ photo.date_diplay.sm }}</div>
               </div>
               {% endfor %}
             </div>
@@ -105,34 +105,34 @@
       <div class="row mt-3">
         <div class="col-lg-5 pl-0 mb-5 text-right">
           <div class="map-wrapper" ref="map"></div>
-          <button class="btn btn-sm btn-primary text-uppercase">
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/oppv-' + site.ref_site + '-notice.pdf') }}" target="_blank">
             Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
-          </button>
-          <a class="btn btn-sm btn-primary text-uppercase mt-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
+          </a>
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
             Faire une observation <i class="icon ion-ios-eye ml-2"></i>
           </a>
         </div>
         <div class="col-lg-7 pr-0">
-          <h5 class="text-uppercase">Description</h5>
+          <h5 class="text-uppercase">Présentation du site</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target font-italic">
               {{ site.desc_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
                 <span class="visible-text-collapsed">Lire plus</span>
                 <span class="hidden-text-collapsed">Lire moins</span>
               </button>
             </div>
           </div>
           {% if site.testim_site %}
-          <h5 class="text-uppercase mt-4">Témoignage</h5>
+          <h5 class="text-uppercase mt-4">Témoignages</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
               {{ site.testim_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
                 <span class="visible-text-collapsed">Lire plus</span>
                 <span class="hidden-text-collapsed">Lire moins</span>
               </button>

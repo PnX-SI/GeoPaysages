@@ -16,14 +16,14 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-  {% for photo in photos %}
-    <div class="picture col-lg-2 col-md-3 col-6">
-      <a href="/comparator/{{ photo.id_site }}">
-        <img src="{{ photo.sm }}" alt="Montagne vanoise">
+  <div class="row justify-content-center">
+  {% for site in sites %}
+    <div class="picture col-lg-2 col-md-3 col-sm-4 col-6">
+      <a href="/comparator/{{ site.id_site }}">
+        <img src="{{ site.photo }}" alt="Montagne vanoise">
       </a>
       <div class="discover">
-        <a href="/comparator/{{ photo.id_site }}">Découvrir ce site photographique</a>
+        <a href="/comparator/{{ site.id_site }}">{{ site.name_site }} - {{ site.ville.ville_nom }}</a>
       </div>
     </div>
   {% endfor %}

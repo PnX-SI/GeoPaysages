@@ -34,16 +34,3 @@
 .page-gallery .picture:hover .discover{
     transform: translateY(-100%);
 }
-
-@media screen and (max-width: 767px) {
-    .page-gallery .picture:first-child img{
-        filter: brightness(50%);
-        -webkit-filter: brightness(50%);
-        -moz-filter: brightness(50%);
-        -o-filter: brightness(50%);
-        -ms-filter: brightness(50%);
-    }
-    .page-gallery .picture:first-child .discover{
-        transform: translateY(-170%);
-    }
-}
