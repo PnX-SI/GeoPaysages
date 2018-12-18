@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, Blueprint, jsonify, url_for
+from flask import Flask, render_template, redirect, Blueprint, jsonify, url_for, abort
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import models
@@ -35,9 +35,12 @@ def home():
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
     dump_sites = site_schema.dump(get_sites).data """
 
-    sql = text("SELECT * FROM geopaysages.t_site ORDER BY RANDOM() LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site where publish_site=true ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
+    diff_nb = 6 - len(sites)
+    for x in range(0, diff_nb):
+        sites.append(sites[x])
 
     photo_ids = []
     ville_codes = []
@@ -84,13 +87,13 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.all()).data
+    all_sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True)).data
     
     return render_template('home.html', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
-    get_sites = models.TSite.query.order_by('name_site').all()
+    get_sites = models.TSite.query.filter_by(publish_site = True).order_by('name_site')
     dump_sites = site_schema.dump(get_sites).data
     
     #TODO get photos and cities by join on sites query
@@ -120,8 +123,13 @@ def gallery():
 
 @main.route('/comparator/<int:id_site>')
 def comparator(id_site):
-    get_site_by_id = models.TSite.query.filter_by(id_site = id_site)
-    site=site_schema.dump(get_site_by_id).data[0]
+    get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
+    site=site_schema.dump(get_site_by_id).data
+    print(len(site))
+    if len(site) == 0:
+        return abort(404)
+
+    site = site[0]
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
     photos = photo_schema.dump(get_photos_by_site).data
     get_villes = models.Ville.query.filter(
@@ -162,7 +170,7 @@ def comparator(id_site):
 @main.route('/map')
 def map():
 
-    sites=site_schema.dump(models.TSite.query.order_by('name_site').all()).data
+    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by('name_site')).data
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
         cor_list = []
