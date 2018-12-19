@@ -457,8 +457,9 @@ footer div:first-child{
 }
 
 footer img{
-    height: fit-content;
     align-self: center;
+    height: 110px;
+    width: auto;
 }
 
 footer ul{
