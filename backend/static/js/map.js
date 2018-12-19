@@ -80,7 +80,7 @@ oppv.initMap = (options) => {
         this.setFilters()
       },
       onFilterClick(filter, item) {
-        //this.updateFilters()
+        this.updateFilters()
         this.setFilters()
       },
       updateFilters() {

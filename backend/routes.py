@@ -263,7 +263,8 @@ def map():
 
     subthemes = [{
         'id': item['id_stheme'],
-        'label': item['name_stheme']
+        'label': item['name_stheme'],
+        'themes': item['themes']
     } for item in subthemes]
 
     filter_township = [
