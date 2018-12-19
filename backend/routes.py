@@ -154,12 +154,18 @@ def comparator(id_site):
                 'md': format_datetime(date_obj, 'yyyy (dd MMMM)'),
                 'sm': date_obj.strftime('%Y')
             }
-
+        photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
+        img_caption = "%s | %s | %s | %s" % (
+            site.get('name_site'),
+            site.get('ville').get('nom_commune'),
+            site.get('ref_site'),
+            photo_license
+        )
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
             'md': utils.getMedium(photo).get('output_url'),
-            'lg': utils.getLarge(photo).get('output_url'),
+            'lg': utils.getLarge(photo, img_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }

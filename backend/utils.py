@@ -58,27 +58,22 @@ def getMedium(photo):
     return getImage(photo, 'medium', callback)
 
 
-def getLarge(photo):
+def getLarge(photo, caption):
     def callback(img):
-        addWatherMark(img, photo)
+        addCaption(img, caption)
     return getImage(photo, 'large', callback)
 
 
-def addWatherMark(img, photo):
-    copyright_text = photo.get('dico_licence_photo').get(
-        'description_licence_photo')
+def addCaption(img, text):
     font = ImageFont.truetype("./static/fonts/openSans.ttf", 14)
     if img.get('input_exists'):
-        print('ok', photo)
         try:
             img_src = img.get('image')
             width, height = img_src.size
-            img_dest = Image.new('RGB', (width, height + 24))
+            img_dest = Image.new('RGB', (width, height + 25))
             img_dest.paste(img_src, (0, 0))
             draw = ImageDraw.Draw(img_dest)
-            draw.text((10, height + 3), copyright_text,
-                      font=font, fill=(255, 255, 255, 255))
+            draw.text((10, height + 3), text, font=font, fill=(255, 255, 255, 255))
             img_dest.save(img.get('output_path'))
         except Exception:
-            print('addWatherMark Invalid image')
-    return img
+            print('addCaption Invalid image')
