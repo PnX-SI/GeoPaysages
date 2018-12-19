@@ -8,6 +8,7 @@ from models import (db)
 from config import DATA_IMAGES_PATH
 import json
 from datetime import datetime
+from flask_babel import format_datetime
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -149,15 +150,16 @@ def comparator(id_site):
         else:
             date_obj = datetime.strptime(filter_date, '%Y-%m-%d')
             date_diplay = {
-                'md': date_obj.strftime('%Y (%d %B)'),
+                'md': format_datetime(date_obj, 'yyyy (dd MMMM)'),
                 'sm': date_obj.strftime('%Y')
             }
 
         return {
             'id': photo.get('id_photo'),
-            'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
-            'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
-            'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
+            'sm': utils.getThumbnail(photo).get('output_url'),
+            'md': utils.getMedium(photo).get('output_url'),
+            'lg': url_for('static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo')),
+            'dl': utils.getDownloadable(photo).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }

@@ -55,14 +55,13 @@ def getMedium(photo):
         image = img.get('image')
         image.thumbnail((800, 800))
         image.save(img.get('output_path'))
-        addWatherMark(img, photo)
     return getImage(photo, 'medium', callback)
 
 
-def getLarge(photo):
+def getDownloadable(photo):
     def callback(img):
         addWatherMark(img, photo)
-    return getImage(photo, 'large', callback)
+    return getImage(photo, 'download', callback)
 
 
 def addWatherMark(img, photo):

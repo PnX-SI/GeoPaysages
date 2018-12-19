@@ -5,9 +5,12 @@ from models import (db)
 import models
 from flask import Flask
 from flask_cors import CORS
+from flask_babel import Babel
 from api import api
 
 app = Flask(__name__)
+app.config['BABEL_DEFAULT_LOCALE'] = 'fr'
+babel = Babel(app)
 CORS(app, supports_credentials=True)
 
 app.register_blueprint(main_blueprint)
