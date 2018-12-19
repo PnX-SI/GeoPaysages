@@ -3,10 +3,10 @@
 {% block title %}Carte Interactive{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.js') }}"></script>
 <script src="{{ url_for('static', filename='js/map.js') }}"></script>
 {% endblock %}
 

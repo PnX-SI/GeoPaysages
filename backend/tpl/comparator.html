@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 {% block title %}{{ site.name_site }}{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />

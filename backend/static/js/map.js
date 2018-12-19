@@ -10,6 +10,7 @@ oppv.initMap = (options) => {
   const filters = _.cloneDeep(options.filters)
   let map;
   let markers = []
+  let mapBounds;
 
   new Vue({
     el: '#js-app-map',
@@ -43,7 +44,7 @@ oppv.initMap = (options) => {
             }
           )
         }]
-        
+
         map = L.map(this.$refs.map, {
           zoomControl: false,
           layers: [layerConfs[0].layer]
@@ -57,6 +58,18 @@ oppv.initMap = (options) => {
         L.control.zoom({
           position: 'topright'
         }).addTo(map);
+
+        L.easyButton({
+          position: 'topright',
+          states: [{
+            stateName: 'reset',
+            onClick: function (button, map) {
+              if (mapBounds)
+                map.fitBounds(mapBounds.bbox, mapBounds.options)
+            },
+            icon: 'icon ion-md-locate'
+          }]
+        }).addTo(map)
 
         const controlLayers = {};
         layerConfs.forEach(layerConf => {
@@ -151,12 +164,16 @@ oppv.initMap = (options) => {
           return
         lats.sort()
         lons.sort()
-        map.fitBounds([
-          [lats[0], lons[0]],
-          [lats[lats.length - 1], lons[lons.length - 1]]
-        ], {
-          maxZoom: 11
-        })
+        mapBounds = {
+          bbox: [
+            [lats[0], lons[0]],
+            [lats[lats.length - 1], lons[lons.length - 1]]
+          ],
+          options: {
+            maxZoom: 11
+          }
+        }
+        map.fitBounds(mapBounds.bbox, mapBounds.options)
       },
       onSiteMousover(site) {
         site.marker.openPopup()
