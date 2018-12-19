@@ -29,6 +29,13 @@
     right: 10px;
     padding: 0px 5px;
     transform: translateY(100%);
+    line-height: 20px;
+}
+
+.page-gallery .picture .discover small {
+    position: absolute;
+    right: 3px;
+    bottom: -5px;
 }
 
 .page-gallery .picture:hover .discover{
