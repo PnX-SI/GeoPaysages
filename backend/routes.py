@@ -264,7 +264,7 @@ def map():
         filter for filter in filters if filter.get('name') == 'township'][0]
     str_map_in = ["'" + township +
                   "'" for township in filter_township.get('items')]
-    sql_map_str = "SELECT ville_code_commune AS id, ville_nom_reel AS label FROM geopaysages.villes_france WHERE ville_code_commune IN (" + ",".join(
+    sql_map_str = "SELECT code_commune AS id, nom_commune AS label FROM geopaysages.communes WHERE code_commune IN (" + ",".join(
         str_map_in) + ")"
     sql_map = text(sql_map_str)
     townships_result = db.engine.execute(sql_map).fetchall()
