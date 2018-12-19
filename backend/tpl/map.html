@@ -31,7 +31,16 @@
             </b-btn>
           </b-card-header>
           <b-collapse :id="'app_map_filters'" visible>
-            <b-card-body class="p-3">
+            <b-card-body class="pt-0 px-3 pb-3">
+              <div class="text-right">
+                <button
+                  type="button" 
+                  @click="onCancelClick()" 
+                  class="btn btn-clear-primary btn-sm btn-no-uppercase">
+                  <i class="icon ion-md-close align-text-bottom mr-1"></i> 
+                  annuler les filtres
+                </button>
+              </div>
               <div class="filters">
                 <b-card no-body class="m-0 rounded-0" v-for="(filter) in filters">
                   <b-card-header header-tag="header" class="p-0 border-0">
@@ -41,7 +50,7 @@
                       <span v-html="filter.label"></span>
                     </b-btn>
                   </b-card-header>
-                  <b-collapse :id="'app_map_filter_' + filter.name">
+                  <b-collapse :id="'app_map_filter_' + filter.name" :visible="filter.selectedItems.length > 0">
                     <b-card-body>
                       <b-button-group vertical class="w-100">
                         <b-button class="btn-block" variant="default" v-for="item in filter.items"

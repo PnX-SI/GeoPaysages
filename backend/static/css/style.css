@@ -51,9 +51,15 @@ button{
     border-bottom: solid 1px #000;
 }
 
+.no-underline {
+    text-decoration: none !important;
+}
+
 .btn {
-    text-transform: uppercase;
     border-radius: 0;
+}
+.btn:not(.btn-no-uppercase) {
+    text-transform: uppercase;
 }
 .btn:focus {
     box-shadow: none !important;
@@ -110,6 +116,16 @@ button{
     background-color: transparent;
     background-image: none;
     border-color: var(--color-primary);
+}
+
+.btn-clear-primary {
+    color: #FFF;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.btn-clear-primary:hover {
+    background-color: var(--color-primary);
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
