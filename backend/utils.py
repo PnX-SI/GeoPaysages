@@ -58,10 +58,10 @@ def getMedium(photo):
     return getImage(photo, 'medium', callback)
 
 
-def getDownloadable(photo):
+def getLarge(photo):
     def callback(img):
         addWatherMark(img, photo)
-    return getImage(photo, 'download', callback)
+    return getImage(photo, 'large', callback)
 
 
 def addWatherMark(img, photo):
@@ -71,12 +71,14 @@ def addWatherMark(img, photo):
     if img.get('input_exists'):
         print('ok', photo)
         try:
-            image = img.get('image')
-            draw = ImageDraw.Draw(image)
-            width, height = image.size
-            draw.text((10, height-24), copyright_text,
+            img_src = img.get('image')
+            width, height = img_src.size
+            img_dest = Image.new('RGB', (width, height + 24))
+            img_dest.paste(img_src, (0, 0))
+            draw = ImageDraw.Draw(img_dest)
+            draw.text((10, height + 3), copyright_text,
                       font=font, fill=(255, 255, 255, 255))
-            image.save(img.get('output_path'))
+            img_dest.save(img.get('output_path'))
         except Exception:
             print('addWatherMark Invalid image')
     return img

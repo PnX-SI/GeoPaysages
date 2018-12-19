@@ -400,8 +400,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     bottom: 10px;
     width: 100%;
     margin: 0;
-    display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 /* HEADER */
