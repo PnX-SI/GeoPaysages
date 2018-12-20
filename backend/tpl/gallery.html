@@ -23,7 +23,7 @@
         <img src="{{ site.photo }}" alt="Montagne vanoise">
       </a>
       <div class="discover">
-        <a href="/comparator/{{ site.id_site }}">{{ site.name_site }}<br />{{ site.ville.nom_commune }}<small>{{ site.ref_site }}</small></a>
+        <a href="/comparator/{{ site.id_site }}" class="d-block">{{ site.name_site }}<br /><span class="text-uppercase township">{{ site.ville.nom_commune }}</span><small class="ref">{{ site.ref_site }}</small></a>
       </div>
     </div>
   {% endfor %}

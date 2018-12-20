@@ -100,9 +100,14 @@ def gallery():
     
     #TODO get photos and cities by join on sites query
     photo_ids = []
+    sites_without_photo = []
     ville_codes = []
     for site in dump_sites:
-        photo_ids.append(site.get('main_photo'))
+        photo_id = site.get('main_photo')
+        if photo_id:
+            photo_ids.append(site.get('main_photo'))
+        else:
+            sites_without_photo.append(str(site.get('id_site')))
         ville_codes.append(site.get('code_city_site'))
 
     query_photos = models.TPhoto.query.filter(
@@ -110,13 +115,21 @@ def gallery():
     )
     dump_photos = photo_schema.dump(query_photos).data
 
+    if len(sites_without_photo):
+        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos = text(sql_missing_photos_str)
+        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
+        missing_photos = [dict(row) for row in missing_photos_result]
+        for missing_photo in missing_photos:
+            missing_photo['t_site'] = missing_photo.get('id_site')
+            dump_photos.append(missing_photo)
+
     query_villes = models.Communes.query.filter(
         models.Communes.code_commune.in_(ville_codes)
     )
     dump_villes = communes_schema.dump(query_villes).data
 
     for site in dump_sites:
-        print(site)
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
         site['photo'] = utils.getThumbnail(photo).get('output_url')
@@ -128,7 +141,6 @@ def gallery():
 def comparator(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
-    print(len(site))
     if len(site) == 0:
         return abort(404)
 
@@ -155,18 +167,22 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        img_caption = "%s | %s | %s | %s | %s" % (
+        print(photo.get('t_role').get('nom_role'))
+        img_caption = "%s | %s | réf : %s | %s | %s - %s %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
             date_diplay.get('md'),
-            photo_license
+            photo_license,
+            photo.get('t_role').get('prenom_role'),
+            photo.get('t_role').get('nom_role')
         )
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
             'md': utils.getMedium(photo).get('output_url'),
             'lg': utils.getLarge(photo, img_caption).get('output_url'),
+            'dl': utils.getDownload(photo, img_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }
@@ -296,9 +312,10 @@ def map():
                 'label': str(year),
                 'id': year
             } for year in filter.get('items')]
+            filter['items'] = sorted(filter['items'], key=lambda k: k['label'], reverse=True)
         else:
             filter['items'] = [getItem(filter.get('name'), item_id)
                                for item_id in filter.get('items')]
-        filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
+            filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
     return render_template('map.html', filters=filters, sites=sites)

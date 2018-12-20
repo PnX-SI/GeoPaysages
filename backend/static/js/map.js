@@ -91,7 +91,8 @@ oppv.initMap = (options) => {
           });
           filter.items.selectedItems = [];
         });
-        localStorage.removeItem('oppv.map.selectedFilters')
+        this.updateFilters()
+        this.setFilters()
       },
       onFilterClick(filter, item) {
         this.updateFilters()
