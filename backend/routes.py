@@ -133,7 +133,7 @@ def comparator(id_site):
         return abort(404)
 
     site = site[0]
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site).order_by('filter_date')
     photos = photo_schema.dump(get_photos_by_site).data
     get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
     
@@ -155,10 +155,11 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        img_caption = "%s | %s | %s | %s" % (
+        img_caption = "%s | %s | %s | %s | %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
+            date_diplay.get('md'),
             photo_license
         )
         return {

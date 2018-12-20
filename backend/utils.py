@@ -65,15 +65,15 @@ def getLarge(photo, caption):
 
 
 def addCaption(img, text):
-    font = ImageFont.truetype("./static/fonts/openSans.ttf", 14)
+    font = ImageFont.truetype("./static/fonts/openSans.ttf", 16)
     if img.get('input_exists'):
         try:
             img_src = img.get('image')
             width, height = img_src.size
-            img_dest = Image.new('RGB', (width, height + 25))
+            img_dest = Image.new('RGB', (width, height + 36))
             img_dest.paste(img_src, (0, 0))
             draw = ImageDraw.Draw(img_dest)
-            draw.text((10, height + 3), text, font=font, fill=(255, 255, 255, 255))
+            draw.text((10, height + 5), text, font=font, fill=(255, 255, 255, 255))
             img_dest.save(img.get('output_path'))
         except Exception:
             print('addCaption Invalid image')
