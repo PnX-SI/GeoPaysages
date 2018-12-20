@@ -46,7 +46,7 @@
             <i class="material-icons align-middle">fullscreen</i>
           </b-btn>
         </div> -->
-        {% for i in [0, 1] %}
+        {% for i in [0, 1] if photos[i] %}
         <div class="d-flex align-items-end col-sm-6">
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
