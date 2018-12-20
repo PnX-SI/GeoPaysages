@@ -59,11 +59,11 @@
     {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
-      <div>
+      <div class="col-lg-11 col-xl-10">
         <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
 
         <div class="footer-menu">
-          <h6>LE SITE</h6>
+          <h6>Le Site</h6>
           <ul class="mb-4">
             <li>
               <a href="/">
@@ -81,38 +81,36 @@
               </a>
             </li>
             <li>
-              <a href="http://www.vanoise-parcnational.fr" target="_blank">
-                Site du Parc National de Vanoise
-              </a>
-            </li>
-            <li>
-              <a href="http://rando.vanoise.com">
-                Rando Vanoise
-              </a>
-            </li>
-            <li>
-              <a href="http://biodiversite.vanoise-parcnational.fr">
-                BiodiVanoise
-              </a>
-            </li>
-            <li>
-              <a href="https://phototheque.vanoise-parcnational.fr">
-                Photothèque
+              <a href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Contact OPPV">
+                <b>Contactez-nous</b>
               </a>
             </li>
           </ul>
         </div>
 
         <div class="footer-contact">
-          <h6>NOUS CONTACTER</h6>
-          <span>
-            <a href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Contact OPPV">
-              Formulaire de contact
-            </a>
-          <ul class="mb-4">
-            <li></li>
-            <li></li>
-            <li></li>
+          <h6>Le Parc National de Vanoise</h6>
+          <ul>
+              <li>
+                <a href="http://www.vanoise-parcnational.fr" target="_blank">
+                  Site du Parc National de Vanoise
+                </a>
+              </li>
+              <li>
+                <a href="http://rando.vanoise.com">
+                  Rando Vanoise
+                </a>
+              </li>
+              <li>
+                <a href="http://biodiversite.vanoise-parcnational.fr">
+                  BiodiVanoise
+                </a>
+              </li>
+              <li>
+                <a href="https://phototheque.vanoise-parcnational.fr">
+                  Photothèque
+                </a>
+              </li>
           </ul>
         </div>
       </div>

@@ -225,6 +225,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     padding: 40px 60px 10px 60px;
     margin-top: 20px;
     position: relative;
+    height: 260px;
 }
 
 .app-footer hr {
@@ -453,7 +454,6 @@ footer div:first-child{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 80%;
 }
 
 footer img{
