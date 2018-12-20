@@ -12,13 +12,13 @@ const routes: Routes = [
   { path: 'sites', component: ManageSitesComponent, canActivate : [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate : [AuthGuard] },
   { path: 'sites/form', component: AddSiteComponent, canActivate : [AuthGuard] },
-  { path: 'sites/details/:id', component: AddSiteComponent, canActivate : [AuthGuard]},
+  { path: 'sites/details/:id', component: AddSiteComponent, canActivate : [AuthGuard], runGuardsAndResolvers: 'always'},
   { path: '', component: LoginPageComponent },
   { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {

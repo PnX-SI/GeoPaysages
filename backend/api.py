@@ -1,6 +1,6 @@
 from flask import Flask, request, Blueprint,Response, jsonify, url_for
 from routes import main as main_blueprint
-from config import DATA_IMAGES_PATH
+from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
 import fnmatch
 import re
@@ -142,8 +142,6 @@ def returnCurrentUser(id_role = None):
         return jsonify(error=exception), 400
 
 
-
-
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
 def deleteSite(id_site):
@@ -165,7 +163,7 @@ def deleteSite(id_site):
         return jsonify('error'), 400
 
 @api.route('/api/addSite', methods=['POST'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(2, False, None, None)
 def add_site():
     try:
         data = dict(request.get_json())
@@ -178,7 +176,7 @@ def add_site():
 
 
 @api.route('/api/updateSite', methods=['PATCH'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(2, False, None, None)
 def update_site():
     site = request.get_json()
     models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
@@ -188,7 +186,7 @@ def update_site():
 
 
 @api.route('/api/addThemes', methods=['POST'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(2, False, None, None)
 def add_cor_site_theme_stheme():
     data = request.get_json().get('data')
     for d in data:
@@ -204,7 +202,7 @@ def add_cor_site_theme_stheme():
 
 
 @api.route('/api/addPhotos', methods=['POST'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(2, False, None, None)
 def upload_file():
     base_path = './static/' + DATA_IMAGES_PATH
     data = request.form.getlist('data')
@@ -218,7 +216,6 @@ def upload_file():
             #models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
             #db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
-        print ('d_serialized', d_serialized)
         main_photo = d_serialized.get('main_photo')
         del d_serialized['main_photo']
         photo = models.TPhoto(**d_serialized)
@@ -233,9 +230,16 @@ def upload_file():
         image.save(os.path.join(base_path + image.filename))
     return jsonify('photo added successfully'), 200
 
+@api.route('/api/addNotices', methods=['POST'])
+@fnauth.check_auth(2, False, None, None)
+def upload_notice():
+    base_path = './static/' + DATA_NOTICES_PATH
+    notice = request.files.get('notice')
+    notice.save(os.path.join(base_path + notice.filename))
+    return jsonify('notice added successfully'), 200
 
 @api.route('/api/updatePhoto', methods=['PATCH'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(2, False, None, None)
 def update_photo():
     base_path = './static/' + DATA_IMAGES_PATH
     data = request.form.get('data')
@@ -278,23 +282,17 @@ def deletePhotos():
                 os.remove(base_path + fileName)
     return jsonify('site has been deleted'), 200
 
-
-
-
 @api.route('/api/communes', methods=['GET'])
 def returnAllcommunes():
     try:
         get_all_communes = models.Communes.query.order_by('nom_commune').all()
-        print('get_all_communes', get_all_communes)
         communes= models.CommunesSchema(many=True).dump(get_all_communes).data
-        print('communes', communes)
         return jsonify(communes), 200
     except Exception as exception:
         return ('error'), 400
 
-
 @api.route('/api/logout', methods=['GET'])
 def logout():
-    resp = Response(jsonify({'msg':'logout'}), 200)
+    resp = Response('', 200)
     resp.delete_cookie('token')
     return resp

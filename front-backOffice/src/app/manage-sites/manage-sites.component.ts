@@ -34,11 +34,24 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     private zone: NgZone) {
   }
 
+
+
   ngOnInit() {
     this.getAllSites();
   }
 
   onMapReady(map: Map) {
+    L.control.scale().addTo(map);
+    const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    const ignLayer =  L.tileLayer(this.layerUrl(
+      Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS'
+    ));
+    const baseLayers = {
+      'IGN ': ignLayer,
+      'OSM': street
+    };
+    L.control.layers(baseLayers).addTo(map);
+
     this.map = map;
     const info = new L.Control();
     info.setPosition('topleft');
@@ -113,8 +126,12 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     this.changeDetector.detach();
   }
 
-
-
+  layerUrl(key, layer) {
+    return 'http://wxs.ign.fr/' + key
+      + '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&'
+      + 'LAYER=' + layer + '&STYLE=normal&TILEMATRIXSET=PM&'
+      + 'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg';
+  }
 
 
 }
