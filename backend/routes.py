@@ -179,16 +179,20 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        print(photo.get('t_role').get('nom_role'))
-        img_caption = "%s | %s | réf : %s | %s | %s - %s %s" % (
+        img_caption = "%s | %s | réf : %s | %s | %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
             date_diplay.get('md'),
-            photo_license,
-            photo.get('t_role').get('prenom_role'),
-            photo.get('t_role').get('nom_role')
+            photo_license
         )
+        if photo.get('t_role'):
+            img_caption = '%s - %s %s' % (
+                img_caption,
+                photo.get('t_role').get('prenom_role'),
+                photo.get('t_role').get('nom_role')
+            )
+
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
