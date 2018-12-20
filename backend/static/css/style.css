@@ -51,9 +51,15 @@ button{
     border-bottom: solid 1px #000;
 }
 
+.no-underline {
+    text-decoration: none !important;
+}
+
 .btn {
-    text-transform: uppercase;
     border-radius: 0;
+}
+.btn:not(.btn-no-uppercase) {
+    text-transform: uppercase;
 }
 .btn:focus {
     box-shadow: none !important;
@@ -110,6 +116,16 @@ button{
     background-color: transparent;
     background-image: none;
     border-color: var(--color-primary);
+}
+
+.btn-clear-primary {
+    color: #FFF;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.btn-clear-primary:hover {
+    background-color: var(--color-primary);
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
@@ -181,6 +197,13 @@ button{
 
 /* End of bootstrap */
 
+/* Leaflet */
+
+.leaflet-container .easy-button-container .icon {
+    font-size: 1.5em;
+    vertical-align: sub;
+}
+
 body, html {
     font-family: 'Crimson Text', serif;
 }
@@ -202,6 +225,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     padding: 40px 60px 10px 60px;
     margin-top: 20px;
     position: relative;
+    height: 260px;
 }
 
 .app-footer hr {
@@ -393,8 +417,7 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     bottom: 10px;
     width: 100%;
     margin: 0;
-    display: flex;
-    align-items: center;
+    text-align: center;
 }
 
 /* HEADER */
@@ -431,12 +454,12 @@ footer div:first-child{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 80%;
 }
 
 footer img{
-    height: fit-content;
     align-self: center;
+    height: 110px;
+    width: auto;
 }
 
 footer ul{

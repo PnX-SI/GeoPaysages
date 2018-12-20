@@ -8,6 +8,7 @@ from models import (db)
 from config import DATA_IMAGES_PATH
 import json
 from datetime import datetime
+from flask_babel import format_datetime
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -19,6 +20,7 @@ photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 villes_schema = models.VilleSchema(many=True)
+communes_schema = models.CommunesSchema(many=True)
 
 
 
@@ -43,20 +45,20 @@ def home():
         sites.append(sites[x])
 
     photo_ids = []
-    ville_codes = []
+    code_communes = []
     for site in sites:
         photo_ids.append(site.get('main_photo'))
-        ville_codes.append(site.get('code_city_site'))
+        code_communes.append(site.get('code_city_site'))
 
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
     dump_photos = photo_schema.dump(query_photos).data
 
-    query_villes = models.Ville.query.filter(
-        models.Ville.ville_code_commune.in_(ville_codes)
+    query_commune = models.Communes.query.filter(
+        models.Communes.code_commune.in_(code_communes)
     )
-    dump_villes = villes_schema.dump(query_villes).data
+    dump_communes = communes_schema.dump(query_commune).data
 
     for site in sites:
         id_site = site.get('id_site')
@@ -64,7 +66,7 @@ def home():
         site['photo'] = url_for(
             'static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo')
         )
-        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
+        site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
 
     """ def get_photo_block(id_photo):
@@ -108,16 +110,17 @@ def gallery():
     )
     dump_photos = photo_schema.dump(query_photos).data
 
-    query_villes = models.Ville.query.filter(
-        models.Ville.ville_code_commune.in_(ville_codes)
+    query_villes = models.Communes.query.filter(
+        models.Communes.code_commune.in_(ville_codes)
     )
-    dump_villes = villes_schema.dump(query_villes).data
+    dump_villes = communes_schema.dump(query_villes).data
 
     for site in dump_sites:
+        print(site)
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
         site['photo'] = utils.getThumbnail(photo).get('output_url')
-        site['ville'] = next(ville for ville in dump_villes if (ville.get('ville_code_commune') == site.get('code_city_site')))
+        site['ville'] = next(ville for ville in dump_villes if (ville.get('code_commune') == site.get('code_city_site')))
     
     return render_template('gallery.html', sites=dump_sites)
 
@@ -130,12 +133,11 @@ def comparator(id_site):
         return abort(404)
 
     site = site[0]
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site)
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site).order_by('filter_date')
     photos = photo_schema.dump(get_photos_by_site).data
-    get_villes = models.Ville.query.filter(
-        models.Ville.ville_code_commune.in_([site.get('code_city_site')])
-    )
-    site['ville'] = villes_schema.dump(get_villes).data[0]
+    get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
+    
+    site['ville'] = communes_schema.dump(get_villes).data[0]
 
     def getPhoto(photo):
         date_diplay = {}
@@ -149,15 +151,22 @@ def comparator(id_site):
         else:
             date_obj = datetime.strptime(filter_date, '%Y-%m-%d')
             date_diplay = {
-                'md': date_obj.strftime('%Y (%d %B)'),
+                'md': format_datetime(date_obj, 'yyyy (dd MMMM)'),
                 'sm': date_obj.strftime('%Y')
             }
-
+        photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
+        img_caption = "%s | %s | %s | %s | %s" % (
+            site.get('name_site'),
+            site.get('ville').get('nom_commune'),
+            site.get('ref_site'),
+            date_diplay.get('md'),
+            photo_license
+        )
         return {
             'id': photo.get('id_photo'),
-            'sm': url_for('static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name')),
-            'md': url_for('static', filename=DATA_IMAGES_PATH + utils.getMedium(photo).get('output_name')),
-            'lg': url_for('static', filename=DATA_IMAGES_PATH + utils.getLarge(photo).get('output_name')),
+            'sm': utils.getThumbnail(photo).get('output_url'),
+            'md': utils.getMedium(photo).get('output_url'),
+            'lg': utils.getLarge(photo, img_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }
@@ -255,18 +264,23 @@ def map():
 
     subthemes = [{
         'id': item['id_stheme'],
-        'label': item['name_stheme']
+        'label': item['name_stheme'],
+        'themes': item['themes']
     } for item in subthemes]
 
     filter_township = [
         filter for filter in filters if filter.get('name') == 'township'][0]
     str_map_in = ["'" + township +
                   "'" for township in filter_township.get('items')]
-    sql_map_str = "SELECT ville_code_commune AS id, ville_nom_reel AS label FROM geopaysages.villes_france WHERE ville_code_commune IN (" + ",".join(
+    sql_map_str = "SELECT code_commune AS id, nom_commune AS label FROM geopaysages.communes WHERE code_commune IN (" + ",".join(
         str_map_in) + ")"
     sql_map = text(sql_map_str)
     townships_result = db.engine.execute(sql_map).fetchall()
     townships = [dict(row) for row in townships_result]
+
+    for site in sites:
+        site['ville'] = next(township for township in townships if township.get('id') == site.get('township'))
+    
     dbs = {
         'themes': themes,
         'subthemes': subthemes,
