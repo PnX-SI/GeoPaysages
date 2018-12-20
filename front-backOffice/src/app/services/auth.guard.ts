@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
             } else {
                 this.loginService.getMe().subscribe(
                     (user) => {
-                        this.authService.currentUser = user;
+                        this.authService.currentUser = user[0];
                         return resolve(true);
                     },
                     (err) => {

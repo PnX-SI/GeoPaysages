@@ -88,25 +88,28 @@
               <div *ngIf="photoRequired" class="photo-required">* Champs requis</div>
               <div class="inner-photo" *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="120"
                   height="120" [src]="photo.imgUrl">
-              <div class="photo-ref">{{photo.name}}</div>
-                <div *ngIf="(edit_btn || !id_site) && currentUser.id_droit_max > 5" class="icon-cancel-circle delete-photo" (click)="deletePhoto(photo)"></div>
+                <div class="photo-ref">{{photo.name}}</div>
+                <div *ngIf="(edit_btn || !id_site) && currentUser.id_droit_max > 5" class="icon-cancel-circle delete-photo"
+                  (click)="deletePhoto(photo)"></div>
               </div>
               <app-add-photo *ngIf="edit_btn || !id_site" (photoModal)='getPhoto($event)' style="display :block"></app-add-photo>
             </div>
           </div>
-          <div *ngIf="edit_btn || !id_site">
+          <div >
             <input class="form-group" formControlName="notice" style="display: none" type="file" (change)=noticeSelect($event)
               accept="application/pdf" #noticeInput>
-            <button class="blue-btn" type="button" (click)="noticeInput.click()"><i class="icon-download"></i> Importer
+            <button *ngIf="!noticeName && edit_btn" class="blue-btn" type="button" (click)="noticeInput.click()"><i class="icon-download"></i> Importer
               la notice
               technique</button>
-            <div *ngIf="noticeLaoded" style="padding: 10px">{{noticeName}}<i class="icon-trash remove-file" (click)="removeNotice()"></i></div>
+              <label *ngIf="noticeName" class="label">notice :</label>
+            <div *ngIf="noticeName" style="color: #00188F;">{{noticeName}}<i *ngIf="(edit_btn)" class="icon-trash remove-file" (click)="removeNotice()"></i></div>
           </div>
           <div class="submit-btn-group">
             <button type="button" *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn"
               (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>
             <button class="btn btn-outline-success btn-submit" type="submit" [disabled]="!edit_btn">{{submit_btn_text}}</button>
-            <button type="button" *ngIf="id_site && currentUser.id_droit_max > 5" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)">
+            <button type="button" *ngIf="id_site && currentUser.id_droit_max > 5" class="btn btn-outline-danger btn-delete"
+              (click)="openDeleteModal(content)">
               <i class="icon-trash delete-site"></i>Supprimer
               le site</button>
             <button class="btn btn-outline-secondary  btn-cancel" type="button" (click)=onCancel()>Retour à la liste</button>
@@ -117,8 +120,8 @@
       </div>
     </div>
     <div class="col-6 col-map">
-      <div class="map " leaflet leafletDraw [leafletOptions]="options" [(leafletCenter)]="center"  [(leafletZoom)]="zoom" [leafletDrawOptions]="drawOptions"
-        (leafletDrawReady)="onDrawReady($event)" (leafletMapReady)="onMapReady($event)">
+      <div class="map" leaflet leafletDraw [leafletOptions]="options" [(leafletCenter)]="center" [(leafletZoom)]="zoom"
+        [leafletDrawOptions]="drawOptions" (leafletDrawReady)="onDrawReady($event)" (leafletMapReady)="onMapReady($event)">
       </div>
     </div>
   </div>

@@ -24,6 +24,10 @@ export class SitesService {
     return this.http.post<any>(Conf.apiUrl + 'addPhotos', image, { withCredentials: true, reportProgress: true, observe: 'events' });
   }
 
+  addNotices(notice) {
+    return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, { withCredentials: true, reportProgress: true, observe: 'events' });
+  }
+
   updatePhoto(image) {
     return this.http.patch<any>(Conf.apiUrl + 'updatePhoto', image, { withCredentials: true, reportProgress: true, observe: 'events' });
   }

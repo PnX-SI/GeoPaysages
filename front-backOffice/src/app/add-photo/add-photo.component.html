@@ -12,7 +12,7 @@
         <i class="icon-trash delete-photo"></i>Supprimer
         la photo</button>
       <div class="inner-checkbox form-group">
-        <div class="label">Afficher la photo :</div>
+        <div class="label">Publier la photo :</div>
         <label class="switch ">
           <input formControlName="display_gal_photo" type="checkbox" class="success">
           <span class="slider round"></span>
@@ -38,12 +38,12 @@
       </div>
       <div class="row form-item">
         <div class="col ">
-          <label class="label" for="datePhoto">Date de prise de la photo*</label>
+          <label class="label" for="datePhoto">Date approximative </label>
           <input InputFeedBack type="text" formControlName="date_photo" id="datePhoto" class="form-control" placeholder="Date Photo">
           <app-form-error controlName="date_photo" errorKey="required"></app-form-error>
         </div>
         <div class="col ">
-          <label class="label" for="sousTheme">Date filtre*</label>
+          <label class="label" for="sousTheme">Date de prise de la photo*</label>
           <div class="input-group">
             <input InputFeedBack formControlName="filter_date" type="date" class="form-control" placeholder="yyyy-mm-dd"
               ngbDatepicker #dto="ngbDatepicker">

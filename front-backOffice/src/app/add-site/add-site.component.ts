@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { HttpEventType } from '@angular/common/http';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { tileLayer, latLng, Map, Layer } from 'leaflet';
@@ -20,7 +20,7 @@ import { AuthService } from '../services/auth.service';
 
 })
 export class AddSiteComponent implements OnInit {
-  selectedFiles: File[];
+  selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
   photos = [];
@@ -32,6 +32,7 @@ export class AddSiteComponent implements OnInit {
   subthemes: any;
   loadForm = false;
   map;
+  mySubscription;
   id_site = null;
   markers = [];
 
@@ -85,7 +86,7 @@ export class AddSiteComponent implements OnInit {
   toast_msg: string;
   communes: undefined;
   currentUser: any;
-  zoom: number;
+  zoom = 10;
   constructor(
     private sitesService: SitesService,
     public formService: FormService,
@@ -120,6 +121,16 @@ export class AddSiteComponent implements OnInit {
   }
 
   onMapReady(map: Map) {
+    L.control.scale().addTo(map);
+    const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    const ignLayer = L.tileLayer(this.layerUrl(
+      Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS'
+    ));
+    const baseLayers = {
+      'IGN ': ignLayer,
+      'OSM': street
+    };
+    L.control.layers(baseLayers).addTo(map);
     const info = new L.Control();
     info.setPosition('topleft');
     info.onAdd = () => {
@@ -134,7 +145,6 @@ export class AddSiteComponent implements OnInit {
       return container;
     };
     info.addTo(map);
-
     map.addLayer(this.drawnItems);
     L.EditToolbar.Delete.include({
       removeAllLayers: false
@@ -151,7 +161,6 @@ export class AddSiteComponent implements OnInit {
       map.removeControl(this.drawControl);
       map.addControl(this.drawControl);
     });
-
 
     map.on(L.Draw.Event.EDITED, (event) => {
       let layer = (event as any).layers._layers;
@@ -183,18 +192,14 @@ export class AddSiteComponent implements OnInit {
   }
 
   onDrawReady(drawControl) {
-
     this.drawControl = drawControl;
     if (this.id_site) {
       this.map.removeControl(this.drawControl);
     }
   }
 
-  onFileSelected(event) {
-    console.log('event', event);
-    this.selectedFiles = event.target.files;
-  }
   noticeSelect(event) {
+    this.selectedFile = event.target.files;
     if (event.target.files && event.target.files.length > 0) {
       this.noticeName = event.target.files[0].name;
       this.noticeLaoded = true;
@@ -205,6 +210,15 @@ export class AddSiteComponent implements OnInit {
     this.noticeName = null;
     this.noticeLaoded = false;
     this.siteForm.controls['notice'].reset();
+    this.selectedFile = null;
+  }
+
+  uploadNotice() {
+    const notice: FormData = new FormData();
+    if (this.noticeName) {
+      notice.append('notice', this.selectedFile[0], this.selectedFile[0].name);
+      this.sitesService.addNotices(notice).subscribe();
+    }
   }
 
   onCancel() {
@@ -214,9 +228,15 @@ export class AddSiteComponent implements OnInit {
 
   submitSite(siteForm) {
     this.alert = null;
+    let path_file_guide_site = null;
+    if (this.noticeName) {
+      path_file_guide_site = this.selectedFile[0].name;
+    }
     if (siteForm.valid && this.photos.length > 0) {
       this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
       this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
+      this.siteJson.path_file_guide_site = path_file_guide_site;
+      // this.uploadNotice();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
@@ -253,22 +273,6 @@ export class AddSiteComponent implements OnInit {
     this.photos.push(photo);
   }
 
-  /*
-    uploadImage() {
-      console.log('this.selectedFile,', this.selectedFiles);
-      const image: FormData = new FormData();
-      _.forEach(this.selectedFiles, (filesItem) => {
-        image.append('image', filesItem, filesItem.name);
-      });
-      this.sitesService.addPhotos(image).subscribe(
-        (event) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            console.log('resUplod', event.loaded);
-          }
-        }
-      );
-    }
-  */
 
   addPhotos(id_site, id_theme, id_stheme, ) {
     const photosData: FormData = new FormData();
@@ -325,6 +329,16 @@ export class AddSiteComponent implements OnInit {
         this.siteForm.disable();
         this.edit_btn = false;
         this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+            // ###### can reload the same route #######
+            this.router.routeReuseStrategy.shouldReuseRoute = function () {
+              return false;
+            };
+            this.mySubscription = this.router.events.subscribe((event) => {
+              if (event instanceof NavigationEnd) {
+                this.router.navigated = false;
+              }
+            });
+            // ##########
         this.router.navigate(['/sites/details/', id_site]);
       },
       (err) => {
@@ -357,6 +371,7 @@ export class AddSiteComponent implements OnInit {
         this.initMarker(this.site.geom[0], this.site.geom[1]);
         this.patchForm();
         this.loadForm = true;
+        this.center = latLng(this.site.geom);
         this.siteForm.disable();
         this.themes_onChange();
         this.latlan_onChange();
@@ -442,17 +457,15 @@ export class AddSiteComponent implements OnInit {
         this.toast_msg = "Point d'observation mis à jour";
         this.edit_btn_text = 'Éditer';
         if (this.deleted_photos.length > 0) {
-          this.sitesService.deletePhotos(this.deleted_photos).subscribe(
-            () => '',
-            (err) => {
-              if (err.status === 403) {
-                this.router.navigate(['']);
-                this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-              }
-            }
-          );
+          this.sitesService.deletePhotos(this.deleted_photos).subscribe();
         }
         this.addPhotos(this.id_site, themes, sthemes);
+      },
+      (err) => {
+        if (err.status === 403) {
+          this.router.navigate(['']);
+          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+        }
       }
     );
   }
@@ -529,9 +542,18 @@ export class AddSiteComponent implements OnInit {
       'id_stheme': this.site.subthemes,
       'code_city_site': this.site.code_city_site,
       'legend_site': this.site.legend_site,
-      'notice': null,
     });
-  }
+    if (this.site.path_file_guide_site) {
+      this.noticeLaoded = true;
+      this.noticeName = this.site.path_file_guide_site;
+    }
 
+  }
+  layerUrl(key, layer) {
+    return 'http://wxs.ign.fr/' + key
+      + '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&'
+      + 'LAYER=' + layer + '&STYLE=normal&TILEMATRIXSET=PM&'
+      + 'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg';
+  }
 }
 
