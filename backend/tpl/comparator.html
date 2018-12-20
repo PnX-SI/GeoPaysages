@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small class="text-lowercase">(ref: {{ site.ref_site }})</small></h3>
+<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} <small class="text-lowercase">(réf : {{ site.ref_site }})</small></h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-comparator {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
@@ -23,14 +23,8 @@
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <figure v-for="photo in zoomPhotos">
         <img :src="photo.lg" />
-        <figcaption>
-          <div class="col-6 text-right">
-            <div v-html="photo.date_diplay.md"></div>
-            <div>{{ site.name_site }} | {{ site.ville.ville_nom_reel }} <small>(ref: {{ site.ref_site }})</small></div>
-          </div>
-          <div class="col-6">
-            <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
-          </div>
+        <figcaption class="text-center">
+          <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
         </figcaption>
     </figure>
   </b-modal>
@@ -68,9 +62,9 @@
                 </b-button>
               </div>
               <div class="img-tools">
-                <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
+                <!-- <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
                   <i class="icon ion-md-download"></i>
-                </b-btn>
+                </b-btn> -->
                 <b-btn v-on:click="onZoomClick({{ i }})" :size="'lg'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
                     <i class="icon ion-ios-expand"></i>
                 </b-btn>

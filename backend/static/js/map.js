@@ -1,10 +1,15 @@
 var oppv = oppv || {};
 oppv.initMap = (options) => {
+  const storedSelectedFilters = JSON.parse(localStorage.getItem('oppv.map.selectedFilters'));
   options.filters.forEach(filter => {
+    filter.selectedItems = [];
     filter.items.forEach(item => {
+      let isSelected = _.get(storedSelectedFilters, filter.name, []).indexOf(item.id) > -1
       Object.assign(item, {
-        isSelected: false
+        isSelected: isSelected
       })
+      if (isSelected)
+        filter.selectedItems.push(item);
     })
   })
   const filters = _.cloneDeep(options.filters)
@@ -79,8 +84,17 @@ oppv.initMap = (options) => {
 
         this.setFilters()
       },
+      onCancelClick() {
+        filters.forEach(filter => {
+          filter.items.forEach(item => {
+            item.isSelected = false;
+          });
+          filter.items.selectedItems = [];
+        });
+        localStorage.removeItem('oppv.map.selectedFilters')
+      },
       onFilterClick(filter, item) {
-        //this.updateFilters()
+        this.updateFilters()
         this.setFilters()
       },
       updateFilters() {
@@ -106,17 +120,22 @@ oppv.initMap = (options) => {
         }).items = selectedSubthemes
       },
       setFilters() {
+        let storedSelectedFilters = {}
         let selectedFilters = filters.map(filter => {
           let selectedItems = filter.items.filter(item => {
             return item.isSelected
           })
-          let items = selectedItems.length ? selectedItems : filter.items
+          //let items = selectedItems.length ? selectedItems : filter.items
+          let selectedIds = selectedItems.map(item => {
+            return item.id
+          })
+          if (selectedIds.length)
+            storedSelectedFilters[filter.name] = selectedIds
           return Object.assign({}, filter, {
-            ids: items.map(item => {
-              return item.id
-            })
+            selectedIds: selectedIds
           })
         })
+        localStorage.setItem('oppv.map.selectedFilters', JSON.stringify(storedSelectedFilters))
 
         let selectedSites = []
         options.sites.forEach(site => {
@@ -125,7 +144,12 @@ oppv.initMap = (options) => {
             let prop = _.get(site, filter.name)
             if (!Array.isArray(prop))
               prop = [prop]
-            return !_.intersection(prop, filter.ids).length
+            let ids = filter.selectedIds.length ?
+              filter.selectedIds :
+              filter.items.map(item => {
+                return item.id
+              })
+            return !_.intersection(prop, ids).length
           })
           if (!unmatchedProp)
             selectedSites.push(site)
