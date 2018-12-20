@@ -32,7 +32,11 @@
     line-height: 20px;
 }
 
-.page-gallery .picture .discover small {
+.page-gallery .picture .discover .township {
+    font-size: .9em;
+}
+
+.page-gallery .picture .discover .ref {
     position: absolute;
     right: 3px;
     bottom: -5px;
