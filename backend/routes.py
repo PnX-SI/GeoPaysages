@@ -100,15 +100,29 @@ def gallery():
     
     #TODO get photos and cities by join on sites query
     photo_ids = []
+    sites_without_photo = []
     ville_codes = []
     for site in dump_sites:
-        photo_ids.append(site.get('main_photo'))
+        photo_id = site.get('main_photo')
+        if photo_id:
+            photo_ids.append(site.get('main_photo'))
+        else:
+            sites_without_photo.append(str(site.get('id_site')))
         ville_codes.append(site.get('code_city_site'))
 
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
     dump_photos = photo_schema.dump(query_photos).data
+
+    if len(sites_without_photo):
+        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos = text(sql_missing_photos_str)
+        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
+        missing_photos = [dict(row) for row in missing_photos_result]
+        for missing_photo in missing_photos:
+            missing_photo['t_site'] = missing_photo.get('id_site')
+            dump_photos.append(missing_photo)
 
     query_villes = models.Communes.query.filter(
         models.Communes.code_commune.in_(ville_codes)
