@@ -67,7 +67,7 @@
         <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
           <b-card-header header-tag="header" class="p-0">
             <b-btn block href="#" class="rounded-0 card-group-header-btn" v-b-toggle="'app_map_sites'" variant="secondary">
-              <span>Point d'observation</span> 
+              <span>Points d'observation</span> 
               <i class="icon ion-ios-arrow-down visible-collapsed"></i>
               <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
             </b-btn>
@@ -79,7 +79,7 @@
                 @mouseover="onSiteMousover(site)"
                 @mouseout="onSiteMouseout(site)"
                 :href="'/comparator/' + site.id_site" 
-                v-html="site.name_site + ' | ' + site.ville.label"></a>
+                v-html="site.name_site + ' | ' + site.ville.label + ' | ' + site.ref_site"></a>
             </b-card-body>
           </b-collapse>
         </b-card>
