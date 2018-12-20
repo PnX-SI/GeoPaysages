@@ -25,7 +25,7 @@ class TSite(db.Model):
     testim_site = db.Column(db.String)
     code_city_site = db.Column(db.String)
     alti_site = db.Column(db.Integer)
-    path_file_guide_site = db.Column(db.String(1))
+    path_file_guide_site = db.Column(db.String)
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)

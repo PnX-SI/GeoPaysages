@@ -32,7 +32,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   public submit(loginForm) {
-    console.log(loginForm);
     this.userForm = loginForm.value;
     this.userForm.id_application = 4;
     this.loginService.login(this.userForm)
