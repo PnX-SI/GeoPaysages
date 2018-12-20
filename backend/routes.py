@@ -77,7 +77,7 @@ def home():
     for site in sites:
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getThumbnail(photo, 400).get('output_url')
+        site['photo'] = utils.getMedium(photo).get('output_url')
         site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
 
