@@ -130,7 +130,6 @@ def gallery():
     dump_villes = communes_schema.dump(query_villes).data
 
     for site in dump_sites:
-        print(site)
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
         site['photo'] = utils.getThumbnail(photo).get('output_url')
@@ -142,7 +141,6 @@ def gallery():
 def comparator(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
-    print(len(site))
     if len(site) == 0:
         return abort(404)
 
@@ -169,18 +167,22 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        img_caption = "%s | %s | %s | %s | %s" % (
+        print(photo.get('t_role').get('nom_role'))
+        img_caption = "%s | %s | réf : %s | %s | %s - %s %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
             date_diplay.get('md'),
-            photo_license
+            photo_license,
+            photo.get('t_role').get('prenom_role'),
+            photo.get('t_role').get('nom_role')
         )
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
             'md': utils.getMedium(photo).get('output_url'),
             'lg': utils.getLarge(photo, img_caption).get('output_url'),
+            'dl': utils.getDownload(photo, img_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }

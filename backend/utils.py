@@ -59,16 +59,26 @@ def getMedium(photo):
 
 
 def getLarge(photo, caption):
+    h = 1200
     def callback(img):
-        addCaption(img, caption)
+        image = img.get('image')
+        initW, initH = image.size
+        ratio = h / initH
+        image = image.resize((int(initW*ratio), h), Image.ANTIALIAS)
+        image.save(img.get('output_path'))
+        addCaption(img, image, caption)
     return getImage(photo, 'large', callback)
 
+def getDownload(photo, caption):
+    def callback(img):
+        addCaption(img, img.get('image'), caption)
+    return getImage(photo, 'download', callback)
 
-def addCaption(img, text):
+
+def addCaption(img, img_src, text):
     font = ImageFont.truetype("./static/fonts/openSans.ttf", 16)
     if img.get('input_exists'):
         try:
-            img_src = img.get('image')
             width, height = img_src.size
             img_dest = Image.new('RGB', (width, height + 36))
             img_dest.paste(img_src, (0, 0))

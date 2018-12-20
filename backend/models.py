@@ -228,9 +228,13 @@ class LicencePhotoSchema(ma.ModelSchema):
     class Meta:
         fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
 
+class RoleSchema(ma.ModelSchema):
+    class Meta:
+        model = TRole
 
 class TPhotoSchema(ma.ModelSchema):
     dico_licence_photo = ma.Nested(LicencePhotoSchema)
+    t_role = ma.Nested(RoleSchema)
 
     class Meta:
         model = TPhoto
