@@ -310,9 +310,10 @@ def map():
                 'label': str(year),
                 'id': year
             } for year in filter.get('items')]
+            filter['items'] = sorted(filter['items'], key=lambda k: k['label'], reverse=True)
         else:
             filter['items'] = [getItem(filter.get('name'), item_id)
                                for item_id in filter.get('items')]
-        filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
+            filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
     return render_template('map.html', filters=filters, sites=sites)
