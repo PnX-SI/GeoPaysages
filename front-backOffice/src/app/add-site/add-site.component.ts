@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -19,7 +19,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./add-site.component.scss'],
 
 })
-export class AddSiteComponent implements OnInit {
+export class AddSiteComponent implements OnInit, OnDestroy {
   selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
@@ -329,16 +329,16 @@ export class AddSiteComponent implements OnInit {
         this.siteForm.disable();
         this.edit_btn = false;
         this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
-            // ###### can reload the same route #######
-            this.router.routeReuseStrategy.shouldReuseRoute = function () {
-              return false;
-            };
-            this.mySubscription = this.router.events.subscribe((event) => {
-              if (event instanceof NavigationEnd) {
-                this.router.navigated = false;
-              }
-            });
-            // ##########
+        // ###### can reload the same route #######
+        this.router.routeReuseStrategy.shouldReuseRoute = function () {
+          return false;
+        };
+        this.mySubscription = this.router.events.subscribe((event) => {
+          if (event instanceof NavigationEnd) {
+            this.router.navigated = false;
+          }
+        });
+        // ##########
         this.router.navigate(['/sites/details/', id_site]);
       },
       (err) => {
@@ -555,5 +555,13 @@ export class AddSiteComponent implements OnInit {
       + 'LAYER=' + layer + '&STYLE=normal&TILEMATRIXSET=PM&'
       + 'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg';
   }
+
+  ngOnDestroy() {
+    if (this.mySubscription) {
+      this.mySubscription.unsubscribe();
+    }
+  }
 }
+
+
 
