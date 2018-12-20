@@ -37,9 +37,7 @@ def getImage(photo, prefixe, callback):
     return img
 
 
-def getThumbnail(photo):
-    h = 150
-
+def getThumbnail(photo, h = 150):
     def callback(img):
         #initW, initH = image.size
         #ratio = h / initH
@@ -47,7 +45,7 @@ def getThumbnail(photo):
         image = img.get('image')
         image = ImageOps.fit(image, (h, h), Image.ANTIALIAS)
         image.save(img.get('output_path'))
-    return getImage(photo, 'thumbnail', callback)
+    return getImage(photo, 'thumbnail' + str(h), callback)
 
 
 def getMedium(photo):
