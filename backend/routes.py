@@ -8,7 +8,7 @@ from models import (db)
 from config import DATA_IMAGES_PATH
 import json
 from datetime import datetime
-from flask_babel import format_datetime
+from flask_babel import format_datetime, gettext, ngettext
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -258,19 +258,19 @@ def map():
 
     filters = [{
         'name': 'themes',
-        'label': 'Thème',
+        'label': gettext(u'map.filter.themes'),
         'items': set()
     }, {
         'name': 'subthemes',
-        'label': 'Sous-thème',
+        'label': gettext(u'map.filter.subthemes'),
         'items': set()
     }, {
         'name': 'township',
-        'label': 'Commune',
+        'label': gettext(u'map.filter.township'),
         'items': set()
     }, {
         'name': 'years',
-        'label': 'Année',
+        'label': gettext(u'map.filter.years'),
         'items': set()
     }]
 

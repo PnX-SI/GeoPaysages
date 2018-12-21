@@ -24,7 +24,7 @@
     <figure v-for="photo in zoomPhotos">
         <img :src="photo.lg" />
         <figcaption class="text-center">
-          <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">Télécharger <i class="icon ion-md-download"></i></button>
+          <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">{{ _('obs_point.buttons.download') }} <i class="icon ion-md-download"></i></button>
         </figcaption>
     </figure>
   </b-modal>
@@ -61,7 +61,7 @@
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
               </div>
-              <div class="img-tools">
+              <div class="img-tools"> 
                 <!-- <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
                   <i class="icon ion-md-download"></i>
                 </b-btn> -->
@@ -99,35 +99,35 @@
         <div class="col-lg-5 pl-0 mb-5 text-right">
           <div class="map-wrapper" ref="map"></div>
           <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/oppv-' + site.ref_site + '-notice.pdf') }}" target="_blank">
-            Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
+            {{ _('obs_point.buttons.notice') }} <i class="icon ion-md-download ml-2"></i>
           </a>
           <a class="btn btn-sm btn-primary text-uppercase mb-2" href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Observation OPPV&body={{ site.name_site }}">
-            Faire une observation <i class="icon ion-ios-eye ml-2"></i>
+            {{ _('obs_point.buttons.obs') }} <i class="icon ion-ios-eye ml-2"></i>
           </a>
         </div>
         <div class="col-lg-7 pr-0">
-          <h5 class="text-uppercase">Présentation du site</h5>
+          <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target font-italic">
               {{ site.desc_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
-                <span class="visible-text-collapsed">Lire plus</span>
-                <span class="hidden-text-collapsed">Lire moins</span>
+                <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
             </div>
           </div>
           {% if site.testim_site %}
-          <h5 class="text-uppercase mt-4">Témoignages</h5>
+          <h5 class="text-uppercase mt-4">{{ _('obs_point.testimonials') }}</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
               {{ site.testim_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
-                <span class="visible-text-collapsed">Lire plus</span>
-                <span class="hidden-text-collapsed">Lire moins</span>
+                <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
             </div>
           </div>

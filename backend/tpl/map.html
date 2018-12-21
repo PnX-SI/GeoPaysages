@@ -1,6 +1,6 @@
 {% extends "layout.html" %}
 {% set active_page = 'map' %}
-{% block title %}Carte Interactive{% endblock %}
+{% block title %}{{ _('map.meta_title') }}{% endblock %}
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">La Carte Interactive</h3>
+<h3 class="text-uppercase">{{ _('map.title') }}</h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-map{% endblock %}
@@ -25,7 +25,7 @@
         <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
           <b-card-header header-tag="header" class="p-0">
             <b-btn block href="#" class="rounded-0 card-group-header-btn" v-b-toggle="'app_map_filters'" variant="secondary">
-              <span>Filtrer par</span> 
+              <span>{{ _('map.filters.title') }}</span> 
               <i class="icon ion-ios-arrow-down visible-collapsed"></i>
               <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
             </b-btn>
@@ -38,7 +38,7 @@
                   @click="onCancelClick()" 
                   class="btn btn-clear-primary btn-sm btn-no-uppercase">
                   <i class="icon ion-md-close align-text-bottom mr-1"></i> 
-                  annuler les filtres
+                  {{ _('map.filters.cancel') }}
                 </button>
               </div>
               <div class="filters">
@@ -67,7 +67,7 @@
         <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
           <b-card-header header-tag="header" class="p-0">
             <b-btn block href="#" class="rounded-0 card-group-header-btn" v-b-toggle="'app_map_sites'" variant="secondary">
-              <span>Points d'observation</span> 
+              <span>{{ _('map.observation_points.title') }}</span> 
               <i class="icon ion-ios-arrow-down visible-collapsed"></i>
               <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
             </b-btn>
