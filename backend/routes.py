@@ -8,7 +8,7 @@ from models import (db)
 from config import DATA_IMAGES_PATH
 import json
 from datetime import datetime
-from flask_babel import format_datetime
+from flask_babel import format_datetime, gettext, ngettext
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -179,26 +179,28 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        img_caption = "%s | %s | réf : %s | %s | %s" % (
+        if photo.get('t_role'):
+            photo_license = '%s - %s %s' % (
+                photo_license,
+                photo.get('t_role').get('prenom_role'),
+                photo.get('t_role').get('nom_role')
+            )
+        
+        lg_caption = photo_license
+        dl_caption = "%s | %s | réf. : %s | %s | %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
             date_diplay.get('md'),
             photo_license
         )
-        if photo.get('t_role'):
-            img_caption = '%s - %s %s' % (
-                img_caption,
-                photo.get('t_role').get('prenom_role'),
-                photo.get('t_role').get('nom_role')
-            )
 
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
             'md': utils.getMedium(photo).get('output_url'),
-            'lg': utils.getLarge(photo, img_caption).get('output_url'),
-            'dl': utils.getDownload(photo, img_caption).get('output_url'),
+            'lg': utils.getLarge(photo, lg_caption).get('output_url'),
+            'dl': utils.getDownload(photo, dl_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay
         }
@@ -258,19 +260,19 @@ def map():
 
     filters = [{
         'name': 'themes',
-        'label': 'Thème',
+        'label': gettext(u'map.filter.themes'),
         'items': set()
     }, {
         'name': 'subthemes',
-        'label': 'Sous-thème',
+        'label': gettext(u'map.filter.subthemes'),
         'items': set()
     }, {
         'name': 'township',
-        'label': 'Commune',
+        'label': gettext(u'map.filter.township'),
         'items': set()
     }, {
         'name': 'years',
-        'label': 'Année',
+        'label': gettext(u'map.filter.years'),
         'items': set()
     }]
 

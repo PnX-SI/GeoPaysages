@@ -76,6 +76,10 @@ oppv.initMap = (options) => {
           }]
         }).addTo(map)
 
+        map.addControl(new L.Control.Fullscreen({
+          position: 'topright'
+        }));
+
         const controlLayers = {};
         layerConfs.forEach(layerConf => {
           controlLayers[layerConf.label] = layerConf.layer
@@ -168,7 +172,8 @@ oppv.initMap = (options) => {
           lons.push(site.latlon[1])
           let marker = L.marker(site.latlon)
           site.marker = marker
-          marker.bindPopup('<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div><div class="title">' + site.name_site + '</div>', {
+          markerText = site.name_site + '<br />' + site.ville.label
+          marker.bindPopup('<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div><div class="title">' + markerText + '</div>', {
             closeButton: false
           })
           marker.on('mouseover', (e) => {
