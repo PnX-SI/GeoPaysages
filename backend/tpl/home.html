@@ -33,7 +33,7 @@
       </div>
       <div class="legend">
         <h6>{{ _('home.block.photography') }}</h6>
-        <h5>{{ block.get('name_site') }}</h5>
+        <h5>{{ block.get('name_site') }}<br />{{ block.get('commune').get('nom_commune') }}</h5>
         {{ block.get('legend_site') }}
       </div>
       <a href="/comparator/{{ block.get('id_site') }}"></a>
