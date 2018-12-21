@@ -90,10 +90,10 @@
         </div>
 
         <div class="footer-contact">
-        {% if external_links|length: %}
+        {% if dbconf.external_links|length: %}
           <h6>{{ _('footer.external_title') }}</h6>
           <ul>
-          {% for external_link in external_links %}
+          {% for external_link in dbconf.external_links %}
             <li>
               <a href="{{ external_link.url }}" target="_blank">
                   {{ external_link.label }}
