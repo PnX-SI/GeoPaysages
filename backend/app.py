@@ -31,7 +31,10 @@ db = SQLAlchemy()
 def inject_external_links():
     sql = text("SELECT value FROM geopaysages.conf WHERE key = 'external_links'")
     rows = db.engine.execute(sql).fetchall()
-    external_links = json.loads(rows[0]['value'])
+    if len(rows):
+        external_links = json.loads(rows[0]['value'])
+    else:
+        external_links = json.loads('[]')
     return dict(external_links=external_links)
 
 if __name__ == "__main__":

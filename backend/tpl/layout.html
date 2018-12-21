@@ -89,6 +89,7 @@
         </div>
 
         <div class="footer-contact">
+        {% if external_links|length: %}
           <h6>{{ _('footer.external_title') }}</h6>
           <ul>
           {% for external_link in external_links %}
@@ -99,6 +100,7 @@
             </li>
           {% endfor %}
           </ul>
+        {% endif %}
         </div>
       </div>
       
