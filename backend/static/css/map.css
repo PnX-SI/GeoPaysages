@@ -107,6 +107,17 @@
     color: #000;
 }
 
+.app-map .sidebar .filters .filter-years .btn-group-vertical {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.app-map .sidebar .filters .filter-years .card-body .btn {
+    display: inline-block;
+    width: 30%;
+}
+
 .app-map .sidebar .card-group {
     background: transparent;
 }
