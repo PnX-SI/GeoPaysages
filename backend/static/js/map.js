@@ -76,6 +76,10 @@ oppv.initMap = (options) => {
           }]
         }).addTo(map)
 
+        map.addControl(new L.Control.Fullscreen({
+          position: 'topright'
+        }));
+
         const controlLayers = {};
         layerConfs.forEach(layerConf => {
           controlLayers[layerConf.label] = layerConf.layer
