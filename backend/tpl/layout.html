@@ -41,11 +41,11 @@
               <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
                 <a class="nav-link " href="/">{{ _('header.nav.home') }}</a>
               </li>
-              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
-                <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
-              </li>
               <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
                 <a class="nav-link" href="/map" >{{ _('header.nav.map') }}</a>
+              </li>
+              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+                <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
               </li>
             </ul>
           </b-collapse>
@@ -71,13 +71,13 @@
               </a>
             </li>
             <li>
-              <a href="/gallery">
-                {{ _('footer.internal_links.gallery') }}
+              <a href="/map">
+                {{ _('footer.internal_links.map') }}
               </a>
             </li>
             <li>
-              <a href="/map">
-                {{ _('footer.internal_links.map') }}
+              <a href="/gallery">
+                {{ _('footer.internal_links.gallery') }}
               </a>
             </li>
             <li>
