@@ -179,7 +179,7 @@ def comparator(id_site):
                 'sm': date_obj.strftime('%Y')
             }
         photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        img_caption = "%s | %s | réf : %s | %s | %s" % (
+        img_caption = "%s | %s | réf. : %s | %s | %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
