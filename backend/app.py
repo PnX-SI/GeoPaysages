@@ -28,14 +28,14 @@ db.init_app(app)
 db = SQLAlchemy()
 
 @app.context_processor
-def inject_external_links():
-    sql = text("SELECT value FROM geopaysages.conf WHERE key = 'external_links'")
-    rows = db.engine.execute(sql).fetchall()
-    if len(rows):
-        external_links = json.loads(rows[0]['value'])
-    else:
-        external_links = json.loads('[]')
-    return dict(external_links=external_links)
+def inject_dbconf():
+    sql = text("SELECT key, value FROM geopaysages.conf")
+    result = db.engine.execute(sql).fetchall()
+    rows = [dict(row) for row in result]
+    conf = {}
+    for row in rows:
+        conf[row.get('key')] = json.loads(row.get('value'))
+    return dict(dbconf=conf)
 
 if __name__ == "__main__":
     app.run(debug=True)
