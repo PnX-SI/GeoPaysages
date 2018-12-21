@@ -1,3 +1,7 @@
+.page-home {
+    overflow-x: hidden;
+}
+
 .page-home .page-content {
     background: url("../images/bg-home.jpg") no-repeat center;
     background-size: cover;
@@ -8,6 +12,7 @@
   height: calc(100vh - 160px);
   width: 50%;
   margin : 0 auto;
+  transform-origin: left;
 }
 
 .page-home .block {
