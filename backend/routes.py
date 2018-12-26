@@ -5,7 +5,7 @@ import models
 import utils
 import random
 from models import (db)
-from config import DATA_IMAGES_PATH
+from config import DATA_IMAGES_PATH, IGN_KEY
 import json
 from datetime import datetime
 from flask_babel import format_datetime, gettext, ngettext
@@ -336,4 +336,4 @@ def map():
                                for item_id in filter.get('items')]
             filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
-    return render_template('map.html', filters=filters, sites=sites)
+    return render_template('map.html', filters=filters, sites=sites, ign_Key=IGN_KEY)

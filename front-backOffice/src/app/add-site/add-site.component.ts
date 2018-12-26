@@ -25,7 +25,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   selectedSubthemes = [];
   photos = [];
   noticeName: any;
-  noticeLaoded = false;
+  new_notice: any;
   siteForm: FormGroup;
   siteJson;
   themes: any;
@@ -202,20 +202,18 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.selectedFile = event.target.files;
     if (event.target.files && event.target.files.length > 0) {
       this.noticeName = event.target.files[0].name;
-      this.noticeLaoded = true;
     }
   }
 
   removeNotice() {
     this.noticeName = null;
-    this.noticeLaoded = false;
     this.siteForm.controls['notice'].reset();
     this.selectedFile = null;
   }
 
   uploadNotice() {
     const notice: FormData = new FormData();
-    if (this.noticeName) {
+    if (this.selectedFile) {
       notice.append('notice', this.selectedFile[0], this.selectedFile[0].name);
       this.sitesService.addNotices(notice).subscribe();
     }
@@ -229,14 +227,16 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   submitSite(siteForm) {
     this.alert = null;
     let path_file_guide_site = null;
-    if (this.noticeName) {
+    if (this.selectedFile) {
       path_file_guide_site = this.selectedFile[0].name;
     }
     if (siteForm.valid && this.photos.length > 0) {
       this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
       this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
-      this.siteJson.path_file_guide_site = path_file_guide_site;
-      // this.uploadNotice();
+      if (this.selectedFile) {
+        this.siteJson.path_file_guide_site = path_file_guide_site;
+      }
+      this.uploadNotice();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
@@ -544,7 +544,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       'legend_site': this.site.legend_site,
     });
     if (this.site.path_file_guide_site) {
-      this.noticeLaoded = true;
       this.noticeName = this.site.path_file_guide_site;
     }
 
