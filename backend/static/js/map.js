@@ -41,11 +41,14 @@ oppv.initMap = (options) => {
             }
           )
         }, {
-          label: "OSM grayscale",
+          label: "IGN map",
           layer: L.tileLayer(
-            'http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+            'http://wxs.ign.fr/' + options.ign_Key +
+            '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&' +
+            'LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&' +
+            'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg', {
               maxZoom: 18,
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+              attribution: '&copy; <div">IgnMap</div>',
             }
           )
         }]
