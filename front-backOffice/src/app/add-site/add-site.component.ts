@@ -171,7 +171,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     });
     map.on(L.Draw.Event.DELETED, (event) => {
       const markers = [];
-      map.eachLayer(function (layer) {
+      map.eachLayer((layer: any) => {
         if (layer._latlng) {
           markers.push(layer._latlng);
         }

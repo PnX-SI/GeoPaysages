@@ -3,6 +3,7 @@
 Application web permettant de publier un observatoire photographique des paysages.
 
 ## Install
+Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.rst
 
 - Créer et activer un environnement virtuel python 3.
 - cd ./backend
