@@ -127,7 +127,26 @@ Customisation de l'application
 	
 En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
 
+Internationalisation de l'application
+======================================   
 
+- Pour modifier les labels Editer le fichier backend/i18n/fr/messages.po
+- activer le environnement virtuel 
+
+::
+
+    . venv/bin/activate
+    
+- lanceer la commande suivante :
+
+::
+
+    . pybabel compile -d i18n
+
+:notes:
+
+  Pour plus d'informations, voir https://pythonhosted.org/Flask-Babel/
+ 
 Installtion de back-office
 ============================
 
@@ -201,11 +220,10 @@ Modifier server_name pour ajouter le nom domaine associé a GeoPaysages :
 
 **3. Redémarrer supervisor et Nginx :**
  
-  ::  
-        sudo supervisorctl reread
-    
-        sudo service supervisor restart
+::  
 
-        sudo service nginx restart
+    sudo supervisorctl reread
+    sudo service supervisor restart
+    sudo service nginx restart
 
 

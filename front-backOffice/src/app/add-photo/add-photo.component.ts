@@ -8,7 +8,7 @@ import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import {forkJoin} from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
 
@@ -63,7 +63,7 @@ export class AddPhotoComponent implements OnInit {
   disableButton = false;
   btn_text = 'Ajouter';
   title = 'Ajouter une Photo';
-  alert;
+  alert: any;
   @Output() photoModal = new EventEmitter();
   @Input() inputImage = null;
   currentUser: any;
@@ -126,11 +126,11 @@ export class AddPhotoComponent implements OnInit {
     this.imageName = this.inputImage.path_file_photo;
   }
 
-  openPhotoModal(content) {
+  openPhotoModal(content: any) {
     this.modalRef = this.modalService.open(content, { windowClass: 'custom-modal', centered: true });
   }
 
-  onFileSelected(event) {
+  onFileSelected(event: any) {
     this.selectedPhoto = event.target.files;
     if (event.target.files && event.target.files.length > 0) {
       this.imageName = event.target.files[0].name;
@@ -146,22 +146,26 @@ export class AddPhotoComponent implements OnInit {
     this.photoForm.controls['photo_file'].reset();
   }
 
-  submitPhoto(photoForm) {
+  submitPhoto(photoForm: any) {
     this.alert = null;
     if (photoForm.valid && this.imageName) {
       photoForm.value.filter_date = photoForm.value.filter_date.year + '-' + photoForm.value.filter_date.month + '-' +
         photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
-      if (this.inputImage) {
-        this.updatePhoto(photoForm);
+      if (/\s/.test(this.imageName)) {
+        this.alert = 'Le nom de la photo ne doit pas contenir des espaces ';
       } else {
-        this.photoModal.emit(photoForm.value);
-        this.photoForm.reset();
-        this.removeImage();
-        this.photoForm.controls['display_gal_photo'].setValue(false);
-        this.modalRef.close();
-        this.disableButton = false;
+        if (this.inputImage) {
+          this.updatePhoto(photoForm);
+        } else {
+          this.photoModal.emit(photoForm.value);
+          this.photoForm.reset();
+          this.removeImage();
+          this.photoForm.controls['display_gal_photo'].setValue(false);
+          this.modalRef.close();
+          this.disableButton = false;
+        }
       }
     } else {
       console.log('invalid form');
@@ -183,7 +187,7 @@ export class AddPhotoComponent implements OnInit {
     }
   }
 
-  openDeleteModal(photoModal) {
+  openDeleteModal(photoModal: any) {
     this.modalRef.close();
     this.modalRef = this.modalService.open(photoModal, { windowClass: 'delete-modal', centered: true });
   }
@@ -208,7 +212,7 @@ export class AddPhotoComponent implements OnInit {
     );
   }
 
-  updatePhoto(photoForm) {
+  updatePhoto(photoForm: any) {
     const photo: FormData = new FormData();
     let photoJson: any = {};
     photoJson = photoForm.value;

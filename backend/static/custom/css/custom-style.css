@@ -1,0 +1,20 @@
+/* css clors */ 
+:root {
+    --color-primary: #00188F;
+    --color-primary-light: #303f8a;
+    --color-blue : #283371;
+    --color-green : #78BE20;
+    --color-secondary: #78BE20;
+    --color-secondary-light: #72d409;
+}
+
+/* css Footer */
+footer{
+    color: #fff;
+}
+.app-footer {
+    background: #666;
+}
+.app-footer hr {
+    border-color: #FFF;
+}

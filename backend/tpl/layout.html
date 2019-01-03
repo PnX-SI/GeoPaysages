@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/custom-style.css') }}">
 
   <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/vue/dist/vue.js') }}"></script>
@@ -32,7 +33,7 @@
 
     <header class="container-fluid" id="header">
       <a href="/">
-        <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
+        <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_bleu.png') }}" />
       </a>
       <div class="row nav-bar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -61,7 +62,7 @@
     <footer class="app-footer">
       {% block footer %}
       <div class="col-lg-11 col-xl-10">
-        <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+        <img class="logo mb-4" src="{{ url_for('static', filename='custom/logo/logo_txt_blanc.png') }}" />
 
         <div class="footer-menu">
           <h6>{{ _('footer.internal_title') }}</h6>

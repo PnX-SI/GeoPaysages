@@ -238,6 +238,15 @@ def upload_notice():
     notice.save(os.path.join(base_path + notice.filename))
     return jsonify('notice added successfully'), 200
 
+@api.route('/api/deleteNotice/<notice>', methods=['DELETE'])
+@fnauth.check_auth(2, False, None, None)
+def delete_notice(notice):
+    base_path = './static/' + DATA_NOTICES_PATH
+    for fileName in os.listdir(base_path):
+        if (fileName == notice):
+            os.remove(base_path + fileName)
+    return jsonify('notice removed successfully'), 200
+
 @api.route('/api/updatePhoto', methods=['PATCH'])
 @fnauth.check_auth(2, False, None, None)
 def update_photo():

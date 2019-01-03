@@ -34,8 +34,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   map;
   mySubscription;
   id_site = null;
-  markers = [];
-
   drawnItems = new L.FeatureGroup();
   markerCoordinates = [];
   icon = L.icon({
@@ -51,8 +49,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     zoom: 10,
     center: latLng(45.372167, 6.819077)
   };
-  sitesLoaded = false;
-  addSite = false;
   drawOptions = {
     position: 'topleft',
     draw: {
@@ -71,7 +67,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   };
   drawControl = new L.Control.Draw();
   previewImage: string | ArrayBuffer;
-  cor: any;
   alert: { type: string; message: string; };
   site: any;
   edit_btn = false;
@@ -87,6 +82,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   communes: undefined;
   currentUser: any;
   zoom = 10;
+  removed_notice: any = null;
   constructor(
     private sitesService: SitesService,
     public formService: FormService,
@@ -206,6 +202,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   removeNotice() {
+    this.removed_notice = this.noticeName;
     this.noticeName = null;
     this.siteForm.controls['notice'].reset();
     this.selectedFile = null;
@@ -216,12 +213,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       notice.append('notice', this.selectedFile[0], this.selectedFile[0].name);
       this.sitesService.addNotices(notice).subscribe();
+    } else {
+      if (!this.noticeName) {
+        this.sitesService.deleteNotices(this.removed_notice).subscribe();
+      }
     }
-  }
-
-  onCancel() {
-    this.siteForm.reset();
-    this.router.navigate(['sites']);
   }
 
   submitSite(siteForm) {
@@ -229,13 +225,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     let path_file_guide_site = null;
     if (this.selectedFile) {
       path_file_guide_site = this.selectedFile[0].name;
+    } else {
+      path_file_guide_site = null;
     }
     if (siteForm.valid && this.photos.length > 0) {
       this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
       this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
-      if (this.selectedFile) {
-        this.siteJson.path_file_guide_site = path_file_guide_site;
-      }
+      this.siteJson.path_file_guide_site = path_file_guide_site;
       this.uploadNotice();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
@@ -274,7 +270,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
 
-  addPhotos(id_site, id_theme, id_stheme, ) {
+  addPhotos(id_site, id_theme, id_stheme) {
     const photosData: FormData = new FormData();
     let photoJson;
     let photos;
@@ -528,6 +524,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       }
     );
     this.modalRef.close();
+  }
+
+  onCancel() {
+    this.siteForm.reset();
+    this.router.navigate(['sites']);
   }
 
   patchForm() {
