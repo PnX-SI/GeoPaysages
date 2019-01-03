@@ -380,25 +380,29 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.selectedSubthemes = [];
         // this.siteForm.controls['id_stheme'].reset();
-        console.log('this.subthemes', this.subthemes);
         if (this.siteForm.controls['id_theme'].value && this.siteForm.controls['id_theme'].value.length !== 0) {
           this.siteForm.controls['id_stheme'].enable();
           _.forEach(this.subthemes, (subtheme) => {
             _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
               if (_.includes(subtheme.themes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
                 this.selectedSubthemes.push(subtheme);
-                console.log('this.selectedSubthemes', this.selectedSubthemes);
               }
             });
           });
-          /*   _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
-               if (_.includes(selectedSubthemes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
-                 this.selectedSubthemes.push(subtheme);
-                 console.log('this.selectedSubthemes', this.selectedSubthemes);
-               }
-             }); */
+          _.map(this.siteForm.controls['id_stheme'].value, (idStheme) => {
+            if (!_.find(this.selectedSubthemes, { 'id_stheme': idStheme })) {
+              _.remove(this.siteForm.controls['id_stheme'].value, (item) => {
+                return item === idStheme;
+              });
+            }
+          });
+          this.siteForm.patchValue({
+            'id_stheme': this.siteForm.controls['id_stheme'].value,
+          });
+
         } else {
-          this.siteForm.controls['id_stheme'].disable();
+          this.siteForm.controls['id_stheme'].setValue(null),
+            this.siteForm.controls['id_stheme'].disable();
           this.selectedSubthemes = [];
         }
       });
