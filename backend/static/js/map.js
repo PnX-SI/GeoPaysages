@@ -36,7 +36,7 @@ oppv.initMap = (options) => {
           label: "OSM classic",
           layer: L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: 18,
+              maxZoom: options.dbconf.zoom_map,
               attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             }
           )
@@ -47,7 +47,7 @@ oppv.initMap = (options) => {
             '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&' +
             'LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&' +
             'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg', {
-              maxZoom: 18,
+              maxZoom: options.dbconf.zoom_map,
               attribution: '&copy; <div">IgnMap</div>',
             }
           )

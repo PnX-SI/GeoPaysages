@@ -1,6 +1,5 @@
 var oppv = oppv || {};
 oppv.comparator = (options) => {
-  console.log(options.dbconf)
   new Vue({
     el: '#js-app-comparator',
     data: () => {

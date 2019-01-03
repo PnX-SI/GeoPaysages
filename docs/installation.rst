@@ -212,7 +212,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemains et le bon port :
 
 :notes:	
 
-Modifier server_name pour ajouter le nom domaine associé a GeoPaysages :
+    Modifier server_name pour ajouter le nom domaine associé a GeoPaysages :
 	 
 ::
 

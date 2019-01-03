@@ -226,7 +226,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       path_file_guide_site = this.selectedFile[0].name;
     } else {
-      path_file_guide_site = null;
+      path_file_guide_site = this.noticeName;
     }
     if (siteForm.valid && this.photos.length > 0) {
       this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
