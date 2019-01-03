@@ -28,6 +28,11 @@ export class SitesService {
     return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, { withCredentials: true, reportProgress: true, observe: 'events' });
   }
 
+  deleteNotices(removed_notice) {
+    return this.http.delete<any>(Conf.apiUrl + 'deleteNotice/' + removed_notice, { withCredentials: true });
+  }
+
+
   updatePhoto(image) {
     return this.http.patch<any>(Conf.apiUrl + 'updatePhoto', image, { withCredentials: true, reportProgress: true, observe: 'events' });
   }

@@ -28,7 +28,7 @@
           <app-form-error controlName="id_role" errorKey="required"></app-form-error>
         </div>
         <div class="col">
-          <label class="label" for="licence">Licence*</label>
+          <label class="label" for="licence">Fonds*</label>
           <select InputFeedBack id="licence" formControlName="id_licence_photo" class="form-control">
             <option class="select-placeholder" value="">---</option>
             <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
