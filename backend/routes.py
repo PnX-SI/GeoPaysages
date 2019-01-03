@@ -207,7 +207,7 @@ def comparator(id_site):
 
     photos = [getPhoto(photo) for photo in photos]
     
-    return render_template('comparator.html', titre="Bienvenue !", site=site, photos=photos)
+    return render_template('comparator.html', site=site, photos=photos)
 
 
 @main.route('/map')
