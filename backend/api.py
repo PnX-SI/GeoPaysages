@@ -179,7 +179,7 @@ def add_site():
 @fnauth.check_auth(2, False, None, None)
 def update_site():
     site = request.get_json()
-    models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
+    #models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
     models.TSite.query.filter_by(id_site= site.get('id_site')).update(site)
     db.session.commit()
     return jsonify('site updated successfully'), 200
@@ -212,9 +212,9 @@ def upload_file():
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            #models.CorSiteSthemeTheme.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+            models.CorSiteSthemeTheme.query.filter_by(id_site=d_serialized.get('id_site')).delete()
             #models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
-            #db.session.commit()
+            db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
         main_photo = d_serialized.get('main_photo')
         del d_serialized['main_photo']

@@ -100,7 +100,11 @@
     border-color: transparent;
     margin-bottom: 1px;
 }
-.app-map .sidebar .filters .card-body .btn:hover,
+.app-map .sidebar .filters .card-body .btn:hover
+{
+    background: #99d6ea61;
+    color: #FFF;
+}
 .app-map .sidebar .filters .card-body .btn.active,
 .app-map .sidebar .btn-site:hover {
     background: #99D6EA;
