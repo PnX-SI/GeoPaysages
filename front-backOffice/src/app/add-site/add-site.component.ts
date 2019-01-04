@@ -72,7 +72,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   edit_btn = false;
   edit_btn_text = 'Éditer';
   submit_btn_text = 'Ajouter';
-  initPhotos: any[];
+  initPhotos: any[] = [];
   deleted_photos = [];
   photoRequired = false;
   new_photos = [];
@@ -294,6 +294,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       err => {
         console.log('err upload photo', err);
         if (err.error.error === 'image_already_exist') {
+          this.edit_btn_text = 'Annuler';
           this.setAlert(err.error.image);
         }
         if (err.status === 403) {
@@ -358,8 +359,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       (site) => {
         this.site = site.site[0];
         _.forEach(site.photos, (photo) => {
+          this.initPhotos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
           this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
-          this.initPhotos = this.photos;
         });
       },
       (err) => console.log('err', err),
@@ -476,6 +477,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.map.removeControl(this.drawControl);
       this.edit_btn_text = 'Éditer';
       this.patchForm();
+      this.alert = null;
+     this.photos = this.initPhotos;
       this.siteForm.disable();
       this.initMarker(this.site.geom[0], this.site.geom[1]);
     } else {
