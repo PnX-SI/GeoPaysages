@@ -34,7 +34,11 @@ def inject_dbconf():
     rows = [dict(row) for row in result]
     conf = {}
     for row in rows:
-        conf[row.get('key')] = json.loads(row.get('value'))
+        try:
+            conf[row.get('key')] = json.loads(row.get('value'))
+        except Exception as exception:
+            conf[row.get('key')] = row.get('value')
+        
     return dict(dbconf=conf)
 
 if __name__ == "__main__":

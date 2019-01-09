@@ -1,10 +1,15 @@
 :root {
     --color-primary: #00188F;
     --color-primary-light: #303f8a;
-    --color-blue : #283371;
-    --color-green : #78BE20;
     --color-secondary: #78BE20;
     --color-secondary-light: #72d409;
+
+    --color-discover: rgba(153, 214, 234, 0.5);
+
+    --color-map-filter-txt-hover: #FFF;
+    --color-map-filter-bg-hover: #99d6ea61;
+    --color-map-filter-txt-active: #000;
+    --color-map-filter-bg-active: #99D6EA;
 }
 
 .swiper-pagination-bullet-active {
@@ -71,6 +76,11 @@ button{
 .btn-primary {
     background-color: var(--color-primary);
     border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-light);
+    border-color: var(--color-primary-light);
 }
 
 .btn-secondary {
@@ -151,26 +161,6 @@ button{
     font-size: 1.5em;
 }
 
-.blue-btn {
-    background-color: var(--color-blue);
-    color: #fff;
-    border: none;
-    padding: 5px 30px;
-    text-transform: uppercase;
-    font-size: 13px;
-    width: fit-content;
-}
-
-.green-btn{
-    background-color: var(--color-green);
-    color: #fff;
-    border: none;
-    padding: 5px 30px;
-    text-transform: uppercase;
-    font-size: 13px;
-    width: fit-content;
-}
-
 .progress-bar {
     background-color: var(--color-primary);
 }
@@ -179,7 +169,7 @@ button{
     text-align: center;
     color: #fff;
     font-style: italic;
-    background-color : rgba(153,214,234,0.5);
+    background-color : var(--color-discover);
     z-index: 9999;
     transition: transform .5s ease;
 }

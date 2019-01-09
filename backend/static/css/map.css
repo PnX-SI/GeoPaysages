@@ -102,13 +102,13 @@
 }
 .app-map .sidebar .filters .card-body .btn:hover
 {
-    background: #99d6ea61;
-    color: #FFF;
+    background: var(--color-map-filter-bg-hover);
+    color: var(--color-map-filter-txt-hover);
 }
 .app-map .sidebar .filters .card-body .btn.active,
 .app-map .sidebar .btn-site:hover {
-    background: #99D6EA;
-    color: #000;
+    background: var(--color-map-filter-bg-active);
+    color: var(--color-map-filter-txt-active);
 }
 
 .app-map .sidebar .filters .filter-years .btn-group-vertical {

@@ -82,7 +82,7 @@
     left: 0;
     height: 8px;
     width: 8px;
-    background-color: var(--color-green);
+    background-color: var(--color-secondary);
     transform: translateY(25%);
 }
 
@@ -95,14 +95,6 @@
     font-family: 'Hind', sans-serif;
 }
 
-.page-home .discover{
-    text-align: center;
-    color: #fff;
-    font-style: italic;
-    background-color : rgba(153,214,234,0.5);
-    z-index: 1;
-    transition: transform .5s ease;
-}
 .page-home .discover {
     width: 100%;
     display: flex;
