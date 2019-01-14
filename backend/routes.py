@@ -178,28 +178,33 @@ def comparator(id_site):
                 'md': format_datetime(date_obj, 'yyyy (dd MMMM)'),
                 'sm': date_obj.strftime('%Y')
             }
-        photo_license = photo.get('dico_licence_photo').get('description_licence_photo')
-        if photo.get('t_role'):
-            photo_license = '%s - %s %s' % (
-                photo_license,
+        captions = []
+        licence_photo = photo.get('dico_licence_photo')
+        if licence_photo:
+            captions.append(licence_photo.get('description_licence_photo'))
+        author = photo.get('t_role')
+        if author:
+            captions.append('%s %s'  % (
                 photo.get('t_role').get('prenom_role'),
                 photo.get('t_role').get('nom_role')
-            )
+            ))
+        caption = ' - '.join(captions)
         
-        lg_caption = photo_license
-        dl_caption = "%s | %s | réf. : %s | %s | %s" % (
+        dl_caption = "%s | %s | réf. : %s | %s" % (
             site.get('name_site'),
             site.get('ville').get('nom_commune'),
             site.get('ref_site'),
-            date_diplay.get('md'),
-            photo_license
+            date_diplay.get('md')
         )
+
+        if caption:
+            dl_caption = '%s | %s' % (dl_caption, caption)
 
         return {
             'id': photo.get('id_photo'),
             'sm': utils.getThumbnail(photo).get('output_url'),
             'md': utils.getMedium(photo).get('output_url'),
-            'lg': utils.getLarge(photo, lg_caption).get('output_url'),
+            'lg': utils.getLarge(photo, caption).get('output_url'),
             'dl': utils.getDownload(photo, dl_caption).get('output_url'),
             'date': photo.get('filter_date'),
             'date_diplay': date_diplay

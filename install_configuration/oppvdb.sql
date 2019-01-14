@@ -133,12 +133,45 @@ CREATE TABLE t_site (
 
 ALTER TABLE geopaysages.t_site OWNER TO oppvuser;
 
+CREATE TABLE conf (
+    key character varying,
+    value character varying
+);
+
+
+ALTER TABLE geopaysages.conf OWNER TO oppvuser;
+
+
+
+
+INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
+    "label": "Site du Parc national de Vanoise",
+    "url": "http://www.vanoise-parcnational.fr"
+}, {
+    "label": "Rando Vanoise",
+    "url": "http://rando.vanoise.com"
+}, {
+    "label": "BiodiVanoise",
+    "url": "http://biodiversite.vanoise-parcnational.fr"
+}, {
+    "label": "Photothèque",
+    "url": "https://phototheque.vanoise-parcnational.fr"
+}]
+');
+INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');
 
 --
 -- TOC entry 3814 (class 0 OID 21076)
 -- Dependencies: 254
 -- Data for Name: communes; Type: TABLE DATA; Schema: geopaysages; Owner: oppvuser
 --
+CREATE TABLE communes (
+    code_commune character varying PRIMARY KEY,
+    nom_commune character varying
+);
+
+
+ALTER TABLE geopaysages.communes OWNER TO oppvuser;
 
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73023', 'Aussois');
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73026', 'Avrieux');
