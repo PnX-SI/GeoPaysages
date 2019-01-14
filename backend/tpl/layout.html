@@ -33,7 +33,7 @@
 
     <header class="container-fluid" id="header">
       <a href="/">
-        <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_bleu.png') }}" />
+        <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_color.png') }}" />
       </a>
       <div class="row nav-bar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -82,11 +82,13 @@
                 {{ _('footer.internal_links.gallery') }}
               </a>
             </li>
+            {% if dbconf.mailto_contact: %}
             <li>
-              <a href="mailto:patrick.folliet@vanoise-parcnational.fr?subject=Contact OPPV">
+              <a href="mailto:{{ dbconf.mailto_contact }}">
                 {{ _('footer.internal_links.contact') }}
               </a>
             </li>
+            {% endif %}
           </ul>
         </div>
 
