@@ -26,9 +26,9 @@ export class FormService {
 
     initFormPhoto(): FormGroup {
         const formPhoto = this._fb.group({
-            id_role: [null, Validators.required],
+            id_role: [null],
             display_gal_photo: [false, Validators.required],
-            id_licence_photo: [null, Validators.required],
+            id_licence_photo: [null],
             date_photo: [null],
             legende_photo: [null],
             filter_date: [null, Validators.required],

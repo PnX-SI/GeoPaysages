@@ -230,7 +230,9 @@ class LicencePhotoSchema(ma.ModelSchema):
 
 class RoleSchema(ma.ModelSchema):
     class Meta:
-        model = TRole
+         fields = ('id_role', 'identifiant', 'nom_role',
+                  'id_organisme')
+
 
 class TPhotoSchema(ma.ModelSchema):
     dico_licence_photo = ma.Nested(LicencePhotoSchema)

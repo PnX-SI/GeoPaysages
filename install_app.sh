@@ -13,8 +13,12 @@ python3 -m venv $venv_dir
 
 . $venv_dir/bin/activate
 
+mkdir -p ../data/images
+mkdir -p ../data/notice-photo
+
 echo "Installing requirements..."
 pip install -r ./backend/requirements.txt
+
 
 
 echo "Creating configuration files "

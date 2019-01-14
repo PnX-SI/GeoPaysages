@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint,Response, jsonify, url_for
+from flask import Flask, request, Blueprint, Response, jsonify, url_for
 from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
@@ -31,9 +31,11 @@ def returnAllSites():
     sites = site_schema.dump(get_all_sites).data
     for site in sites:
         if(site.get('main_photo') == None):
-            set_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('t_photos')[0])
-        else :
-            set_main_photo = models.TPhoto.query.filter_by(id_photo=site.get('main_photo'))
+            set_main_photo = models.TPhoto.query.filter_by(
+                id_photo=site.get('t_photos')[0])
+        else:
+            set_main_photo = models.TPhoto.query.filter_by(
+                id_photo=site.get('main_photo'))
         '''
         get_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(site.get('t_photos')))
@@ -47,11 +49,13 @@ def returnAllSites():
             main_photo[0]).get('output_name')
     return jsonify(sites), 200
 
+
 @api.route('/api/site/<int:id_site>', methods=['GET'])
 def returnSiteById(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
     site = site_schema.dump(get_site_by_id).data
-    get_photos_by_site = models.TPhoto.query.order_by('filter_date').filter_by(id_site=id_site).all()
+    get_photos_by_site = models.TPhoto.query.order_by(
+        'filter_date').filter_by(id_site=id_site).all()
     dump_photos = photo_schema.dump(get_photos_by_site).data
 
     cor_sthemes_themes = site[0].get('cor_site_stheme_themes')
@@ -73,20 +77,22 @@ def returnSiteById(id_site):
     site[0]['themes'] = themes_list
     site[0]['subthemes'] = subthemes_list
 
-    for photo in dump_photos :
+    for photo in dump_photos:
         photo['sm'] = utils.getThumbnail(photo).get('output_name'),
 
     photos = dump_photos
     return jsonify(site=site, photos=photos), 200
 
+
 @api.route('/api/gallery')
 def gallery():
-  
+
     get_photos = models.TPhoto.query.order_by('id_site').all()
     dump_photos = photo_schema.dump(get_photos).data
-    for photo in dump_photos :
+    for photo in dump_photos:
         photo['sm'] = utils.getThumbnail(photo).get('output_name'),
     return jsonify(dump_photos), 200
+
 
 @api.route('/api/themes', methods=['GET'])
 def returnAllThemes():
@@ -96,6 +102,7 @@ def returnAllThemes():
         return jsonify(themes), 200
     except Exception as exception:
         return jsonify(error=exception), 400
+
 
 @api.route('/api/subThemes', methods=['GET'])
 def returnAllSubthemes():
@@ -112,6 +119,7 @@ def returnAllSubthemes():
     except Exception as exception:
         return jsonify(error=exception), 400
 
+
 @api.route('/api/licences', methods=['GET'])
 def returnAllLicences():
     try:
@@ -125,17 +133,20 @@ def returnAllLicences():
 @api.route('/api/users/<int:id_app>', methods=['GET'])
 def returnAllUsers(id_app):
     try:
-        get_all_users = user_models.UsersView.query.filter_by(id_application=id_app).all()
+        get_all_users = user_models.UsersView.query.filter_by(
+            id_application=id_app).all()
         users = users_schema.dump(get_all_users).data
         return jsonify(users), 200
     except Exception as exception:
         return jsonify(error=exception), 400
 
+
 @api.route('/api/me/', methods=['GET'])
 @fnauth.check_auth(2, True, None, None)
-def returnCurrentUser(id_role = None):
+def returnCurrentUser(id_role=None):
     try:
-        get_current_user = user_models.UsersView.query.filter_by(id_role=id_role).all()
+        get_current_user = user_models.UsersView.query.filter_by(
+            id_role=id_role).all()
         current_user = users_schema.dump(get_current_user).data
         return jsonify(current_user), 200
     except Exception as exception:
@@ -162,6 +173,7 @@ def deleteSite(id_site):
     else:
         return jsonify('error'), 400
 
+
 @api.route('/api/addSite', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
 def add_site():
@@ -179,8 +191,9 @@ def add_site():
 @fnauth.check_auth(2, False, None, None)
 def update_site():
     site = request.get_json()
-    #models.CorSiteSthemeTheme.query.filter_by(id_site=site.get('id_site')).delete()
-    models.TSite.query.filter_by(id_site= site.get('id_site')).update(site)
+    models.CorSiteSthemeTheme.query.filter_by(
+        id_site=site.get('id_site')).delete()
+    models.TSite.query.filter_by(id_site=site.get('id_site')).update(site)
     db.session.commit()
     return jsonify('site updated successfully'), 200
 
@@ -212,8 +225,9 @@ def upload_file():
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            models.CorSiteSthemeTheme.query.filter_by(id_site=d_serialized.get('id_site')).delete()
-            #models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+            models.CorSiteSthemeTheme.query.filter_by(
+                id_site=d_serialized.get('id_site')).delete()
+            # models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
             db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
         main_photo = d_serialized.get('main_photo')
@@ -222,13 +236,16 @@ def upload_file():
         db.session.add(photo)
         db.session.commit()
         if (main_photo == True):
-            photos_query = models.TPhoto.query.filter_by(path_file_photo = d_serialized.get('path_file_photo')).all()
+            photos_query = models.TPhoto.query.filter_by(
+                path_file_photo=d_serialized.get('path_file_photo')).all()
             photo_id = photo_schema.dump(photos_query).data[0].get('id_photo')
-            models.TSite.query.filter_by(id_site= d_serialized.get('id_site')).update({models.TSite.main_photo: photo_id})
+            models.TSite.query.filter_by(id_site=d_serialized.get(
+                'id_site')).update({models.TSite.main_photo: photo_id})
             db.session.commit()
     for image in uploaded_images:
         image.save(os.path.join(base_path + image.filename))
     return jsonify('photo added successfully'), 200
+
 
 @api.route('/api/addNotices', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
@@ -237,6 +254,7 @@ def upload_notice():
     notice = request.files.get('notice')
     notice.save(os.path.join(base_path + notice.filename))
     return jsonify('notice added successfully'), 200
+
 
 @api.route('/api/deleteNotice/<notice>', methods=['DELETE'])
 @fnauth.check_auth(2, False, None, None)
@@ -247,6 +265,7 @@ def delete_notice(notice):
             os.remove(base_path + fileName)
     return jsonify('notice removed successfully'), 200
 
+
 @api.route('/api/updatePhoto', methods=['PATCH'])
 @fnauth.check_auth(2, False, None, None)
 def update_photo():
@@ -254,20 +273,27 @@ def update_photo():
     data = request.form.get('data')
     image = request.files.get('image')
     data_serialized = json.loads(data)
-    photos_query = models.TPhoto.query.filter_by(id_photo=data_serialized.get('id_photo')).all()
+    photos_query = models.TPhoto.query.filter_by(
+        id_photo=data_serialized.get('id_photo')).all()
     photo_name = photo_schema.dump(photos_query).data[0].get('path_file_photo')
     if (data_serialized.get('main_photo') == True):
-        models.TSite.query.filter_by(id_site= data_serialized.get('id_site')).update({models.TSite.main_photo: data_serialized.get('id_photo')})
+        models.TSite.query.filter_by(id_site=data_serialized.get('id_site')).update(
+            {models.TSite.main_photo: data_serialized.get('id_photo')})
         db.session.commit()
     if (data_serialized.get('main_photo')):
         del data_serialized['main_photo']
-    models.TPhoto.query.filter_by(id_photo = data_serialized.get('id_photo')).update(data_serialized)
+    models.TPhoto.query.filter_by(
+        id_photo=data_serialized.get('id_photo')).update(data_serialized)
     db.session.commit()
     if (image):
         for fileName in os.listdir(base_path):
             if fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
         image.save(os.path.join(base_path + image.filename))
+    else:
+        for fileName in os.listdir(base_path):
+            if (fileName != photo_name and fileName.endswith(photo_name)):
+                os.remove(base_path + fileName)
     return jsonify('photo added successfully'), 200
 
 
@@ -277,28 +303,34 @@ def deletePhotos():
     base_path = './static/' + DATA_IMAGES_PATH
     photos = request.get_json()
     for photo in photos:
-        photos_query = models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).all()
+        photos_query = models.TPhoto.query.filter_by(
+            id_photo=photo.get('id_photo')).all()
         photo_dump = photo_schema.dump(photos_query).data[0]
         photo_name = photo_dump.get('path_file_photo')
         models.TPhoto.query.filter_by(id_photo=photo.get('id_photo')).delete()
-        get_site_by_id = models.TSite.query.filter_by(id_site= photo_dump.get('t_site'))
+        get_site_by_id = models.TSite.query.filter_by(
+            id_site=photo_dump.get('t_site'))
         site = site_schema.dump(get_site_by_id).data[0]
         if (site.get('main_photo') == photo_dump.get('id_photo')):
-            models.TSite.query.filter_by(id_site= photo_dump.get('t_site')).update({models.TSite.main_photo: None})
+            models.TSite.query.filter_by(id_site=photo_dump.get(
+                't_site')).update({models.TSite.main_photo: None})
         db.session.commit()
         for fileName in os.listdir(base_path):
             if fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
+
     return jsonify('site has been deleted'), 200
+
 
 @api.route('/api/communes', methods=['GET'])
 def returnAllcommunes():
     try:
         get_all_communes = models.Communes.query.order_by('nom_commune').all()
-        communes= models.CommunesSchema(many=True).dump(get_all_communes).data
+        communes = models.CommunesSchema(many=True).dump(get_all_communes).data
         return jsonify(communes), 200
     except Exception as exception:
         return ('error'), 400
+
 
 @api.route('/api/logout', methods=['GET'])
 def logout():

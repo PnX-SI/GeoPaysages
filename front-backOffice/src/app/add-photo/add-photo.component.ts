@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { log } from 'util';
 
 
 const I18N_VALUES = {
@@ -86,13 +87,13 @@ export class AddPhotoComponent implements OnInit {
     forkJoin([this.sitesService.getLicences(), this.sitesService.getUsers()]).subscribe(results => {
       this.licences = results[0];
       this.authors = results[1];
-      this.initForm();
       if (this.inputImage) {
         this.title = 'Modifier la Photo';
         this.btn_text = 'Modifier';
         this.updateForm();
+      } else {
+        this.initForm();
       }
-      this.loadForm = true;
     });
 
   }
@@ -103,16 +104,29 @@ export class AddPhotoComponent implements OnInit {
   }
 
   updateForm() {
+    this.photoForm = this.formService.initFormPhoto();
     const dateF = moment(this.inputImage.filter_date).toDate();
     const filter_date_format = {
       'year': moment(dateF).year(),
       month: moment(dateF).month() + 1,
       day: Number(moment(dateF).format('DD')),
     };
+    let id_licence_photo;
+    let id_role;
+    if (this.inputImage.dico_licence_photo) {
+      id_licence_photo = this.inputImage.dico_licence_photo.id_licence_photo;
+    } else {
+      id_licence_photo = null;
+    }
+    if (this.inputImage.t_role) {
+      id_role = this.inputImage.t_role.id_role;
+    } else {
+      id_role = null;
+    }
     this.photoForm.patchValue({
-      'id_role': this.inputImage.t_role,
+      'id_role': id_role,
       'display_gal_photo': this.inputImage.display_gal_photo,
-      'id_licence_photo': this.inputImage.dico_licence_photo.id_licence_photo,
+      'id_licence_photo': id_licence_photo,
       'date_photo': this.inputImage.date_photo,
       'legende_photo': this.inputImage.legende_photo,
       'filter_date': filter_date_format,
@@ -124,6 +138,7 @@ export class AddPhotoComponent implements OnInit {
     }
     this.imageLaoded = true;
     this.imageName = this.inputImage.path_file_photo;
+    this.loadForm = true;
   }
 
   openPhotoModal(content: any) {
