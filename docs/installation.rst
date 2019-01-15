@@ -13,7 +13,7 @@ Application développée et installée sur un serveur Debian 9.
 Ce serveur doit aussi disposer de : 
 
 - sudo (apt-get install sudo)
-- un utilisateur (``monuser`` dans cette documentation) appartenant au groupe ``sudo`` (pour pouvoire bénéficier des droits d'administrateur)
+- un utilisateur (``monuser`` dans cette documentation) appartenant au groupe ``sudo`` (pour pouvoir bénéficier des droits d'administrateur)
 
 :notes:
 
@@ -23,7 +23,7 @@ Ce serveur doit aussi disposer de :
 Installation de l'environnement logiciel
 ========================================
 
-Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application si ils ne sont pas déjà sur le serveur : 
+Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application s'ils ne sont pas déjà sur le serveur : 
 
 - PostgreSQL 9.6+
 - PostGIS 
@@ -32,7 +32,7 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 
 Cela installera les logiciels nécessaires au fonctionnement de l'application 
 
-**1. Récupérez la dernière version  de GeoPaysages sur le dépot (https://github.com/PnX-SI/GeoPaysages/releases)**
+**1. Récupérer la dernière version  de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
 
@@ -44,9 +44,9 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
     
 :notes:
 
-    Si la commande ``wget`` renvoie une erreur liée au certificat, installez le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
+    Si la commande ``wget`` renvoie une erreur liée au certificat, installer le paquet ``ca-certificates`` (``sudo apt-get install ca-certificates``) puis relancer la commande ``wget`` ci-dessus.
 
-Dézippez l'archive :
+Dézipper l'archive :
 	
 ::
 
@@ -60,7 +60,7 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
 
 
-**2. Placez-vous dans le dossier qui contient l'application et lancez l'installation de l'environnement serveur :**
+**2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
 ::
 
     cd /home/monuser/geopaysages
@@ -73,7 +73,7 @@ Installation de la base de données
 
 **1. Configuration de la BDD  :** 
 
-Modifiez le fichier de configuration de la BDD et de son installation automatique ``install_configuration/settings.ini``. 
+Modifier le fichier de configuration de la BDD et de son installation automatique ``install_configuration/settings.ini``. 
 
 
 :notes:
@@ -86,10 +86,10 @@ Modifiez le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adaptez les commandes du fichier `install_db.sh` en les executant une par une.
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les executant une par une.
 
 
-**2. Lancez le fichier fichier d'installation de la base de données en sudo :**
+**2. Lancer le fichier fichier d'installation de la base de données en sudo :**
 
 ::
 
@@ -102,7 +102,7 @@ Modifiez le fichier de configuration de la BDD et de son installation automatiqu
     Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréer entièrement. 
 
 
-Installtion de l'application
+Installation de l'application
 ============================
 
 **1. Configuration de l'application :**
@@ -111,33 +111,33 @@ Installtion de l'application
 Editer le fichier de configuration ``./backend/config.py.tpl``.
 
 - Vérifier que la variable 'SQLALCHEMY_DATABASE_URI' contient les bonnes informations de connexion à la base
-- Ne modifiez pas les path des fichiers static
-- Renseignez les autres paramètres selon votre contexte
+- Ne pas modifier les path des fichiers static
+- Renseigner les autres paramètres selon votre contexte
 
 
-**2. Lancez l'installation automatique de l'application :**
+**2. Lancer l'installation automatique de l'application :**
 	
 ::
 
     ./install_app.sh
 
 
-Customisation de l'application
+Personnalisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez customiser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
+En plus de la configuration, vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
 
 Internationalisation de l'application
 ======================================   
 
-- Pour modifier les labels Editer le fichier backend/i18n/fr/messages.po
-- activer le environnement virtuel 
+- Pour modifier les textes, éditer le fichier backend/i18n/fr/messages.po
+- activer l'environnement virtuel 
 
 ::
 
     . venv/bin/activate
     
-- lanceer la commande suivante :
+- lancer la commande suivante :
 
 ::
 
@@ -147,14 +147,14 @@ Internationalisation de l'application
 
   Pour plus d'informations, voir https://pythonhosted.org/Flask-Babel/
  
-Installtion de back-office
+Installation du back-office
 ============================
 
 **1. Configuration de l'application :**
 
 Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
-**2. Lancez l'installation automatique de l'application :**
+**2. Lancer l'installation automatique de l'application :**
 	
 ::
 
@@ -169,7 +169,7 @@ Configuration de Nginx
 
    sudo nano /etc/supervisor/conf.d/oppv.conf
 
-Copiez/collez-y ces lignes en renseignant les bons chemains et le bon port : 
+Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 ::
 
     directory=/home/monuser/GeoPaysages/backend
@@ -187,7 +187,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemains et le bon port :
 
     sudo nano /etc/nginx/conf.d/oppv_vanoise.conf
 
-Copiez/collez-y ces lignes en renseignant les bons chemains et le bon port : 
+Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 
 ::
 
@@ -212,7 +212,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemains et le bon port :
 
 :notes:	
 
-    Modifier server_name pour ajouter le nom domaine associé a GeoPaysages :
+    Modifier server_name pour ajouter le nom domaine associé à GeoPaysages :
 	 
 ::
 
