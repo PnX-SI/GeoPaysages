@@ -84,7 +84,7 @@ def returnSiteById(id_site):
     return jsonify(site=site, photos=photos), 200
 
 
-@api.route('/api/gallery')
+@api.route('/api/gallery', methods=['GET'])
 def gallery():
 
     get_photos = models.TPhoto.query.order_by('id_site').all()
@@ -219,16 +219,17 @@ def add_cor_site_theme_stheme():
 def upload_file():
     base_path = './static/' + DATA_IMAGES_PATH
     data = request.form.getlist('data')
+    new_site = request.form.getlist('new_site')
     uploaded_images = request.files.getlist('image')
     for d in data:
         d_serialized = json.loads(d)
         check_exist = models.TPhoto.query.filter_by(
             path_file_photo=d_serialized.get('path_file_photo')).first()
         if(check_exist):
-            models.CorSiteSthemeTheme.query.filter_by(
-                id_site=d_serialized.get('id_site')).delete()
-            # models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
-            db.session.commit()
+            if (new_site == 'true') :
+                models.TSite.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+                models.CorSiteSthemeTheme.query.filter_by(id_site=d_serialized.get('id_site')).delete()
+                db.session.commit()
             return jsonify(error='image_already_exist', image=d_serialized.get('path_file_photo')), 400
         main_photo = d_serialized.get('main_photo')
         del d_serialized['main_photo']

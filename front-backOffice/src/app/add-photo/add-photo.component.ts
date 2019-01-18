@@ -79,6 +79,8 @@ export class AddPhotoComponent implements OnInit {
     datePickerConfig: NgbDatepickerConfig,
     private authService: AuthService,
   ) {
+    datePickerConfig.minDate = {year: 1800, month: 1, day: 1};
+    datePickerConfig.maxDate = {year: 2200, month: 12, day: 31};
     datePickerConfig.outsideDays = 'hidden';
   }
 
@@ -128,7 +130,7 @@ export class AddPhotoComponent implements OnInit {
       'display_gal_photo': this.inputImage.display_gal_photo,
       'id_licence_photo': id_licence_photo,
       'date_photo': this.inputImage.date_photo,
-      'legende_photo': this.inputImage.legende_photo,
+     // 'legende_photo': this.inputImage.legende_photo,
       'filter_date': filter_date_format,
       'photo_file': this.inputImage.photo_file,
       'main_photo': this.inputImage.main_photo,
