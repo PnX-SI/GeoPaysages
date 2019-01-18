@@ -61,7 +61,9 @@ then
     echo "" &>> /var/log/install_db.log
     echo "--------------------" &>> /var/log/install_db.log
     echo "" &>> /var/log/install_db.log
-    sudo -n -u postgres -s psql -d $db_name -f /tmp/userHubDB.sql &>> /var/log/install_db.log
-    sudo -n -u postgres -s psql -d $db_name -f /tmp/oppvdb.sql &>> /var/log/install_db.log  
- 
+
+    
+    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/userHubDB.sql &>> /var/log/install_db.log
+    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/oppvdb.sql &>> /var/log/install_db.log
+
 fi
