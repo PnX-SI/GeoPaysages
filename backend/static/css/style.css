@@ -10,6 +10,8 @@
     --color-map-filter-bg-hover: #99d6ea61;
     --color-map-filter-txt-active: #000;
     --color-map-filter-bg-active: #99D6EA;
+
+    --page-container-min-height: calc(100vh - 415px);
 }
 
 .swiper-pagination-bullet-active {

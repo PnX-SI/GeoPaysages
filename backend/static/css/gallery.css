@@ -1,5 +1,5 @@
 .page-gallery .container {
-    min-height: calc(100vh - 415px);
+    min-height: var(--page-container-min-height);
 }
 
 .page-gallery .picture{
