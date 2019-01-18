@@ -43,7 +43,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   onMapReady(map: Map) {
     L.control.scale().addTo(map);
     const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-    const ignLayer =  L.tileLayer(this.layerUrl(
+    const ignLayer = L.tileLayer(this.layerUrl(
       Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS'
     ));
     const baseLayers = {
@@ -117,8 +117,10 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   }
 
   onCenterChange(event) {
+    setTimeout(() => {
+      event.row.marker.openPopup();
+    }, 200);
     this.center = event.row.geom;
-    event.row.marker.openPopup();
     this.changeDetector.detectChanges();
   }
 

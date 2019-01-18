@@ -321,6 +321,21 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           this.router.navigate(['/sites/details/', id_site]);
         }
       );
+    } else {
+      this.siteForm.disable();
+      this.edit_btn = false;
+      this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+      // ###### can reload the same route #######
+      this.router.routeReuseStrategy.shouldReuseRoute = function () {
+        return false;
+      };
+      this.mySubscription = this.router.events.subscribe((event) => {
+        if (event instanceof NavigationEnd) {
+          this.router.navigated = false;
+        }
+      });
+      // ##########
+      this.router.navigate(['/sites/details/', id_site]);
     }
   }
   addThemes(id_site, themes, sthemes, new_site) {
