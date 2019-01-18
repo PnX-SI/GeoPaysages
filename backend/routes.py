@@ -342,3 +342,8 @@ def map():
             filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
     return render_template('map.html', filters=filters, sites=sites, ign_Key=IGN_KEY)
+
+
+@main.route('/sample')
+def sample():
+    return render_template('sample.html')
