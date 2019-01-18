@@ -3,7 +3,6 @@
   <div class="row">
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="site-block">
-        <ngb-alert *ngIf="alert" [dismissible]="false" [type]="alert.type">{{ alert.message }}</ngb-alert>
         <form [formGroup]="siteForm" (submit)="submitSite(siteForm)" disabled>
           <div class="inner-checkbox form-group">
             <div class="label">Publier:</div>
@@ -104,6 +103,7 @@
               <label *ngIf="noticeName" class="label">notice :</label>
             <div *ngIf="noticeName" style="color: #00188F;">{{noticeName}}<i *ngIf="(edit_btn)" class="icon-trash remove-file" (click)="removeNotice()"></i></div>
           </div>
+          <ngb-alert class='alert' *ngIf="alert" [dismissible]="false" [type]="alert.type">{{ alert.message }}</ngb-alert>
           <div class="submit-btn-group">
             <button type="button" *ngIf="id_site" class="btn btn-outline-warning btn-edit" [class.active_edit]="edit_btn"
               (click)="editForm()"> <i class="icon-pen"></i>{{edit_btn_text}}</button>

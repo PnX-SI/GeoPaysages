@@ -27,7 +27,7 @@
           </select>
         </div>
         <div class="col">
-          <label class="label" for="licence">COPYRIGHT</label>
+          <label class="label" for="licence">FONDS</label>
           <select InputFeedBack id="licence" formControlName="id_licence_photo" class="form-control">
             <option class="select-placeholder" value="">---</option>
             <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
@@ -54,12 +54,11 @@
           <app-form-error controlName="filter_date" errorKey="required"></app-form-error>
         </div>
       </div>
-      <div class="form-group">
+      <!-- <div class="form-group">
         <label class="label" for="desc">Légende photo</label>
         <textarea InputFeedBack class="form-control" formControlName="legende_photo" placeholder="Ecrivez ici le commentaire"
           id="desc" rows="2"></textarea>
-        <app-form-error controlName="legende_photo" errorKey="required"></app-form-error>
-      </div>
+      </div> -->
       <input InputFeedBack style="display: none" formControlName="photo_file" accept="image/x-png,image/gif,image/jpeg"
         type="file" (change)=onFileSelected($event) #iamgeInput>
       <button type="button" *ngIf="!imageLaoded" class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer

@@ -238,7 +238,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           (site) => {
             // tslint:disable-next-line:quotemark
             this.toast_msg = "Point d'observation ajouté avec succès";
-            this.addPhotos(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme);
+            this.addThemes(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme, true);
           },
           (err) => {
             if (err.status === 403) {
@@ -270,7 +270,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
 
-  addPhotos(id_site, id_theme, id_stheme) {
+  addPhotos(id_site, new_site) {
     const photosData: FormData = new FormData();
     let photoJson;
     let photos;
@@ -283,30 +283,47 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto', 'name']);
       photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
+      photosData.append('new_site', new_site);
       photosData.append('data', JSON.stringify(photoJson));
     });
-    this.sitesService.addPhotos(photosData).subscribe(
-      (event) => {
-        if (event.type === HttpEventType.UploadProgress) {
-          // console.log('resUplod', event.loaded);
+    if (photos.length > 0) {
+      this.sitesService.addPhotos(photosData).subscribe(
+        (res) => {
+          if (res.type === HttpEventType.UploadProgress) {
+            // console.log('resUplod', res.loaded);
+          }
+        },
+        err => {
+          console.log('err upload photo', err);
+          if (err.error.error === 'image_already_exist') {
+            this.edit_btn_text = 'Annuler';
+            this.setAlert(err.error.image);
+          }
+          if (err.status === 403) {
+            this.router.navigate(['']);
+            this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+          }
+        },
+        () => {
+          this.siteForm.disable();
+          this.edit_btn = false;
+          this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+          // ###### can reload the same route #######
+          this.router.routeReuseStrategy.shouldReuseRoute = function () {
+            return false;
+          };
+          this.mySubscription = this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+              this.router.navigated = false;
+            }
+          });
+          // ##########
+          this.router.navigate(['/sites/details/', id_site]);
         }
-      },
-      err => {
-        console.log('err upload photo', err);
-        if (err.error.error === 'image_already_exist') {
-          this.edit_btn_text = 'Annuler';
-          this.setAlert(err.error.image);
-        }
-        if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-      },
-      () => this.addThemes(id_site, id_theme, id_stheme)
-    );
+      );
+    }
   }
-
-  addThemes(id_site, themes, sthemes) {
+  addThemes(id_site, themes, sthemes, new_site) {
     // tslint:disable-next-line:prefer-const
     let tab_stheme = [];
     _.forEach(sthemes, (sub) => {
@@ -323,20 +340,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     });
     this.sitesService.addThemes({ 'data': stheme_theme }).subscribe(
       (response) => {
-        this.siteForm.disable();
-        this.edit_btn = false;
-        this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
-        // ###### can reload the same route #######
-        this.router.routeReuseStrategy.shouldReuseRoute = function () {
-          return false;
-        };
-        this.mySubscription = this.router.events.subscribe((event) => {
-          if (event instanceof NavigationEnd) {
-            this.router.navigated = false;
-          }
-        });
-        // ##########
-        this.router.navigate(['/sites/details/', id_site]);
+        this.addPhotos(id_site, new_site);
       },
       (err) => {
         if (err.status === 403) {
@@ -460,7 +464,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         if (this.deleted_photos.length > 0) {
           this.sitesService.deletePhotos(this.deleted_photos).subscribe();
         }
-        this.addPhotos(this.id_site, themes, sthemes);
+        this.addThemes(Number(this.id_site), themes, sthemes, false);
       },
       (err) => {
         if (err.status === 403) {
@@ -478,7 +482,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.edit_btn_text = 'Éditer';
       this.patchForm();
       this.alert = null;
-     this.photos = this.initPhotos;
+      this.photos = this.initPhotos;
       this.siteForm.disable();
       this.initMarker(this.site.geom[0], this.site.geom[1]);
     } else {
@@ -512,6 +516,9 @@ export class AddSiteComponent implements OnInit, OnDestroy {
 
   deletePhoto(photo) {
     _.remove(this.photos, (item) => {
+      return item === photo;
+    });
+    _.remove(this.new_photos, (item) => {
       return item === photo;
     });
     photo.imgUrl = photo.imgUrl.replace(Conf.staticPicturesUrl, '');

@@ -30,7 +30,7 @@ export class FormService {
             display_gal_photo: [false, Validators.required],
             id_licence_photo: [null],
             date_photo: [null],
-            legende_photo: [null],
+            // legende_photo: [null],
             filter_date: [null, Validators.required],
             photo_file: [null],
             main_photo: [null],
