@@ -33,9 +33,6 @@ CREATE TABLE cor_site_stheme_theme(
     PRIMARY KEY(id_site, id_stheme_theme)
 );
 
-
-ALTER TABLE geopaysages.cor_site_stheme_theme OWNER TO oppvuser;
-
 --
 -- TOC entry 190 (class 1259 OID 23952913)
 -- Name: cor_stheme_theme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
@@ -48,9 +45,6 @@ CREATE TABLE cor_stheme_theme (
     PRIMARY KEY (id_theme, id_stheme)
 );
 
-
-ALTER TABLE geopaysages.cor_stheme_theme OWNER TO oppvuser;
-
 --
 -- TOC entry 189 (class 1259 OID 23880661)
 -- Name: dico_licence_photo; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
@@ -62,9 +56,6 @@ CREATE TABLE dico_licence_photo (
     description_licence_photo character varying
 );
 
-
-ALTER TABLE geopaysages.dico_licence_photo OWNER TO oppvuser;
-
 --
 -- TOC entry 185 (class 1259 OID 23880465)
 -- Name: dico_stheme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
@@ -75,9 +66,6 @@ CREATE TABLE dico_stheme (
     name_stheme character varying
 );
 
-
-ALTER TABLE geopaysages.dico_stheme OWNER TO oppvuser;
-
 --
 -- TOC entry 186 (class 1259 OID 23880478)
 -- Name: dico_theme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
@@ -87,9 +75,6 @@ CREATE TABLE dico_theme (
     id_theme SERIAL PRIMARY KEY,
     name_theme character varying
 );
-
-
-ALTER TABLE geopaysages.dico_theme OWNER TO oppvuser;
 
 --
 -- TOC entry 211 (class 1259 OID 23981446)
@@ -107,9 +92,6 @@ CREATE TABLE t_photo (
     display_gal_photo boolean,
     id_licence_photo integer
 );
-
-
-ALTER TABLE geopaysages.t_photo OWNER TO oppvuser;
 
 --
 -- TOC entry 188 (class 1259 OID 23880590)
@@ -132,19 +114,10 @@ CREATE TABLE t_site (
     geom geometry
 );
 
-
-ALTER TABLE geopaysages.t_site OWNER TO oppvuser;
-
 CREATE TABLE conf (
     key character varying,
     value character varying
 );
-
-
-ALTER TABLE geopaysages.conf OWNER TO oppvuser;
-
-
-
 
 INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
     "label": "Site du Parc national de Vanoise",
@@ -160,6 +133,7 @@ INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
     "url": "https://phototheque.vanoise-parcnational.fr"
 }]
 ');
+
 INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');
 
 --
@@ -171,9 +145,6 @@ CREATE TABLE communes (
     code_commune character varying PRIMARY KEY,
     nom_commune character varying
 );
-
-
-ALTER TABLE geopaysages.communes OWNER TO oppvuser;
 
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73023', 'Aussois');
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73026', 'Avrieux');
@@ -200,8 +171,6 @@ INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73290', 'V
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73304', 'Val-d Isère');
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73322', 'Villarodin-Bourget');
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73323', 'Villaroger');
-
-
 
 ALTER TABLE ONLY t_photo
     ADD CONSTRAINT t_photo_fk1 FOREIGN KEY (id_site) REFERENCES t_site(id_site);
@@ -249,10 +218,8 @@ ALTER TABLE ONLY cor_stheme_theme
     ADD CONSTRAINT cor_stheme_theme_fk2 FOREIGN KEY (id_theme) REFERENCES dico_theme(id_theme);
 
 
-
 -- Completed on 2018-08-20 18:01:24
 
 --
 -- PostgreSQL database dump complete
 --
-
