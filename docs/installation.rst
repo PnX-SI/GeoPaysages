@@ -23,15 +23,6 @@ Ce serveur doit aussi disposer de :
 Installation de l'environnement logiciel
 ========================================
 
-Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application s'ils ne sont pas déjà sur le serveur : 
-
-- PostgreSQL 9.6+
-- PostGIS 
-- Nginx
-- Python 3
-
-Cela installera les logiciels nécessaires au fonctionnement de l'application 
-
 **1. Récupérer la dernière version  de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
 	
 Ces opérations doivent être faites avec l'utilisateur courant (autre que ``root``), ``monuser`` dans l'exemple :
@@ -61,6 +52,16 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
 
 **2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
+
+Le script ``install_env.sh`` va automatiquement installer les outils nécessaires à l'application s'ils ne sont pas déjà sur le serveur : 
+
+- PostgreSQL 9.6+
+- PostGIS 
+- Nginx
+- Python 3
+
+Cela installera les logiciels nécessaires au fonctionnement de l'application 
+
 ::
 
     cd /home/monuser/geopaysages
@@ -70,6 +71,7 @@ Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/h
 
 Installation de la base de données
 ==================================
+
 
 **1. Configuration de la BDD  :** 
 
@@ -171,9 +173,9 @@ Configuration de Nginx
 
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 ::
-
-    directory=/home/monuser/GeoPaysages/backend
-    command=/home/monuser/venv/bin/gunicorn app:app -b localhost:8000
+    [program:oppv_vanoise]
+    directory=/home/monuser/geopaysages/backend
+    command=/home/monuser/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
     autostart=true
     autorestart=true
 
@@ -193,18 +195,18 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 	server {
         listen       80;
-        server_name  vps587786.ovh.net;
+        server_name  localhost;
         
         location / {
             proxy_pass http://127.0.0.1:8000;
         }
     
         location /pictures {
-            alias  /home/oppv/data/images/;
+            alias  /home/monuser/data/images/;
         }
 
         location /app_admin {
-            alias /home/oppv/app_admin;
+            alias /home/monuser/app_admin;
             try_files $uri$args $uri$args/ /app_admin/index.html;
         }
     }
