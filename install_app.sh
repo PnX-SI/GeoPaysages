@@ -19,7 +19,7 @@ mkdir -p ../data/notice-photo
 echo "Installing requirements..."
 pip install -r ./backend/requirements.txt
 
-
-
 echo "Creating configuration files "
 cp ./backend/config.py.tpl ./backend/config.py
+
+deactivate

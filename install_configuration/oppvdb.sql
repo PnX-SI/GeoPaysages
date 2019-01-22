@@ -21,9 +21,10 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+CREATE SCHEMA IF NOT EXISTS geopaysages ;
 --
 -- TOC entry 184 (class 1259 OID 23880460)
--- Name: cor_site_stheme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: cor_site_stheme; Type: TABLE; Schema: geopaysages;  Tablespace: 
 --
 
 CREATE TABLE cor_site_stheme_theme(
@@ -34,11 +35,10 @@ CREATE TABLE cor_site_stheme_theme(
 );
 
 
-ALTER TABLE geopaysages.cor_site_stheme_theme OWNER TO oppvuser;
 
 --
 -- TOC entry 190 (class 1259 OID 23952913)
--- Name: cor_stheme_theme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: cor_stheme_theme; Type: TABLE; Schema: geopaysages;  Tablespace: 
 --
 
 CREATE TABLE cor_stheme_theme (
@@ -49,11 +49,10 @@ CREATE TABLE cor_stheme_theme (
 );
 
 
-ALTER TABLE geopaysages.cor_stheme_theme OWNER TO oppvuser;
 
 --
 -- TOC entry 189 (class 1259 OID 23880661)
--- Name: dico_licence_photo; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: dico_licence_photo; Type: TABLE; Schema: geopaysages;  Tablespace: 
 --
 
 CREATE TABLE dico_licence_photo (
@@ -63,11 +62,9 @@ CREATE TABLE dico_licence_photo (
 );
 
 
-ALTER TABLE geopaysages.dico_licence_photo OWNER TO oppvuser;
-
 --
 -- TOC entry 185 (class 1259 OID 23880465)
--- Name: dico_stheme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: dico_stheme; Type: TABLE; Schema: geopaysages; Tablespace: 
 --
 
 CREATE TABLE dico_stheme (
@@ -76,11 +73,9 @@ CREATE TABLE dico_stheme (
 );
 
 
-ALTER TABLE geopaysages.dico_stheme OWNER TO oppvuser;
-
 --
 -- TOC entry 186 (class 1259 OID 23880478)
--- Name: dico_theme; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: dico_theme; Type: TABLE; Schema: geopaysages;  Tablespace: 
 --
 
 CREATE TABLE dico_theme (
@@ -89,11 +84,10 @@ CREATE TABLE dico_theme (
 );
 
 
-ALTER TABLE geopaysages.dico_theme OWNER TO oppvuser;
 
 --
 -- TOC entry 211 (class 1259 OID 23981446)
--- Name: t_photo; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: t_photo; Type: TABLE; Schema: geopaysages; Tablespace: 
 --
 
 CREATE TABLE t_photo (
@@ -109,11 +103,9 @@ CREATE TABLE t_photo (
 );
 
 
-ALTER TABLE geopaysages.t_photo OWNER TO oppvuser;
-
 --
 -- TOC entry 188 (class 1259 OID 23880590)
--- Name: t_serie; Type: TABLE; Schema: geopaysages; Owner: oppvuser; Tablespace: 
+-- Name: t_serie; Type: TABLE; Schema: geopaysages; Tablespace: 
 --
 
 
@@ -133,17 +125,10 @@ CREATE TABLE t_site (
 );
 
 
-ALTER TABLE geopaysages.t_site OWNER TO oppvuser;
-
 CREATE TABLE conf (
     key character varying,
     value character varying
 );
-
-
-ALTER TABLE geopaysages.conf OWNER TO oppvuser;
-
-
 
 
 INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
@@ -165,7 +150,7 @@ INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');
 --
 -- TOC entry 3814 (class 0 OID 21076)
 -- Dependencies: 254
--- Data for Name: communes; Type: TABLE DATA; Schema: geopaysages; Owner: oppvuser
+-- Data for Name: communes; Type: TABLE DATA; Schema: geopaysages;
 --
 CREATE TABLE communes (
     code_commune character varying PRIMARY KEY,
@@ -173,7 +158,6 @@ CREATE TABLE communes (
 );
 
 
-ALTER TABLE geopaysages.communes OWNER TO oppvuser;
 
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73023', 'Aussois');
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73026', 'Avrieux');
@@ -208,41 +192,41 @@ ALTER TABLE ONLY t_photo
 
 --
 -- TOC entry 3142 (class 2606 OID 23981459)
--- Name: t_photo_fk2; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: t_photo_fk2; Type: FK CONSTRAINT; Schema: geopaysages; 
 --
 
 ALTER TABLE ONLY t_photo
     ADD CONSTRAINT t_photo_fk2 FOREIGN KEY (id_licence_photo) REFERENCES dico_licence_photo(id_licence_photo);
 
 -- 
--- Name: t_photo_fk3; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: t_photo_fk3; Type: FK CONSTRAINT; Schema: geopaysages; 
 --
 ALTER TABLE ONLY t_photo
     ADD CONSTRAINT t_photo_fk3 FOREIGN KEY (id_role) REFERENCES utilisateurs.t_roles(id_role);
 
 -- 
--- Name: cor_site_stheme_theme_fk1; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: cor_site_stheme_theme_fk1; Type: FK CONSTRAINT; Schema: geopaysages; 
 --
 
 ALTER TABLE ONLY cor_site_stheme_theme
     ADD CONSTRAINT cor_site_stheme_theme_fk1 FOREIGN KEY (id_site) REFERENCES t_site(id_site);
 
 -- 
--- Name: cor_site_stheme_theme_fk2; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: cor_site_stheme_theme_fk2; Type: FK CONSTRAINT; Schema: geopaysages; 
 --
 
 ALTER TABLE ONLY cor_site_stheme_theme
     ADD CONSTRAINT cor_site_stheme_theme_fk2 FOREIGN KEY (id_stheme_theme) REFERENCES cor_stheme_theme(id_stheme_theme);
 
 -- 
--- Name: cor_stheme_themee_fk1; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: cor_stheme_themee_fk1; Type: FK CONSTRAINT; Schema: geopaysages;
 --
 
 ALTER TABLE ONLY cor_stheme_theme
     ADD CONSTRAINT cor_stheme_theme_fk1 FOREIGN KEY (id_stheme) REFERENCES dico_stheme(id_stheme);
 
 -- 
--- Name: cor_stheme_theme_fk2; Type: FK CONSTRAINT; Schema: geopaysages; Owner: oppvuser
+-- Name: cor_stheme_theme_fk2; Type: FK CONSTRAINT; Schema: geopaysages;
 --
 
 ALTER TABLE ONLY cor_stheme_theme
