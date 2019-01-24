@@ -19,18 +19,18 @@
         </label>
       </div>
       <div class="row form-item">
-        <div class="col ">
-          <label class="label" for="auteur">Auteur</label>
-          <select InputFeedBack id="auteur" formControlName="id_role"  class="form-control">
-            <option class="select-placeholder" value="">---</option>
-            <option *ngFor="let author of authors" [ngValue]="author.id_role">{{author.nom_role}}</option>
-          </select>
-        </div>
         <div class="col">
           <label class="label" for="licence">FONDS</label>
           <select InputFeedBack id="licence" formControlName="id_licence_photo" class="form-control">
             <option class="select-placeholder" value="">---</option>
             <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
+          </select>
+        </div>
+        <div class="col ">
+          <label class="label" for="auteur">Auteur</label>
+          <select InputFeedBack id="auteur" formControlName="id_role"  class="form-control">
+            <option class="select-placeholder" value="">---</option>
+            <option *ngFor="let author of authors" [ngValue]="author.id_role">{{author.nom_role}}</option>
           </select>
         </div>
       </div>
