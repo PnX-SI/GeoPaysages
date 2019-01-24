@@ -188,7 +188,7 @@ def comparator(id_site):
                 photo.get('t_role').get('prenom_role'),
                 photo.get('t_role').get('nom_role')
             ))
-        caption = ' - '.join(captions)
+        caption = ' | '.join(captions)
         
         dl_caption = "%s | %s | réf. : %s | %s" % (
             site.get('name_site'),
