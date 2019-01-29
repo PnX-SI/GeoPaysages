@@ -223,9 +223,20 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 **3. Redémarrer supervisor et Nginx :**
  
 ::  
+
     sudo supervisord -c /etc/supervisor/supervisord.conf
     sudo supervisorctl reread
     sudo service supervisor restart
     sudo service nginx restart
 
 
+**4. Connectez-vous au back-office :**
+
+::
+
+    - Allez sur l'URL: <mon_ip>/app_admin
+    - Connectez-vous avec :
+        Identifiant : admin
+        Mot de passe: admin
+    - Ajoutez vos données
+    
