@@ -1015,3 +1015,63 @@ $BODY$
 --DATA--
 --------
 
+DO
+$$
+BEGIN
+INSERT INTO bib_droits (id_droit, nom_droit, desc_droit) VALUES 
+(5, 'Validateur', 'Il valide bien sur')
+,(4, 'Modérateur', 'Peu utilisé')
+,(0, 'Aucun', 'aucun droit.')
+,(1, 'Lecteur', 'Ne peut que consulter')
+,(2, 'Rédacteur', 'Il possède des droit d''écriture pour créer des enregistrements')
+,(6, 'Administrateur', 'Il a tous les droits')
+,(3, 'Référent', 'Utilisateur ayant des droits complémentaires au rédacteur (par exemple exporter des données ou autre)')
+;
+EXCEPTION WHEN unique_violation  THEN
+        RAISE NOTICE 'Tentative d''insertion de valeur existante';
+END
+$$;
+
+
+DO
+$$
+BEGIN
+INSERT INTO t_applications (id_application, nom_application, desc_application, id_parent) VALUES 
+(1, 'geopaysages', 'Application geopaysages.',NULL);
+
+PERFORM pg_catalog.setval('t_applications_id_application_seq', (SELECT max(id_application)+1 FROM t_applications), false);
+EXCEPTION WHEN unique_violation  THEN
+        RAISE NOTICE 'Tentative d''insertion de valeur existante';
+END
+$$;
+
+
+DO
+$$
+BEGIN
+-- Créer les utilisateurs de base
+INSERT INTO t_roles (groupe, id_role, identifiant, nom_role, prenom_role, desc_role, pass, email, organisme, id_unite, pn, session_appli, date_insert, date_update, id_organisme, remarques, pass_plus) VALUES 
+(false, 1, 'admin', 'Administrateur', 'test', NULL, '21232f297a57a5a743894a0e4a801fc3', NULL, 'Autre', NULL, true, NULL, NULL, NULL, NULL, 'utilisateur test à modifier', '$2y$13$TMuRXgvIg6/aAez0lXLLFu0lyPk4m8N55NDhvLoUHh/Ar3rFzjFT.');
+PERFORM pg_catalog.setval('t_roles_id_role_seq', (SELECT max(id_role)+1 FROM t_roles), false);
+EXCEPTION WHEN unique_violation  THEN
+        RAISE NOTICE 'Tentative d''insertion de valeur existante';
+END
+$$;
+
+-- Ajout des droits à l'admin et au grp_admin sur les applications UssersHub et TaxHub
+DO
+$$
+BEGIN 
+INSERT INTO cor_role_droit_application (id_role, id_droit, id_application) 
+VALUES 
+(1, 6, 1)
+;
+EXCEPTION WHEN unique_violation  THEN
+        RAISE NOTICE 'Tentative d''insertion de valeur existante';
+END
+$$;
+
+
+
+
+

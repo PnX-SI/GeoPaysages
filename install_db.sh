@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Make sure only root can run our script
-if [ "$(id -u)" != "0" ]; then
-   echo "This script must be run as root" 1>&2
-   exit 1
-fi
-
 . install_configuration/settings.ini
 
 function database_exists () {
@@ -49,6 +43,7 @@ then
   sudo -n -u postgres -s psql -c "ALTER DATABASE $db_name OWNER TO $owner_geopaysages ;"
     echo "Ajout de postGIS et pgSQL à la base de données"
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS postgis;"  &>> ./var/log/install_db.log
+    sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION postgis_topology;" &>> ./var/log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c "CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog; COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';"  &>> ./var/log/install_db.log
     sudo -n -u postgres -s psql -d $db_name -c 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp";' &>> ./var/log/install_db.log
 

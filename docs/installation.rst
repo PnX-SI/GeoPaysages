@@ -95,7 +95,7 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
 
 ::
 
-    sudo ./install_db.sh
+    ./install_db.sh
     
 :notes:
 
@@ -223,7 +223,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 **3. Redémarrer supervisor et Nginx :**
  
 ::  
-
+    sudo supervisord -c /etc/supervisor/supervisord.conf
     sudo supervisorctl reread
     sudo service supervisor restart
     sudo service nginx restart

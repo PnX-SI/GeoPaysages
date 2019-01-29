@@ -25,7 +25,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { GalleryComponent } from './gallery/gallery.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
-
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -52,7 +52,8 @@ import { ToastrModule } from 'ngx-toastr';
     NgxDatatableModule,
     NgSelectModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxSpinnerModule
   ],
   providers: [
     LoginService,

@@ -186,6 +186,82 @@ INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73322', 'V
 INSERT INTO geopaysages.communes (code_commune, nom_commune) VALUES ('73323', 'Villaroger');
 
 
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (1, 'Agriculture - Alpage');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (2, 'Villages - Hameaux - Habitations');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (3, 'Stations - Domaines skiables');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (4, 'Aménagements - Travaux - Infrastructures');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (5, 'Occupation des sols');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (6, 'Milieux naturels');
+INSERT INTO geopaysages.dico_theme (id_theme, name_theme) VALUES (7, 'Haute montagne');
+
+
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (1, 'Prairies de fauche');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (2, 'Vergers et jardins potager');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (3, 'Agriculture et urbanisation');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (4, 'Village');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (5, 'Urbanisation des villages');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (6, 'Architecture');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (7, 'Patrimoine religieux');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (8, 'Stations - Villages');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (9, 'Aménagement des domaines skiables');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (10, 'Activités estivales en stations');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (11, 'Pistes');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (12, 'Autres - Stations de ski');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (13, 'Hydroélectricité');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (14, 'Tunnel ferroviaire entre Lyon et Turin');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (15, 'Routes et parkings');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (16, 'Infrastructures économiques et militaires');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (17, 'Autres - Aménagements - travaux');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (18, 'Implantation des villages et des hameaux');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (19, 'Paysages de vallée');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (20, 'Itinéraires de passage historique');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (21, 'Autres - Occupation des sols');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (22, 'Lacs');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (23, 'Rivières et torrents');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (24, 'Forêts');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (25, 'Glaciers');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (26, 'Érosion');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (27, 'Dynamique végétale');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (28, 'Autres - Milieux naturels');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (29, 'Alpinisme et sommets');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (30, 'Refuges');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (31, 'Sentiers et randonnée');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (32, 'Autres - Haute montagne');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (33, 'Autres - Habitat');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (34, 'Autres - Agriculture');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (35, 'Équilibre  agriculture / forêt');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (36, 'Patrimoine vernaculaire / Petit patrimoine rural');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (37, 'Avalanches / Risques naturels');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (38, 'Alpage / Prairie pâturée');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (39, 'Construction traditionnelle');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (40, 'Chalets - Hameaux d''alpage');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (41, 'Équipements d''accueil');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (42, 'Paysages d''altitude');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (43, 'Landes et pelouses d''altitude');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (44, 'Agriculture et stations de sports d''hiver');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (45, 'Aménagement de l''espace geopaysages urbain');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (46, 'Architecture des stations de sports d''hiver');
+INSERT INTO geopaysages.dico_stheme (id_stheme, name_stheme) VALUES (47, 'Stations de ski d''altitude : urbanisme');
+
+
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (1, 38, 1);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (2, 1, 1);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (3, 40, 1);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (4, 40, 2);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (5, 36, 1);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (6, 4, 2);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (7, 6, 2);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (8, 39, 2);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (9, 37, 3);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (10, 37, 4);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (11, 37, 6);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (12, 15, 4);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (13, 42, 5);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (14, 42, 6);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (15, 42, 7);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (16, 22, 6);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (17, 24, 6);
+INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (18, 27, 6);
 
 ALTER TABLE ONLY t_photo
     ADD CONSTRAINT t_photo_fk1 FOREIGN KEY (id_site) REFERENCES t_site(id_site);

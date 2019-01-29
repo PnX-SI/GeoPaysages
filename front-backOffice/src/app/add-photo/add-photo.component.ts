@@ -10,8 +10,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
-import { log } from 'util';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 const I18N_VALUES = {
   'fr': {
@@ -78,6 +77,7 @@ export class AddPhotoComponent implements OnInit {
     public calendar: NgbCalendar,
     datePickerConfig: NgbDatepickerConfig,
     private authService: AuthService,
+    private spinner: NgxSpinnerService,
   ) {
     datePickerConfig.minDate = { year: 1800, month: 1, day: 1 };
     datePickerConfig.maxDate = { year: 2200, month: 12, day: 31 };
@@ -165,6 +165,7 @@ export class AddPhotoComponent implements OnInit {
 
   submitPhoto(photoForm: any) {
     this.alert = null;
+    this.disableButton = true;
     if (!photoForm.value.id_role) {
       photoForm.value.id_role = null;
     }
@@ -180,6 +181,7 @@ export class AddPhotoComponent implements OnInit {
         this.alert = 'Le nom de la photo ne doit pas contenir des espaces ';
       } else {
         if (this.inputImage) {
+          this.spinner.show();
           this.updatePhoto(photoForm);
         } else {
           this.photoModal.emit(photoForm.value);
@@ -250,8 +252,11 @@ export class AddPhotoComponent implements OnInit {
       () => {
         this.modalRef.close();
         this.disableButton = false;
+        this.spinner.hide();
       },
       (err) => {
+        this.spinner.hide();
+        this.disableButton = false;
         this.modalRef.close();
         if (err.status === 403) {
           this.router.navigate(['']);

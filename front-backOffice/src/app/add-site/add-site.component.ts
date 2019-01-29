@@ -12,6 +12,7 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-add-site',
@@ -91,6 +92,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: NgbModal,
     private authService: AuthService,
+    private spinner: NgxSpinnerService,
   ) {
   }
 
@@ -222,6 +224,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
 
   submitSite(siteForm) {
     this.alert = null;
+    this.edit_btn = false;
     let path_file_guide_site = null;
     if (this.selectedFile) {
       path_file_guide_site = this.selectedFile[0].name;
@@ -233,6 +236,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
       this.siteJson.path_file_guide_site = path_file_guide_site;
       this.uploadNotice();
+      this.spinner.show();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
@@ -241,6 +245,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.addThemes(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme, true);
           },
           (err) => {
+            this.spinner.hide();
             if (err.status === 403) {
               this.router.navigate(['']);
               this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
@@ -295,8 +300,10 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         },
         err => {
           console.log('err upload photo', err);
+          this.spinner.hide();
           if (err.error.error === 'image_already_exist') {
             this.edit_btn_text = 'Annuler';
+            this.edit_btn = true;
             this.setAlert(err.error.image);
           }
           if (err.status === 403) {
@@ -306,7 +313,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         },
         () => {
           this.siteForm.disable();
-          this.edit_btn = false;
+          this.spinner.hide();
           this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
           // ###### can reload the same route #######
           this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -323,7 +330,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       );
     } else {
       this.siteForm.disable();
-      this.edit_btn = false;
       this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
       // ###### can reload the same route #######
       this.router.routeReuseStrategy.shouldReuseRoute = function () {
@@ -358,6 +364,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.addPhotos(id_site, new_site);
       },
       (err) => {
+        this.spinner.hide();
         if (err.status === 403) {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
@@ -482,6 +489,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.addThemes(Number(this.id_site), themes, sthemes, false);
       },
       (err) => {
+        this.spinner.hide();
         if (err.status === 403) {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
