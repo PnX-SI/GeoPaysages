@@ -17,6 +17,7 @@ mkdir -p ../data/images
 mkdir -p ../data/notice-photo
 
 echo "Installing requirements..."
+pip install wheel
 pip install -r ./backend/requirements.txt
 
 echo "Creating configuration files "
