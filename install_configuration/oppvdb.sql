@@ -263,6 +263,27 @@ INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) 
 INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (17, 24, 6);
 INSERT INTO geopaysages.cor_stheme_theme (id_stheme_theme, id_stheme, id_theme) VALUES (18, 27, 6);
 
+
+
+INSERT INTO geopaysages.dico_licence_photo (id_licence_photo, name_licence_photo, description_licence_photo) VALUES (1, '© Observatoire photographique des paysages de Vanoise', '© Observatoire photographique des paysages de Vanoise');
+
+INSERT INTO geopaysages.t_site (id_site, name_site, desc_site, testim_site, alti_site, path_file_guide_site, publish_site, geom, code_city_site, legend_site, ref_site, main_photo) VALUES (1, 'Champagny-en-Vanoise', 'Ce lac blanc, le lac de la Glière, n''est pas pris par les glaces, malgré les apparences. Il est en réalité asséché depuis le XIXe siècle. En 1818, les hommes vivent alors dans le « petit âge glaciaire », période climatique plus froide commencée à la fin du XVIe siècle en Europe occidentale et dont nous sommes en train de voir la fin : le glacier de Rosolin vient alors « lécher » le bord du lac. Des séracs, autrement dit des morceaux de glaciers détachés de la langue principale, sont alors tombés dans ses eaux, bloquant l''écoulement naturel à la sortie du lac. L''eau a fini par déborder, emportant dans sa course les séracs, la boue et les roches vers l''aval. Après cette catastrophe naturelle de 1818, le lac s''est asséché, prenant un nouvel aspect. 
+Après la vidange, les sédiments déposés au fond de la cuvette sont alors apparus à la lumière. L''alpage historique autour du lac n''en a pas été affecté, fréquenté qu''il est depuis le…XIIIe siècle.
+', NULL, 2060, 'oppv-005-notice.pdf', true, '0101000020E6100000662FDB4E5B431B402026E1421EB74640', '73071', 'Lac asséché de la Glière, avec de gauche à droite : l''Aiguille Noire et le Col de la Croix des Frettes ', '005', 1);
+
+
+INSERT INTO geopaysages.t_photo (id_photo, id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo) VALUES (1, 1, 'oppv-005-00-2006.jpg', 1,  NULL, '2006-09-28', NULL, true, 1);
+INSERT INTO geopaysages.t_photo (id_photo, id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo) VALUES (3, 1, 'oppv-005-03-2014.jpg', 1, '29/09/2014', '2014-09-29', NULL, true, 1);
+
+
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (1, 1, 1);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (2, 1, 3);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (3, 1, 4);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (4, 1, 9);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (5, 1, 11);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (6, 1, 14);
+INSERT INTO geopaysages.cor_site_stheme_theme (id_site_stheme_theme, id_site, id_stheme_theme) VALUES (7, 1, 16);
+
 ALTER TABLE ONLY t_photo
     ADD CONSTRAINT t_photo_fk1 FOREIGN KEY (id_site) REFERENCES t_site(id_site);
 

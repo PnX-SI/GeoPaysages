@@ -4,6 +4,7 @@ import { LoginService } from '../services/lgoin.service';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Conf } from '../config';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class LoginPageComponent implements OnInit {
 
   public submit(loginForm) {
     this.userForm = loginForm.value;
-    this.userForm.id_application = 4;
+    this.userForm.id_application = Conf.id_application;
     this.loginService.login(this.userForm)
       .subscribe(
         (currentUser) => {

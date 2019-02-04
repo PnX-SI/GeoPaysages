@@ -156,6 +156,11 @@ Installation du back-office
 
 Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
+:notes:
+
+    Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
+    
+
 **2. Lancer l'installation automatique de l'application :**
 	
 ::
@@ -240,3 +245,4 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
         Mot de passe: admin
     - Ajoutez vos données
     
+

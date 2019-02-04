@@ -23,4 +23,7 @@ pip install -r ./backend/requirements.txt
 echo "Creating configuration files "
 cp ./backend/config.py.tpl ./backend/config.py
 
+cp ./backend/static/assets/images/oppv-005-03-2014.jpg ../data/images/
+cp ./backend/static/assets/images/oppv-005-00-2006.jpg ../data/images/
+
 deactivate
