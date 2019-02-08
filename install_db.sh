@@ -38,7 +38,6 @@ then
 	
 	echo "Création de la BDD..."
     sudo -u postgres psql -c "CREATE USER $owner_geopaysages WITH PASSWORD '$owner_geopaysages_pass' "  &>> ./var/log/install_db.log
-    sudo -u postgres psql -c "CREATE USER $user_pg WITH PASSWORD '$user_pg_pass' "  &>> ./var/log/install_db.log
     sudo -n -u postgres -s createdb  $db_name
   sudo -n -u postgres -s psql -c "ALTER DATABASE $db_name OWNER TO $owner_geopaysages ;"
     echo "Ajout de postGIS et pgSQL à la base de données"
@@ -56,8 +55,8 @@ then
     echo "--------------------" &>> ./var/log/install_db.log
     echo "" &>> ./var/log/install_db.log
 
-    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/userHubDB.sql &>> ./var/log/install_db.log
-    export PGPASSWORD=$user_pg_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/oppvdb.sql &>> ./var/log/install_db.log
+    export PGPASSWORD=$owner_geopaysages_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/userHubDB.sql &>> ./var/log/install_db.log
+    export PGPASSWORD=$owner_geopaysages_pass;psql -h $db_host -U $owner_geopaysages -d $db_name -f /tmp/oppvdb.sql &>> ./var/log/install_db.log
 
  
 fi
