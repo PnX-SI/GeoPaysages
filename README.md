@@ -24,6 +24,8 @@ Le projet est porté par le Parc national de la Vanoise. Le site qui sera dével
 
 A suivre...
 
+![alt text](./docs/screenshot.jpg) 
+
 ## Présentation
 
 - CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-13-CDC-OPPV-PNV.pdf
