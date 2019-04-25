@@ -80,7 +80,7 @@
                 @mouseover="onSiteMousover(site)"
                 @mouseout="onSiteMouseout(site)"
                 :href="'/comparator/' + site.id_site" 
-                v-html="site.name_site + ' | ' + site.ville.label + ' (réf. : ' + site.ref_site + ')'"></a>
+                v-html="site.name_site + '<br />' + site.ville.label + '<br />(réf. : ' + site.ref_site + ')'"></a>
             </b-card-body>
           </b-collapse>
         </b-card>
