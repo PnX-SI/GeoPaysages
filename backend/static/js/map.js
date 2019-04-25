@@ -203,7 +203,7 @@ oppv.initMap = (options) => {
             [lats[lats.length - 1], lons[lons.length - 1]]
           ],
           options: {
-            maxZoom: 11
+            maxZoom: options.dbconf.zoom_max_fitbounds_map
           }
         }
         map.fitBounds(mapBounds.bbox, mapBounds.options)
