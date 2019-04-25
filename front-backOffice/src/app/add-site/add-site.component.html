@@ -1,7 +1,7 @@
-<app-header></app-header>
 <ngx-spinner size="medium" type="ball-spin">
   <p style="color: white" > Loading... </p>
 </ngx-spinner>
+<app-header></app-header>
 <div class="container-fluid">
   <div class="row">
     <div class="col-6 col-table">
@@ -23,6 +23,13 @@
                 placeholder="nom du site">
               <app-form-error controlName="name_site" errorKey="required"></app-form-error>
             </div>
+            <div class="col ">
+              <label class="label" for="site-name">RÉFÉRENCE</label>
+              <input  type="text" formControlName="ref_site" id="reference" class="form-control"
+                placeholder="référence">
+            </div>
+          </div>
+          <div class="row form-item">
             <div class="col">
               <label class="label" for="city-code">Commune*</label>
               <select InputFeedBack formControlName="code_city_site" id="city-code" class="form-control">

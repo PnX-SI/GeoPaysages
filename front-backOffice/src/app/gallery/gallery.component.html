@@ -1,8 +1,13 @@
+<ngx-spinner size="medium" type="ball-spin">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>
 <app-header></app-header>
 <div *ngIf="sitesLoaded" class="container-fluid inner h-100">
   <div class="row inner h-100">
     <div class="col-2 list-site">
-      <button *ngFor="let site of sites"  class=" site-title" (click)= 'getPhotosSite(site.id_site)'> {{site.name_site}}</button>
+      <button *ngFor="let site of sites" [class.active]="isActive(site)" [class.site-active]="isActive(site)" class="site-title" (click)= 'getPhotosSite(site.id_site)'> {{site.name_site}}
+        <i class="icon-right selected-icon" [class.icon-active]="isActive(site)" aria-hidden="true"></i>
+      </button>
     </div>
     <div class="col-10 photos">
       <div style=" position: relative" *ngFor="let photo of photos">

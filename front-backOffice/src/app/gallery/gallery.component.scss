@@ -24,19 +24,20 @@
   font-size: 14px;
   font-weight: 600;
   color: #dedede;
-  background-color: #434343;
+  background-color: #2f2f2f;
   border: 1px solid #7d7b7b;
 }
 
 .site-title:hover {
   color: white;
-  background-color: #2f2f2f;
+  background-color: #434343;
 }
 
-.site-title:focus {
-  color: white;
-  background-color: #2f2f2f;
+
+.site-title.active {
+  background-color: #434343;
   border: 1px solid #7d7b7b;
+  border-left: 10px solid #00188F;
   outline: 0;
 }
 
@@ -57,18 +58,30 @@
   top: 5px;
   right: 15px;
   color: #00188F;
-  i{
+
+  i {
     padding-left: 5px
   }
 }
 
-.photo-name{
+.photo-name {
   font-size: 14px;
   text-align: center;
   padding: 0 6px;
   padding-bottom: 10px;
 }
 
-.icon-eye-blocked, .icon-eye{
+.icon-eye-blocked,
+.icon-eye {
   cursor: pointer;
+}
+
+.selected-icon {
+  display: none;
+  line-height: unset;
+  float: right;
+}
+
+.icon-active {
+  display: inline;
 }

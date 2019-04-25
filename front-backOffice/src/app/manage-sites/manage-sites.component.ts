@@ -6,7 +6,7 @@ import { _appIdRandomProviderFactory } from '@angular/core/src/application_token
 import { Conf } from './../config';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
-
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-manage-sites',
@@ -31,6 +31,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   constructor(private siteService: SitesService,
     protected router: Router,
     private changeDetector: ChangeDetectorRef,
+    private spinner: NgxSpinnerService,
     private zone: NgZone) {
   }
 
@@ -70,6 +71,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   }
 
   getAllSites() {
+    this.spinner.show();
     this.siteService.getAllSites()
       .subscribe(
         (sites) => {
@@ -101,9 +103,11 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
             this.rows.push(_.pick(site, ['main_photo', 'name_site', 'code_city_site', 'publish_site', 'geom', 'id_site', 'marker']));
           });
           this.sitesLoaded = true;
-
+          this.spinner.hide();
         },
-        (err) => console.log('get site error: ', err),
+        (err) => {
+          this.spinner.hide();
+          console.log('get site error: ', err)},
       );
   }
 
@@ -126,6 +130,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.changeDetector.detach();
+    this.spinner.hide();
   }
 
   layerUrl(key, layer) {

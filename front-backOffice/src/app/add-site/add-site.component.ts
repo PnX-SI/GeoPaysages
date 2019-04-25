@@ -572,6 +572,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.siteForm.patchValue({
       'name_site': this.site.name_site,
       'desc_site': this.site.desc_site,
+      'ref_site': this.site.ref_site,
       'testim_site': this.site.testim_site,
       'publish_site': this.site.publish_site,
       'lng': this.site.geom[1].toFixed(6),
@@ -594,6 +595,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.spinner.hide();
     if (this.mySubscription) {
       this.mySubscription.unsubscribe();
     }
