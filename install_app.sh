@@ -9,9 +9,9 @@ echo "Stopping application..."
 sudo /etc/init.d/supervisor stop $app_name
 
 echo "Creating and activating Virtual env..."
-python3 -m venv $venv_dir
+python3 -m venv venv
 
-. $venv_dir/bin/activate
+. venv/bin/activate
 
 mkdir -p ../data/images
 mkdir -p ../data/notice-photo
