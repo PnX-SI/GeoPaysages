@@ -184,7 +184,7 @@ def add_site():
         db.session.commit()
         return jsonify(id_site=site.id_site), 200
     except Exception as exception:
-        return jsonify(error=exception), 400
+        return (exception), 400
 
 
 @api.route('/api/updateSite', methods=['PATCH'])

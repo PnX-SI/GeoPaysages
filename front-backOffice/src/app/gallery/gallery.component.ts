@@ -4,6 +4,7 @@ import { Conf } from './../config';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-gallery',
@@ -15,26 +16,35 @@ export class GalleryComponent implements OnInit {
   sitesLoaded = false;
   sites: any;
   isMainPhoto;
+  selected_site;
   photos: any;
   constructor(
     public sitesService: SitesService,
     protected router: Router,
     private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
   ) { }
 
   ngOnInit() {
-
+    this.spinner.show();
     this.sitesService.getAllSites().subscribe(
       (sites) => {
         this.sites = sites;
+        this.selected_site = this.sites[0].id_site;
         this.getPhotosSite(this.sites[0].id_site);
+        this.spinner.hide();
       },
-      (error) => console.log('getGallery error', error),
+      (error) => {
+        this.spinner.hide();
+        console.log('getGallery error', error)
+      },
     );
 
   }
 
   getPhotosSite(id) {
+    this.selected_site = id;
+    this.spinner.show();
     this.sitesService.getsiteById(id).subscribe(
       (data) => {
         this.photos = data.photos;
@@ -47,6 +57,11 @@ export class GalleryComponent implements OnInit {
 
         });
         this.sitesLoaded = true;
+        this.spinner.hide();
+      },
+      (error) => {
+        console.log('getPhotosSite error', error)
+        this.spinner.hide();
       }
     );
   }
@@ -74,5 +89,9 @@ export class GalleryComponent implements OnInit {
         }
       },
     );
+  }
+
+  isActive(site) {
+    return this.selected_site === site.id_site;
   }
 }
