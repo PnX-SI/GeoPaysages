@@ -64,11 +64,11 @@ msgstr "Témoignages"
 
 #: tpl/gallery.html:3
 msgid "gallery.meta_title"
-msgstr "Galerie photos"
+msgstr "Galerie photo"
 
 #: tpl/gallery.html:13
 msgid "gallery.title"
-msgstr "Galerie photos"
+msgstr "Galerie photo"
 
 #: tpl/home.html:3
 msgid "home.meta_title"
@@ -96,7 +96,7 @@ msgstr "Accueil"
 
 #: tpl/layout.html:45
 msgid "header.nav.gallery"
-msgstr "Galerie photos"
+msgstr "Galerie photo"
 
 #: tpl/layout.html:48
 msgid "header.nav.map"
@@ -112,7 +112,7 @@ msgstr "Accueil"
 
 #: tpl/layout.html:75
 msgid "footer.internal_links.gallery"
-msgstr "Galerie photos"
+msgstr "Galerie photo"
 
 #: tpl/layout.html:80
 msgid "footer.internal_links.map"
@@ -136,7 +136,7 @@ msgstr "Carte interactive"
 
 #: tpl/map.html:14
 msgid "map.title"
-msgstr "La Carte interactive"
+msgstr "Carte interactive"
 
 #: tpl/map.html:28
 msgid "map.filters.title"
