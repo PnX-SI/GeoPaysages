@@ -25,4 +25,3 @@ cp src/app/config.ts.tpl src/app/config.ts
 ng build --prod --base-href /app_admin/
 mkdir -p ../../app_admin
 cp -r ./dist/front-backOffice/* ../../app_admin/
-cp Staticfile ../../app_admin/
