@@ -145,8 +145,8 @@ INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
     "url": "https://phototheque.vanoise-parcnational.fr"
 }]
 ');
-INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_max_fitbounds_map', '13');
-INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_max_fitbounds_map', '13');INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map_comparator', '13');
+INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');
+INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_max_fitbounds_map', '13');
 INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map_comparator', '13');
 
 --
