@@ -34,33 +34,33 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		echo "Copy backoffice config"
 		cp "$app_dir_name/front-backOffice/src/app/config.ts" "$new_app_dir_name/front-backOffice/src/app"
 		
-		echo "Creating and activating virtual env"
-		cd $new_app_dir_name
-		python3 -m venv ./venv
-
-		echo "Installing requirements"
-		. ./venv/bin/activate
-		pip install wheel
-		pip install -r ./backend/requirements.txt
-		deactivate
-		cd ../
-
-		now=$(date +"%Y%m%d%H%M")
-		prev_app_dir_name="$app_dir-$now"
-		echo "Backup prev version to $prev_app_dir_name"	
-		mv $app_dir_name $prev_app_dir_name
-		mv $new_app_dir_name $app_dir_name
-		
-		echo "Restart"
-		#sudo service supervisor restart
-
 		echo "Install backoffice"
-		cd "$app_dir_name/front-backOffice/"
+		cd "$new_app_dir_name/front-backOffice/"
 		npm install
 		ng build --prod --base-href /app_admin/
 		mkdir -p "../../app_admin-$version"
 		cp -r ./dist/front-backOffice/* "../../app_admin-$version/"
 		cd ../../
+		
+		now=$(date +"%Y%m%d%H%M")
+		prev_app_dir_name="$app_dir_name-$now"
+		echo "Backup prev version to $prev_app_dir_name"	
+		mv "./$app_dir_name" "./$prev_app_dir_name"
+		mv "./$new_app_dir_name" "./$app_dir_name"
+
+		echo "Creating and activating virtual env"
+		cd $app_dir_name
+		python3 -m venv ./venv 
+
+		echo "Installing requirements"
+		source ./venv/bin/activate
+		pip install wheel
+		pip install -r ./backend/requirements.txt
+		deactivate
+		cd ../	
+		echo "Restart"
+		sudo service supervisor restart
+
 		echo "Backup prev backoffice to app_admin-$version"	
 		mv ./app_admin "./app_admin-$now"
 		mv "./app_admin-$version" ./app_admin
