@@ -5,53 +5,64 @@ cd "$app_dir"
 app_dir="$(pwd)"
 app_dir_name=$(basename $app_dir)
 
-now=$(date +"%Y%m%d%H%M")
-prev_app_suffix="-$now"
-prev_app_dir="$app_dir$prev_app_suffix"
-
 version="v1.0.0-rc.3.4"
 #read -p "Enter version number (ex: 1.0.0-rc.3.4): "  version
-read -r -p "Do you want to update to version $version? [y/N] " response
-if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
-then
+read -r -p "Start update to version $version? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
     cd "../"
-
-    if [ ! -f "$version.zip" ]
-    then
-        wget "https://github.com/PnX-SI/GeoPaysages/archive/$version.zip"
-    fi
+	
+	version_number=${version:1}
+	new_app_dir_name="GeoPaysages-$version_number"
+	
+	if [ ! -d "$new_app_dir_name" ]; then
+		if [ ! -f "$version.zip" ]; then
+			wget "https://github.com/PnX-SI/GeoPaysages/archive/$version.zip"
+		fi
+		unzip "$version.zip"
+	fi
 
     echo "Version $version ready to install."
     read -r -p "Do you want to continue? [y/N] " response
-    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
-    then
-	echo "Backup prev version to $prev_app_dir"
-        mv $app_dir $prev_app_dir
-        unzip "$version.zip"
-        version_number=${version:1}
-        mv "GeoPaysages-$version_number" $app_dir_name
-	echo "Copy custom config"
-	cp "$prev_app_dir/backend/config.py" "$app_dir_name/backend/config.py"
-	echo "Copy custom translations"
-	mv "$app_dir_name/backend/i18n" "$app_dir_name/backend/i18n-$version"
-	cp -r "$prev_app_dir/backend/i18n" "$app_dir_name/backend/i18n"
-	echo "Copy custom css and images"
-	cp -r "$prev_app_dir/backend/static/custom" "$app_dir_name/backend/static"
-	
-	cd $app_dir_name
-	
-	echo "Creating and activating virtual env"
-	python3 -m venv venv
+    if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
+		echo "Copy custom config"
+		cp "$app_dir_name/backend/config.py" "$new_app_dir_name/backend/config.py"
+		echo "Copy custom translations"
+		mv "$new_app_dir_name/backend/i18n" "$new_app_dir_name/backend/i18n-$version"
+		cp -r "$app_dir_name/backend/i18n" "$new_app_dir_name/backend/i18n"
+		echo "Copy custom css and images"
+		cp -r "$app_dir_name/backend/static/custom" "$new_app_dir_name/backend/static"
+		echo "Copy backoffice config"
+		cp "$app_dir_name/front-backOffice/src/app/config.ts" "$new_app_dir_name/front-backOffice/src/app"
+		
+		echo "Creating and activating virtual env"
+		cd $new_app_dir_name
+		python3 -m venv ./venv
 
-	. venv/bin/activate
+		echo "Installing requirements"
+		. ./venv/bin/activate
+		pip install wheel
+		pip install -r ./backend/requirements.txt
+		deactivate
+		cd ../
 
-	echo "Installing requirements"
-	pip install wheel
-	pip install -r ./backend/requirements.txt
-	
-	echo "Restart"
-	#sudo service supervisor restart
+		now=$(date +"%Y%m%d%H%M")
+		prev_app_dir_name="$app_dir-$now"
+		echo "Backup prev version to $prev_app_dir_name"	
+		mv $app_dir_name $prev_app_dir_name
+		mv $new_app_dir_name $app_dir_name
+		
+		echo "Restart"
+		#sudo service supervisor restart
 
-	#TODO install backoffice
+		echo "Install backoffice"
+		cd "$app_dir_name/front-backOffice/"
+		npm install
+		ng build --prod --base-href /app_admin/
+		mkdir -p "../../app_admin-$version"
+		cp -r ./dist/front-backOffice/* "../../app_admin-$version/"
+		cd ../../
+		echo "Backup prev backoffice to app_admin-$version"	
+		mv ./app_admin "./app_admin-$now"
+		mv "./app_admin-$version" ./app_admin
     fi
 fi
