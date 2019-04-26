@@ -5,8 +5,7 @@ cd "$app_dir"
 app_dir="$(pwd)"
 app_dir_name=$(basename $app_dir)
 
-version="v1.0.0-rc.3.4"
-#read -p "Enter version number (ex: 1.0.0-rc.3.4): "  version
+read -p "Enter version tag (ex: v1.0.0-rc.3.4): "  version
 read -r -p "Start update to version $version? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
     cd "../"
