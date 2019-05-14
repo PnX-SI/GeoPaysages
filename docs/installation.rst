@@ -160,7 +160,7 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
     Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
     
-    Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx
+    Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
     
 
 **2. Lancer l'installation automatique de l'application :**
