@@ -80,21 +80,30 @@ oppv.comparator = (options) => {
         });
       },
       initMap() {
+        const layerConfs = options.dbconf.map_layers.map(layer => {
+          return {
+            label: layer.label,
+            layer: L.tileLayer(layer.url, layer.options)
+          }
+        })
+        
         map = L.map(this.$refs.map, {
           center: options.site.geom,
           zoom: options.dbconf.zoom_map_comparator,
+          layers: [layerConfs[0].layer]
         })
+
         L.control.scale({
           position: 'bottomleft',
           imperial: false
         }).addTo(map);
-        const tileLayer = L.tileLayer(
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          }
-        )
-        tileLayer.addTo(map)
+
+        const controlLayers = {};
+        layerConfs.forEach(layerConf => {
+          controlLayers[layerConf.label] = layerConf.layer
+        })
+        L.control.layers(controlLayers).addTo(map);
+
         L.marker(options.site.geom).addTo(map)
       },
       isPinned(i) {

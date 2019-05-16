@@ -32,26 +32,12 @@ oppv.initMap = (options) => {
     },
     methods: {
       initMap() {
-        const layerConfs = [{
-          label: "OSM classic",
-          layer: L.tileLayer(
-            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              maxZoom: options.dbconf.zoom_map,
-              attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-            }
-          )
-        }, {
-          label: "IGN map",
-          layer: L.tileLayer(
-            'http://wxs.ign.fr/' + options.ign_Key +
-            '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&' +
-            'LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&' +
-            'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg', {
-              maxZoom: options.dbconf.zoom_map,
-              attribution: '&copy; <div">IgnMap</div>',
-            }
-          )
-        }]
+        const layerConfs = options.dbconf.map_layers.map(layer => {
+          return {
+            label: layer.label,
+            layer: L.tileLayer(layer.url, layer.options)
+          }
+        })
 
         map = L.map(this.$refs.map, {
           zoomControl: false,
