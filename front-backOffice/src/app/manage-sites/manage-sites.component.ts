@@ -7,6 +7,7 @@ import { Conf } from './../config';
 import { Router } from '@angular/router';
 import * as L from 'leaflet';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-manage-sites',
@@ -32,6 +33,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     protected router: Router,
     private changeDetector: ChangeDetectorRef,
     private spinner: NgxSpinnerService,
+    private toastr: ToastrService,
     private zone: NgZone) {
   }
 
@@ -107,6 +109,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
         },
         (err) => {
           this.spinner.hide();
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
           console.log('get site error: ', err)},
       );
   }

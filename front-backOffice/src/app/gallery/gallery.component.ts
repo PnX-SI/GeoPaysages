@@ -36,7 +36,8 @@ export class GalleryComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        console.log('getGallery error', error)
+        console.log('getGallery error', error);
+        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       },
     );
 
@@ -60,7 +61,8 @@ export class GalleryComponent implements OnInit {
         this.spinner.hide();
       },
       (error) => {
-        console.log('getPhotosSite error', error)
+        console.log('getPhotosSite error', error);
+        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
         this.spinner.hide();
       }
     );
@@ -86,7 +88,8 @@ export class GalleryComponent implements OnInit {
         if (err.status === 403) {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
+        } else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       },
     );
   }

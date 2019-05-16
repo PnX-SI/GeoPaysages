@@ -237,6 +237,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.siteJson.path_file_guide_site = path_file_guide_site;
       this.uploadNotice();
       this.spinner.show();
+      console.log('spinner');
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
@@ -249,6 +250,9 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             if (err.status === 403) {
               this.router.navigate(['']);
               this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+            }
+            else {
+              this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
             }
           }
         );
@@ -369,6 +373,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
+        else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       }
     );
   }
@@ -389,7 +395,10 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
         });
       },
-      (err) => console.log('err', err),
+      (err) => {
+        console.log('err', err);
+        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+      },
       () => {
         this.initMarker(this.site.geom[0], this.site.geom[1]);
         this.patchForm();
@@ -494,6 +503,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
+        else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       }
     );
   }
@@ -558,6 +569,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
+        else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       }
     );
     this.modalRef.close();

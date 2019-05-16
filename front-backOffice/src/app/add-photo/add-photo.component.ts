@@ -62,7 +62,7 @@ export class AddPhotoComponent implements OnInit {
   private modalRef: NgbModalRef;
   disableButton = false;
   btn_text = 'Ajouter';
-  title = 'Ajouter une Photo';
+  title = 'Ajouter une photo';
   alert: any;
   @Output() photoModal = new EventEmitter();
   @Input() inputImage = null;
@@ -90,7 +90,7 @@ export class AddPhotoComponent implements OnInit {
       this.licences = results[0];
       this.authors = results[1];
       if (this.inputImage) {
-        this.title = 'Modifier la Photo';
+        this.title = 'Modifier la photo';
         this.btn_text = 'Modifier';
         this.updateForm();
       } else {
@@ -179,6 +179,7 @@ export class AddPhotoComponent implements OnInit {
       photoForm.value.path_file_photo = this.imageName;
       if (/\s/.test(this.imageName)) {
         this.alert = 'Le nom de la photo ne doit pas contenir des espaces ';
+        this.disableButton = false;
       } else {
         if (this.inputImage) {
           this.spinner.show();
@@ -233,6 +234,8 @@ export class AddPhotoComponent implements OnInit {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
+        else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       }
     );
   }
@@ -262,6 +265,8 @@ export class AddPhotoComponent implements OnInit {
           this.router.navigate(['']);
           this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
         }
+        else
+          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
       },
       () => {
         this.photoModal.emit(this.inputImage.t_site);
