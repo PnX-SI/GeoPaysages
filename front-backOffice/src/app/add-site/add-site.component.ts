@@ -237,7 +237,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.siteJson.path_file_guide_site = path_file_guide_site;
       this.uploadNotice();
       this.spinner.show();
-      console.log('spinner');
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
@@ -247,6 +246,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           },
           (err) => {
             this.spinner.hide();
+            this.edit_btn = true;
             if (err.status === 403) {
               this.router.navigate(['']);
               this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
@@ -259,9 +259,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       } else {
         this.patchSite(this.siteJson, siteForm.value.id_theme, siteForm.value.id_stheme);
       }
-    } else if (this.photos.length === 0) {
-      this.photoRequired = true;
+    } else {
+      this.edit_btn = true;
+      if (this.photos.length === 0)
+        this.photoRequired = true;
     }
+
   }
 
   getPhoto(photo) {
