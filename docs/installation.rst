@@ -88,10 +88,10 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les executant une par une.
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 
-**2. Lancer le fichier fichier d'installation de la base de données en sudo :**
+**2. Lancer le fichier fichier d'installation de la base de données :**
 
 ::
 
@@ -99,9 +99,9 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Vous pouvez consulter le log de cette installation de la base dans ``/var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
+    Vous pouvez consulter le log de cette installation de la base dans ``var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
     
-    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréer entièrement. 
+    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréé entièrement. 
 
 
 Installation de l'application
@@ -112,7 +112,7 @@ Installation de l'application
 
 Editer le fichier de configuration ``./backend/config.py.tpl``.
 
-- Vérifier que la variable 'SQLALCHEMY_DATABASE_URI' contient les bonnes informations de connexion à la base
+- Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la BDD
 - Ne pas modifier les path des fichiers static
 - Renseigner les autres paramètres selon votre contexte
 
@@ -132,14 +132,14 @@ En plus de la configuration, vous pouvez personnaliser l'application en modifian
 Internationalisation de l'application
 ======================================   
 
-- Pour modifier les textes, éditer le fichier backend/i18n/fr/messages.po
-- activer l'environnement virtuel 
+- Pour modifier les textes, éditer le fichier ``backend/i18n/fr/messages.po``
+- Activer l'environnement virtuel 
 
 ::
 
     . venv/bin/activate
     
-- lancer la commande suivante :
+- Lancer la commande suivante :
 
 ::
 
@@ -158,9 +158,9 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
 :notes:
 
-    Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
+    Pour utiliser l'utilisateur ``admin`` intégré par défaut, il faut renseigner ``id_application : 1``
     
-    Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
+    Pour ``apiUrl`` et ``staticPicturesUrl``, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
     
 
 **2. Lancer l'installation automatique de l'application :**
@@ -178,8 +178,10 @@ Configuration de Nginx
 
    sudo nano /etc/supervisor/conf.d/geopaysages.conf
 
-Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
+Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
+
 ::
+
     [program:geopaysages]
     directory=/home/monuser/geopaysages/backend
     command=/home/monuser/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
@@ -221,7 +223,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 :notes:	
 
-    Modifier server_name pour ajouter le nom domaine associé à GeoPaysages :
+    Modifier ``server_name`` pour ajouter le nom de domaine associé à GeoPaysages :
 	 
 ::
 
@@ -239,12 +241,6 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 **4. Connectez-vous au back-office :**
 
-::
-
-    - Allez sur l'URL: <mon_ip>/app_admin
-    - Connectez-vous avec :
-        Identifiant : admin
-        Mot de passe: admin
-    - Ajoutez vos données
-    
-
+- Allez sur l'URL : <mon_url>/app_admin
+- Connectez-vous avec l'identifiant ``admin`` et le mot de passe ``admin``
+- Ajoutez vos données
