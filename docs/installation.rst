@@ -160,6 +160,8 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
     Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
     
+    Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
+    
 
 **2. Lancer l'installation automatique de l'application :**
 	
@@ -174,25 +176,25 @@ Configuration de Nginx
 	
 ::
 
-   sudo nano /etc/supervisor/conf.d/oppv.conf
+   sudo nano /etc/supervisor/conf.d/geopaysages.conf
 
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 ::
-    [program:oppv_vanoise]
+    [program:geopaysages]
     directory=/home/monuser/geopaysages/backend
     command=/home/monuser/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
     autostart=true
     autorestart=true
 
-    stderr_logfile=/var/log/oppv_vanoise/oppv_vanoise.err.log
-    stdout_logfile=/var/log/oppv_vanoise/oppv_vanoise.out.log
+    stderr_logfile=/var/log/geopaysages/geopaysages.err.log
+    stdout_logfile=/var/log/geopaysages/geopaysages.out.log
 
 
 **2. Configuration de Nginx :**
 
 ::
 
-    sudo nano /etc/nginx/conf.d/oppv_vanoise.conf
+    sudo nano /etc/nginx/conf.d/geopaysages.conf
 
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 
