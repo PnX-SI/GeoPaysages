@@ -80,17 +80,31 @@ oppv.comparator = (options) => {
         });
       },
       initMap() {
-        const layerConfs = options.dbconf.map_layers.map(layer => {
+        let layersConf = _.get(options.dbconf, 'map_layers', []);
+        if (!Array.isArray(layersConf)) {
+          layersConf = [];
+        }
+        if (!layersConf.length) {
+          layersConf.push({
+            "label": "OSM classic",
+            "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            "options": {
+              "maxZoom": 18,
+              "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
+            }
+          })
+        }
+        let mapLayers = layersConf.map(layer => {
           return {
             label: layer.label,
             layer: L.tileLayer(layer.url, layer.options)
           }
         })
-        
+
         map = L.map(this.$refs.map, {
           center: options.site.geom,
           zoom: options.dbconf.zoom_map_comparator,
-          layers: [layerConfs[0].layer]
+          layers: [mapLayers[0].layer]
         })
 
         L.control.scale({
@@ -98,11 +112,13 @@ oppv.comparator = (options) => {
           imperial: false
         }).addTo(map);
 
-        const controlLayers = {};
-        layerConfs.forEach(layerConf => {
-          controlLayers[layerConf.label] = layerConf.layer
-        })
-        L.control.layers(controlLayers).addTo(map);
+        if (mapLayers.length > 1) {
+          const controlLayers = {};
+          mapLayers.forEach(layerConf => {
+            controlLayers[layerConf.label] = layerConf.layer
+          })
+          L.control.layers(controlLayers).addTo(map);
+        }
 
         L.marker(options.site.geom).addTo(map)
       },
