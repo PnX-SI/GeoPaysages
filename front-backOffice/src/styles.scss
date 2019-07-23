@@ -6,6 +6,9 @@
 @import './assets/css/icomoon.css';
 @import './assets/css/custom_ngx_table.scss';
 
+.black-overlay{
+  position: fixed !important
+}
 .custom-modal {
   .modal-content {
     min-width: 600px;

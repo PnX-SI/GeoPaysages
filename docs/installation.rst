@@ -29,7 +29,7 @@ Ces opérations doivent être faites avec l'utilisateur courant (autre que ``roo
 
 ::
 
-    cd /home/monuser
+    cd /home/<monuser>
     wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 
     
@@ -43,7 +43,7 @@ Dézipper l'archive :
 
     unzip X.Y.Z.zip
 	
-Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/monuser/geopaysages/`` par exemple) :
+Vous pouvez renommer le dossier qui contient l'application (dans un dossier ``/home/<monuser>/geopaysages/`` par exemple) :
 	
 ::
 
@@ -64,7 +64,7 @@ Cela installera les logiciels nécessaires au fonctionnement de l'application
 
 ::
 
-    cd /home/monuser/geopaysages
+    cd /home/<monuser>/geopaysages
     ./install_env.sh
 
 
@@ -181,10 +181,11 @@ Configuration de Nginx
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 ::
     [program:geopaysages]
-    directory=/home/monuser/geopaysages/backend
-    command=/home/monuser/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
+    directory=/home/<monuser>/geopaysages/backend
+    command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
     autostart=true
     autorestart=true
+    user=<monuser>
 
     stderr_logfile=/var/log/geopaysages/geopaysages.err.log
     stdout_logfile=/var/log/geopaysages/geopaysages.out.log
@@ -203,17 +204,17 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 	server {
         listen       80;
         server_name  localhost;
-        
+        client_max_body_size 100M;
         location / {
             proxy_pass http://127.0.0.1:8000;
         }
     
         location /pictures {
-            alias  /home/monuser/data/images/;
+            alias  /home/<monuser>/data/images/;
         }
 
         location /app_admin {
-            alias /home/monuser/app_admin;
+            alias /home/<monuser>/app_admin;
             try_files $uri$args $uri$args/ /app_admin/index.html;
         }
     }
@@ -221,6 +222,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 :notes:	
 
+    La limite de la taille des fichiers en upload est configurée à 100 Mo (client_max_body_size)
     Modifier server_name pour ajouter le nom domaine associé à GeoPaysages :
 	 
 ::

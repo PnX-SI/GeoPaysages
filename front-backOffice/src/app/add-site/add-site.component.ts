@@ -313,9 +313,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.edit_btn = true;
             this.setAlert(err.error.image);
           }
-          if (err.status === 403) {
+          else if (err.status === 403) {
             this.router.navigate(['']);
             this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+          }
+          else {
+            this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
           }
         },
         () => {
