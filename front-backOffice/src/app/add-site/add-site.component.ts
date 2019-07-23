@@ -48,7 +48,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
     ],
     zoom: 10,
-    center: latLng(45.372167, 6.819077)
+    center: latLng(Conf.map_lat_center, Conf.map_lan_center)
   };
   drawOptions = {
     position: 'topleft',
