@@ -56,9 +56,9 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		pip install wheel
 		pip install -r ./backend/requirements.txt
 
-		pybabel extract -F "$app_dir_name/backend/babel.cfg" -o "$app_dir_name/backend/i18n/messages.pot" .
-		pybabel update -i "$app_dir_name/backend/i18n/messages.pot" -d "$app_dir_name/backend/i18n"
-		pybabel compile -d "$app_dir_name/backend/i18n"
+		pybabel extract -F ./backend/babel.cfg -o ./backend/i18n/messages.pot ./backend
+		pybabel update -i ./backend/i18n/messages.pot -d ./backend/i18n
+		pybabel compile -d ./backend/i18n
 
 		deactivate
 		cd ../	
