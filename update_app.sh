@@ -55,6 +55,11 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		source ./venv/bin/activate
 		pip install wheel
 		pip install -r ./backend/requirements.txt
+
+		pybabel extract -F ./backend/babel.cfg -o ./backend/i18n/messages.pot ./backend
+		pybabel update -i ./backend/i18n/messages.pot -d ./backend/i18n
+		pybabel compile -d ./backend/i18n
+
 		deactivate
 		cd ../	
 		echo "Restart"

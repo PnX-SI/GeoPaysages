@@ -157,7 +157,7 @@ def comparator(id_site):
         return abort(404)
 
     site = site[0]
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site).order_by('filter_date')
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date')
     photos = photo_schema.dump(get_photos_by_site).data
     get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
     
