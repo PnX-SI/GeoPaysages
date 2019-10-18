@@ -127,7 +127,44 @@ Editer le fichier de configuration ``./backend/config.py.tpl``.
 Personnalisation de l'application
 ==============================   
 	
-En plus de la configuration, vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
+Vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
+
+Certains paramètres sont dans la table conf :
+
+- external_links, les liens en bas à droite dans le footer, est un tableu d'objets devant contenir un label et une url, ex.
+::
+
+        [{
+            "label": "Site du Parc national de Vanoise",
+            "url": "http://www.vanoise-parcnational.fr"
+        }, {
+            "label": "Rando Vanoise",
+            "url": "http://rando.vanoise.com"
+        }]
+
+- zoom_map_comparator, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
+- zoom_max_fitbounds_map, la valeur du zoom max lorsqu'on filtre les points sur la carte interactive. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
+- map_layers, les différentes couches disponibles sur la carte interactive, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
+::
+
+        [
+          {
+            "label": "OSM classic",
+            "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            "options": {
+              "maxZoom": 18,
+              "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
+            }
+          },
+          {
+            "label": "IGN",
+            "url": "http://wxs.ign.fr/uycopcmwuzco1qz2xwnsa9by/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
+            "options": {
+              "maxZoom": 18,
+              "attribution": "&copy; <div>IgnMap</div>"
+            }
+          }
+        ]
 
 Internationalisation de l'application
 ======================================   
