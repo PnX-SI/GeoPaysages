@@ -9,7 +9,7 @@ sudo apt-get install python3-venv
 sudo systemctl stop apache2
 sudo apt-get install nginx supervisor
 
-mkdir -p ./var/log/
+sudo mkdir -p ./var/log/
 sudo mkdir -p /var/log/geopaysages
 
 
