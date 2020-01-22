@@ -287,4 +287,7 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
         Mot de passe: admin
     - Ajoutez vos données
     
+Ajout et personnalisation d'une nouvelle page html
+==================================================
 
+La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
