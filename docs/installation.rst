@@ -290,4 +290,22 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 Ajout et personnalisation d'une nouvelle page html
 ==================================================
 
+**1. Création de la page HTML :**
+
 La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
+Copier/coller sample.html et renommer la nouvelle page
+
+**2. Créer la route vers la nouvelle page**
+
+Ouvrir le fichier backend/routes.py
+Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**3. Ajout du lien vers la nouvelle page HTML**
+
+Ouvrir le fichier backend/tpl/layout.html
+Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**3. Création de l'intitulé du lien via l'internationalisation**
+
+Ouvrir le fichier backend/i18n/fr/LC_manager/messages.po
+Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
