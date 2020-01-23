@@ -159,7 +159,7 @@ Certains paramètres sont dans la table conf :
           },
           {
             "label": "IGN",
-            "url": "http://wxs.ign.fr/uycopcmwuzco1qz2xwnsa9by/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
+            "url": "http://wxs.ign.fr/[clé ign]/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
             "options": {
               "maxZoom": 18,
               "attribution": "&copy; <div>IgnMap</div>"
@@ -186,6 +186,8 @@ Internationalisation de l'application
 :notes:
 
   Pour plus d'informations, voir https://pythonhosted.org/Flask-Babel/
+  
+  Pour sortir de l'environnement virtuel, taper deactivate
  
 Installation du back-office
 ============================
