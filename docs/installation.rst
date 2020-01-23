@@ -292,8 +292,8 @@ Ajout et personnalisation d'une nouvelle page html
 
 **1. Création de la page HTML :**
 
-La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
-Copier/coller sample.html et renommer la nouvelle page
+- La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
+- Copier/coller sample.html et renommer la nouvelle page
 
 **2. Créer la route vers la nouvelle page**
 
