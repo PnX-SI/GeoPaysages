@@ -171,13 +171,13 @@ Internationalisation de l'application
 ======================================   
 
 - Pour modifier les textes, éditer le fichier backend/i18n/fr/messages.po
-- activer l'environnement virtuel 
+- activer l'environnement virtuel (depuis le répertoire source par exemple (geopaysages))
 
 ::
 
     . venv/bin/activate
     
-- lancer la commande suivante :
+- lancer la commande suivante en se plaçant au préalable dans le répertoire i18n :
 
 ::
 
@@ -290,22 +290,31 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 Ajout et personnalisation d'une nouvelle page html
 ==================================================
 
-**1. Création de la page HTML :**
+**1. Création de la page HTML**
 
 - La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
 - Copier/coller sample.html et renommer la nouvelle page
 
 **2. Créer la route vers la nouvelle page**
 
-Ouvrir le fichier backend/routes.py
-Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier backend/routes.py
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
 
 **3. Ajout du lien vers la nouvelle page HTML**
 
-Ouvrir le fichier backend/tpl/layout.html
-Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier backend/tpl/layout.html
+- Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
 
-**3. Création de l'intitulé du lien via l'internationalisation**
+**4. Création de l'intitulé du lien via l'internationalisation**
 
-Ouvrir le fichier backend/i18n/fr/LC_manager/messages.po
-Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier backend/i18n/fr/LC_MESSAGES/messages.po
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**5. Compilation pour la prise en compte des modifications**
+
+- Suivre les étapes du chapitre Internatinalisation de l'application
+- Pour les modifications effectuées dans les fichiers python, relancer la compilation python
+
+::
+
+        sudo service supervisor restart
