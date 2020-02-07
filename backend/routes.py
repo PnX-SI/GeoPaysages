@@ -181,7 +181,7 @@ def comparator(id_site):
         captions = []
         licence_photo = photo.get('dico_licence_photo')
         if licence_photo:
-            captions.append(licence_photo.get('description_licence_photo'))
+            captions.append(licence_photo.get('name_licence_photo'))
         """ author = photo.get('t_role')
         if author:
             captions.append('%s %s'  % (
