@@ -74,6 +74,8 @@ def getDownload(photo, caption):
 
 
 def addCaption(img, img_src, text):
+    if (not text):
+        return
     font = ImageFont.truetype("./static/fonts/openSans.ttf", 16)
     if img.get('input_exists'):
         try:
