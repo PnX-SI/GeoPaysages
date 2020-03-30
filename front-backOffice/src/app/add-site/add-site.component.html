@@ -23,9 +23,10 @@
               <app-form-error controlName="name_site" errorKey="required"></app-form-error>
             </div>
             <div class="col ">
-              <label class="label" for="site-name">RÉFÉRENCE</label>
-              <input  type="text" formControlName="ref_site" id="reference" class="form-control"
+              <label class="label" for="site-name">RÉFÉRENCE*</label>
+              <input  InputFeedBack type="text" formControlName="ref_site" id="reference" class="form-control"
                 placeholder="référence">
+                <app-form-error controlName="ref_site" errorKey="required"></app-form-error>
             </div>
           </div>
           <div class="row form-item">

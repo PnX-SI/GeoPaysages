@@ -8,24 +8,29 @@
       <div>
         <button class=" blue-btn btn-add" (click)="onAddSite()"> Ajouter un point d'observation</button>
         <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" 
-          [headerHeight]="40"  [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
+          [headerHeight]="40"  [footerHeight]="40" [limit]="7" [rowHeight]="'auto'" [scrollbarH]="true"
           [reorderable]="reorderable" [selectionType]="'single'" (activate)="onCenterChange($event)" (select)='onSelect($event)'>
           <ngx-datatable-column name="Photo">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <img class="main-photo" src="{{row.main_photo}}" alt="" width="80">
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Nom du point d'observation" width="400">
+          <ngx-datatable-column  prop="ref_site" name="Référence" width="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.ref_site}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column  prop="name_site" name="Nom du point d'observation" width="320">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.name_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Commune">
+          <ngx-datatable-column  prop="code_city_site" name="Commune">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.code_city_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Publication">
+          <ngx-datatable-column  prop="publish_site" name="Publication">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <label class="switch ">
                 <input type="checkbox" class="success" [checked]="row.publish_site" disabled>

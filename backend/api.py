@@ -28,7 +28,7 @@ ville_schema = models.VilleSchema(many=True)
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
     try:
-        get_all_sites = models.TSite.query.order_by('name_site').all()
+        get_all_sites = models.TSite.query.order_by('ref_site').all()
         sites = site_schema.dump(get_all_sites).data
         for site in sites:
             if(site.get('main_photo') == None):
