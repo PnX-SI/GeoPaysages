@@ -81,14 +81,24 @@
           </div>
           <div class="form-group">
             <label class="label" for="desc">DESCRIPTION</label>
-            <textarea InputFeedBack class="form-control" formControlName="desc_site" placeholder="Ecrivez ici la description du site"
-              id="desc" rows="3"></textarea>
+            <div *ngIf="enableHtmlEdit == 'True'; then descRTE else descTXT"></div>
+              <ng-template #descRTE>
+                <ejs-richtexteditor #defaultRTE id='desc' [toolbarSettings]='tools' InputFeedBack formControlName="desc_site" placeholder="Ecrivez ici la description du site"></ejs-richtexteditor>
+              </ng-template>
+              <ng-template #descTXT>
+                <textarea InputFeedBack class="form-control" formControlName="desc_site" placeholder="Ecrivez ici la description du site" id="desc" rows="3"></textarea>
+              </ng-template>
             <app-form-error controlName="desc_site" errorKey="required"></app-form-error>
           </div>
           <div class="form-group">
             <label class="label" for="testim">TÉMOIGNAGE</label>
-            <textarea InputFeedBack class="form-control" formControlName="testim_site" placeholder="Ecrivez ici les témoignages"
-              id="testim" rows="3"></textarea>
+            <div *ngIf="enableHtmlEdit == 'True'; then testimRTE else testimTXT"></div>
+              <ng-template #testimRTE>
+                <ejs-richtexteditor #defaultRTE id='testim' [toolbarSettings]='tools' InputFeedBack formControlName="testim_site" placeholder="Ecrivez ici les témoignages"></ejs-richtexteditor>
+              </ng-template>
+              <ng-template #testimTXT>
+                <textarea InputFeedBack class="form-control" formControlName="testim_site" placeholder="Ecrivez ici les témoignages" id="testim" rows="3"></textarea>
+              </ng-template>
             <app-form-error controlName="testim_site" errorKey="required"></app-form-error>
           </div>
           <div class="form-group">
