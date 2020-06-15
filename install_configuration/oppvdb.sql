@@ -148,6 +148,7 @@ INSERT INTO geopaysages.conf (key, value) VALUES ('external_links', '[{
 INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map', '18');
 INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_max_fitbounds_map', '13');
 INSERT INTO geopaysages.conf (key, value) VALUES ('zoom_map_comparator', '13');
+INSERT INTO geopaysages.conf (key, value) VALUES ('enable_html_text', 'True');
 
 --
 -- TOC entry 3814 (class 0 OID 21076)
