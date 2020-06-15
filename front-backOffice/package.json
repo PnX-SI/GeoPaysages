@@ -26,6 +26,7 @@
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "@ng-select/ng-select": "^2.12.1",
     "@swimlane/ngx-datatable": "^14.0.0",
+    "@syncfusion/ej2-angular-richtexteditor": "^18.1.54",
     "@types/lodash": "^4.14.118",
     "@types/moment": "^2.13.0",
     "bootstrap": "^4.1.3",

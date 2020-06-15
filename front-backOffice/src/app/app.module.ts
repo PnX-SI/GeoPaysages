@@ -53,7 +53,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgSelectModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    RichTextEditorAllModule
   ],
   providers: [
     LoginService,
