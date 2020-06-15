@@ -131,7 +131,7 @@ Vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers da
 
 Certains paramètres sont dans la table conf :
 
-- external_links, les liens en bas à droite dans le footer, est un tableu d'objets devant contenir un label et une url, ex.
+- ``external_links``, les liens en bas à droite dans le footer, est un tableu d'objets devant contenir un label et une url, ex.
 ::
 
         [{
@@ -142,10 +142,10 @@ Certains paramètres sont dans la table conf :
             "url": "http://rando.vanoise.com"
         }]
 
-- zoom_map_comparator, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
-- zoom_max_fitbounds_map, la valeur du zoom max lorsqu'on filtre les points sur la carte interactive. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
-- Si vous voyez un paramètre nommé zoom_map, sachez qu'il est déprécié, vous pouvez le supprimer de la table.
-- map_layers, les différentes couches disponibles sur la carte interactive, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
+- ``zoom_map_comparator``, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
+- ``zoom_max_fitbounds_map``, la valeur du zoom max lorsqu'on filtre les points sur la carte interactive. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
+- Si vous voyez un paramètre nommé ``zoom_map``, sachez qu'il est déprécié, vous pouvez le supprimer de la table.
+- ``map_layers``, les différentes couches disponibles sur la carte interactive, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
 ::
 
         [
@@ -166,6 +166,8 @@ Certains paramètres sont dans la table conf :
             }
           }
         ]
+
+- ``enable_html_text``, autorise l'interprétation du HTML contenu dans les champs de type texte "Description" et "Témoignage" (dans les fiches des points d'observation).
 
 Internationalisation de l'application
 ======================================   
@@ -201,6 +203,9 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
     Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
     
     Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
+
+    Pour activer l'éditeur de texte HTML (WYSIWYG) RichTextEditor sur les champs "Description" et "Témoignage", renseigner enable_html_text_editor : 'True'. 
+    /!\ Cela permet aux utilisateurs ayant accès au back-office d'injecter du HTML dans le site --> A utiliser avec parcimonie en évaluant les incidences en matière de sécurité.
     
 
 **2. Lancer l'installation automatique de l'application :**
