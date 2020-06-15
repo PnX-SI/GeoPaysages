@@ -17,7 +17,7 @@
 
 <div class="container">
   <div class="row justify-content-center">
-  {% for site in sites|sort(attribute='ref_site') %}
+  {% for site in sites %}
     <div class="picture col-lg-2 col-md-3 col-sm-4 col-6">
       <a href="/comparator/{{ site.id_site }}">
         <img src="{{ site.photo }}" alt="{{ site.name_site }}">
