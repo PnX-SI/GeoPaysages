@@ -112,8 +112,15 @@
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
+            {% if dbconf.enable_html_text == 'True' %}
             <div class="target font-italic">
-              {{ site.desc_site }}
+              {% autoescape false %}
+                {{ site.desc_site | replace("\n", "<br>") }}
+              {% endautoescape %}
+            {% else %}
+            <div class="target font-italic-linebreak">
+                {{ site.desc_site }}
+            {% endif %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
@@ -125,8 +132,15 @@
           {% if site.testim_site %}
           <h5 class="text-uppercase mt-4">{{ _('obs_point.testimonials') }}</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
+            {% if dbconf.enable_html_text == 'True' %}
             <div class="target font-italic">
-              {{ site.testim_site }}
+              {% autoescape false %}
+                {{ site.testim_site | replace("\n", "<br>") }}
+              {% endautoescape %}
+            {% else %}
+            <div class="target font-italic-linebreak">
+                {{ site.testim_site }}
+            {% endif %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
