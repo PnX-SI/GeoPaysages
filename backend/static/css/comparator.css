@@ -126,3 +126,9 @@
     width: 100px;
     cursor: pointer;
 }
+
+.linebreak {
+    white-space: pre-line;
+    line-height: 1.2em;
+    margin-top: -1.2em;
+}
