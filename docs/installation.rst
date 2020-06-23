@@ -175,12 +175,14 @@ Internationalisation de l'application
 
 ::
 
+    . cd geopaysages/
     . venv/bin/activate
     
-- lancer la commande suivante en se plaçant au préalable dans le répertoire i18n :
+- lancer la commande de compilation en se plaçant au préalable dans le répertoire backend :
 
 ::
 
+    . cd backend/
     . pybabel compile -d i18n
 
 :notes:
