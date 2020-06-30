@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light  justify-content-between">
   <a class="navbar-brand" >
-    <img src="./assets/images/logo.png" height="97px">
+    <img [src]="logoUrl" height="97px">
   </a>
   <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
     aria-controls="collapse">

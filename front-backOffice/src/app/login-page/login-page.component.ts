@@ -17,6 +17,7 @@ export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
   userForm: any;
   currentUser: User;
+  logoUrl: string;
 
   constructor(
     private loginService: LoginService,
@@ -26,6 +27,7 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.logoUrl = `${Conf.customFiles}logo/logo_txt_blanc.png`
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required],

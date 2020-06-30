@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../services/lgoin.service';
 import { Router } from '@angular/router';
+import { Conf } from './../config';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +10,12 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   isCollapsed = true;
+  logoUrl: string;
   constructor(private loginService: LoginService,
     protected router: Router, ) { }
 
   ngOnInit() {
+    this.logoUrl = `${Conf.customFiles}logo/logo_txt_color.png`
   }
 
   logout() {
