@@ -2,7 +2,7 @@ import os
 import sys
 
 from configparser import ConfigParser
-from iptcinfo3 import IPTCInfo
+from iptcinfo3 import IPTCInfo, c_datasets
 from PIL import Image, ImageFile, IptcImagePlugin
 from PIL.IptcImagePlugin import getiptcinfo
 from sqlalchemy import engine_from_config, text
@@ -113,7 +113,8 @@ def read_config_file(config_filename:str) -> dict:
                 inputpattern    = config.get(site_section(s), 'inputpattern'),
                 outputpattern   = config.get(site_section(s), 'outputpattern'),
                 resize  = get_site_resize(config, site_section(s)),
-                save_in_db = config.getboolean(site_section(s),'save_in_db', fallback=False)
+                save_in_db = config.getboolean(site_section(s),'save_in_db', fallback=False),
+                copyright_notice = config.get(site_section(s), 'copyright_notice', fallback=None),
             )
             for s in sites
         }
@@ -126,38 +127,51 @@ def read_config_file(config_filename:str) -> dict:
     except:
         raise Exception('Could not parse config file')
 
-def retrieve_copyright_notice(fn:str) -> str:
-    '''Retrieves the copyright notice from the input file'''
-    try:
-        info = IPTCInfo(fn)
-        return info['copyright notice']
-    except:
-        return None
+def retrieve_copyright_notice(fn:str) -> dict:
+    '''Retrieves the copyright notice from the input file
+    Returns
+    -------
+    Tuple (copyright notice, description)
+    '''
+    info = IPTCInfo(fn)
+    return {
+        key: info[key]
+        for key in c_datasets.values() if info[key]
+    }
 
-def process_image(ifile:str, size, ofile:str=None):
+def process_image(ifile:str, siteconfig, ofile:str=None):
     '''resize an image and return the output file name and the exif and iptc meta data'''
     try:
+        size = siteconfig.get('resize')
+        site_copyright_notice = siteconfig.get('copyright_notice')
+
         im  = Image.open(ifile)
-        xif = im.info.get('exif')
-        cr_notice = retrieve_copyright_notice(ifile)
+        im_xif = im.info.get('exif')
+        im_iptc = retrieve_copyright_notice(ifile)
 
         dest = ofile if size and ofile else ifile #Target the input file if the output file is not provided
         
+        # Image resizing with exif preservation
         if size:
             im2 = im.resize(size)
 
-            params = dict(exif=xif) if xif else dict()   
+            params = dict(exif=im_xif) if im_xif else dict()   
             im2.save(dest, **params)
-        
-        # Pillow does not the save the iptc meta data. We have to put them back manually
-        if cr_notice:
+
+        # IPTC data rewriting. IPTC are lost during the resize operation. We have to put them back manually
+        # If the inputfile contains a copyright notice, then use it instead of the siteconfig value
+        im_iptc['copyright notice'] = im_iptc.get('copyright notice', site_copyright_notice)
+
+        if im_iptc or site_copyright_notice:
             iptc = IPTCInfo(dest)
-            iptc['copyright notice'] = cr_notice
+
+            for key in im_iptc:
+                iptc[key] = im_iptc[key]
             iptc.save()
 
-        return (dest, xif, cr_notice)
+        return (dest, im_xif, im_iptc)
     except Exception as e:
-        printfailure('could not process image ', ifile, 'traceback ', str(e))
+        printfailure('could not process image ', ifile, ' traceback ', str(e))
         return (ifile, None, None)
 
 def sqlalchemy_engine_from_config(configfile:str) -> Engine:
@@ -182,12 +196,37 @@ def get_site_id(engine: Engine, sitename:str):
         printfailure('Could not retrieve site : "', sitename, '" id from the database')
         return None
 
-def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, cp_notice=None):
-    query = text('insert into geopaysages.t_photo (id_site, path_file_photo, date_photo, filter_date, copyright, display_gal_photo)\
-        values (:id_site, :path, :strfdate, :date, :cpnotice, :display)'
+def get_licence_id (engine: Engine, iptc:dict):
+    '''Get the Licence id that matches the copyright notice or create it if none exists in the database'''
+    if not iptc:
+        return None
+
+    notice = iptc.get('copyright notice')
+    cnx = engine.connect()
+
+    id_licence_photo = cnx.execute(
+        text(
+        'select id_licence_photo from geopaysages.dico_licence_photo where name_licence_photo = :nt'
+        ), nt=notice
+    ).scalar()
+
+    if not id_licence_photo:
+        id_licence_photo = cnx.execute(
+            text(
+                'insert into geopaysages.dico_licence_photo (name_licence_photo, description_licence_photo) values (:nt,:desc) returning id_licence_photo'
+            ), nt=notice, desc=notice
+        ).scalar()
+
+    return id_licence_photo
+
+def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, iptc=None):
+    query = text('insert into geopaysages.t_photo \
+        (id_site, path_file_photo, date_photo, filter_date, display_gal_photo, id_licence_photo)\
+        values (:id_site, :path, :strfdate, :f_date, :display, :id_licence)'
     )
 
-    date = date_from_group_dict(matchdict)
+    id_licence_photo = get_licence_id(engine, iptc) if iptc else None
+    filter_date = date_from_group_dict(matchdict)
     cnx = engine.connect()
 
     tran = cnx.begin()
@@ -196,15 +235,16 @@ def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, c
             query,
             id_site = siteid,
             path = matchdict.get('ofilename'),
-            strfdate = date.strftime('%d/%m/%y'),
-            date = date,
-            cpnotice = cp_notice,
-            display = True
+            strfdate = date_from_group_dict(matchdict).strftime('%d/%m/%y'),
+            f_date = filter_date,
+            display = True,
+            id_licence=id_licence_photo
         )
         tran.commit()
     except:
         printfailure('Could not insert image ', matchdict.get('ofilename'), ' into database')
         tran.rollback()
+        raise
 
 
 def printfailure(*args, **kwargs):
