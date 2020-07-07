@@ -2,6 +2,8 @@ from sqlalchemy import engine_from_config, text
 from sqlalchemy.engine import Engine
 from configparser import ConfigParser
 
+from geopaysagesftpclient.patterns import date_from_group_dict
+
 def sqlalchemy_engine_from_config(configfile:str) -> Engine:
     '''Returns an sqlalchemy engine'''
     with open(configfile, 'r') as cf:
@@ -30,6 +32,9 @@ def get_licence_id (engine: Engine, iptc:dict):
         return None
 
     notice = iptc.get('copyright notice')
+    if not notice:
+        return None
+    
     cnx = engine.connect()
 
     id_licence_photo = cnx.execute(
@@ -48,6 +53,7 @@ def get_licence_id (engine: Engine, iptc:dict):
     return id_licence_photo
 
 def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, iptc=None):
+    ''' Inserts an image into the database '''
     query = text('insert into geopaysages.t_photo \
         (id_site, path_file_photo, date_photo, filter_date, display_gal_photo, id_licence_photo)\
         values (:id_site, :path, :strfdate, :f_date, :display, :id_licence)'
