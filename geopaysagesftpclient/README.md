@@ -18,24 +18,23 @@ pip install -e ".[dev]"
 
 Development mode is required for running *sphinx* and *pytest*.
 
-## Testing (dev install only)
-
-1. copy the file `pytest.ini.tpl` into `pytest.ini`
-2. configure the `pytest.ini` file.
-3. execute `pytest -s -v` 
+Once the installation is completed, the script `fetchsiteimages` should be created in your virtual environment.
 
 ## Running the script
 
-1. Copy the file `config.ini.tpl` into `config.ini`
+1. Set-up a configuration file, say, `config.ini` (see the [configuration](#configuration) section below)
 2. Run the script `fetchsiteimages` by providing your config file
 
 ```sh
 fetchsiteimages config.ini
 ```
 
-## Configuration options
+## Configuration
 
-The script is run with a configuration file. A sample configuration file is the following
+1. Copy the template config file `config.ini.tpl` into `config.ini`
+2. Fill in the configuration file
+
+A sample configuration file is the following
 
 ```ini
 [main]
@@ -69,7 +68,7 @@ save_in_db = false
 copyright_notice = 
 ```
 
-### Config description
+### Configuration options
 
 | Options               | Description                                                  |
 | --------------------- | ------------------------------------------------------------ |
@@ -95,8 +94,16 @@ The **inputpattern** option specifies how to target the files to fetch from the 
 Using the following configuration for a site, say, *glacierblanc_lateral*
 
 ```ini
+[main]
+outputdir = home/mv/Pictures
+sites = 
+	glacierblanc_lateral
+...
+
+[sites.glacierblanc_lateral]
 inputpattern = images/\w+/{Y}-{M}-{D}/\w+{ext}
 outputpattern = retrieved_images/{site}/{Y}_{M}_{D}{ext}
+...
 ```
 
 A file located at `images/testsite/2020-10-08/img10001.JPG` in the FTP server will match the inputpattern with the following *matchdict* 
@@ -113,7 +120,7 @@ A file located at `images/testsite/2020-10-08/img10001.JPG` in the FTP server wi
 }
 ```
 
-and will be saved at `retrieved_images/glacierblanc_lateral/2020_10_08.JPG`
+and will be saved at `home/mv/Pictures/retrieved_images/glacierblanc_lateral/2020_10_08.JPG`
 
 #### Built-in patterns
 
@@ -135,18 +142,18 @@ You can define custom match group using the syntax `{exp:name}` where `exp` is a
 
 ##### Example
 
-Using the following configuration for a site, say, *glacierblanc_lateral* 
+Using the following configuration
 
 ```ini
 inputpattern = images/{\w+:author}/{Y}-{M}-{D}/\w+{ext}
 outputpattern = retrieved_images/{site}/{Y}_{M}_{D}_{author}{ext}
 ```
 
-a file located at `images/mv/2020-10-08/image10001.jpg` will match the inputpattern with the matchdict 
+a file located at `images/Carl/2020-10-08/image10001.jpg` will match the inputpattern with the matchdict 
 
 ```json
 {
-    "author": "mv",
+    "author": "Carl",
     "Y": 2020,
     "M": 10,
     "D": 08,
@@ -157,4 +164,10 @@ a file located at `images/mv/2020-10-08/image10001.jpg` will match the inputpatt
 }
 ```
 
-and will be saved to `retrieved_images/glacierblanc_lateral/2020_10_08_mv.jpg`.
+and will be saved to `retrieved_images/glacierblanc_lateral/2020_10_08_Carl.jpg`.
+
+## Testing (dev installation mode only)
+
+1. copy the file `pytest.ini.tpl` into `pytest.ini`
+2. configure the `pytest.ini` file (This file is required to be named `pytest.ini`).
+3. run `pytest -s -v` from a terminal. 
