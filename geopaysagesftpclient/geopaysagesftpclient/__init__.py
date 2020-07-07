@@ -1,6 +1,5 @@
 import os
 import sys
-import piexif
 
 from configparser import ConfigParser
 from iptcinfo3 import IPTCInfo
