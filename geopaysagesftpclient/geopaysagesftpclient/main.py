@@ -21,7 +21,7 @@ def process(config_filename):
         siteconfig = config['sites'][site]
         save_in_db = config['sites'][site].get('save_in_db')
         siteid = get_site_id(engine, site) if save_in_db else None
-        print('site id', siteid)
+        print('Fetching from site :',site, siteid,sep=' ')
 
         c = connect(
             siteconfig.get('host'),
@@ -38,10 +38,10 @@ def process(config_filename):
         )
 
         for f,g in pipeline:
-            (_dest, xif, cp_notice) = process_image(f, siteconfig['resize'])
+            (_dest, xif, iptc) = process_image(f, siteconfig)
 
             if siteid:
-                insert_image_in_db(engine, siteid, g, xif, cp_notice)
+                insert_image_in_db(engine, siteid, g, xif, iptc)
 
 
 def main():
