@@ -10,6 +10,8 @@ class clientTestCases(unittest.TestCase):
         cls.client = connect_for_test()
         cls.site = 'glacierblanc'
         cls.outputdir = os.path.join('output', cls.site)
+
+        cls.create_files = []
         
         if not os.path.isdir(cls.outputdir):
             os.makedirs(cls.outputdir)
@@ -17,6 +19,10 @@ class clientTestCases(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.client.close()
+        
+        for f in cls.create_files:
+            os.remove(f)
+        os.removedirs(cls.outputdir)
 
     def test_connection(self):
         '''Connection to the ftp host should be established'''
@@ -31,3 +37,4 @@ class clientTestCases(unittest.TestCase):
             self.assertTrue(
                 os.path.isfile(f)
             )
+            self.create_files.append(f)
