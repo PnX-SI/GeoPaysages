@@ -30,7 +30,11 @@ class ImageProcessTestCase(TestCase):
         from geopaysagesftpclient import process_image
 
         for size in self.sizes:
-            (ofile, exif, cr_notice) = process_image(self.inputfile, size, self.ouput_file_name(size))
+            (ofile, exif, iptc) = process_image(
+                self.inputfile, 
+                dict(resize=size), 
+                self.ouput_file_name(size)
+            )
 
             # Check that the file has been successfully created
             self.assertTrue(os.path.isfile(ofile))
@@ -41,7 +45,8 @@ class ImageProcessTestCase(TestCase):
             )
 
             # Check that the copyright notice has been preserved
-            self.assertIsNotNone(cr_notice)
+            self.assertIsNotNone(iptc)
+            self.assertIsNotNone(iptc.get('copyright notice'))
 
             # Check that the exif has been preserved
             self.assertEqual(
