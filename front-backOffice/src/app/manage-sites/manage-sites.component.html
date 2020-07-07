@@ -1,28 +1,36 @@
+<ngx-spinner size="medium" type="ball-spin">
+  <p style="color: white" > Loading... </p>
+</ngx-spinner>
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
     <div class="col-6 col-table">
       <div>
-        <button class=" green-btn btn-add" (click)="onAddSite()"> Ajouter un site photo</button>
-        <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" [loadingIndicator]="loadingIndicator"
-          [headerHeight]="40" [summaryPosition]="'bottom'" [footerHeight]="40" [limit]="7" [rowHeight]="'auto'"
-          [reorderable]="reorderable" [selectionType]="'single'" (select)='onSelect($event)'>
+        <button class=" blue-btn btn-add" (click)="onAddSite()"> Ajouter un point d'observation</button>
+        <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" 
+          [headerHeight]="40"  [footerHeight]="40" [limit]="7" [rowHeight]="'auto'" [scrollbarH]="true"
+          [reorderable]="reorderable" [selectionType]="'single'" (activate)="onCenterChange($event)" (select)='onSelect($event)'>
           <ngx-datatable-column name="Photo">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <img class="main-photo" src="{{row.main_photo}}" alt="" width="80">
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Nom du site" width="400">
+          <ngx-datatable-column  prop="ref_site" name="Référence" width="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{row.ref_site}}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column  prop="name_site" name="Nom du point d'observation" width="320">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.name_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Code postal">
+          <ngx-datatable-column  prop="code_city_site" name="Commune">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.code_city_site}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Publié">
+          <ngx-datatable-column  prop="publish_site" name="Publication">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <label class="switch ">
                 <input type="checkbox" class="success" [checked]="row.publish_site" disabled>
@@ -34,7 +42,10 @@
       </div>
     </div>
     <div class="col-6 col-map">
-      <div class="map" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)">
+      <div class="map" leaflet [leafletOptions]="options" [leafletLayers]="markers" 
+      [(leafletCenter)]="center"
+      [(leafletZoom)]="zoom"
+      (leafletMapReady)="onMapReady($event)">
       </div>
     </div>
   </div>

@@ -6,6 +6,7 @@ oppv.comparator = (options) => {
       return {
         pinned: -1,
         nextComparedIndex: 0,
+        comparedPhotoIndexes: [0, 1],
         comparedPhotos: [options.photos[0], options.photos[1]],
         zoomPhotos: [],
         textCollapses: ['description', 'testimonial'],
@@ -43,9 +44,11 @@ oppv.comparator = (options) => {
             this.textCollapsables = []
             this.textCollapses.forEach(name => {
               let el = this.$refs['text_collapse_' + name]
+              if (!el)
+                return;
               let target = el.getElementsByClassName('target')[0]
               if (target.scrollHeight > target.clientHeight)
-              this.textCollapsables.push(name)
+                this.textCollapsables.push(name)
             })
             this.textCollapseds = collapseds
           })
@@ -77,17 +80,46 @@ oppv.comparator = (options) => {
         });
       },
       initMap() {
+        let layersConf = _.get(options.dbconf, 'map_layers', []);
+        if (!Array.isArray(layersConf)) {
+          layersConf = [];
+        }
+        if (!layersConf.length) {
+          layersConf.push({
+            "label": "OSM classic",
+            "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            "options": {
+              "maxZoom": 18,
+              "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
+            }
+          })
+        }
+        let mapLayers = layersConf.map(layer => {
+          return {
+            label: layer.label,
+            layer: L.tileLayer(layer.url, layer.options)
+          }
+        })
+
         map = L.map(this.$refs.map, {
           center: options.site.geom,
-          zoom: 8
+          zoom: options.dbconf.zoom_map_comparator,
+          layers: [mapLayers[0].layer]
         })
-        const tileLayer = L.tileLayer(
-          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-          }
-        )
-        tileLayer.addTo(map)
+
+        L.control.scale({
+          position: 'bottomleft',
+          imperial: false
+        }).addTo(map);
+
+        if (mapLayers.length > 1) {
+          const controlLayers = {};
+          mapLayers.forEach(layerConf => {
+            controlLayers[layerConf.label] = layerConf.layer
+          })
+          L.control.layers(controlLayers).addTo(map);
+        }
+
         L.marker(options.site.geom).addTo(map)
       },
       isPinned(i) {
@@ -116,12 +148,32 @@ oppv.comparator = (options) => {
 
         const photo = options.photos[i]
         let comparedIndex = this.nextComparedIndex
-        if (this.pinned > -1)
+        if (this.pinned > -1) {
           comparedIndex = this.getUnpinned()
-        else //increment nextComparedIndex and back to 0 if > comparedPhotos.length
-          this.nextComparedIndex = ++this.nextComparedIndex % this.comparedPhotos.length
+          this.$set(this.comparedPhotos, comparedIndex, Object.assign({}, photo))
+        } else {
+          /* //increment nextComparedIndex and back to 0 if > comparedPhotos.length
+          this.nextComparedIndex = ++this.nextComparedIndex % this.comparedPhotos.length */
+          this.comparedPhotoIndexes.push(i)
+          this.comparedPhotoIndexes.shift()
 
-        this.$set(this.comparedPhotos, comparedIndex, Object.assign({}, photo))
+          let comparedPhotos = this.comparedPhotoIndexes.map(index => {
+            let photo = options.photos[index]
+            return Object.assign({}, photo)
+          })
+
+          comparedPhotos.sort((a, b) => {
+            return a.date < b.date ? -1 : 1
+          })
+
+          this.comparedPhotos = comparedPhotos.map(comparedPhoto => {
+            const oldComparedPhoto = this.comparedPhotos.find(oldComparedPhoto => {
+              return oldComparedPhoto.date == comparedPhoto.date
+            })
+            comparedPhoto.comparedLoaded = Boolean(oldComparedPhoto)
+            return comparedPhoto;
+          })
+        }
       },
       onComparedLoaded(i) {
         this.$set(this.comparedPhotos, i, Object.assign(this.comparedPhotos[i], {
@@ -133,6 +185,9 @@ oppv.comparator = (options) => {
           this.zoomPhotos = this.comparedPhotos
         else
           this.zoomPhotos = [this.comparedPhotos[i]]
+      },
+      onDownloadClick(photo) {
+        window.saveAs(photo.dl, photo.dl.split('/').pop());
       }
     }
   })

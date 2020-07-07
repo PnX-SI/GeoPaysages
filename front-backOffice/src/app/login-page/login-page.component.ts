@@ -3,6 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from '../services/lgoin.service';
 import { User } from '../shared/user';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
+import { Conf } from '../config';
+
+
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
@@ -13,14 +17,17 @@ export class LoginPageComponent implements OnInit {
   loginForm: FormGroup;
   userForm: any;
   currentUser: User;
+  logoUrl: string;
 
   constructor(
     private loginService: LoginService,
+    private authService: AuthService,
     private formBuilder: FormBuilder,
-    private route: Router
+    private route: Router,
   ) { }
 
   ngOnInit() {
+    this.logoUrl = `${Conf.customFiles}logo/logo_txt_blanc.png`
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required],
@@ -28,13 +35,13 @@ export class LoginPageComponent implements OnInit {
   }
 
   public submit(loginForm) {
-    console.log(loginForm);
     this.userForm = loginForm.value;
-    this.userForm.id_application = 3;
+    this.userForm.id_application = Conf.id_application;
     this.loginService.login(this.userForm)
       .subscribe(
         (currentUser) => {
           this.currentUser = currentUser.user;
+          this.authService.currentUser = this.currentUser;
           this.loginForm.reset();
           this.route.navigate(['sites']);
         },
@@ -62,4 +69,5 @@ export class LoginPageComponent implements OnInit {
     }
     return 'required';
   }
+
 }

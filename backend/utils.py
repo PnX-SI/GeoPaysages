@@ -5,6 +5,10 @@ import os
 
 
 def getImage(photo, prefixe, callback):
+    #here = os.path.dirname(__file__)
+    #newPath = './static/' + DATA_IMAGES_PATH
+    #base_path = os.path.join(here,newPath)
+
     base_path = './static/' + DATA_IMAGES_PATH
     input_name = photo.get('path_file_photo')
     input_path = base_path + input_name
@@ -33,9 +37,7 @@ def getImage(photo, prefixe, callback):
     return img
 
 
-def getThumbnail(photo):
-    h = 150
-
+def getThumbnail(photo, h = 150):
     def callback(img):
         #initW, initH = image.size
         #ratio = h / initH
@@ -43,7 +45,7 @@ def getThumbnail(photo):
         image = img.get('image')
         image = ImageOps.fit(image, (h, h), Image.ANTIALIAS)
         image.save(img.get('output_path'))
-    return getImage(photo, 'thumbnail', callback)
+    return getImage(photo, 'thumbnail' + str(h), callback)
 
 
 def getMedium(photo):
@@ -51,29 +53,37 @@ def getMedium(photo):
         image = img.get('image')
         image.thumbnail((800, 800))
         image.save(img.get('output_path'))
-        addWatherMark(img, photo)
     return getImage(photo, 'medium', callback)
 
 
-def getLarge(photo):
+def getLarge(photo, caption):
+    h = 1200
     def callback(img):
-        addWatherMark(img, photo)
+        image = img.get('image')
+        initW, initH = image.size
+        ratio = h / initH
+        image = image.resize((int(initW*ratio), h), Image.ANTIALIAS)
+        image.save(img.get('output_path'))
+        addCaption(img, image, caption)
     return getImage(photo, 'large', callback)
 
+def getDownload(photo, caption):
+    def callback(img):
+        addCaption(img, img.get('image'), caption)
+    return getImage(photo, 'download', callback)
 
-def addWatherMark(img, photo):
-    copyright_text = photo.get('dico_licence_photo').get(
-        'description_licence_photo')
-    font = ImageFont.truetype("./static/fonts/openSans.ttf", 14)
+
+def addCaption(img, img_src, text):
+    if (not text):
+        return
+    font = ImageFont.truetype("./static/fonts/openSans.ttf", 16)
     if img.get('input_exists'):
-        print('ok', photo)
         try:
-            image = img.get('image')
-            draw = ImageDraw.Draw(image)
-            width, height = image.size
-            draw.text((10, height-24), copyright_text,
-                      font=font, fill=(255, 255, 255, 255))
-            image.save(img.get('output_path'))
+            width, height = img_src.size
+            img_dest = Image.new('RGB', (width, height + 36))
+            img_dest.paste(img_src, (0, 0))
+            draw = ImageDraw.Draw(img_dest)
+            draw.text((10, height + 5), text, font=font, fill=(255, 255, 255, 255))
+            img_dest.save(img.get('output_path'))
         except Exception:
-            print('addWatherMark Invalid image')
-    return img
+            print('addCaption Invalid image')
