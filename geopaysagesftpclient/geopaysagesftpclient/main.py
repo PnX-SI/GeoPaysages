@@ -2,13 +2,14 @@ import argparse
 
 from geopaysagesftpclient import (
     connect,
-    get_site_id,
-    insert_image_in_db,
-    process_image,
-    read_config_file,
-    retrieve_copyright_notice,
-    sqlalchemy_engine_from_config
+    read_config_file
 )
+from geopaysagesftpclient.db import (
+    sqlalchemy_engine_from_config,
+    insert_image_in_db,
+    get_site_id
+)
+from geopaysagesftpclient.images import process_image
 
 
 def process(config_filename):

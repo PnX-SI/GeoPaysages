@@ -3,7 +3,7 @@ from unittest import TestCase
 
 class dbTestCase(TestCase):
     def test_engine(self):
-        from geopaysagesftpclient import sqlalchemy_engine_from_config
+        from geopaysagesftpclient.db import sqlalchemy_engine_from_config
 
         engine = sqlalchemy_engine_from_config('pytest.ini')
 

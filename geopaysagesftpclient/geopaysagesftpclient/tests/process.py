@@ -27,7 +27,7 @@ class ImageProcessTestCase(TestCase):
 
     def test_image_process(self):
         from PIL import Image
-        from geopaysagesftpclient import process_image
+        from geopaysagesftpclient.images import process_image
 
         for size in self.sizes:
             (ofile, exif, iptc) = process_image(
