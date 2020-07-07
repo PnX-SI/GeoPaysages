@@ -12,5 +12,6 @@ user = <user>
 password = <password>
 inputpattern = timelapse/glacierblanc/lateral/{Y}{M}{D}/.+JPG
 outputpattern = {site}_{Y}-{M}-{D}_{filename}
-resize = (<w>,<h>) #optional
+resize =
 save_in_db = false
+copyright_notice = 
