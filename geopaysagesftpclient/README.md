@@ -55,6 +55,7 @@ inputpattern = test/glacierblanc/lateral/{Y}{M}{D}/\w+{ext}
 outputpattern = {site}_{Y}-{M}-{D}{ext}
 resize = 800, 600
 save_in_db = true
+copyright_notice = ©Observateurs des glaciers de France
 
 [sites.another_site]
 host = ftp.public.fr
@@ -65,6 +66,7 @@ inputpatter = images/{Y}{M}{D}/.+{ext}
 outputpatter = siteimages/{site}/{Y}-{M}-{D}/{filename}
 resize =
 save_in_db = false
+copyright_notice = 
 ```
 
 ### Config description
@@ -82,6 +84,7 @@ save_in_db = false
 | outputpattern         | python-regex-like pattern to describe how to name the fetched files from the parsed informations |
 | resize                | (width, height) value for image resizing. If this is not provided, the images will not be resized. |
 | save_in_db            | Boolean that indicates whether or not to register the images in the database |
+| copyright_notice      | **Optional**. Copyright notice to add to the retrieved files IPTC data. This will be ignored if the fetched image already has a copyright notice. |
 
 ### Patterns
 
