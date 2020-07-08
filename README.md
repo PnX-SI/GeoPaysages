@@ -3,6 +3,7 @@
 Application web permettant de publier un observatoire photographique des paysages.
 
 ## Install
+Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.rst
 
 - Créer et activer un environnement virtuel python 3.
 - cd ./backend
@@ -23,8 +24,15 @@ Le projet est porté par le Parc national de la Vanoise. Le site qui sera dével
 
 A suivre...
 
+![alt text](./docs/screenshot.jpg) 
+
 ## Présentation
 
 - CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-13-CDC-OPPV-PNV.pdf
 - Annexe CCTP 2017 : http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip
 - Réflexion 2016 : http://geonature.fr/documents/autres/geopaysages/2016-11-OPP-reflexion.pdf
+
+## DEMO 
+
+http://5.196.209.137/
+

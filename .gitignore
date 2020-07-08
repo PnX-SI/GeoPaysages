@@ -45,7 +45,16 @@ bazel-*
 test-project-host-*
 dist/
 dist-schema/
+var/
 
 
 #doc
 documentation
+geopaysagesftpclient/geopaysagesftpclient/tests/pt_200_400.jpg~
+geopaysagesftpclient/geopaysagesftpclient/tests/pt_300_500.jpg~
+geopaysagesftpclient/geopaysagesftpclient/tests/pt_400_600.jpg~
+geopaysagesftpclient/config.ini
+geopaysagesftpclient/pytest.ini
+geopaysagesftpclient/.vscode/
+geopaysagesftpclient/geopaysagesftpclient.egg-info/
+geopaysagesftpclient/output/

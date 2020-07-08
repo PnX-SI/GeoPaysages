@@ -2,6 +2,7 @@ var oppv = oppv || {};
 oppv.initHome = (options) => {
 
   let gutter = 20;
+  let pageContainer = document.querySelector('.page-content');
   let container = document.querySelector('.blocks');
 
   let block_map = document.querySelector('.block-map');
@@ -50,6 +51,7 @@ oppv.initHome = (options) => {
   })
 
   function onResize() {
+    container.style.transform = null;
     if (window.matchMedia("(min-width: 800px)").matches) {
 
       container.style.height = null;
@@ -58,8 +60,10 @@ oppv.initHome = (options) => {
       let containerW = container.clientWidth;
       let containerH = container.clientHeight;
 
+      
       let blockSM = (containerH * 1 / 3);
       let blockBG = (containerH * 2 / 3);
+      let nextContainerW = (blockSM * 5 + gutter * 3);
 
       block_1.style.height = (blockSM * 2) + 'px';
       block_1.style.width = block_1.style.height;
@@ -92,7 +96,17 @@ oppv.initHome = (options) => {
       block_6.style.left = (blockBG * 2 + gutter * 3) + 'px';
       block_6.style.top = (blockSM * 2 + gutter) + 'px';
 
-      container.style.width = (blockSM * 5 + gutter * 3) + 'px';
+      container.style.width = nextContainerW + 'px';
+
+      /**
+       * transform: scale(0.66);
+    transform-origin: left;
+       */
+
+      if (nextContainerW > pageContainer.clientWidth) {
+        let rate = pageContainer.clientWidth / nextContainerW;
+        container.style.transform = 'scale(' + rate + ')'
+      }
 
     } else {
 

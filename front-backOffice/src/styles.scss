@@ -6,10 +6,23 @@
 @import './assets/css/icomoon.css';
 @import './assets/css/custom_ngx_table.scss';
 
+.black-overlay{
+  position: fixed !important
+}
 .custom-modal {
-  .modal-content{
-      min-width: 600px;
+  .modal-content {
+    min-width: 600px;
   }
+
+  .modal-body {
+    padding: 20px
+  }
+
+  .modal-header {
+    padding: 15px;
+    background-color: #f8f9fa
+  }
+
 }
 
 .switch {
@@ -33,10 +46,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #ff5252;
   -webkit-transition: .4s;
   transition: .4s;
+  opacity: 1;
 }
+
+
+  .slider-disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
 
 .slider:before {
   position: absolute;
@@ -48,6 +68,7 @@
   background-color: white;
   -webkit-transition: .4s;
   transition: .4s;
+  opacity: 1;
 }
 
 input.success:checked+.slider {
@@ -72,7 +93,7 @@ input:checked+.slider:before {
   --color-primary: #00188F;
   --color-blue: #283371;
   --color-green: #7AB929;
-  --color-red: #ff5252;
+  --color-red: #dc3545;
 }
 
 
@@ -103,12 +124,14 @@ button:focus {
   font-style: italic;
   font-size: 14px;
 }
-ng-select{
-  .ng-placeholder{
+
+ng-select {
+  .ng-placeholder {
     font-style: italic;
     font-size: 14px;
   }
 }
+
 .form-control {
   border: none;
   border-radius: 0px;
@@ -135,6 +158,7 @@ ng-select{
   font-size: 13px;
   width: fit-content;
 }
+
 .red-btn {
   background-color: var(--color-red);
   color: #fff;
@@ -143,7 +167,7 @@ ng-select{
   text-transform: uppercase;
   font-size: 13px;
   width: fit-content;
-} 
+}
 
 .progress-bar {
   background-color: var(--color-primary);
@@ -210,4 +234,47 @@ h4 .light,
 h5 .light,
 h6 .light {
   font-weight: 500;
+}
+
+.leaflet-popup-content {
+  width: fit-content !important;
+  margin: 0;
+
+  p {
+    margin: 1px 0
+  }
+}
+
+.delete-modal {
+
+  .modal-content {
+    min-width: 300px;
+  }
+
+  .modal-body {
+    padding: 20px
+  }
+
+  .modal-header {
+    padding: 10px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    background-color: #ff6666
+  }
+
+  .cancel-btn {
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: none;
+    padding: 4px 38px;
+    text-transform: uppercase;
+    font-size: 13px;
+    width: fit-content;
+    outline: none
+  }
+}
+
+.custom-popup {
+  bottom: 26px !important;
 }

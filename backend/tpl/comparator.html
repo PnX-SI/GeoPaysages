@@ -1,34 +1,32 @@
 {% extends "layout.html" %}
 {% block title %}{{ site.name_site }}{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />
 
+<script src="{{ url_for('static', filename='vendor/FileSaver.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/swiper/swiper.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator.js') }}"></script>
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">Comparaison de photos - <span class="light">{{ site.name_site }}</span></h3>
+<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} <small class="text-lowercase">(réf. : {{ site.ref_site }})</small></h3>
 {% endblock %}
 
-{% block bodyClassNames %}page-comparator{% endblock %}
+{% block bodyClassNames %}page-comparator {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
 
 {% block content %}
 <div class="page-content container-fluid" id="js-app-comparator">
+  <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
-    <div class="img-wrapper" v-for="photo in zoomPhotos">
-      <figure>
-          <img :src="photo.lg" />
-          <figcaption class="sans-serif font-weight-bold mt-2">
-            <span class="d-block" v-html="photo.date"></span>
-            <span class="d-block">{{ site.name_site }}</span>
-          </figcaption>
-      </figure>
-    </div>
+    <figure v-for="photo in zoomPhotos">
+        <img :src="photo.lg" />
+        <figcaption class="text-center">
+          <button class="btn btn-primary align-self-start" @click="onDownloadClick(photo)">{{ _('obs_point.buttons.download') }} <i class="icon ion-md-download"></i></button>
+        </figcaption>
+    </figure>
   </b-modal>
   <div class="row">
     <!-- <div class="col-auto col-thumbs">
@@ -42,14 +40,14 @@
       </ul>
     </div> -->
     <div class="col col-main">
-      <div class="row compared">
-        <div class="col-12 p-0 text-right">
+      <div class="row compared pt-3">
+        <!-- <div class="col-12 p-0 text-right">
           <b-btn v-on:click="onZoomClick()" :size="'sm'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
             <i class="material-icons align-middle">fullscreen</i>
           </b-btn>
-        </div>
-        {% for i in [0, 1] %}
-        <div class="d-flex align-items-center col-lg-6">
+        </div> -->
+        {% for i in [0, 1] if photos[i] %}
+        <div class="d-flex align-items-end col-sm-6">
           <div class="img-wrapper">
             <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
               <div class="hidden-async-resolved progress">
@@ -58,10 +56,18 @@
               </div>
               <img src="{{ photos[i].md }}" :src="comparedPhotos[{{ i }}].md" @load="onComparedLoaded({{ i }})" @click="onZoomClick({{ i }})" v-b-modal.modal_comparator_zoom />
               <div class="d-flex justify-content-between py-1">
-                <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date">{{ photos[i].date }}</div>
-                <b-button class="btn-sm btn-toggle btn-big-icon" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
+                <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date_diplay.md">{{ photos[i].date_diplay.md }}</div>
+                <b-button class="btn-sm btn-toggle btn-big-icon border-0" :pressed="isPinned({{ i }})" v-on:click="onPinClick({{ i }})" variant="outline-primary">
                   <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon" v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
                 </b-button>
+              </div>
+              <div class="img-tools"> 
+                <!-- <b-btn v-on:click="onDownloadClick(comparedPhotos[{{ i }}])" :size="'lg'" :variant="'link'" class="btn-download">
+                  <i class="icon ion-md-download"></i>
+                </b-btn> -->
+                <b-btn v-on:click="onZoomClick({{ i }})" :size="'lg'" :variant="'link'" class="btn-zoom" v-b-modal.modal_comparator_zoom>
+                    <i class="icon ion-ios-expand"></i>
+                </b-btn>
               </div>
             </span>
           </div>
@@ -78,7 +84,7 @@
               {% for photo in photos %}
               <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})" v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
                 <img src="{{ photo.sm }}" />
-                <div class="img-date">{{ photo.date }}</div>
+                <div class="img-date">{{ photo.date_diplay.sm }}</div>
               </div>
               {% endfor %}
             </div>
@@ -92,35 +98,44 @@
       <div class="row mt-3">
         <div class="col-lg-5 pl-0 mb-5 text-right">
           <div class="map-wrapper" ref="map"></div>
-          <button class="btn btn-sm btn-primary text-uppercase">
-            Notice technique pour le photographe <i class="icon ion-md-download ml-2"></i>
-          </button>
+          {% if site.path_file_guide_site: %}
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
+            {{ _('obs_point.buttons.notice') }} <i class="icon ion-md-download ml-2"></i>
+          </a>
+          {% endif %}
+          {% if dbconf.mailto_observation: %}
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="mailto:{{ dbconf.mailto_observation|replace('%ref_site%', site.ref_site) }}">
+            {{ _('obs_point.buttons.obs') }} <i class="icon ion-ios-eye ml-2"></i>
+          </a>
+          {% endif %}
         </div>
         <div class="col-lg-7 pr-0">
-          <h5 class="text-uppercase">Description</h5>
+          <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target font-italic">
               {{ site.desc_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
-                <span class="visible-text-collapsed">Lire plus</span>
-                <span class="hidden-text-collapsed">Lire moins</span>
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+                <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
             </div>
           </div>
-          <h5 class="text-uppercase mt-4">Témoignage</h5>
+          {% if site.testim_site %}
+          <h5 class="text-uppercase mt-4">{{ _('obs_point.testimonials') }}</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
               {{ site.testim_site }}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
-                <span class="visible-text-collapsed">Lire plus</span>
-                <span class="hidden-text-collapsed">Lire moins</span>
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+                <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
             </div>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -131,6 +146,7 @@
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
       oppv.comparator({
+        dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         photos: {{photos | tojson}}
       })

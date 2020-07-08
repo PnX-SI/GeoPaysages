@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% set active_page = 'home' %}
+{% block title %}{{ _('home.meta_title') }}{% endblock %}
 {% block head %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
@@ -12,7 +13,7 @@
 {% block bodyClassNames %}page-home{% endblock %}
 
 {% block header_title %}
-<h1>Observatoire photographique des paysages de vanoise</h1>
+<h1>{{ _('home.title') }}</h1>
 {% endblock %}
 
 {% block content %}
@@ -21,21 +22,21 @@
 
     <div class="block block-map">
       <div class="js-map-wrapper h-100"></div>
-      <a href="/map">EXPLOREZ LA CARTE INTERACTIVE</a>
+      <a href="/map">{{ _('home.block.explore_map') }}</a>
     </div>
 
     {% for block in blocks %}
     <div class="block block-{{ loop.index }}">
-      <div class="img" style="background-image: url('{{ block.get('photo').get('url') }}');"></div>
+      <div class="img" style="background-image: url('{{ block.get('photo') }}');"></div>
       <div class="discover">
-        Découvrir ce site photographique
+        {{ _('home.block.discover') }}
       </div>
       <div class="legend">
-        <h6>Photographie</h6>
-        <h5>{{ block.get('site').get('name_site') }}</h5>
-        {{ block.get('site').get('desc_site') }}
+        <h6>{{ _('home.block.photography') }}</h6>
+        <h5>{{ block.get('name_site') }}<br />{{ block.get('commune').get('nom_commune') }}</h5>
+        {{ block.get('legend_site') }}
       </div>
-      <a href="/comparator/{{ block.get('site').get('id_site') }}"></a>
+      <a href="/comparator/{{ block.get('id_site') }}"></a>
     </div>
     {% endfor %}
     

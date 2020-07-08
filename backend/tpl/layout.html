@@ -3,23 +3,28 @@
 
 <head>{% block head %}
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
 
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/custom-style.css') }}">
 
   <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/vue/dist/vue.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/vue.min.js') }}"></script>
 
   <!-- Add this after vue.js -->
   <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
 
   {% endblock %}
-  <title>{% block title %}Observatoire photographique des paysages de vanoise{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
 </head>
 
 {% set active_page = active_page|default('') -%}
@@ -27,23 +32,22 @@
 <body class="{% block bodyClassNames %}{% endblock %}">
 
     <header class="container-fluid" id="header">
-      <img class="header-logo" src="{{ url_for('static', filename='images/logo_txt_bleu.png') }}" />
+      <a href="/">
+        <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_color.png') }}" />
+      </a>
       <div class="row nav-bar">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
           <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
             <ul class="navbar-nav sans-serif">
               <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
-                <a class="nav-link " href="/">Accueil</a>
-              </li>
-              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
-                <a class="nav-link" href="/gallery">Galerie photo</a>
+                <a class="nav-link " href="/">{{ _('header.nav.home') }}</a>
               </li>
               <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
-                <a class="nav-link" href="/map" >Carte interactive</a>
+                <a class="nav-link" href="/map" >{{ _('header.nav.map') }}</a>
               </li>
-              <li class="nav-item {% if active_page == 'contact' %}active{% endif %}">
-                <a class="nav-link" href="http://www.vanoise-parcnational.fr/fr/formulaire-contact" target="_blank">Contact</a>
+              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+                <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
               </li>
             </ul>
           </b-collapse>
@@ -57,63 +61,57 @@
     {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
-      <div>
-        <img class="logo mb-4" src="{{ url_for('static', filename='images/logo_txt_blanc.png') }}" />
+      <div class="col-lg-11 col-xl-10">
+        <img class="logo mb-4" src="{{ url_for('static', filename='custom/logo/logo_txt_blanc.png') }}" />
 
         <div class="footer-menu">
-          <h6>LE SITE</h6>
+          <h6>{{ _('footer.internal_title') }}</h6>
           <ul class="mb-4">
             <li>
               <a href="/">
-                Accueil
-              </a>
-            </li>
-            <li>
-              <a href="/gallery">
-                Galerie
+                {{ _('footer.internal_links.home') }}
               </a>
             </li>
             <li>
               <a href="/map">
-                Carte interactive
+                {{ _('footer.internal_links.map') }}
               </a>
             </li>
             <li>
-              <a href="http://www.vanoise-parcnational.fr" target="_blank">
-                Site du Parc National de Vanoise
+              <a href="/gallery">
+                {{ _('footer.internal_links.gallery') }}
               </a>
             </li>
+            {% if dbconf.mailto_contact: %}
             <li>
-              <a href="#">
-                Rando Vanoise
+              <a href="mailto:{{ dbconf.mailto_contact }}">
+                {{ _('footer.internal_links.contact') }}
               </a>
             </li>
-            <li>
-              <a href="#">
-                BiodiVanoise
-              </a>
-            </li>
+            {% endif %}
           </ul>
         </div>
 
         <div class="footer-contact">
-          <h6>NOUS CONTACTER</h6>
-          <span>
-            <a href="http://www.vanoise-parcnational.fr/fr/formulaire-contact" target="_blank">
-              Formulaire de contact
-            </a>
-          <ul class="mb-4">
-            <li></li>
-            <li></li>
-            <li></li>
+        {% if dbconf.external_links|length: %}
+          <h6>{{ _('footer.external_title') }}</h6>
+          <ul>
+          {% for external_link in dbconf.external_links %}
+            <li>
+              <a href="{{ external_link.url }}" target="_blank">
+                  {{ external_link.label }}
+              </a>
+            </li>
+          {% endfor %}
           </ul>
+        {% endif %}
         </div>
       </div>
       
 
       <hr class="mt-4" />
 
-      <div class="text-light">&copy;2018 Parc national de la Vanoise</div>
+      <div class="text-light">{{ _('footer.copyright') }}</div>
       {% endblock %}
     </footer>
     

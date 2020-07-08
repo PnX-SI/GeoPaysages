@@ -1,3 +1,7 @@
+.page-home {
+    overflow-x: hidden;
+}
+
 .page-home .page-content {
     background: url("../images/bg-home.jpg") no-repeat center;
     background-size: cover;
@@ -8,6 +12,7 @@
   height: calc(100vh - 160px);
   width: 50%;
   margin : 0 auto;
+  transform-origin: left;
 }
 
 .page-home .block {
@@ -37,7 +42,8 @@
     top: 0;
     left: 0;
     display: flex;
-    position: absolute
+    position: absolute;
+    z-index: 2;
 }
 
 .page-home .legend{
@@ -76,7 +82,7 @@
     left: 0;
     height: 8px;
     width: 8px;
-    background-color: var(--color-green);
+    background-color: var(--color-secondary);
     transform: translateY(25%);
 }
 
@@ -89,14 +95,6 @@
     font-family: 'Hind', sans-serif;
 }
 
-.page-home .discover{
-    text-align: center;
-    color: #fff;
-    font-style: italic;
-    background-color : rgba(103,233,255,0.5);
-    z-index: 9999;
-    transition: transform .5s ease;
-}
 .page-home .discover {
     width: 100%;
     display: flex;

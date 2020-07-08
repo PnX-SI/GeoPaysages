@@ -1,11 +1,12 @@
 .page-gallery .container {
-    min-height: calc(100vh - 472px);
+    min-height: var(--page-container-min-height);
 }
 
 .page-gallery .picture{
-    padding: 20px 10px 0px 10px;
+    padding: 0 10px 0 10px;
     overflow: hidden;
     position: relative;
+    margin-bottom: 20px;
 }
 
 .page-gallery .picture img{
@@ -29,21 +30,19 @@
     right: 10px;
     padding: 0px 5px;
     transform: translateY(100%);
+    line-height: 20px;
+}
+
+.page-gallery .picture .discover .township {
+    font-size: .9em;
+}
+
+.page-gallery .picture .discover .ref {
+    position: absolute;
+    right: 3px;
+    bottom: -5px;
 }
 
 .page-gallery .picture:hover .discover{
     transform: translateY(-100%);
-}
-
-@media screen and (max-width: 767px) {
-    .page-gallery .picture:first-child img{
-        filter: brightness(50%);
-        -webkit-filter: brightness(50%);
-        -moz-filter: brightness(50%);
-        -o-filter: brightness(50%);
-        -ms-filter: brightness(50%);
-    }
-    .page-gallery .picture:first-child .discover{
-        transform: translateY(-170%);
-    }
 }
