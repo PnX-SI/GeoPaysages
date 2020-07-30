@@ -8,8 +8,8 @@
   <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
 
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
@@ -20,8 +20,9 @@
   <script src="{{ url_for('static', filename='vendor/vue.min.js') }}"></script>
 
   <!-- Add this after vue.js -->
-  <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script> -->
+  <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.js') }}"></script>
 
   {% endblock %}
   <title>{% block title %}{% endblock %}</title>
