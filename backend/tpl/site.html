@@ -13,6 +13,9 @@
 {% if comparator_version == 1: %}
 <script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
 {% endif %}
+{% if comparator_version == 2: %}
+<script src="{{ url_for('static', filename='vendor/L.Map.Sync.js') }}"></script>
+{% endif %}
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator-v' + comparator_version|string + '.js') }}"></script>
 {% endblock %}
@@ -28,10 +31,11 @@
   <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <div class="row">
     <div class="col col-main">
-      <div id="js-app-comparator" v-pre>
+      <div id="js-app-comparator" class="app-comparator" v-pre>
         {% include 'comparator-v'+ comparator_version|string +'.html' %}
       </div>
-      <div class="row mt-3">
+      <div class="container-fluid">
+      <div class="row mt-3 info">
         <div class="col-lg-5 pl-0 mb-5 text-right">
           <div class="map-wrapper" ref="map"></div>
           {% if site.path_file_guide_site: %}
@@ -74,6 +78,7 @@
           {% endif %}
         </div>
       </div>
+    </div>
     </div>
   </div>
 </div>

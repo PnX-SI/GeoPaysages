@@ -4,6 +4,7 @@
 }
 
 .page-site .page-content .compared {
+    padding: 0 var(--padding-x);
     background-color: #EFEFEF;
 }
 

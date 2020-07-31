@@ -217,7 +217,7 @@ def site(id_site):
         photos = [{
             'id': photo.get('id_photo'),
             'filename': photo.get('path_file_photo'),
-            'date': photo.get('filter_date')
+            'shot_on': photo.get('filter_date')
         } for photo in photos]
     
     return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
