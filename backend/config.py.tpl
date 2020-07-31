@@ -11,3 +11,5 @@ SECRET_KEY = 'secret key'
 DATA_IMAGES_PATH='data/images/'# From ./static dir
 DATA_NOTICES_PATH='data/notice-photo/'# From ./static dir
 BABEL_TRANSLATION_DIRECTORIES='./i18n'# From ./ dir
+
+COMPARATOR_VERSION = 2
