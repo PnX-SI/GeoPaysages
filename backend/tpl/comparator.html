@@ -20,7 +20,7 @@
 {% block content %}
 <div class="page-content container-fluid" id="js-app-comparator">
   <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
-  <b-modal id="modal_comparator_zoom" class="modal-fs modal-no-footer modal-img" no-fade lazy>
+  <b-modal id="modal_comparator_zoom" modal-class="modal-fs modal-no-footer modal-img" no-fade lazy>
     <figure v-for="photo in zoomPhotos">
         <img :src="photo.lg" />
         <figcaption class="text-center">

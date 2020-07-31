@@ -51,6 +51,7 @@
     width: auto;
     height: auto;
     cursor: pointer;
+    outline: none;
 }
 
 .page-comparator .page-content .compared .img-wrapper .img-tools {
