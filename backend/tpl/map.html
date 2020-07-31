@@ -79,7 +79,7 @@
                 class="btn btn-sm btn-block btn-site" 
                 @mouseover="onSiteMousover(site)"
                 @mouseout="onSiteMouseout(site)"
-                :href="'/comparator/' + site.id_site" 
+                :href="'/site/' + site.id_site" 
                 v-html="site.name_site + '<br />' + site.ville.label + '<br />(réf. : ' + site.ref_site + ')'"></a>
             </b-card-body>
           </b-collapse>

@@ -62,7 +62,7 @@ db.init_app(app)
 db = SQLAlchemy()
 
 @app.context_processor
-def inject_dbconf():
+def inject_to_tpl():
     sql = text("SELECT key, value FROM geopaysages.conf")
     result = db.engine.execute(sql).fetchall()
     rows = [dict(row) for row in result]
@@ -73,7 +73,7 @@ def inject_dbconf():
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
         
-    return dict(dbconf=conf)
+    return dict(dbconf=conf, debug=app.debug)
 
 if __name__ == "__main__":
     app.run(debug=True)

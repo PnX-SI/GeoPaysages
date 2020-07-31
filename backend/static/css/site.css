@@ -1,0 +1,16 @@
+.page-site #header {
+    margin-bottom: 0;
+}
+
+.page-site:not(.with-testimonial) .text-collapse.text-collapsable.text-collapsed .target {
+    max-height: 220px;
+}
+
+.page-site .page-content {
+    padding: 0 90px;
+}
+
+.page-site .page-content .map-wrapper {
+    height: 315px;
+    margin-bottom: 20px;
+}

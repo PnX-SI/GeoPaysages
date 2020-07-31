@@ -17,7 +17,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/custom-style.css') }}">
 
   <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
+  {% if debug: %}
+  <script src="{{ url_for('static', filename='vendor/vue.js') }}"></script>
+  {% else %}
   <script src="{{ url_for('static', filename='vendor/vue.min.js') }}"></script>
+  {% endif %}
 
   <!-- Add this after vue.js -->
   <!-- <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script> -->

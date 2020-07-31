@@ -5,7 +5,7 @@ import models
 import utils
 import random
 from models import (db)
-from config import DATA_IMAGES_PATH, IGN_KEY
+from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION
 import json
 from datetime import datetime
 from flask_babel import format_datetime, gettext, ngettext
@@ -149,19 +149,20 @@ def gallery():
     
     return render_template('gallery.html', sites=dump_sites)
 
-@main.route('/comparator/<int:id_site>')
-def comparator(id_site):
+@main.route('/site/<int:id_site>')
+def site(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
     if len(site) == 0:
         return abort(404)
 
     site = site[0]
+    
+    get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
+    site['ville'] = communes_schema.dump(get_villes).data[0]
+
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date')
     photos = photo_schema.dump(get_photos_by_site).data
-    get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
-    
-    site['ville'] = communes_schema.dump(get_villes).data[0]
 
     def getPhoto(photo):
         date_diplay = {}
@@ -210,9 +211,10 @@ def comparator(id_site):
             'date_diplay': date_diplay
         }
 
-    photos = [getPhoto(photo) for photo in photos]
+    if COMPARATOR_VERSION == 1:
+        photos = [getPhoto(photo) for photo in photos]
     
-    return render_template('comparator.html', site=site, photos=photos)
+    return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
 
 
 @main.route('/map')
@@ -240,7 +242,7 @@ def map():
             id_site=site.get('id_site'))
         photos = photo_schema.dump(get_photos_by_site).data
 
-        site['link'] = url_for('main.comparator', id_site=site.get('id_site'), _external=True)
+        site['link'] = url_for('main.site', id_site=site.get('id_site'), _external=True)
         site['latlon'] = site.get('geom')
         site['themes'] = themes_list
         site['subthemes'] = subthemes_list
