@@ -213,6 +213,12 @@ def site(id_site):
 
     if COMPARATOR_VERSION == 1:
         photos = [getPhoto(photo) for photo in photos]
+    else:
+        photos = [{
+            'id': photo.get('id_photo'),
+            'filename': photo.get('path_file_photo'),
+            'date': photo.get('filter_date')
+        } for photo in photos]
     
     return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
 
