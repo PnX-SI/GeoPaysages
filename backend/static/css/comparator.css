@@ -81,6 +81,7 @@
     background: #CCC;
     height: 100px;
     width: auto;
+    user-select: none;
 }
 
 .page-comparator .page-content .thumbs .thumb.selected .img-date {

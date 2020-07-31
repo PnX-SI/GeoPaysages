@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 {% block title %}{{ site.name_site }}{% endblock %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper.min.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" />
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator.css') }}" />
 
 <script src="{{ url_for('static', filename='vendor/FileSaver.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
-<script src="{{ url_for('static', filename='vendor/swiper/swiper.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator.js') }}"></script>
 {% endblock %}
 
