@@ -93,6 +93,13 @@ button{
     background-color: var(--color-secondary-light);
     border-color: var(--color-secondary-light);
 }
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-secondary-light);
+}
 
 .btn-link {
     color: var(--color-primary);

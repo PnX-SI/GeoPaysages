@@ -5,12 +5,22 @@ geopsg.comparator = (options) => {
     SIDE_BY_SIDE: 'sbs',
     SPLIT: 'split'
   };
+  let sbsCtrl;
   new Vue({
     el: '#js-app-comparator',
     data: () => {
       return {
         MODES: MODES,
         curMode: MODES.SIDE_BY_SIDE,
+        modeBtns: [{
+          name: MODES.SIDE_BY_SIDE,
+          label: "Superposé",
+          active: true
+        }, {
+          name: MODES.SPLIT,
+          label: "Côte à côte",
+          active: false
+        }],
         photos: options.photos,
         comparedPhotos: [
           options.photos[0],
@@ -48,6 +58,13 @@ geopsg.comparator = (options) => {
 
         return map;
       },
+      onBtnModeClick(curBtn) {
+        for (const btn of this.modeBtns) {
+          btn.active = btn.name == curBtn.name;
+        }
+        this.curMode = curBtn.name;
+        this.updateLayers();
+      },
       onPhotoSelected(index, photo) {
         this.$set(this.comparedPhotos, index, photo);
         //this.comparedPhotos[index] = photo;
@@ -69,6 +86,10 @@ geopsg.comparator = (options) => {
                 L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]])
               );
             });
+            if (sbsCtrl) {
+              maps[0].removeControl(sbsCtrl);
+              sbsCtrl = null;
+            }
             if (this.curMode == MODES.SPLIT) {
               layers[0].addTo(maps[0]);
               layers[1].addTo(maps[1]);
@@ -77,8 +98,10 @@ geopsg.comparator = (options) => {
               layers[1].options.pane = 'right';
               layers[0].addTo(maps[0]);
               layers[1].addTo(maps[0]);
-              L.control.sideBySide(layers[0], layers[1]).addTo(maps[0]);
+              sbsCtrl = L.control.sideBySide(layers[0], layers[1]).addTo(maps[0]);
             }
+            this.resizeMaps();
+            maps[0].fitBounds(maps[0].getBounds());
           });
       },
       loadImg(filename) {
@@ -94,6 +117,13 @@ geopsg.comparator = (options) => {
         maps.forEach(map => {
           map.eachLayer((layer) => {
             map.removeLayer(layer);
+          });
+        });
+      },
+      resizeMaps() {
+        maps.forEach(map => {
+          map.eachLayer((layer) => {
+            map.invalidateSize();
           });
         });
       }
