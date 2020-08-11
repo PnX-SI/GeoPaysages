@@ -123,6 +123,24 @@ Editer le fichier de configuration ``./backend/config.py.tpl``.
 
     ./install_app.sh
 
+Mise à jour de l'application (Front et back)
+============================================
+
+- Au préalable, s'assurer que le fichier de configuration /geopaysages/front-backOffice/src/app/config.ts contienne la ligne suivante :
+
+::
+
+    customFiles: '<nom domaine ou url>/static/custom/',
+    
+- Se placer dans le répertoire geopaysages
+- Lancer l'update
+
+::
+
+    ./update_app.sh
+    
+- Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
+- Un répertoire geopaysages-[date mise à jour] est créé ou mis à jour, contenant tout l'environnement de l'ancienne version permettant de pouvoir revenir en arrière
 
 Personnalisation de l'application
 ==============================   
