@@ -194,7 +194,7 @@ Internationalisation de l'application
 ::
 
     . cd geopaysages/
-    . venv/bin/activate
+    . source ./venv/bin/activate (venv doit apparitre en préfixe des commandes)
     
 - lancer la commande de compilation en se plaçant au préalable dans le répertoire backend :
 
@@ -334,7 +334,7 @@ Ajout et personnalisation d'une nouvelle page html
 
 **5. Compilation pour la prise en compte des modifications**
 
-- Suivre les étapes du chapitre Internatinalisation de l'application
+- Suivre les étapes du chapitre Internationalisation de l'application
 - Pour les modifications effectuées dans les fichiers python, relancer la compilation python
 
 ::
