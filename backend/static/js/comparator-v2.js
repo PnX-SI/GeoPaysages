@@ -1,26 +1,36 @@
 var geopsg = geopsg || {};
 geopsg.comparator = (options) => {
   const maps = [];
+  const MODE_SIDE_BY_SIDE = 'sbs';
+  const SPLIT = 'split';
   const MODES = {
     SIDE_BY_SIDE: 'sbs',
     SPLIT: 'split'
   };
+  const modes = [{
+    name: 'sidebyside',
+    label: "Superposition"
+  }, {
+    name: 'split',
+    label: "Côte à côte"
+  }];
   let sbsCtrl;
   new Vue({
     el: '#js-app-comparator',
     data: () => {
       return {
         MODES: MODES,
-        curMode: MODES.SIDE_BY_SIDE,
+        curMode: modes[0],
         modeBtns: [{
           name: MODES.SIDE_BY_SIDE,
-          label: "Superposé",
+          label: "Superposition",
           active: true
         }, {
           name: MODES.SPLIT,
           label: "Côte à côte",
           active: false
         }],
+        modes: modes,
         photos: options.photos,
         comparedPhotos: [
           options.photos[0],
@@ -52,17 +62,15 @@ geopsg.comparator = (options) => {
           center: [0, 0],
           zoom: 0,
           zoomSnap: 0.25,
-          minZoom: -5
+          minZoom: -5,
+          gestureHandling: true
         });
         map.attributionControl.setPrefix('');
 
         return map;
       },
-      onBtnModeClick(curBtn) {
-        for (const btn of this.modeBtns) {
-          btn.active = btn.name == curBtn.name;
-        }
-        this.curMode = curBtn.name;
+      onBtnModeClick(selectedMode) {
+        this.curMode = selectedMode;
         this.updateLayers();
       },
       onPhotoSelected(index, photo) {
@@ -90,10 +98,10 @@ geopsg.comparator = (options) => {
               maps[0].removeControl(sbsCtrl);
               sbsCtrl = null;
             }
-            if (this.curMode == MODES.SPLIT) {
+            if (this.curMode.name == 'split') {
               layers[0].addTo(maps[0]);
               layers[1].addTo(maps[1]);
-            } else if (this.curMode == MODES.SIDE_BY_SIDE) {
+            } else if (this.curMode.name == 'sidebyside') {
               layers[0].options.pane = 'left';
               layers[1].options.pane = 'right';
               layers[0].addTo(maps[0]);

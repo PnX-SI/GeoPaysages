@@ -1,9 +1,34 @@
 .page-site .app-comparator {
   height: calc(100vh - 190px);
   position: relative;
+  --tools-top: 8px;
 }
 
-.page-site .app-comparator .toolbar {
+.page-site .app-comparator .photo-selector {
   position: absolute;
   z-index: 1000;
+  top: var(--tools-top);
+}
+.page-site .app-comparator .photo-selector.left {
+  left: 8px;
+}
+.page-site .app-comparator .photo-selector.right {
+  right: 8px;
+}
+
+.page-site .app-comparator .mode-selector {
+  position: absolute;
+  z-index: 1000;
+  width: 100%;
+  top: var(--tools-top);
+}
+
+.page-site .app-comparator .mode-selector-label {
+  background: rgba(120, 190, 32, .8);
+  color: #FFF;
+  padding: 6px 0 0 12px;
+}
+
+.page-site .app-comparator .mode-selector-label > span {
+  border-right: 1px solid #FFF;
 }

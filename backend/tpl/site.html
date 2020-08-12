@@ -16,6 +16,8 @@
 {% if comparator_version == 2: %}
 <script src="{{ url_for('static', filename='vendor/leaflet-side-by-side.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/L.Map.Sync.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.css') }}" type="text/css">
+<script src="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.min.js') }}"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator-v' + comparator_version|string + '.js') }}"></script>
