@@ -140,13 +140,13 @@ Mise à jour de l'application (Front et back)
     ./update_app.sh
     
 - Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
-- Un répertoire geopaysages-[date mise à jour] est créé ou mis à jour, contenant tout l'environnement de l'ancienne version permettant de pouvoir revenir en arrière
+- Un répertoire <user>/geopaysages-[date mise à jour] est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
 
 :Attention:
 
         La mise à jour applicative n eprend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
 
-Lors de la mise à jour applicative depuis le script geopaysages/update_app.sh, un répertoire d'archive de l'ancienne release est créé ou mis à jour = geopaysages-[date mise à jour]. Il contient tout l'ancien environnement dont les pages personnalisées. Donc récupération de :
+Récupération depuis geopaysages-[date mise à jour] :
 
 - le fichier html de la page dans backend/tpl
 - le fichier layout.html ou les modifs faites dedans dans backend/tpl
