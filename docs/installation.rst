@@ -144,7 +144,7 @@ Mise à jour de l'application (Front et back)
 
 :Attention:
 
-        La mise à jour applicative n eprend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
+        La mise à jour applicative ne prend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
 
 Récupération depuis geopaysages-[date mise à jour] :
 
