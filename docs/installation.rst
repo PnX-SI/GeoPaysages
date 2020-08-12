@@ -142,6 +142,10 @@ Mise à jour de l'application (Front et back)
 - Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
 - Un répertoire geopaysages-[date mise à jour] est créé ou mis à jour, contenant tout l'environnement de l'ancienne version permettant de pouvoir revenir en arrière
 
+:Attention:
+
+        La mise à jour applicative n eprend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
+
 Personnalisation de l'application
 ==============================   
 	
