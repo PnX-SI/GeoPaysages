@@ -146,6 +146,18 @@ Mise à jour de l'application (Front et back)
 
         La mise à jour applicative n eprend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
 
+Lors de la mise à jour applicative depuis le script geopaysages/update_app.sh, un répertoire d'archive de l'ancienne release est créé ou mis à jour = geopaysages-[date mise à jour]. Il contient tout l'ancien environnement dont les pages personnalisées. Donc cela demande de récupérer
+- le fichier html de la page dans backend/tpl
+- le fichier layout.html ou les modifs faites dedans dans backend/tpl
+- le fichier routes.py ou les modifs faites dedans dans backend
+- le fichier d'internationalisation messages.po ou les modifs dedans dans backend/i18n/fr/LC_MESSAGES
+- s'il y a des images, les récupérer dans backend/static/images
+- lancer les commandes nécessaires, notamment pour python pour l'internationalisation (voir chapitre ci-dessous)
+- lancer
+::
+
+        sudo service supervisor restart
+
 Personnalisation de l'application
 ==============================   
 	
