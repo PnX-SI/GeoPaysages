@@ -207,6 +207,15 @@ def update_site():
             id_site=site.get('id_site')).delete()
         models.TSite.query.filter_by(id_site=site.get('id_site')).update(site)
         db.session.commit()
+        photos = models.TPhoto.query.filter_by(id_site=site.get('id_site')).all()
+        photos = photo_schema.dump(photos).data
+        base_path = './static/' + DATA_IMAGES_PATH
+        photos2 = []
+        for photo in photos:
+            photo_name = photo.get('path_file_photo')
+            for fileName in os.listdir(base_path):
+                if fileName.endswith('_' + photo_name):
+                    os.remove(base_path + fileName)
     except Exception as exception:
         return (exception), 400
     return jsonify('site updated successfully'), 200
