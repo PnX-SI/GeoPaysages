@@ -82,7 +82,7 @@ geopsg.comparator = (options) => {
                 L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]])
               );
             });
-            
+
             if (this.curMode.name == 'split') {
               layers[0].addTo(maps[0]);
               layers[1].addTo(maps[1]);
@@ -122,5 +122,15 @@ geopsg.comparator = (options) => {
         });
       }
     }
-  })
+  });
+
+  Vue.component('app-comparator-v2-selector', {
+    template: '#tpl-app-comparator-v2-selector',
+    props: ['items', 'selectedItem'],
+    methods: {
+      onItemSelected(item) {
+        this.$emit('item-click', item);
+      }
+    }
+  });
 }
