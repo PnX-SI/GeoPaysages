@@ -9,8 +9,8 @@ geopsg.comparator = (options) => {
     label: "Côte à côte"
   }];
   let sbsCtrl;
-  new Vue({
-    el: '#js-app-comparator',
+  Vue.component('app-comparator-v2', {
+    template: '#tpl-app-comparator-v2',
     data: () => {
       return {
         curMode: modes[0],

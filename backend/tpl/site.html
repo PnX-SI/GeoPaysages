@@ -34,9 +34,7 @@
   <div class="text-center mb-3"><i>{{ site.legend_site }}</i></div>
   <div class="row">
     <div class="col col-main">
-      <div id="js-app-comparator" class="app-comparator" v-pre>
-        {% include 'comparator-v'+ comparator_version|string +'.html' %}
-      </div>
+      <app-comparator-v{{ comparator_version }}></app-comparator-v{{ comparator_version }}>
       <div class="container-fluid">
       <div class="row mt-3 info">
         <div class="col-lg-5 pl-0 mb-5 text-right">
@@ -86,18 +84,20 @@
   </div>
 </div>
 
+{% include 'comparator-v'+ comparator_version|string +'.html' %}
+
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-      geopsg.site({
-        dbconf: {{dbconf | tojson}},
-        site: {{site | tojson}},
-        //photos: {{photos | tojson}}
-      });
       geopsg.comparator({
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         photos: {{photos | tojson}},
+      });
+      geopsg.site({
+        dbconf: {{dbconf | tojson}},
+        site: {{site | tojson}},
+        //photos: {{photos | tojson}}
       });
     }
   };

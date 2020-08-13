@@ -1,36 +1,41 @@
-<b-dropdown ref="photoSelector1" :text="comparedPhotos[0].shot_on" class="photo-selector left" lazy>
-  <b-dropdown-item-button v-for="photo in photos" v-bind:key="photo.id" v-on:click="onPhotoSelected(0, photo)">
-    <span v-html="photo.shot_on"></span>
-  </b-dropdown-item-button>
-</b-dropdown>
-<div class="mode-selector d-flex">
-  <div class="col-6 p-0 justify-content-end d-flex">
-    <span class="mode-selector-label">
-      <span class="pr-2">Disposition des photos</span>
-    </span>
+<template id="tpl-app-comparator-v2">
+  <div class="app-comparator">
+    <b-dropdown ref="photoSelector1" :text="comparedPhotos[0].shot_on" class="photo-selector left" lazy>
+      <b-dropdown-item-button v-for="photo in photos" v-bind:key="photo.id" v-on:click="onPhotoSelected(0, photo)">
+        <span v-html="photo.shot_on"></span>
+      </b-dropdown-item-button>
+    </b-dropdown>
+    <div class="mode-selector d-flex">
+      <div class="col-6 p-0 justify-content-end d-flex">
+        <span class="mode-selector-label">
+          <span class="pr-2">Disposition des photos</span>
+        </span>
+      </div>
+      <b-dropdown :text="curMode.label">
+        <b-dropdown-item-button v-for="mode in modes" :key="mode.name" :active="mode.name == curMode.name"
+          v-on:click="onBtnModeClick(mode)">
+          <span v-html="mode.label"></span>
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </div>
+    <b-dropdown ref="photoSelector1" :text="comparedPhotos[1].shot_on" class="photo-selector right" lazy>
+      <b-dropdown-item-button v-for="photo in photos" v-bind:key="photo.id" v-on:click="onPhotoSelected(1, photo)">
+        <span v-html="photo.shot_on"></span>
+      </b-dropdown-item-button>
+    </b-dropdown>
+    <div class="row h-100">
+      <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
+        <div class="h-100" ref="photo1"></div>
+      </div>
+      <div class="col col-map"
+        v-bind:class="{'d-none': curMode.name == 'sidebyside', 'pl-2': curMode.name != 'sidebyside'}">
+        <div class="h-100" ref="photo2"></div>
+      </div>
+    </div>
+    <b-modal id="comparatorLoading" size="sm" centered no-fade no-close-on-backdrop no-close-on-esc hide-header
+      hide-footer>
+      <p class="mb-0">Chargement</p>
+      <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
+    </b-modal>
   </div>
-  <b-dropdown :text="curMode.label">
-    <b-dropdown-item-button v-for="mode in modes" :key="mode.name" :active="mode.name == curMode.name"
-      v-on:click="onBtnModeClick(mode)">
-      <span v-html="mode.label"></span>
-    </b-dropdown-item-button>
-  </b-dropdown>
-</div>
-<b-dropdown ref="photoSelector1" :text="comparedPhotos[1].shot_on" class="photo-selector right" lazy>
-  <b-dropdown-item-button v-for="photo in photos" v-bind:key="photo.id" v-on:click="onPhotoSelected(1, photo)">
-    <span v-html="photo.shot_on"></span>
-  </b-dropdown-item-button>
-</b-dropdown>
-<div class="row h-100">
-  <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
-    <div class="h-100" ref="photo1"></div>
-  </div>
-  <div class="col col-map"
-    v-bind:class="{'d-none': curMode.name == 'sidebyside', 'pl-2': curMode.name != 'sidebyside'}">
-    <div class="h-100" ref="photo2"></div>
-  </div>
-</div>
-<b-modal id="comparatorLoading" size="sm" centered no-fade no-close-on-backdrop no-close-on-esc hide-header hide-footer>
-  <p class="mb-0">Chargement</p>
-  <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
-</b-modal>
+</template>

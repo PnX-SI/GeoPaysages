@@ -1,7 +1,7 @@
 var geopsg = geopsg || {};
 geopsg.comparator = (options) => {
-  new Vue({
-    el: '#js-app-comparator',
+  Vue.component('app-comparator-v1', {
+    template: '#tpl-app-comparator-v1',
     data: () => {
       return {
         pinned: -1,
