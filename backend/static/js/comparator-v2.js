@@ -1,12 +1,6 @@
 var geopsg = geopsg || {};
 geopsg.comparator = (options) => {
   const maps = [];
-  const MODE_SIDE_BY_SIDE = 'sbs';
-  const SPLIT = 'split';
-  const MODES = {
-    SIDE_BY_SIDE: 'sbs',
-    SPLIT: 'split'
-  };
   const modes = [{
     name: 'sidebyside',
     label: "Superposition"
@@ -19,17 +13,7 @@ geopsg.comparator = (options) => {
     el: '#js-app-comparator',
     data: () => {
       return {
-        MODES: MODES,
         curMode: modes[0],
-        modeBtns: [{
-          name: MODES.SIDE_BY_SIDE,
-          label: "Superposition",
-          active: true
-        }, {
-          name: MODES.SPLIT,
-          label: "Côte à côte",
-          active: false
-        }],
         modes: modes,
         photos: options.photos,
         comparedPhotos: [
