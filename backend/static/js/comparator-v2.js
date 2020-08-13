@@ -147,7 +147,9 @@ geopsg.comparator = (options) => {
     data: () => {
       return {
         dateFrom: null,
-        dateTo: null
+        dateTo: null,
+        currentPage: 1,
+        perPage: 3,
       }
     },
     computed: {
@@ -157,9 +159,8 @@ geopsg.comparator = (options) => {
         }
         const dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
         const dateTo = !this.dateTo ? null : new Date(this.dateTo);
-        console.log(dateFrom);
+
         return this.items.filter(item => {
-          console.log(item.shot_on)
           if (
             (dateFrom && item.shot_on < dateFrom) ||
             (dateTo && item.shot_on > dateTo)
@@ -169,6 +170,9 @@ geopsg.comparator = (options) => {
 
           return true;
         });
+      },
+      nbFilteredItems() {
+        return this.filteredItems.length;
       }
     },
     methods: {

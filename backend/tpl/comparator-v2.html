@@ -61,5 +61,9 @@
     <b-dropdown-item-button v-for="item in filteredItems" v-bind:key="item.id" v-on:click="onItemSelected(item)">
       <span :inner-html.prop="item.shot_on | dateFormat"></span>
     </b-dropdown-item-button>
+    <b-dropdown-divider></b-dropdown-divider>
+    <div class="mx-2">
+      <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
+    </div>
   </b-dropdown>
 </template>
