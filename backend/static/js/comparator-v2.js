@@ -75,11 +75,15 @@ geopsg.comparator = (options) => {
       },
       onPhotoSelected(index, photo) {
         this.$set(this.comparedPhotos, index, photo);
-        //this.comparedPhotos[index] = photo;
         this.updateLayers();
       },
       updateLayers() {
+        this.$bvModal.show('comparatorLoading');
         this.clearMaps();
+        if (sbsCtrl) {
+          maps[0].removeControl(sbsCtrl);
+          sbsCtrl = null;
+        }
 
         Promise.all([
           this.loadImg(this.comparedPhotos[0].filename),
@@ -94,10 +98,7 @@ geopsg.comparator = (options) => {
                 L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]])
               );
             });
-            if (sbsCtrl) {
-              maps[0].removeControl(sbsCtrl);
-              sbsCtrl = null;
-            }
+            
             if (this.curMode.name == 'split') {
               layers[0].addTo(maps[0]);
               layers[1].addTo(maps[1]);
@@ -110,6 +111,7 @@ geopsg.comparator = (options) => {
             }
             this.resizeMaps();
             maps[0].fitBounds(maps[0].getBounds());
+            this.$bvModal.hide('comparatorLoading');
           });
       },
       loadImg(filename) {
