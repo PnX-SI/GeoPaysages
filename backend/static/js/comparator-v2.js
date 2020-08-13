@@ -9,6 +9,23 @@ geopsg.comparator = (options) => {
     label: "Côte à côte"
   }];
   let sbsCtrl;
+  options.photos = options.photos.map(photo => {
+    return {
+      ...photo, ...{
+        shot_on: new Date(photo.shot_on)
+      }
+    };
+  });
+
+  //TODO use format as an argument
+  Vue.filter('dateFormat', (value) => {
+    return value.toLocaleString('fr-FR', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
+  });
+
   Vue.component('app-comparator-v2', {
     template: '#tpl-app-comparator-v2',
     data: () => {
@@ -126,7 +143,34 @@ geopsg.comparator = (options) => {
 
   Vue.component('app-comparator-v2-selector', {
     template: '#tpl-app-comparator-v2-selector',
-    props: ['items', 'selectedItem'],
+    props: ['items', 'selectedItem', 'right'],
+    data: () => {
+      return {
+        dateFrom: null,
+        dateTo: null
+      }
+    },
+    computed: {
+      filteredItems() {
+        if (!this.dateFrom && !this.dateTo) {
+          return [...this.items];
+        }
+        const dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
+        const dateTo = !this.dateTo ? null : new Date(this.dateTo);
+        console.log(dateFrom);
+        return this.items.filter(item => {
+          console.log(item.shot_on)
+          if (
+            (dateFrom && item.shot_on < dateFrom) ||
+            (dateTo && item.shot_on > dateTo)
+          ) {
+            return false;
+          }
+
+          return true;
+        });
+      }
+    },
     methods: {
       onItemSelected(item) {
         this.$emit('item-click', item);

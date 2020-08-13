@@ -16,6 +16,10 @@
   right: 8px;
 }
 
+.page-site .app-comparator .photo-selector .dropdown-menu {
+  min-width: 270px;
+}
+
 .page-site .app-comparator .mode-selector {
   position: absolute;
   z-index: 1000;

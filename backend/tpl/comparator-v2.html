@@ -15,7 +15,7 @@
     </div>
     <app-comparator-v2-selector class="left" :items="photos" :selected-item="comparedPhotos[0]"
       v-on:item-click="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
-    <app-comparator-v2-selector class="right" :items="photos" :selected-item="comparedPhotos[1]"
+    <app-comparator-v2-selector class="right" :items="photos" :selected-item="comparedPhotos[1]" right
       v-on:item-click="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
     <div class="row h-100">
       <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
@@ -35,9 +35,31 @@
 </template>
 
 <template id="tpl-app-comparator-v2-selector">
-  <b-dropdown :text="selectedItem?.shot_on" class="photo-selector" lazy>
-    <b-dropdown-item-button v-for="item in items" v-bind:key="item.id" v-on:click="onItemSelected(item)">
-      <span v-html="item.shot_on"></span>
+  <b-dropdown :text="selectedItem?.shot_on | dateFormat" class="photo-selector" lazy :right="right">
+    <div class="mx-2">
+      Filtrer par date
+      <div class="d-flex justify-content-between align-items-center">
+        <span>Début</span>
+        <div>
+          <input type="date" v-model="dateFrom" />
+          <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
+            <span class="material-icons">clear</span>
+          </button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center mt-1">
+        <span>Fin</span>
+        <div>
+          <input type="date" v-model="dateTo" />
+          <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
+            <span class="material-icons">clear</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <b-dropdown-divider></b-dropdown-divider>
+    <b-dropdown-item-button v-for="item in filteredItems" v-bind:key="item.id" v-on:click="onItemSelected(item)">
+      <span :inner-html.prop="item.shot_on | dateFormat"></span>
     </b-dropdown-item-button>
   </b-dropdown>
 </template>
