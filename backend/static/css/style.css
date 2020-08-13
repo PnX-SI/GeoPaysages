@@ -487,3 +487,17 @@ footer span{
     font-weight: normal;
     font-style: italic;
 }
+
+.modal-contained {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-contained .modal,
+.modal-contained .modal-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
