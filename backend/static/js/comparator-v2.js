@@ -143,14 +143,57 @@ geopsg.comparator = (options) => {
         dateTo: null,
         currentPage: 1,
         perPage: 3,
+        pageItems: [],
+        nbFilteredItems: 0
       }
     },
-    computed: {
-      filteredItems() {
+    beforeMount() {
+      this.setFilteredItems();
+      this.setPageItems();
+    },
+    watch: {
+      dateFrom(val) {
+        this.setFilteredItems();
+        this.currentPage = 1;
+        this.setPageItems();
+      },
+      dateTo(val) {
+        this.setFilteredItems();
+        this.currentPage = 1;
+        this.setPageItems();
+      },
+      currentPage(val) {
+        this.setPageItems();
+      }
+    },
+    methods: {
+      onItemSelected(item) {
+        this.$emit('item-click', item);
+      },
+      formatItem(item) {
+        if (!item) {
+          return;
+        }
+        if (!(item.shot_on instanceof Date)) {
+          item.shot_on = new Date(item.shot_on);
+        }
+      },
+      setPageItems() {
+        const pageIndex = this.currentPage - 1;
+        const startIndex = pageIndex * this.perPage;
+        this.pageItems = this.filteredItems.slice(startIndex, startIndex + this.perPage)
+          .map(item => {
+            this.formatItem(item);
+            return item;
+          });
+      },
+      setFilteredItems() {
         const dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
         const dateTo = !this.dateTo ? null : new Date(this.dateTo);
         if (!dateFrom && !dateTo) {
-          return [...this.items];
+          this.filteredItems = [...this.items];
+          this.nbFilteredItems = this.filteredItems.length;
+          return;
         }
         const searchDateFromIndex = (startIndex, endIndex) => {
           if (endIndex < startIndex) {
@@ -182,7 +225,7 @@ geopsg.comparator = (options) => {
           if (item.shot_on <= dateTo && (!itemAfter || itemAfter.shot_on > dateTo)) {
             return middleIndex;
           } else if (item.shot_on > dateTo && endIndex > 0) {
-            return searchDateToIndex(0, middleIndex-1);
+            return searchDateToIndex(0, middleIndex - 1);
           } else if (endIndex > 0) {
             return searchDateToIndex(middleIndex + 1, endIndex);
           }
@@ -193,36 +236,25 @@ geopsg.comparator = (options) => {
         if (dateFrom) {
           startIndex = searchDateFromIndex(0, endIndex);
           if (startIndex < 0) {
-            return [];
+            this.filteredItems = [];
+            this.nbFilteredItems = 0;
+            return;
           }
         }
         if (dateTo) {
           endIndex = searchDateToIndex(startIndex, endIndex);
           if (endIndex < 0) {
-            return [];
+            this.filteredItems = [];
+            this.nbFilteredItems = 0;
+            return;
           }
         }
-        
-        return this.items.slice(startIndex, endIndex + 1).map(item => {
+
+        this.filteredItems = this.items.slice(startIndex, endIndex + 1).map(item => {
           this.formatItem(item);
           return item;
         });
-      },
-      nbFilteredItems() {
-        return this.filteredItems.length;
-      }
-    },
-    methods: {
-      onItemSelected(item) {
-        this.$emit('item-click', item);
-      },
-      formatItem(item) {
-        if (!item) {
-          return;
-        }
-        if (!(item.shot_on instanceof Date)) {
-          item.shot_on = new Date(item.shot_on);
-        }
+        this.nbFilteredItems = this.filteredItems.length;
       }
     }
   });

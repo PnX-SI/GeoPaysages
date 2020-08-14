@@ -58,7 +58,7 @@
       </div>
     </div>
     <b-dropdown-divider></b-dropdown-divider>
-    <b-dropdown-item-button v-for="item in filteredItems" v-bind:key="item.id" v-on:click="onItemSelected(item)">
+    <b-dropdown-item-button v-for="item in pageItems" v-bind:key="item.id" v-on:click="onItemSelected(item)">
       <span :inner-html.prop="item.shot_on | dateFormat"></span>
     </b-dropdown-item-button>
     <b-dropdown-divider></b-dropdown-divider>
