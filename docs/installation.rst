@@ -152,7 +152,7 @@ Récupération depuis geopaysages-[date mise à jour] :
 - le fichier layout.html ou les modifs faites dedans dans backend/tpl
 - le fichier routes.py ou les modifs faites dedans dans backend
 - le fichier d'internationalisation messages.po ou les modifs dedans dans backend/i18n/fr/LC_MESSAGES
-- s'il y a des images, les récupérer dans backend/static/images
+- s'il y a des images, les récupérer dans backend/static/custom/images
 - lancer les commandes nécessaires, notamment pour python pour l'internationalisation (voir chapitre ci-dessous)
 - lancer
 ::
