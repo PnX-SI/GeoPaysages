@@ -1,7 +1,14 @@
 .page-site .app-comparator {
   height: calc(100vh - 190px);
   position: relative;
-  --tools-top: 8px;
+  display: flex;
+  flex-direction: column;
+  --tools-top: 50px;
+}
+@media (min-width: 576px) {
+  .page-site .app-comparator {
+    --tools-top: 8px;
+  }
 }
 
 .page-site .app-comparator .photo-selector {
@@ -20,19 +27,21 @@
   min-width: 320px;
 }
 
-.page-site .app-comparator .mode-selector {
-  position: absolute;
-  z-index: 1000;
-  width: 100%;
-  top: var(--tools-top);
+@media (min-width: 576px) {
+  .page-site .app-comparator .mode-selector {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    top: var(--tools-top);
+  }
 }
 
 .page-site .app-comparator .mode-selector-label {
-  background: rgba(120, 190, 32, .8);
-  color: #FFF;
+  background: rgba(120, 190, 32, 0.8);
+  color: #fff;
   padding: 6px 0 0 12px;
 }
 
 .page-site .app-comparator .mode-selector-label > span {
-  border-right: 1px solid #FFF;
+  border-right: 1px solid #fff;
 }
