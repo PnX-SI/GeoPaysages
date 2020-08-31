@@ -5,7 +5,7 @@ import models
 import utils
 import random
 from models import (db)
-from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION
+from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
 import json
 from datetime import datetime
 from flask_babel import format_datetime, gettext, ngettext
@@ -228,7 +228,7 @@ def site(id_site):
 @main.route('/map')
 def map():
 
-    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by('name_site')).data
+    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)).data
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
         cor_list = []

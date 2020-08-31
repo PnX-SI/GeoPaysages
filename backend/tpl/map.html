@@ -77,10 +77,14 @@
             <b-card-body class="p-3">
               <a v-for="site in selectedSites" 
                 class="btn btn-sm btn-block btn-site" 
-                @mouseover="onSiteMousover(site)"
-                @mouseout="onSiteMouseout(site)"
+                @mouseenter="onSiteMousover(site)"
+                @mouseleave="onSiteMouseout(site)"
                 :href="'/site/' + site.id_site" 
-                v-html="site.name_site + '<br />' + site.ville.label + '<br />(réf. : ' + site.ref_site + ')'"></a>
+              >
+                <span class="d-block" v-html="site.name_site"></span>
+                <span class="d-block" v-html="site.ville.label"></span>
+                <span class="d-block" v-if="site.ref_site" v-html="'(réf. : ' + site.ref_site + ')'"></span>
+              </a>
             </b-card-body>
           </b-collapse>
         </b-card>
