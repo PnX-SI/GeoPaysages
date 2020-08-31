@@ -149,7 +149,7 @@ def gallery():
     
     return render_template('gallery.html', sites=dump_sites)
 
-@main.route('/site/<int:id_site>')
+@main.route('/sites/<int:id_site>')
 def site(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
