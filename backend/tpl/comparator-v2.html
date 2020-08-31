@@ -37,7 +37,7 @@
 </template>
 
 <template id="tpl-app-comparator-v2-selector">
-  <b-dropdown :text="selectedItem?.shot_on | dateFormat" class="photo-selector" lazy :right="right">
+  <b-dropdown :text="selectedItem?.shot_on | dateFormat" class="photo-selector" lazy no-flip :right="right">
     <div class="mx-2">
       Filtrer par date
       <div class="d-flex justify-content-between align-items-center">

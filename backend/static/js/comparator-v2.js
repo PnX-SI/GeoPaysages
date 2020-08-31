@@ -142,7 +142,7 @@ geopsg.comparator = (options) => {
         dateFrom: null,
         dateTo: null,
         currentPage: 1,
-        perPage: 3,
+        perPage: 15,
         pageItems: [],
         nbFilteredItems: 0
       }

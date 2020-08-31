@@ -287,10 +287,15 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     padding-left: 120px;
     padding-right: 120px;
 }
-@media (max-width: 575px) {
+@media (max-width: 991px) {
     .header-title {
         padding-right: 3px;
     }
+    .header-title h3 {
+        font-size: 18px;
+    }
+}
+@media (max-width: 575px) {
     .header-title h3 {
         font-size: 12px;
     }

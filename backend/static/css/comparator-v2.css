@@ -13,8 +13,11 @@
 
 .page-site .app-comparator .photo-selector {
   position: absolute;
-  z-index: 1000;
+  z-index: 1001;
   top: var(--tools-top);
+}
+.page-site .app-comparator .photo-selector.show {
+  z-index: 1002;
 }
 .page-site .app-comparator .photo-selector.left {
   left: 8px;
@@ -44,6 +47,10 @@
 
 .page-site .app-comparator .mode-selector-label > span {
   border-right: 1px solid #fff;
+}
+
+.page-site .app-comparator .mode-selector .dropdown-menu {
+  z-index: 1001;
 }
 
 .page-site .app-comparator .photo-caption {
