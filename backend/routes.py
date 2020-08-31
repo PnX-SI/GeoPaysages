@@ -201,24 +201,26 @@ def site(id_site):
         if caption:
             dl_caption = '%s | %s' % (dl_caption, caption)
 
+        if COMPARATOR_VERSION == 1:    
+            return {
+                'id': photo.get('id_photo'),
+                'sm': utils.getThumbnail(photo).get('output_url'),
+                'md': utils.getMedium(photo).get('output_url'),
+                'lg': utils.getLarge(photo, caption).get('output_url'),
+                'dl': utils.getDownload(photo, dl_caption).get('output_url'),
+                'date': photo.get('filter_date'),
+                'date_diplay': date_diplay
+            }
+
         return {
             'id': photo.get('id_photo'),
-            'sm': utils.getThumbnail(photo).get('output_url'),
-            'md': utils.getMedium(photo).get('output_url'),
-            'lg': utils.getLarge(photo, caption).get('output_url'),
-            'dl': utils.getDownload(photo, dl_caption).get('output_url'),
-            'date': photo.get('filter_date'),
-            'date_diplay': date_diplay
+            'filename': photo.get('path_file_photo'),
+            'shot_on': photo.get('filter_date'),
+            'date_diplay': date_diplay,
+            'caption': caption
         }
 
-    if COMPARATOR_VERSION == 1:
-        photos = [getPhoto(photo) for photo in photos]
-    else:
-        photos = [{
-            'id': photo.get('id_photo'),
-            'filename': photo.get('path_file_photo'),
-            'shot_on': photo.get('filter_date')
-        } for photo in photos]
+    photos = [getPhoto(photo) for photo in photos]
     
     return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
 

@@ -17,6 +17,8 @@
       v-on:item-click="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
     <app-comparator-v2-selector class="right" :items="photos" :selected-item="comparedPhotos[1]" right
       v-on:item-click="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
+    <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
+    <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
     <div class="row h-100">
       <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
         <div class="h-100" ref="photo1"></div>
