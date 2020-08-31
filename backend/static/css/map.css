@@ -69,6 +69,16 @@
     background: transparent;
 }
 
+.app-map .sidebar .filters .card.has-selected header a::after {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    margin-left: 5px;
+}
+
 .app-map .sidebar .filters .card-header .btn {
     text-decoration: none;
     color: #FFF;

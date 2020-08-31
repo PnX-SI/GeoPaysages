@@ -34,16 +34,20 @@
           <b-collapse :id="'app_map_filters'" visible>
             <b-card-body class="pt-0 px-3 pb-3">
               <div class="text-right">
+                <span class="align-text-top">
+                  {% autoescape false %}
+                  {{ _('map.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }}
+                  {% endautoescape %}
+                </span>
                 <button
                   type="button" 
                   @click="onCancelClick()" 
-                  class="btn btn-clear-primary btn-sm btn-no-uppercase">
-                  <i class="icon ion-md-close align-text-bottom mr-1"></i> 
-                  {{ _('map.filters.cancel') }}
+                  class="btn btn-clear-primary btn-sm btn-no-uppercase align-top">
+                  <i class="icon ion-md-close mr-1"></i>
                 </button>
               </div>
               <div class="filters">
-                <b-card no-body class="m-0 rounded-0" :class="['filter-' + filter.name]" v-for="(filter) in filters">
+                <b-card no-body class="m-0 rounded-0" :class="['filter-' + filter.name, !filter.selectedItems.length ? '' : 'has-selected']" v-for="(filter) in filters">
                   <b-card-header header-tag="header" class="p-0 border-0">
                     <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0 text-left">
                       <i class="icon ion-ios-arrow-forward ml-1 visible-collapsed"></i>
