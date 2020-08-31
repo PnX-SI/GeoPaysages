@@ -444,7 +444,7 @@ header h3 {
 }
 
 .navbar-collapse {
-    z-index: 1;
+    z-index: 1001;
     background: #FFF;
 }
 
