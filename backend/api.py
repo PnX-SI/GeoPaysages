@@ -53,7 +53,7 @@ def returnAllSites():
     return jsonify(sites), 200
 
 
-@api.route('/api/sites/<int:id_site>', methods=['GET'])
+@api.route('/api/site/<int:id_site>', methods=['GET'])
 def returnSiteById(id_site):
     try:
         get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
@@ -161,7 +161,7 @@ def returnCurrentUser(id_role=None):
     return jsonify(current_user), 200
 
 
-@api.route('/api/sites/<int:id_site>', methods=['DELETE'])
+@api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
 def deleteSite(id_site):
     base_path = './static/' + DATA_IMAGES_PATH
