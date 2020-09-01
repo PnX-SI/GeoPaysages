@@ -27,7 +27,7 @@
 <body>
   <figure>
     <img src="/static/data/images/{{ photo.path_file_photo }}" alt="{{ site.name_site }}" class="img-fluid" />
-    <figcaption>{{ photo.date_display }}{% if photo.dico_licence_photo: %} | {{ photo.dico_licence_photo.name_licence_photo }}{% endif %}
+    <figcaption>{{ site.name_site }} - {{ photo.date_display }}{% if photo.dico_licence_photo: %} {{ photo.dico_licence_photo.name_licence_photo }}{% endif %}
     </figcaption>
   </figure>
 </body>

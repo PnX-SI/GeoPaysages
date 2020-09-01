@@ -225,7 +225,7 @@ def site(id_site):
     return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
 
 
-@main.route('/sites/<int:id_site>/photos/last')
+@main.route('/sites/<int:id_site>/photos/latest')
 def site_photos_last(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
