@@ -8,18 +8,24 @@
   <link type="text/css" rel="stylesheet"
     href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" />
   <style>
+    body, html, figure {
+      height: 100%;
+    }
+
     figure {
-      position: relative;
       margin: 0;
     }
 
+    figure img {
+      max-height: 100%;
+    }
+
     figcaption {
-      position: absolute;
-      bottom: 0;
       z-index: 1;
       background: rgba(255, 255, 255, .8);
       padding: 3px 5px 1px;
       line-height: 1;
+      transform: translateY(-100%);
     }
   </style>
 </head>
