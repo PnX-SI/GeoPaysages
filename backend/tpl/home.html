@@ -41,6 +41,11 @@
     {% endfor %}
     
   </div>
+
+  {% set intro_fr = dbconf.get('home_intro_' + locale.__str__()) %}
+  {% autoescape false %}
+  {{ intro_fr if intro_fr else dbconf.get('home_intro', '') }}
+  {% endautoescape %}
 </div>
 
 <script>

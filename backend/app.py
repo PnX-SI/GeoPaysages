@@ -4,7 +4,7 @@ from routes import main as main_blueprint
 from models import (db)
 import models
 from flask import Flask
-from flask_babel import Babel, gettext, ngettext
+from flask_babel import Babel, gettext, ngettext, get_locale
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
@@ -72,8 +72,8 @@ def inject_to_tpl():
             conf[row.get('key')] = json.loads(row.get('value'))
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
-        
-    return dict(dbconf=conf, debug=app.debug)
+    
+    return dict(dbconf=conf, debug=app.debug, locale=get_locale())
 
 if __name__ == "__main__":
     app.run(debug=True)
