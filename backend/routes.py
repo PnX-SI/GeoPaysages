@@ -149,7 +149,7 @@ def gallery():
     
     return render_template('gallery.html', sites=dump_sites)
 
-@main.route('/site/<int:id_site>')
+@main.route('/sites/<int:id_site>')
 def site(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
     site=site_schema.dump(get_site_by_id).data
@@ -223,6 +223,29 @@ def site(id_site):
     photos = [getPhoto(photo) for photo in photos]
     
     return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
+
+
+@main.route('/sites/<int:id_site>/photos/last')
+def site_photos_last(id_site):
+    get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
+    site=site_schema.dump(get_site_by_id).data
+    if len(site) == 0:
+        return abort(404)
+
+    site = site[0]
+
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date desc').limit(1)
+    photos = photo_schema.dump(get_photos_by_site).data
+    photo=photos[0]
+
+    date_approx = photo.get('date_photo')
+    if date_approx:
+        photo['date_display'] = date_approx
+    else:
+        date_obj = datetime.strptime(photo.get('filter_date'), '%Y-%m-%d')
+        photo['date_display'] = date_obj.strftime('%d-%m-%Y')
+
+    return render_template('site-photo.html', site=site, photo=photo)
 
 
 @main.route('/map')

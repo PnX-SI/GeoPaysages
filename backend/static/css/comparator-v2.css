@@ -30,6 +30,10 @@
   min-width: 320px;
 }
 
+.page-site .app-comparator .mode-selector {
+  z-index: 1003;
+}
+
 @media (min-width: 576px) {
   .page-site .app-comparator .mode-selector {
     position: absolute;
@@ -47,10 +51,6 @@
 
 .page-site .app-comparator .mode-selector-label > span {
   border-right: 1px solid #fff;
-}
-
-.page-site .app-comparator .mode-selector .dropdown-menu {
-  z-index: 1001;
 }
 
 .page-site .app-comparator .photo-caption {

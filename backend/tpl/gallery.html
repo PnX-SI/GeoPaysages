@@ -19,11 +19,11 @@
   <div class="row justify-content-center">
   {% for site in sites %}
     <div class="picture col-lg-2 col-md-3 col-sm-4 col-6">
-      <a href="/site/{{ site.id_site }}">
+      <a href="/sites/{{ site.id_site }}">
         <img src="{{ site.photo }}" alt="{{ site.name_site }}">
       </a>
       <div class="discover">
-        <a href="/site/{{ site.id_site }}" class="d-block">{{ site.name_site }}<br /><span class="text-uppercase township">{{ site.ville.nom_commune }}</span><small class="ref">{{ site.ref_site }}</small></a>
+        <a href="/sites/{{ site.id_site }}" class="d-block">{{ site.name_site }}<br /><span class="text-uppercase township">{{ site.ville.nom_commune }}</span><small class="ref">{{ site.ref_site }}</small></a>
       </div>
     </div>
   {% endfor %}

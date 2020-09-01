@@ -83,7 +83,7 @@
                 class="btn btn-sm btn-block btn-site" 
                 @mouseenter="onSiteMousover(site)"
                 @mouseleave="onSiteMouseout(site)"
-                :href="'/site/' + site.id_site" 
+                :href="'/sites/' + site.id_site" 
               >
                 <span class="d-block" v-html="site.name_site"></span>
                 <span class="d-block" v-html="site.ville.label"></span>
