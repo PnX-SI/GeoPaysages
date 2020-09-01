@@ -24,7 +24,11 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} <small class="text-lowercase">(réf. : {{ site.ref_site }})</small></h3>
+<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }}
+  {% if site.ref_site: %}
+  <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
+  {% endif %}
+</h3>
 {% endblock %}
 
 {% block bodyClassNames %}page-site with-comparator-v{{ comparator_version }} {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
