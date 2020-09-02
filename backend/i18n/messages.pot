@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 11:15+0200\n"
+"POT-Creation-Date: 2020-09-02 15:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Generated-By: Babel 2.6.0\n"
 
 #: backend/routes.py:301
-msgid "map.filter.themes"
+msgid "sites.filter.themes"
 msgstr ""
 
 #: backend/routes.py:305
-msgid "map.filter.subthemes"
+msgid "sites.filter.subthemes"
 msgstr ""
 
 #: backend/routes.py:309
-msgid "map.filter.township"
+msgid "sites.filter.township"
 msgstr ""
 
 #: backend/routes.py:313
-msgid "map.filter.years"
+msgid "sites.filter.years"
 msgstr ""
 
 #: backend/tpl/comparator-v1.html:8
@@ -74,7 +74,7 @@ msgid "header.nav.about"
 msgstr ""
 
 #: backend/tpl/layout.html:57
-msgid "header.nav.map"
+msgid "header.nav.sites"
 msgstr ""
 
 #: backend/tpl/layout.html:60
@@ -90,7 +90,7 @@ msgid "footer.internal_links.home"
 msgstr ""
 
 #: backend/tpl/layout.html:87
-msgid "footer.internal_links.map"
+msgid "footer.internal_links.sites"
 msgstr ""
 
 #: backend/tpl/layout.html:92
@@ -107,26 +107,6 @@ msgstr ""
 
 #: backend/tpl/layout.html:124
 msgid "footer.copyright"
-msgstr ""
-
-#: backend/tpl/map.html:3
-msgid "map.meta_title"
-msgstr ""
-
-#: backend/tpl/map.html:15
-msgid "map.title"
-msgstr ""
-
-#: backend/tpl/map.html:29
-msgid "map.filters.title"
-msgstr ""
-
-#: backend/tpl/map.html:39
-msgid "map.filters.nb_result"
-msgstr ""
-
-#: backend/tpl/map.html:75
-msgid "map.observation_points.title"
 msgstr ""
 
 #: backend/tpl/site.html:48
@@ -151,5 +131,25 @@ msgstr ""
 
 #: backend/tpl/site.html:71
 msgid "obs_point.testimonials"
+msgstr ""
+
+#: backend/tpl/sites.html:3
+msgid "sites.meta_title"
+msgstr ""
+
+#: backend/tpl/sites.html:15
+msgid "sites.title"
+msgstr ""
+
+#: backend/tpl/sites.html:29
+msgid "sites.filters.title"
+msgstr ""
+
+#: backend/tpl/sites.html:39
+msgid "sites.filters.nb_result"
+msgstr ""
+
+#: backend/tpl/sites.html:75
+msgid "sites.observation_points.title"
 msgstr ""
 

@@ -1,6 +1,6 @@
 var oppv = oppv || {};
 oppv.initMap = (options) => {
-  const storedSelectedFilters = JSON.parse(localStorage.getItem('oppv.map.selectedFilters'));
+  const storedSelectedFilters = JSON.parse(localStorage.getItem('oppv.sites.selectedFilters'));
   options.filters.forEach(filter => {
     filter.selectedItems = [];
     filter.items.forEach(item => {
@@ -19,7 +19,7 @@ oppv.initMap = (options) => {
   let mapBounds;
 
   new Vue({
-    el: '#js-app-map',
+    el: '#js-app-sites',
     data: () => {
       return {
         isSidebarCollapsed: false,
@@ -146,7 +146,7 @@ oppv.initMap = (options) => {
             selectedIds: selectedIds
           })
         })
-        localStorage.setItem('oppv.map.selectedFilters', JSON.stringify(storedSelectedFilters))
+        localStorage.setItem('oppv.sites.selectedFilters', JSON.stringify(storedSelectedFilters))
 
         let selectedSites = []
         options.sites.forEach(site => {

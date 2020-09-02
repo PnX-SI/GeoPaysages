@@ -6,10 +6,10 @@
 
     --color-discover: rgba(153, 214, 234, 0.5);
 
-    --color-map-filter-txt-hover: #FFF;
-    --color-map-filter-bg-hover: #99d6ea61;
-    --color-map-filter-txt-active: #000;
-    --color-map-filter-bg-active: #99D6EA;
+    --color-sites-filter-txt-hover: #FFF;
+    --color-sites-filter-bg-hover: #99d6ea61;
+    --color-sites-filter-txt-active: #000;
+    --color-sites-filter-bg-active: #99D6EA;
 
     --page-container-min-height: calc(100vh - 415px);
 }

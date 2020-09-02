@@ -248,8 +248,8 @@ def site_photos_last(id_site):
     return render_template('site-photo.html', site=site, photo=photo)
 
 
-@main.route('/map')
-def map():
+@main.route('/sites')
+def sites():
 
     sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)).data
     for site in sites:
@@ -298,19 +298,19 @@ def map():
 
     filters = [{
         'name': 'themes',
-        'label': gettext(u'map.filter.themes'),
+        'label': gettext(u'sites.filter.themes'),
         'items': set()
     }, {
         'name': 'subthemes',
-        'label': gettext(u'map.filter.subthemes'),
+        'label': gettext(u'sites.filter.subthemes'),
         'items': set()
     }, {
         'name': 'township',
-        'label': gettext(u'map.filter.township'),
+        'label': gettext(u'sites.filter.township'),
         'items': set()
     }, {
         'name': 'years',
-        'label': gettext(u'map.filter.years'),
+        'label': gettext(u'sites.filter.years'),
         'items': set()
     }]
 
@@ -374,7 +374,7 @@ def map():
                                for item_id in filter.get('items')]
             filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
-    return render_template('map.html', filters=filters, sites=sites, ign_Key=IGN_KEY)
+    return render_template('sites.html', filters=filters, sites=sites, ign_Key=IGN_KEY)
 
 
 @main.route('/sample')
