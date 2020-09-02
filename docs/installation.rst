@@ -167,10 +167,59 @@ Certains paramètres sont dans la table conf :
           }
         ]
 
+Activation du block d'intro en page d'accueil
+==============================================
+- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro et assigner à ``value`` le texte à afficher
+- En cas de contenue multilingue préférer ``key``: home_intro_<lang> ex. home_intro_fr
+- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro_position et ``value``: top ou bottom, toute autre valeur désactive le block
+
+
+Activation de la page de présentation (/about)
+==============================================
+- Ajouter 2 lignes dans la table conf tel que ``key``: page_about_title et ``key``: page_about_content
+- Activer le lien et la page en ajoutant une ligne dans la table conf tel que ``key``: page_about_published et ``value``: true, toute autre valeur vaut false
+- En cas de contenue multilingue ajouter le suffixe _<lang> à page_about_title, page_about_content et page_about_published
+
+
+Ajout et personnalisation d'une nouvelle page html
+==================================================
+
+Il est aussi possible d'ajouter d'autres pages HTML, mais celles-ci seront écrasées à chaque mise à jour.
+
+**1. Création de la page HTML**
+
+- La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
+- Copier/coller sample.html et renommer la nouvelle page
+
+**2. Créer la route vers la nouvelle page**
+
+- Ouvrir le fichier backend/routes.py
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**3. Ajout du lien vers la nouvelle page HTML**
+
+- Ouvrir le fichier backend/tpl/layout.html
+- Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**4. Création de l'intitulé du lien via l'internationalisation**
+
+- Ouvrir le fichier backend/i18n/fr/LC_MESSAGES/messages.po
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+
+**5. Compilation pour la prise en compte des modifications**
+
+- Suivre les étapes du chapitre Internatinalisation de l'application
+- Pour les modifications effectuées dans les fichiers python, relancer la compilation python
+
+::
+
+        sudo service supervisor restart
+
+
 Internationalisation de l'application
 ======================================   
 
-- Pour modifier les textes, éditer le fichier backend/i18n/fr/messages.po
+- Pour modifier les textes, éditer le fichier ``backend/i18n/fr/messages.po``
 - activer l'environnement virtuel (depuis le répertoire source par exemple (geopaysages))
 
 ::
@@ -291,48 +340,12 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
         Mot de passe: admin
     - Ajoutez vos données
     
-Ajout et personnalisation d'une nouvelle page html
-==================================================
+Développement
+=============
 
-**1. Création de la page HTML**
-
-- La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
-- Copier/coller sample.html et renommer la nouvelle page
-
-**2. Créer la route vers la nouvelle page**
-
-- Ouvrir le fichier backend/routes.py
-- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
-
-**3. Ajout du lien vers la nouvelle page HTML**
-
-- Ouvrir le fichier backend/tpl/layout.html
-- Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
-
-**4. Création de l'intitulé du lien via l'internationalisation**
-
-- Ouvrir le fichier backend/i18n/fr/LC_MESSAGES/messages.po
-- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
-
-**5. Compilation pour la prise en compte des modifications**
-
-- Suivre les étapes du chapitre Internatinalisation de l'application
-- Pour les modifications effectuées dans les fichiers python, relancer la compilation python
-
-::
-
-        sudo service supervisor restart
-
-
-Activation du block d'intro en page d'accueil
-==============================================
-- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro et assigner à ``value`` le texte à afficher
-- En cas de contenue multilingue préférer ``key``: home_intro_<lang> ex. home_intro_fr
-- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro_position et ``value``: top ou bottom, toute autre valeur désactive le block
-
-
-Activation de la page de présentation (/about)
-==============================================
-- Ajouter 2 lignes dans la table conf tel que ``key``: page_about_title et ``key``: page_about_content
-- Activer le lien et la page en ajoutant une ligne dans la table conf tel que ``key``: page_about_published et ``value``: true, toute autre valeur vaut false
-- En cas de contenue multilingue ajouter le suffixe _<lang> à page_about_title, page_about_content et page_about_published
+- Créer et activer un environnement virtuel python 3.
+- cd ./backend
+- Exécuter pip install -r ./requirements.txt
+- Dupliquer et renommer ./config.py.tpl vers ./config.py
+- Editer la config
+- Lancer l'app FLASK_APP=./app.py FLASK_DEBUG=1 flask run
