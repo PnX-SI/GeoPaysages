@@ -42,9 +42,9 @@
     
   </div>
 
-  {% set intro_fr = dbconf.get('home_intro_' + locale.__str__()) %}
+  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
   {% autoescape false %}
-  {{ intro_fr if intro_fr else dbconf.get('home_intro', '') }}
+  {{ intro_locale if intro_locale else dbconf.get('home_intro', '') }}
   {% endautoescape %}
 </div>
 
