@@ -322,3 +322,17 @@ Ajout et personnalisation d'une nouvelle page html
 ::
 
         sudo service supervisor restart
+
+
+Activation du block d'intro en page d'accueil
+==============================================
+- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro et assigner à ``value`` le texte à afficher
+- En cas de contenue multilingue préférer ``key``: home_intro_<lang> ex. home_intro_fr
+- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro_position et ``value``: top ou bottom, toute autre valeur désactive le block
+
+
+Activation de la page de présentation (/about)
+==============================================
+- Ajouter 2 lignes dans la table conf tel que ``key``: page_about_title et ``key``: page_about_content
+- Activer le lien et la page en ajoutant une ligne dans la table conf tel que ``key``: page_about_published et ``value``: true, toute autre valeur vaut false
+- En cas de contenue multilingue ajouter le suffixe _<lang> à page_about_title, page_about_content et page_about_published
