@@ -125,13 +125,15 @@ Editer le fichier de configuration ``./backend/config.py.tpl``.
 
 
 Personnalisation de l'application
-==============================   
+=================================
 	
 Vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers dans le répertoire ``backend/static/custom/`` (css, logo).
 
-Certains paramètres sont dans la table conf :
+L'éventuelle surcouche CSS est à réaliser dans le fichier ``custom/css/custom-style.css``.
 
-- external_links, les liens en bas à droite dans le footer, est un tableu d'objets devant contenir un label et une url, ex.
+Certains paramètres sont dans la table ``conf`` :
+
+- ``external_links``, les liens en bas à droite dans le footer, est un tableau d'objets devant contenir un label et une URL, ex.
 ::
 
         [{
@@ -142,10 +144,10 @@ Certains paramètres sont dans la table conf :
             "url": "http://rando.vanoise.com"
         }]
 
-- zoom_map_comparator, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
-- zoom_max_fitbounds_map, la valeur du zoom max lorsqu'on filtre les points sur la carte interactive. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
-- Si vous voyez un paramètre nommé zoom_map, sachez qu'il est déprécié, vous pouvez le supprimer de la table.
-- map_layers, les différentes couches disponibles sur la carte interactive, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
+- ``zoom_map_comparator``, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
+- ``zoom_max_fitbounds_map``, la valeur du zoom max lorsqu'on filtre les points sur la carte interactive. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
+- Si vous voyez un paramètre nommé ``zoom_map``, sachez qu'il est déprécié, vous pouvez le supprimer de la table.
+- ``map_layers``, les différentes couches disponibles sur les cartes, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
 ::
 
         [
@@ -167,44 +169,46 @@ Certains paramètres sont dans la table conf :
           }
         ]
 
-Activation du block d'intro en page d'accueil
-==============================================
-- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro et assigner à ``value`` le texte à afficher
-- En cas de contenue multilingue préférer ``key``: home_intro_<lang> ex. home_intro_fr
-- Ajouter 1 ligne dans la table conf tel que ``key``: home_intro_position et ``value``: top ou bottom, toute autre valeur désactive le block
+Activation du bloc d'intro en page d'accueil
+============================================
+
+- Ajouter 1 ligne dans la table conf tel que ``key`` : ``home_intro`` et assigner à ``value`` le texte à afficher
+- En cas de contenue multilingue préférer ``key`` : ``home_intro_<lang>`` ex. ``home_intro_fr``
+- Ajouter 1 ligne dans la table conf tel que ``key`` : ``home_intro_position`` et ``value``: ``top`` ou ``bottom``, toute autre valeur désactive le bloc
 
 
 Activation de la page de présentation (/about)
 ==============================================
-- Ajouter 2 lignes dans la table conf tel que ``key``: page_about_title et ``key``: page_about_content
-- Activer le lien et la page en ajoutant une ligne dans la table conf tel que ``key``: page_about_published et ``value``: true, toute autre valeur vaut false
-- En cas de contenue multilingue ajouter le suffixe _<lang> à page_about_title, page_about_content et page_about_published
+
+- Ajouter 2 lignes dans la table conf tel que ``key`` : ``page_about_title`` et ``key`` : ``page_about_content``
+- Activer le lien et la page en ajoutant une ligne dans la table ``conf`` tel que ``key`` : ``page_about_published`` et ``value`` : ``true``, toute autre valeur vaut ``false``
+- En cas de contenue multilingue ajouter le suffixe ``_<lang>`` à ``page_about_title``, ``page_about_content`` et ``page_about_published``
 
 
-Ajout et personnalisation d'une nouvelle page html
+Ajout et personnalisation d'une nouvelle page HTML
 ==================================================
 
 Il est aussi possible d'ajouter d'autres pages HTML, mais celles-ci seront écrasées à chaque mise à jour.
 
 **1. Création de la page HTML**
 
-- La page d'exemple pour créer une nouvelle page html dans le site se trouve dans backend/tpl/sample.html
-- Copier/coller sample.html et renommer la nouvelle page
+- La page d'exemple pour créer une nouvelle page html dans le site se trouve dans ``backend/tpl/sample.html``
+- Copier/coller ``sample.html`` et renommer la nouvelle page
 
 **2. Créer la route vers la nouvelle page**
 
-- Ouvrir le fichier backend/routes.py
-- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier ``backend/routes.py``
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page HTML
 
 **3. Ajout du lien vers la nouvelle page HTML**
 
-- Ouvrir le fichier backend/tpl/layout.html
-- Copier/coller un bloc 'li' existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier ``backend/tpl/layout.html``
+- Copier/coller un bloc ``li`` existant et effectuer les modifications nécessaires en lien avec la nouvelle page HTML
 
 **4. Création de l'intitulé du lien via l'internationalisation**
 
-- Ouvrir le fichier backend/i18n/fr/LC_MESSAGES/messages.po
-- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page html
+- Ouvrir le fichier ``backend/i18n/fr/LC_MESSAGES/messages.po``
+- Copier/coller un bloc existant et effectuer les modifications nécessaires en lien avec la nouvelle page HTML
 
 **5. Compilation pour la prise en compte des modifications**
 
