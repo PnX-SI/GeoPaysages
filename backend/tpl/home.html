@@ -18,6 +18,13 @@
 
 {% block content %}
 <div class="page-content">
+
+  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
+  {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
+  {% if dbconf.home_intro_position == 'top': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
+
   <div class="blocks">
 
     <div class="block block-map">
@@ -42,10 +49,9 @@
     
   </div>
 
-  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
-  {% autoescape false %}
-  {{ intro_locale if intro_locale else dbconf.get('home_intro', '') }}
-  {% endautoescape %}
+  {% if dbconf.home_intro_position == 'bottom': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
 </div>
 
 <script>
