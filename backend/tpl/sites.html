@@ -108,7 +108,7 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-      oppv.initMap({
+      geopsg.initSites({
         sites: {{sites | tojson}},
         filters: {{filters | tojson}},
         dbconf: {{dbconf | tojson}},

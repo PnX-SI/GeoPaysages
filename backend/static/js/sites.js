@@ -1,6 +1,6 @@
-var oppv = oppv || {};
-oppv.initMap = (options) => {
-  const storedSelectedFilters = JSON.parse(localStorage.getItem('oppv.sites.selectedFilters'));
+var geopsg = geopsg || {};
+geopsg.initSites = (options) => {
+  const storedSelectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
   options.filters.forEach(filter => {
     filter.selectedItems = [];
     filter.items.forEach(item => {
@@ -146,7 +146,7 @@ oppv.initMap = (options) => {
             selectedIds: selectedIds
           })
         })
-        localStorage.setItem('oppv.sites.selectedFilters', JSON.stringify(storedSelectedFilters))
+        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(storedSelectedFilters))
 
         let selectedSites = []
         options.sites.forEach(site => {
