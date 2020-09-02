@@ -11,6 +11,7 @@ from sqlalchemy import text
 from api import api
 import config
 import json
+import utils
 
 class ReverseProxied(object):
     '''Wrap the application in this middleware and configure the 
@@ -63,17 +64,7 @@ db = SQLAlchemy()
 
 @app.context_processor
 def inject_to_tpl():
-    sql = text("SELECT key, value FROM geopaysages.conf")
-    result = db.engine.execute(sql).fetchall()
-    rows = [dict(row) for row in result]
-    conf = {}
-    for row in rows:
-        try:
-            conf[row.get('key')] = json.loads(row.get('value'))
-        except Exception as exception:
-            conf[row.get('key')] = row.get('value')
-    
-    return dict(dbconf=conf, debug=app.debug, locale=get_locale())
+    return dict(dbconf=utils.getDbConf(), debug=app.debug, locale=get_locale(), isDbPagePublished=utils.isDbPagePublished)
 
 if __name__ == "__main__":
     app.run(debug=True)

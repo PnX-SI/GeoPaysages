@@ -380,3 +380,11 @@ def map():
 @main.route('/sample')
 def sample():
     return render_template('sample.html')
+
+
+@main.route('/about')
+def about():
+    if (not utils.isDbPagePublished('about')):
+        return abort(404)
+
+    return render_template('db-page.html', name='about', page=utils.getDbPage('about'))

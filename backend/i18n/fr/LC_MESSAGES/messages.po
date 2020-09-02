@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-08-31 14:00+0200\n"
+"POT-Creation-Date: 2020-09-02 11:15+0200\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,19 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: backend/routes.py:278
+#: backend/routes.py:301
 msgid "map.filter.themes"
 msgstr "Thème"
 
-#: backend/routes.py:282
+#: backend/routes.py:305
 msgid "map.filter.subthemes"
 msgstr "Sous-thème"
 
-#: backend/routes.py:286
+#: backend/routes.py:309
 msgid "map.filter.township"
 msgstr "Commune"
 
-#: backend/routes.py:290
+#: backend/routes.py:313
 msgid "map.filter.years"
 msgstr "Année"
 
@@ -54,15 +54,15 @@ msgstr "Observatoire photographique des paysages de Vanoise"
 msgid "home.title"
 msgstr "L'Observatoire photographique des paysages de Vanoise"
 
-#: backend/tpl/home.html:25
+#: backend/tpl/home.html:32
 msgid "home.block.explore_map"
 msgstr "Explorer le carte interactive"
 
-#: backend/tpl/home.html:32
+#: backend/tpl/home.html:39
 msgid "home.block.discover"
 msgstr "Découvrir ce point d'observation"
 
-#: backend/tpl/home.html:35
+#: backend/tpl/home.html:42
 msgid "home.block.photography"
 msgstr "Photographie"
 
@@ -70,39 +70,43 @@ msgstr "Photographie"
 msgid "header.nav.home"
 msgstr "Accueil"
 
-#: backend/tpl/layout.html:52
+#: backend/tpl/layout.html:53
+msgid "header.nav.about"
+msgstr "À propos"
+
+#: backend/tpl/layout.html:57
 msgid "header.nav.map"
 msgstr "Carte interactive"
 
-#: backend/tpl/layout.html:55
+#: backend/tpl/layout.html:60
 msgid "header.nav.gallery"
 msgstr "Galerie photo"
 
-#: backend/tpl/layout.html:73
+#: backend/tpl/layout.html:78
 msgid "footer.internal_title"
 msgstr "Le site"
 
-#: backend/tpl/layout.html:77
+#: backend/tpl/layout.html:82
 msgid "footer.internal_links.home"
 msgstr "Accueil"
 
-#: backend/tpl/layout.html:82
+#: backend/tpl/layout.html:87
 msgid "footer.internal_links.map"
 msgstr "Carte interactive"
 
-#: backend/tpl/layout.html:87
+#: backend/tpl/layout.html:92
 msgid "footer.internal_links.gallery"
 msgstr "Galerie photo"
 
-#: backend/tpl/layout.html:93
+#: backend/tpl/layout.html:98
 msgid "footer.internal_links.contact"
 msgstr "Contactez-nous"
 
-#: backend/tpl/layout.html:102
+#: backend/tpl/layout.html:107
 msgid "footer.external_title"
 msgstr "Le Parc national de Vanoise"
 
-#: backend/tpl/layout.html:119
+#: backend/tpl/layout.html:124
 msgid "footer.copyright"
 msgstr "© 2018 Parc national de la Vanoise"
 
@@ -118,35 +122,35 @@ msgstr "Carte interactive"
 msgid "map.filters.title"
 msgstr "Filtrer par"
 
-#: backend/tpl/map.html:37
+#: backend/tpl/map.html:39
 msgid "map.filters.nb_result"
 msgstr "filtres : %(nb)s résultat(s)"
 
-#: backend/tpl/map.html:71
+#: backend/tpl/map.html:75
 msgid "map.observation_points.title"
 msgstr "Points d'observation"
 
-#: backend/tpl/site.html:44
+#: backend/tpl/site.html:48
 msgid "obs_point.buttons.notice"
 msgstr "Notice technique pour le photographe"
 
-#: backend/tpl/site.html:49
+#: backend/tpl/site.html:53
 msgid "obs_point.buttons.obs"
 msgstr "Faire une observation"
 
-#: backend/tpl/site.html:54
+#: backend/tpl/site.html:58
 msgid "obs_point.description"
 msgstr "Présentation du site"
 
-#: backend/tpl/site.html:61 backend/tpl/site.html:74
+#: backend/tpl/site.html:65 backend/tpl/site.html:78
 msgid "obs_point.buttons.read_more"
 msgstr "Lire plus"
 
-#: backend/tpl/site.html:62 backend/tpl/site.html:75
+#: backend/tpl/site.html:66 backend/tpl/site.html:79
 msgid "obs_point.buttons.read_less"
 msgstr "Lire moins"
 
-#: backend/tpl/site.html:67
+#: backend/tpl/site.html:71
 msgid "obs_point.testimonials"
 msgstr "Témoignages"
 
