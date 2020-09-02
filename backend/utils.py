@@ -111,7 +111,7 @@ def getDbConf():
 def isDbPagePublished(name):
     dbconf = getDbConf()
 
-    return dbconf.get('page_about_published_' + get_locale().__str__(), dbconf.get('page_about_published')) is True
+    return dbconf.get('page_' + name + '_published_' + get_locale().__str__(), dbconf.get('page_' + name + '_published')) is True
 
 
 def getDbPage(name):
