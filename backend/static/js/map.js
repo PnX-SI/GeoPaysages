@@ -11,6 +11,7 @@ oppv.initMap = (options) => {
       if (isSelected)
         filter.selectedItems.push(item);
     })
+    filter.isOpen = Boolean(filter.selectedItems.length);
   })
   const filters = _.cloneDeep(options.filters)
   let map;
@@ -98,7 +99,7 @@ oppv.initMap = (options) => {
           filter.items.forEach(item => {
             item.isSelected = false;
           });
-          filter.items.selectedItems = [];
+          filter.isOpen = false;
         });
         this.updateFilters()
         this.setFilters()
@@ -132,11 +133,11 @@ oppv.initMap = (options) => {
       setFilters() {
         let storedSelectedFilters = {}
         let selectedFilters = filters.map(filter => {
-          let selectedItems = filter.items.filter(item => {
+          filter.selectedItems = filter.items.filter(item => {
             return item.isSelected
           })
           //let items = selectedItems.length ? selectedItems : filter.items
-          let selectedIds = selectedItems.map(item => {
+          let selectedIds = filter.selectedItems.map(item => {
             return item.id
           })
           if (selectedIds.length)

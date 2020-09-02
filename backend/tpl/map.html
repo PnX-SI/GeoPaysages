@@ -47,7 +47,7 @@
                 </button>
               </div>
               <div class="filters">
-                <b-card no-body class="m-0 rounded-0" :class="['filter-' + filter.name, !filter.selectedItems.length ? '' : 'has-selected']" v-for="(filter) in filters">
+                <b-card no-body class="m-0 rounded-0" :class="['filter-' + filter.name, !filter.selectedItems.length ? '' : 'has-selected']" v-for="(filter) in filters" v-bind:key="filter.name">
                   <b-card-header header-tag="header" class="p-0 border-0">
                     <b-btn block href="#" v-b-toggle="'app_map_filter_' + filter.name" variant="link" class="rounded-0 text-left">
                       <i class="icon ion-ios-arrow-forward ml-1 visible-collapsed"></i>
@@ -55,10 +55,10 @@
                       <span v-html="filter.label"></span>
                     </b-btn>
                   </b-card-header>
-                  <b-collapse :id="'app_map_filter_' + filter.name" :visible="filter.selectedItems.length > 0">
+                  <b-collapse :id="'app_map_filter_' + filter.name" v-model="filter.isOpen">
                     <b-card-body>
                       <b-button-group vertical class="w-100">
-                        <b-button class="btn-block" variant="default" v-for="item in filter.items"
+                        <b-button class="btn-block" variant="default" v-for="item in filter.items" v-bind:key="item.id"
                           :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
                       </b-button-group>
                     </b-card-body>
