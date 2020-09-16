@@ -2,15 +2,9 @@
 
 Application web permettant de publier un observatoire photographique des paysages.
 
-## Install
-Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.rst
+## Installation
 
-- Créer et activer un environnement virtuel python 3.
-- cd ./backend
-- Exécuter pip install -r ./requirements.txt
-- Dupliquer et renommer ./config.py.tpl vers ./config.py
-- Editer la config
-- Lancer l'app FLASK_APP=./app.py FLASK_DEBUG=1 flask run
+Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.rst
 
 ## Contexte
 
