@@ -15,6 +15,9 @@ geopsg.comparator = (options) => {
       return;
     }
     if (!(item.shot_on instanceof Date)) {
+      if (item.shot_on.length <= 10) {
+        item.shot_on += ' 00:00:00'
+      }
       item.shot_on = new Date(item.shot_on);
     }
   };
@@ -196,8 +199,14 @@ geopsg.comparator = (options) => {
           });
       },
       setFilteredItems() {
-        const dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
-        const dateTo = !this.dateTo ? null : new Date(this.dateTo);
+        let dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
+        if (dateFrom) {
+          dateFrom.setHours(0, 0, 0);
+        }
+        let dateTo = !this.dateTo ? null : new Date(this.dateTo);
+        if (dateTo) {
+          dateTo.setHours(23, 59, 59);
+        }
         if (!dateFrom && !dateTo) {
           this.filteredItems = [...this.items];
           this.nbFilteredItems = this.filteredItems.length;
