@@ -10,6 +10,22 @@ geopsg.comparator = (options) => {
   }];
   let sbsCtrl;
 
+  function computeItem(item) {
+    if (!item) {
+      return;
+    }
+    if (!(item.shot_on instanceof Date)) {
+      item.shot_on = new Date(item.shot_on);
+    }
+  };
+
+  const defaultItems = [
+    options.photos[0],
+    options.photos[options.photos.length - 1]
+  ];
+  computeItem(defaultItems[0]);
+  computeItem(defaultItems[1]);
+
   //TODO use format as an argument
   Vue.filter('dateFormat', (value) => {
     return value.toLocaleString('fr-FR', {
@@ -27,8 +43,8 @@ geopsg.comparator = (options) => {
         modes: modes,
         photos: options.photos,
         comparedPhotos: [
-          options.photos[0],
-          options.photos[options.photos.length - 1]
+          defaultItems[0],
+          defaultItems[1]
         ]
       }
     },
@@ -170,20 +186,12 @@ geopsg.comparator = (options) => {
       onItemSelected(item) {
         this.$emit('item-click', item);
       },
-      formatItem(item) {
-        if (!item) {
-          return;
-        }
-        if (!(item.shot_on instanceof Date)) {
-          item.shot_on = new Date(item.shot_on);
-        }
-      },
       setPageItems() {
         const pageIndex = this.currentPage - 1;
         const startIndex = pageIndex * this.perPage;
         this.pageItems = this.filteredItems.slice(startIndex, startIndex + this.perPage)
           .map(item => {
-            this.formatItem(item);
+            computeItem(item);
             return item;
           });
       },
@@ -201,9 +209,9 @@ geopsg.comparator = (options) => {
           }
           const middleIndex = Math.floor((startIndex + endIndex) / 2);
           const item = this.items[middleIndex];
-          this.formatItem(item);
+          computeItem(item);
           const itemBefore = this.items[middleIndex - 1];
-          this.formatItem(itemBefore);
+          computeItem(itemBefore);
           if (item.shot_on >= dateFrom && (!itemBefore || itemBefore.shot_on < dateFrom)) {
             return middleIndex;
           } else if (item.shot_on < dateFrom && endIndex > 0) {
@@ -219,9 +227,9 @@ geopsg.comparator = (options) => {
           }
           const middleIndex = Math.floor((startIndex + endIndex) / 2);
           const item = this.items[middleIndex];
-          this.formatItem(item);
+          computeItem(item);
           const itemAfter = this.items[middleIndex + 1];
-          this.formatItem(itemAfter);
+          computeItem(itemAfter);
           if (item.shot_on <= dateTo && (!itemAfter || itemAfter.shot_on > dateTo)) {
             return middleIndex;
           } else if (item.shot_on > dateTo && endIndex > 0) {
@@ -251,7 +259,7 @@ geopsg.comparator = (options) => {
         }
 
         this.filteredItems = this.items.slice(startIndex, endIndex + 1).map(item => {
-          this.formatItem(item);
+          computeItem(item);
           return item;
         });
         this.nbFilteredItems = this.filteredItems.length;
