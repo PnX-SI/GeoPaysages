@@ -58,7 +58,7 @@
           <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target font-italic">
-              {{ site.desc_site }}
+              {% autoescape false %}{{ site.desc_site }}{% endautoescape %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
@@ -71,7 +71,7 @@
           <h5 class="text-uppercase mt-4">{{ _('obs_point.testimonials') }}</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
             <div class="target font-italic">
-              {{ site.testim_site }}
+              {% autoescape false %}{{ site.testim_site }}{% endautoescape %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
               <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
