@@ -54,7 +54,7 @@ msgid "home.title"
 msgstr ""
 
 #: backend/tpl/home.html:32
-msgid "home.block.explore_map"
+msgid "home.block.explore_sites"
 msgstr ""
 
 #: backend/tpl/home.html:39

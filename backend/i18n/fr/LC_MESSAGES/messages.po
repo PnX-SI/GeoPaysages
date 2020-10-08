@@ -55,8 +55,8 @@ msgid "home.title"
 msgstr "L'Observatoire photographique des paysages de Vanoise"
 
 #: backend/tpl/home.html:32
-msgid "home.block.explore_map"
-msgstr "Explorer le carte interactive"
+msgid "home.block.explore_sites"
+msgstr "Explorer les sites d'observation"
 
 #: backend/tpl/home.html:39
 msgid "home.block.discover"
