@@ -208,6 +208,11 @@ button{
     vertical-align: sub;
 }
 
+.leaflet-verticalcenter {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 body, html {
     font-family: 'Crimson Text', serif;
 }

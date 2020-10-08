@@ -70,14 +70,17 @@ geopsg.comparator = (options) => {
       },
       initMap(num) {
         const map = L.map(this.$refs['photo' + num], {
-          zoomControl: false,
           crs: L.CRS.Simple,
           center: [0, 0],
-          zoom: 0,
+          zoom: 2,
           zoomSnap: 0.25,
           minZoom: -5,
           gestureHandling: true
         });
+        const side = num == 1 ? 'left' : 'right';
+        const className = `leaflet-top leaflet-verticalcenter leaflet-${side}`;
+        map._controlCorners['verticalcenterleft'] = L.DomUtil.create('div', className, map._controlContainer);
+        map.zoomControl.setPosition('verticalcenterleft');
         map.attributionControl.setPrefix('');
 
         return map;
@@ -105,11 +108,11 @@ geopsg.comparator = (options) => {
           .then(imgs => {
             const layers = [];
             imgs.forEach((img, i) => {
-              const imgW = img.width;
-              const imgH = img.height;
-              layers.push(
-                L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]])
-              );
+              const ratio = img.height / img.width;
+              const imgW = 256;
+              const imgH = imgW * ratio;
+              const overlay = L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]]);
+              layers.push(overlay);
             });
 
             if (this.curMode.name == 'split') {
@@ -163,21 +166,39 @@ geopsg.comparator = (options) => {
         currentPage: 1,
         perPage: 15,
         pageItems: [],
-        nbFilteredItems: 0
+        nbFilteredItems: 0,
+        steps: [{
+          label: "0",
+          value: 0
+        }, {
+          label: "1 jour",
+          value: 3600 * 24
+        }, {
+          label: "1 semaine",
+          value: 3600 * 24 * 7
+        }, {
+          label: "1 mois",
+          value: 3600 * 24 * 30
+        }, {
+          label: "1 an",
+          value: 3600 * 24 * 365
+        }],
+        selectedStep: null
       }
     },
     beforeMount() {
-      this.setFilteredItems();
+      this.selectedStep = this.steps [0];
+      this.filterItems();
       this.setPageItems();
     },
     watch: {
       dateFrom(val) {
-        this.setFilteredItems();
+        this.filterItems();
         this.currentPage = 1;
         this.setPageItems();
       },
       dateTo(val) {
-        this.setFilteredItems();
+        this.filterItems();
         this.currentPage = 1;
         this.setPageItems();
       },
@@ -186,8 +207,33 @@ geopsg.comparator = (options) => {
       }
     },
     methods: {
-      onItemSelected(item) {
-        this.$emit('item-click', item);
+      onStepClick(step) {
+        this.selectedStep = step;
+      },
+      onPrevBtnClick() {
+        const dateTo = new Date(this.selectedItem.shot_on);
+        dateTo.setSeconds(dateTo.getSeconds() - (this.selectedStep.value || 1), 0);
+        let itemIndex = this.searchDateToIndex(this.filteredItems, dateTo, 0, this.filteredItems.length - 1);
+        if (itemIndex < 0) {
+          itemIndex = this.filteredItems.length - 1;
+        }
+        this.setSelectedItem(this.filteredItems[itemIndex]);
+      },
+      onNextBtnClick() {
+        const dateFrom = new Date(this.selectedItem.shot_on);
+        console.log(this.selectedStep.value)
+        dateFrom.setSeconds(dateFrom.getSeconds() + (this.selectedStep.value || 1), 0);
+        let itemIndex = this.searchDateFromIndex(this.filteredItems, dateFrom, 0,this.filteredItems.length - 1);
+        if (itemIndex < 0) {
+          itemIndex = 0;
+        }
+        this.setSelectedItem(this.filteredItems[itemIndex]);
+      },
+      onItemClick(item) {
+        this.setSelectedItem(item);
+      },
+      setSelectedItem(item) {
+        this.$emit('item-selected', item);
       },
       setPageItems() {
         const pageIndex = this.currentPage - 1;
@@ -198,7 +244,7 @@ geopsg.comparator = (options) => {
             return item;
           });
       },
-      setFilteredItems() {
+      filterItems() {
         let dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
         if (dateFrom) {
           dateFrom.setHours(0, 0, 0);
@@ -208,70 +254,70 @@ geopsg.comparator = (options) => {
           dateTo.setHours(23, 59, 59);
         }
         if (!dateFrom && !dateTo) {
-          this.filteredItems = [...this.items];
-          this.nbFilteredItems = this.filteredItems.length;
+          this.setFilteredItems([...this.items]);
           return;
         }
-        const searchDateFromIndex = (startIndex, endIndex) => {
-          if (endIndex < startIndex) {
-            return -1;
-          }
-          const middleIndex = Math.floor((startIndex + endIndex) / 2);
-          const item = this.items[middleIndex];
-          computeItem(item);
-          const itemBefore = this.items[middleIndex - 1];
-          computeItem(itemBefore);
-          if (item.shot_on >= dateFrom && (!itemBefore || itemBefore.shot_on < dateFrom)) {
-            return middleIndex;
-          } else if (item.shot_on < dateFrom && endIndex > 0) {
-            return searchDateFromIndex(middleIndex + 1, endIndex);
-          } else if (endIndex > 0) {
-            return searchDateFromIndex(0, middleIndex);
-          }
-          return -1;
-        };
-        const searchDateToIndex = (startIndex, endIndex) => {
-          if (endIndex < startIndex) {
-            return -1;
-          }
-          const middleIndex = Math.floor((startIndex + endIndex) / 2);
-          const item = this.items[middleIndex];
-          computeItem(item);
-          const itemAfter = this.items[middleIndex + 1];
-          computeItem(itemAfter);
-          if (item.shot_on <= dateTo && (!itemAfter || itemAfter.shot_on > dateTo)) {
-            return middleIndex;
-          } else if (item.shot_on > dateTo && endIndex > 0) {
-            return searchDateToIndex(0, middleIndex - 1);
-          } else if (endIndex > 0) {
-            return searchDateToIndex(middleIndex + 1, endIndex);
-          }
-          return -1;
-        };
         let startIndex = 0;
         let endIndex = this.items.length - 1;
         if (dateFrom) {
-          startIndex = searchDateFromIndex(0, endIndex);
+          startIndex = this.searchDateFromIndex(this.items, dateFrom, 0, endIndex);
           if (startIndex < 0) {
-            this.filteredItems = [];
-            this.nbFilteredItems = 0;
+            setFilteredItems([]);
             return;
           }
         }
         if (dateTo) {
-          endIndex = searchDateToIndex(startIndex, endIndex);
+          endIndex = this.searchDateToIndex(this.items, dateTo, startIndex, endIndex);
           if (endIndex < 0) {
-            this.filteredItems = [];
-            this.nbFilteredItems = 0;
+            setFilteredItems([]);
             return;
           }
         }
 
-        this.filteredItems = this.items.slice(startIndex, endIndex + 1).map(item => {
+        this.setFilteredItems(this.items.slice(startIndex, endIndex + 1).map(item => {
           computeItem(item);
           return item;
-        });
+        }));
+      },
+      setFilteredItems(items) {
+        this.filteredItems = items;
         this.nbFilteredItems = this.filteredItems.length;
+      },
+      searchDateFromIndex(items, dateFrom, startIndex, endIndex) {
+        if (endIndex < startIndex) {
+          return -1;
+        }
+        const middleIndex = Math.floor((startIndex + endIndex) / 2);
+        const item = items[middleIndex];
+        computeItem(item);
+        const itemBefore = items[middleIndex - 1];
+        computeItem(itemBefore);
+        if (item.shot_on >= dateFrom && (!itemBefore || itemBefore.shot_on < dateFrom)) {
+          return middleIndex;
+        } else if (item.shot_on < dateFrom && endIndex > 0) {
+          return this.searchDateFromIndex(items, dateFrom, middleIndex + 1, endIndex);
+        } else if (endIndex > 0) {
+          return this.searchDateFromIndex(items, dateFrom, 0, middleIndex);
+        }
+        return -1;
+      },
+      searchDateToIndex(items, dateTo, startIndex, endIndex) {
+        if (endIndex < startIndex) {
+          return -1;
+        }
+        const middleIndex = Math.floor((startIndex + endIndex) / 2);
+        const item = items[middleIndex];
+        computeItem(item);
+        const itemAfter = items[middleIndex + 1];
+        computeItem(itemAfter);
+        if (item.shot_on <= dateTo && (!itemAfter || itemAfter.shot_on > dateTo)) {
+          return middleIndex;
+        } else if (item.shot_on > dateTo && endIndex > 0) {
+          return this.searchDateToIndex(items, dateTo, 0, middleIndex - 1);
+        } else if (endIndex > 0) {
+          return this.searchDateToIndex(items, dateTo, middleIndex + 1, endIndex);
+        }
+        return -1;
       }
     }
   });

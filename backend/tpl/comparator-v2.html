@@ -14,9 +14,9 @@
       </b-dropdown>
     </div>
     <app-comparator-v2-selector class="left" :items="photos" :selected-item="comparedPhotos[0]"
-      v-on:item-click="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
+      v-on:item-selected="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
     <app-comparator-v2-selector class="right" :items="photos" :selected-item="comparedPhotos[1]" right
-      v-on:item-click="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
+      v-on:item-selected="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
     <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
     <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
     <div class="row h-100">
@@ -37,35 +37,44 @@
 </template>
 
 <template id="tpl-app-comparator-v2-selector">
-  <b-dropdown :text="selectedItem?.shot_on | dateFormat" class="photo-selector" lazy no-flip :right="right">
-    <div class="mx-2">
-      Filtrer par date
-      <div class="d-flex justify-content-between align-items-center">
-        <span>Début</span>
-        <div>
-          <input type="date" v-model="dateFrom" />
-          <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
-            <span class="material-icons">clear</span>
-          </button>
+  <div class="photo-selector">
+    <b-dropdown :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
+      <div class="mx-2">
+        Filtrer par date
+        <div class="d-flex justify-content-between align-items-center">
+          <span>Début</span>
+          <div>
+            <input type="date" v-model="dateFrom" />
+            <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
+              <span class="material-icons">clear</span>
+            </button>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-1">
+          <span>Fin</span>
+          <div>
+            <input type="date" v-model="dateTo" />
+            <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
+              <span class="material-icons">clear</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="d-flex justify-content-between align-items-center mt-1">
-        <span>Fin</span>
-        <div>
-          <input type="date" v-model="dateTo" />
-          <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
-            <span class="material-icons">clear</span>
-          </button>
-        </div>
+      <b-dropdown-divider></b-dropdown-divider>
+      <b-dropdown-item-button v-for="item in pageItems" v-bind:key="item.id" v-on:click="onItemClick(item)">
+        <span :inner-html.prop="item.shot_on | dateFormat"></span>
+      </b-dropdown-item-button>
+      <b-dropdown-divider></b-dropdown-divider>
+      <div class="mx-2">
+        <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
       </div>
-    </div>
-    <b-dropdown-divider></b-dropdown-divider>
-    <b-dropdown-item-button v-for="item in pageItems" v-bind:key="item.id" v-on:click="onItemSelected(item)">
-      <span :inner-html.prop="item.shot_on | dateFormat"></span>
-    </b-dropdown-item-button>
-    <b-dropdown-divider></b-dropdown-divider>
-    <div class="mx-2">
-      <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
-    </div>
-  </b-dropdown>
+    </b-dropdown>
+    <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
+    <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
+    <b-dropdown :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" no-flip :right="right">
+      <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
+        <span :inner-html.prop="step.label"></span>
+      </b-dropdown-item-button>
+    </b-dropdown>
+  </div>
 </template>
