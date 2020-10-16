@@ -63,3 +63,23 @@ def date_from_group_dict(g: dict):
         return date(y, m, d)
     except:
         return date.today()
+
+def lower_and_replace(s: str) -> str:
+    '''Sets a string to lower case and replace special characters'''
+    replacements = [
+        (' ','_'),
+        ('é','e'),
+        ('è','e'),
+        ('ê','e'),
+        ('a','a'),
+        ('à','a'),
+        ('û','u'),
+        ('ù','u'),
+    ]
+
+    r = s.lower()
+
+    for char,repl in replacements:
+        r = r.replace(char, repl)
+
+    return r

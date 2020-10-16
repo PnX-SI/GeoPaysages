@@ -2,7 +2,8 @@ import unittest
 
 from geopaysagesftpclient.patterns import (
     build_string_from_pattern,
-    inputpattern_to_regex
+    inputpattern_to_regex,
+    lower_and_replace
 )
 
 
@@ -95,4 +96,16 @@ class patternTestCases(unittest.TestCase):
             self.assertEqual(
                 result,
                 build_string_from_pattern(p, group)
+            )
+
+    def test_replacements(self):
+        test_suite = [
+            ('toto est là', 'toto_est_la'),
+            ('éè _', 'ee__')
+        ]
+
+        for string, replacement in test_suite:
+            self.assertEqual(
+                lower_and_replace(string),
+                replacement
             )
