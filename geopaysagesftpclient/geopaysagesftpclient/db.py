@@ -32,22 +32,25 @@ def get_licence_id (engine: Engine, iptc:dict):
         return None
 
     notice = iptc.get('copyright notice')
+    author = iptc.get('by-line') or ''
     if not notice:
         return None
+
+    licence = '{0}, Author: {1}'.format(notice, author)
     
     cnx = engine.connect()
 
     id_licence_photo = cnx.execute(
         text(
         'select id_licence_photo from geopaysages.dico_licence_photo where name_licence_photo = :nt'
-        ), nt=notice
+        ), nt=licence
     ).scalar()
 
     if not id_licence_photo:
         id_licence_photo = cnx.execute(
             text(
                 'insert into geopaysages.dico_licence_photo (name_licence_photo, description_licence_photo) values (:nt,:desc) returning id_licence_photo'
-            ), nt=notice, desc=notice
+            ), nt=licence, desc=licence
         ).scalar()
 
     return id_licence_photo
