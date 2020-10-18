@@ -63,7 +63,7 @@ def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, i
     )
 
     id_licence_photo = get_licence_id(engine, iptc) if iptc else None
-    filter_date = date_from_group_dict(matchdict)
+    filter_date = date_from_group_dict(matchdict).isoformat()
     cnx = engine.connect()
 
     tran = cnx.begin()
@@ -72,7 +72,7 @@ def insert_image_in_db(engine: Engine, siteid:int, matchdict: dict, exif=None, i
             query,
             id_site = siteid,
             path = matchdict.get('ofilename'),
-            strfdate = date_from_group_dict(matchdict).strftime('%d/%m/%y'),
+            strfdate = date_from_group_dict(matchdict).isoformat(),
             f_date = filter_date,
             display = True,
             id_licence=id_licence_photo
