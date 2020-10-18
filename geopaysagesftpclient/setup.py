@@ -19,6 +19,7 @@ setup(
     },
     install_requires=[
         'IPTCInfo3',
+        'pillow',
         'sqlalchemy',
         'psycopg2==2.7.5',
         'psycopg2-binary==2.7.5'
