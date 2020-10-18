@@ -58,3 +58,4 @@ geopaysagesftpclient/pytest.ini
 geopaysagesftpclient/.vscode/
 geopaysagesftpclient/geopaysagesftpclient.egg-info/
 geopaysagesftpclient/output/
+geopaysagesftpclient/env/
