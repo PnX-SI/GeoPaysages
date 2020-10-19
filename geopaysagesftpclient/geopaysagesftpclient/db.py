@@ -36,7 +36,7 @@ def get_licence_id (engine: Engine, iptc:dict):
     if not notice:
         return None
 
-    licence = '{0}, Author: {1}'.format(notice, author)
+    licence = '{0} | {1}'.format(notice, author)
     
     cnx = engine.connect()
 
