@@ -8,6 +8,14 @@ From the folder `GeoPaysages/geopaysagesftpclient` (and inside your virtual env)
 
 #### For production
 
+Make sure `bdist_wheel` is installed
+
+```shell
+pip install whell
+```
+
+Then install the script from the current directory
+
 ```sh
 pip install .
 ```
