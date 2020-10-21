@@ -8,7 +8,7 @@ INSTALLATION
 Prérequis
 =========
 
-Application développée et installée sur un serveur Debian 9.
+Application développée et installée sur un serveur Debian 9 (stretch) ou Debian 10 (buster).
 
 Ce serveur doit aussi disposer de : 
 
@@ -60,7 +60,36 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 - Nginx
 - Python 3
 
-Cela installera les logiciels nécessaires au fonctionnement de l'application 
+:notes:
+
+    ATTENTION : les versions de PostgreSQL et PostGIS qui seront installées dépendent de la version de Debian utilisée. Exemples : 
+    Pour Debian 9 : posgresql-9.6-postgis-2.3
+    Pour Debian 10 : posgresql-11-postgis-2.5
+
+    Si vous souhaitez spécifier le couple de versions que vous souhaitez utiliser, procéder comme suit :
+
+    - créer un fichier de source pour le dépôt officiel de PostgreSQL :
+
+    ``sudo nano /etc/apt/sources.list.d/pgdg.list``
+
+    - Y ajoutez la ligne suivante :
+
+    ``deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main``
+
+    - Importer la clef de signature du dépôt :
+
+    ``wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -``
+
+    - Mettre à jour la liste des paquets :
+
+    ``sudo apt-get update``
+
+    - Enfin, modifier la ligne concernée dans le fichier ``install_env.sh`` en précisant le couple de versions de PostgreSQL - PostGIS souhaité (indispensable désormais). Exemple :
+
+    ``sudo apt-get install postgresql postgresql-11-postgis-2.5 postgresql-contrib postgresql-common postgresql-11-postgis-2.5-scripts``
+
+
+Le script suivant installera les logiciels nécessaires au fonctionnement de l'application :
 
 ::
 
@@ -75,6 +104,11 @@ Installation de la base de données
 
 **1. Configuration de la BDD  :** 
 
+:notes:
+
+    Selon votre contexte, veillez à configurer comme il se doit les fichiers de configurations de PostgeSQL ``postgresql.conf`` et ``pg_hba.conf``.
+
+
 Modifier le fichier de configuration de la BDD et de son installation automatique ``install_configuration/settings.ini``. 
 
 
@@ -88,10 +122,10 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les executant une par une.
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 
-**2. Lancer le fichier fichier d'installation de la base de données en sudo :**
+**2. Lancer le fichier fichier d'installation de la base de données :**
 
 ::
 
@@ -99,9 +133,9 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Vous pouvez consulter le log de cette installation de la base dans ``/var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
+    Vous pouvez consulter le log de cette installation de la base dans ``var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
     
-    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréer entièrement. 
+    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recrée entièrement. 
 
 
 Installation de l'application
@@ -112,7 +146,7 @@ Installation de l'application
 
 Editer le fichier de configuration ``./backend/config.py.tpl``.
 
-- Vérifier que la variable 'SQLALCHEMY_DATABASE_URI' contient les bonnes informations de connexion à la base
+- Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la BDD
 - Ne pas modifier les path des fichiers static
 - Renseigner les autres paramètres selon votre contexte
 
@@ -224,25 +258,25 @@ Internationalisation de l'application
 ======================================   
 
 - Pour modifier les textes, éditer le fichier ``backend/i18n/fr/messages.po``
-- activer l'environnement virtuel (depuis le répertoire source par exemple (geopaysages))
+- Activer l'environnement virtuel (depuis le répertoire source par exemple (geopaysages))
 
 ::
 
-    . cd geopaysages/
+    cd geopaysages/
     . venv/bin/activate
-    
-- lancer la commande de compilation en se plaçant au préalable dans le répertoire backend :
+
+- Lancer la commande de compilation en se plaçant au préalable dans le répertoire backend :
 
 ::
 
-    . cd backend/
-    . pybabel compile -d i18n
+    cd backend/
+    pybabel compile -d i18n
 
 :notes:
 
   Pour plus d'informations, voir https://pythonhosted.org/Flask-Babel/
   
-  Pour sortir de l'environnement virtuel, taper deactivate
+  Pour sortir de l'environnement virtuel, taper ``deactivate``
  
 Installation du back-office
 ============================
@@ -253,9 +287,9 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
 :notes:
 
-    Pour utiliser l'utilisateur admin installé par defaut il faut Renseigner  id_application : 1
+    Pour utiliser l'utilisateur ``admin`` intégré par défaut, il faut renseigner ``id_application : 1``
     
-    Pour apiUrl et staticPicturesUrl, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
+    Pour ``apiUrl`` et ``staticPicturesUrl``, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
     
 
 **2. Lancer l'installation automatique de l'application :**
@@ -263,7 +297,8 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 ::
 
     ./install_backoffice.sh
-    
+
+
 Configuration de Nginx
 ======================
 
@@ -274,7 +309,9 @@ Configuration de Nginx
    sudo nano /etc/supervisor/conf.d/geopaysages.conf
 
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
+
 ::
+
     [program:geopaysages]
     directory=/home/<monuser>/geopaysages/backend
     command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
@@ -296,14 +333,14 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 ::
 
-	server {
+    server {
         listen       80;
         server_name  localhost;
         client_max_body_size 100M;
         location / {
             proxy_pass http://127.0.0.1:8000;
         }
-    
+
         location /pictures {
             alias  /home/<monuser>/data/images/;
         }
@@ -336,14 +373,11 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 **4. Connectez-vous au back-office :**
 
-::
-
-    - Allez sur l'URL: <mon_ip>/app_admin
-    - Connectez-vous avec :
-        Identifiant : admin
-        Mot de passe: admin
-    - Ajoutez vos données
+- Allez sur l'URL : <mon_url>/app_admin
+- Connectez-vous avec l'identifiant ``admin`` et le mot de passe ``admin``
+- Ajoutez/modifiez vos données
     
+
 Développement
 =============
 
