@@ -15,7 +15,7 @@
     </div>
     <app-comparator-v2-selector class="left" :items="photos" :selected-item="comparedPhotos[0]"
       v-on:item-selected="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
-    <app-comparator-v2-selector class="right" :items="photos" :selected-item="comparedPhotos[1]" right
+    <app-comparator-v2-selector class="right text-right" :items="photos" :selected-item="comparedPhotos[1]" :right="true"
       v-on:item-selected="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
     <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
     <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
@@ -69,12 +69,14 @@
         <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
       </div>
     </b-dropdown>
-    <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
-    <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
-    <b-dropdown :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" no-flip :right="right">
-      <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
-        <span :inner-html.prop="step.label"></span>
-      </b-dropdown-item-button>
-    </b-dropdown>
+    <div class="d-block d-lg-inline-block mt-1 mt-lg-0">
+      <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
+      <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
+      <b-dropdown :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
+        <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
+          <span :inner-html.prop="step.label"></span>
+        </b-dropdown-item-button>
+      </b-dropdown>
+    </div>
   </div>
 </template>
