@@ -69,9 +69,11 @@ geopsg.comparator = (options) => {
         this.updateLayers();
       },
       initMap(num) {
+        const hasZoom = options.dbconf.comparator_zoom_control === undefined ? true : options.dbconf.comparator_zoom_control;
         const map = L.map(this.$refs['photo' + num], {
           crs: L.CRS.Simple,
           center: [0, 0],
+          zoomControl: hasZoom,
           zoom: 2,
           zoomSnap: 0.25,
           minZoom: -5,
@@ -80,7 +82,9 @@ geopsg.comparator = (options) => {
         const side = num == 1 ? 'left' : 'right';
         const className = `leaflet-top leaflet-verticalcenter leaflet-${side}`;
         map._controlCorners['verticalcenterleft'] = L.DomUtil.create('div', className, map._controlContainer);
-        map.zoomControl.setPosition('verticalcenterleft');
+        if (hasZoom) {
+          map.zoomControl.setPosition('verticalcenterleft');
+        }
         map.attributionControl.setPrefix('');
 
         return map;
@@ -187,7 +191,7 @@ geopsg.comparator = (options) => {
       }
     },
     beforeMount() {
-      this.selectedStep = this.steps [0];
+      this.selectedStep = this.steps[0];
       this.filterItems();
       this.setPageItems();
     },
@@ -223,7 +227,7 @@ geopsg.comparator = (options) => {
         const dateFrom = new Date(this.selectedItem.shot_on);
         console.log(this.selectedStep.value)
         dateFrom.setSeconds(dateFrom.getSeconds() + (this.selectedStep.value || 1), 0);
-        let itemIndex = this.searchDateFromIndex(this.filteredItems, dateFrom, 0,this.filteredItems.length - 1);
+        let itemIndex = this.searchDateFromIndex(this.filteredItems, dateFrom, 0, this.filteredItems.length - 1);
         if (itemIndex < 0) {
           itemIndex = 0;
         }
