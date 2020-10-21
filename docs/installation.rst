@@ -68,28 +68,28 @@ Le script ``install_env.sh`` va automatiquement installer les outils nécessaire
 
     Si vous souhaitez spécifier le couple de versions que vous souhaitez utiliser, procéder comme suit :
 
-    . créer un fichier de source pour le dépôt officiel de PostgreSQL :
+    - créer un fichier de source pour le dépôt officiel de PostgreSQL :
 
     ``sudo nano /etc/apt/sources.list.d/pgdg.list``
 
-    . Y ajoutez la ligne suivante :
+    - Y ajoutez la ligne suivante :
 
     ``deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main``
 
-    . Importer la clef de signature du dépôt :
+    - Importer la clef de signature du dépôt :
 
     ``wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -``
 
-    . Mettre à jour la liste des paquets :
+    - Mettre à jour la liste des paquets :
 
     ``sudo apt-get update``
 
-    . Enfin, modifier la ligne concernée dans le fichier ``install_env.sh`` en précisant le couple de versions de PostgreSQL - PostGIS souhaité (indispensable désormais). Exemple :
+    - Enfin, modifier la ligne concernée dans le fichier ``install_env.sh`` en précisant le couple de versions de PostgreSQL - PostGIS souhaité (indispensable désormais). Exemple :
 
     ``sudo apt-get install postgresql postgresql-11-postgis-2.5 postgresql-contrib postgresql-common postgresql-11-postgis-2.5-scripts``
 
 
-Cela installera les logiciels nécessaires au fonctionnement de l'application 
+Le script suivant installera les logiciels nécessaires au fonctionnement de l'application :
 
 ::
 
