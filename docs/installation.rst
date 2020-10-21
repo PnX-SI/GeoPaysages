@@ -311,6 +311,7 @@ Configuration de Nginx
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 
 ::
+
     [program:geopaysages]
     directory=/home/<monuser>/geopaysages/backend
     command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
@@ -332,14 +333,14 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 ::
 
-	server {
+    server {
         listen       80;
         server_name  localhost;
         client_max_body_size 100M;
         location / {
             proxy_pass http://127.0.0.1:8000;
         }
-    
+
         location /pictures {
             alias  /home/<monuser>/data/images/;
         }
