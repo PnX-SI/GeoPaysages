@@ -121,7 +121,7 @@ CREATE TABLE t_site (
     main_photo integer,
     path_file_guide_site character varying,
     publish_site boolean,
-    geom geometry
+    geom geometry(POINT,4326)
 );
 
 
