@@ -125,12 +125,28 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier ``install_db.sh`` en les exécutant une par une.
 
 
-**2. Lancer le fichier fichier d'installation de la base de données :**
+**2. Gestion des utilisateurs avec UsersHub :**
+
+La gestion des utilisateurs pour la connexion à l'interface d'administration de GeoPaysages (back-office) est hérité de l'application UsersHub (https://github.com/PnX-SI/UsersHub) et de son module d'authentification (https://github.com/PnX-SI/UsersHub-authentification-module).
+
+Centralisé en BDD dans le schéma ``utilisateurs``, il est possible d'installer celui-ci :
+
+- de manière locale et indépendante --> Nécessitera de gérer les roles et les relations directement en SQL.
+
+- en connectant la BDD de données distante (Foreign Data Wrapper) d'une application UsersHub déjà pré-installée par ailleurs (pour une gestion centralisée des utilisateurs via l'interface de UsersHub). Voir la documentation d'installation de UsersHub le cas échéant.
+
+:notes:
+
+    Suivez bien les indications en commentaire dans la rubrique "GESTION DES UTILISATEURS" du fichier ``settings.ini``.
+
+
+**3. Lancer le fichier fichier d'installation de la base de données :**
 
 ::
 
     ./install_db.sh
-    
+
+
 :notes:
 
     Vous pouvez consulter le log de cette installation de la base dans ``var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
@@ -277,6 +293,7 @@ Internationalisation de l'application
   Pour plus d'informations, voir https://pythonhosted.org/Flask-Babel/
   
   Pour sortir de l'environnement virtuel, taper ``deactivate``
+
  
 Installation du back-office
 ============================
@@ -287,9 +304,11 @@ Editer le fichier de configuration ``./front-backOffice/src/app/config.ts.tpl``.
 
 :notes:
 
-    Pour utiliser l'utilisateur ``admin`` intégré par défaut, il faut renseigner ``id_application : 1``
+    Pour utiliser l'utilisateur ``admin`` intégré par défaut, il faut renseigner ``id_application : 1`` --> Lorsque l'installation du schéma ``utilisateurs`` de la BDD à été défini avec le paramètre ``local`` dans ``settings.ini``.
+
+    Pour utiliser les utilisateurs d'une BDD UsersHub configurée lors de l'installation du schéma ``utilisateurs`` avec le paramètre ``foreign`` dans ``settings.ini`` : reporter l'id_application de GeoPaysages que vous avez préalablement crée dans UsersHub.
     
-    Pour ``apiUrl`` et ``staticPicturesUrl``, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP
+    Pour ``apiUrl`` et ``staticPicturesUrl``, bien mettre http://xxx.xxx.xxx.xxx, si utilisation d'une adresse IP.
     
 
 **2. Lancer l'installation automatique de l'application :**
