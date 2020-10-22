@@ -108,15 +108,11 @@ class TRole(db.Model):
     prenom_role = db.Column(db.String(50))
     desc_role = db.Column(db.Text)
     _pass = db.Column('pass', db.String(100))
+    _pass_plus = db.Column('pass_plus', db.String(100))
     email = db.Column(db.String(250))
     id_organisme = db.Column(db.ForeignKey(
         'utilisateurs.bib_organismes.id_organisme', onupdate='CASCADE'))
-    organisme = db.Column(db.String(32))
-    id_unite = db.Column(db.ForeignKey(
-        'utilisateurs.bib_unites.id_unite', onupdate='CASCADE'))
     remarques = db.Column(db.Text)
-    pn = db.Column(db.Boolean)
-    session_appli = db.Column(db.String(50))
     date_insert = db.Column(db.DateTime)
     date_update = db.Column(db.DateTime)
 

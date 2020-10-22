@@ -1,7 +1,8 @@
 SQLALCHEMY_DATABASE_URI='postgres://<user>:<passwd>@<host>:<port>/<database>'
 
 IGN_KEY='ign_key'
-PASS_METHOD='md5'
+# Choose between 'hash' or 'md5'
+PASS_METHOD='hash'
 COOKIE_EXPIRATION = 36000
 COOKIE_AUTORENEW = True
 SESSION_TYPE = 'filesystem'
