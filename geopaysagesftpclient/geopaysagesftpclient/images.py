@@ -1,6 +1,5 @@
 from iptcinfo3 import IPTCInfo, c_datasets
-from PIL import Image, ImageFile, IptcImagePlugin
-from PIL.IptcImagePlugin import getiptcinfo
+from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def retrieve_copyright_notice(fn:str) -> dict:

@@ -4,12 +4,18 @@ from datetime import date, datetime
 YEAR_TAG = 'Y'
 MONTH_TAG = 'M'
 DATE_TAG = 'D'
+HOUR_TAG = 'h'
+MIN_TAG = 'm'
+SEC_TAG = 's'
 EXTENSION_TAG = 'ext'
 
 VARIABLE_MAP = {
-    YEAR_TAG  : r'\d{4}',
-    MONTH_TAG : r'\d{2}',
-    DATE_TAG   : r'\d{2}',
+    YEAR_TAG    : r'\d{4}',
+    MONTH_TAG   : '|'.join( '%.2d'%(i+1) for i in range(12)),
+    DATE_TAG    : '|'.join( '%.2d'%(i+1) for i in range(31)),
+    HOUR_TAG    : '|'.join( '%.2d'%(i) for i in range(24)),
+    MIN_TAG     : '|'.join( '%.2d'%(i) for i in range(60)),
+    SEC_TAG     : '|'.join( '%.2d'%(i) for i in range(60)),
     EXTENSION_TAG: r'(?i:\.jpg|\.jpeg|\.gif|\.png|\.bmp)'
 }
 
@@ -55,11 +61,34 @@ def build_string_from_pattern(p: str, group: dict) -> str:
     r = r.replace('}', '__')
     return r
 
-def date_from_group_dict(g: dict):
+def date_from_group_dict(g: dict) -> datetime:
     try:
-        y = int(g[YEAR_TAG])
-        m = int(g[MONTH_TAG])
-        d = int(g[DATE_TAG])
-        return date(y, m, d)
+        year = int(g[YEAR_TAG])
+        month = int(g[MONTH_TAG])
+        day = int(g[DATE_TAG])
+        hour = int(g.get(HOUR_TAG, '00'))
+        minutes = int(g.get(MIN_TAG, '00'))
+        seconds = int(g.get(SEC_TAG, '00'))
+        return datetime(year, month, day, hour, minutes, seconds)
     except:
-        return date.today()
+        return datetime.today()
+
+def lower_and_replace(s: str) -> str:
+    '''Sets a string to lower case and replace special characters'''
+    replacements = [
+        (' ','_'),
+        ('é','e'),
+        ('è','e'),
+        ('ê','e'),
+        ('a','a'),
+        ('à','a'),
+        ('û','u'),
+        ('ù','u'),
+    ]
+
+    r = s.lower()
+
+    for char,repl in replacements:
+        r = r.replace(char, repl)
+
+    return r

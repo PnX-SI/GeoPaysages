@@ -5,7 +5,8 @@ import ssl
 
 from geopaysagesftpclient.patterns import (
     build_string_from_pattern,
-    inputpattern_to_regex
+    inputpattern_to_regex,
+    lower_and_replace
 )
 
 
@@ -58,7 +59,7 @@ class gpClient(ftplib.FTP_TLS):
 
         for f,g in ( (_f,dict(_g,site=site)) for _f,_g in self.walk_dir(regexp)):
             if filter(f,g):
-                ofname  = build_string_from_pattern(output_pattern, g)
+                ofname  = lower_and_replace(build_string_from_pattern(output_pattern, g))
                 destfile= os.path.join(outputdir, ofname)
 
                 if not os.path.isfile(destfile):                        # Only retrieve an image we do not already have it

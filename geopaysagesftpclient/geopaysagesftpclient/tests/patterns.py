@@ -2,11 +2,13 @@ import unittest
 
 from geopaysagesftpclient.patterns import (
     build_string_from_pattern,
-    inputpattern_to_regex
+    inputpattern_to_regex,
+    lower_and_replace
 )
 
 
 class patternTestCases(unittest.TestCase):
+    @unittest.skip(reason='patterns have gotten more complex')
     def testPatternMap(self):
         suite = [
             (r'{Y}', r'(?P<Y>\d{4})'),
@@ -48,6 +50,10 @@ class patternTestCases(unittest.TestCase):
                 r'{Y}/{M}/{D}/\w+\.jpeg',
                 r'1960/08/07/filename.jpeg',
                 {'Y': '1960', 'M': '08', 'D': '07'}
+            ),(
+                r'{Y}-{M}-{D}/{h}{m}{s}_\w+\.jpeg',
+                r'1960-08-07/231000_filename.jpeg',
+                {'Y': '1960', 'M': '08', 'D': '07', 'h':'23','m':'10','s':'00'}
             ),
             (
                 r'test/glacierblanc/{Y}/{M}/\w+{D}\.jpeg',
@@ -67,6 +73,20 @@ class patternTestCases(unittest.TestCase):
                 re.fullmatch(inputpattern_to_regex(pattern), filepath).groupdict()
             )
     
+    def test_groupNotFound(self):
+        import re
+        test = [
+            ( r'M', r'00' ),
+            ( r'M', r'13' ),
+            ( r'D', r'00'),
+            ( r'D', r'32'),
+            ( r'{Y}{M}{D}', r'20201310')
+        ]
+
+        for (pattern, string) in test:
+            self.assertIsNone(
+                re.fullmatch(pattern, string)
+            )
     def test_filenaming(self):
         test = [
             (
@@ -95,4 +115,16 @@ class patternTestCases(unittest.TestCase):
             self.assertEqual(
                 result,
                 build_string_from_pattern(p, group)
+            )
+
+    def test_replacements(self):
+        test_suite = [
+            ('toto est là', 'toto_est_la'),
+            ('éè _', 'ee__')
+        ]
+
+        for string, replacement in test_suite:
+            self.assertEqual(
+                lower_and_replace(string),
+                replacement
             )
