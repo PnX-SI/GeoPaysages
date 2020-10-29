@@ -76,10 +76,13 @@
       <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
       <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
       <b-dropdown :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
+      {% if dbconf.comparator_date_step_button == 'False': %}
+      {% else %}
         <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
           <span :inner-html.prop="step.label"></span>
         </b-dropdown-item-button>
       </b-dropdown>
+    {% endif %}
     </div>
   </div>
 </template>

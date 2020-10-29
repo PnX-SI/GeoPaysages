@@ -224,6 +224,8 @@ Si vous utiliser la version 2 du comparateur photos (paramètre ``COMPARATOR_VER
 
 - ``comparator_date_filter``, permet d'activer ``True`` ou de désactiver ``False`` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
 
+- ``comparator_date_step_button``, permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à ``False`` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
+
 
 Activation du bloc d'intro en page d'accueil
 ============================================
