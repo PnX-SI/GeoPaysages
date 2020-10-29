@@ -59,6 +59,14 @@
   width: 100%;
 }
 
+.app-sites .sidebar .text-right .align-text-top {
+    font-family: 'Hind', sans-serif;
+}
+
+.app-sites .sidebar .text-right .mr-1 {
+    margin-right: 0 !important;
+}
+
 .app-sites .sidebar .filters .card-header .btn .icon {
     right: auto;
     left: -10px;
