@@ -181,7 +181,7 @@ Vous pouvez personnaliser l'application en modifiant et ajoutant des fichiers da
 
 L'éventuelle surcouche CSS est à réaliser dans le fichier ``custom/css/custom-style.css``.
 
-Certains paramètres sont dans la table ``conf`` :
+Certains paramètres sont gérés depuis la table ``geopaysages.conf`` de la base de données :
 
 - ``external_links``, les liens en bas à droite dans le footer, est un tableau d'objets devant contenir un label et une URL, ex.
 ::
@@ -195,8 +195,9 @@ Certains paramètres sont dans la table ``conf`` :
         }]
 
 - ``zoom_map_comparator``, la valeur du zoom à l'initialisation de la carte de page comparateur de photos
+
 - ``zoom_max_fitbounds_map``, la valeur du zoom max lorsqu'on filtre les points sur la carte des sites d'observations. Ce paramètre évite que le zoom soit trop important lorsque les points restant sont très rapprochés.
-- Si vous voyez un paramètre nommé ``zoom_map``, sachez qu'il est déprécié, vous pouvez le supprimer de la table.
+
 - ``map_layers``, les différentes couches disponibles sur les cartes, voir ce lien pour connaitre toutes les options de configuration https://leafletjs.com/reference-1.5.0.html#tilelayer, ex :
 ::
 
@@ -218,6 +219,7 @@ Certains paramètres sont dans la table ``conf`` :
             }
           }
         ]
+
 
 Activation du bloc d'intro en page d'accueil
 ============================================
