@@ -220,6 +220,10 @@ Certains paramètres sont gérés depuis la table ``geopaysages.conf`` de la bas
           }
         ]
 
+Si vous utiliser la version 2 du comparateur photos (paramètre ``COMPARATOR_VERSION = 2`` dans ``config.py.tpl``), vous pouvez personnaliser celui-ci selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
+
+- ``comparator_date_filter``, permet d'activer ``True`` ou de désactiver ``False`` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+
 
 Activation du bloc d'intro en page d'accueil
 ============================================

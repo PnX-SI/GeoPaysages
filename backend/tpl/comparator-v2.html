@@ -39,28 +39,31 @@
 <template id="tpl-app-comparator-v2-selector">
   <div class="photo-selector">
     <b-dropdown :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
-      <div class="mx-2">
-        <span class="date_filter_title">{{ _('comparatorv2.date.filter.title') }}</span>
-        <div class="d-flex justify-content-between align-items-center">
-          <span>{{ _('comparatorv2.date.filter.start') }}</span>
-          <div>
-            <input type="date" v-model="dateFrom" />
-            <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
-              <span class="material-icons">clear</span>
-            </button>
+      {% if dbconf.comparator_date_filter == 'False': %}
+      {% else %}
+        <div class="mx-2">
+          <span class="date_filter_title">{{ _('comparatorv2.date.filter.title') }}</span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ _('comparatorv2.date.filter.start') }}</span>
+            <div>
+              <input type="date" v-model="dateFrom" />
+              <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
+                <span class="material-icons">clear</span>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <span>{{ _('comparatorv2.date.filter.end') }}</span>
+            <div>
+              <input type="date" v-model="dateTo" />
+              <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
+                <span class="material-icons">clear</span>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="d-flex justify-content-between align-items-center mt-1">
-          <span>{{ _('comparatorv2.date.filter.end') }}</span>
-          <div>
-            <input type="date" v-model="dateTo" />
-            <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
-              <span class="material-icons">clear</span>
-            </button>
-          </div>
-        </div>
-      </div>
-      <b-dropdown-divider></b-dropdown-divider>
+        <b-dropdown-divider></b-dropdown-divider>
+      {% endif %}
       <b-dropdown-item-button v-for="item in pageItems" v-bind:key="item.id" v-on:click="onItemClick(item)">
         <span :inner-html.prop="item.shot_on | dateFormat"></span>
       </b-dropdown-item-button>
