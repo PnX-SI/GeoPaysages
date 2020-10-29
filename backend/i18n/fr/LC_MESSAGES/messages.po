@@ -154,6 +154,27 @@ msgstr "filtres : %(nb)s résultat(s)"
 msgid "sites.observation_points.title"
 msgstr "Sites d'observation"
 
+#: backend/tpl/comparator-v2.html:6
+msgid "comparatorv2.mode.title"
+msgstr "Disposition des photos"
+
+#: backend/tpl/comparator-v2.html:33
+msgid "comparatorv2.loading"
+msgstr "Chargement"
+
+#: backend/tpl/comparator-v2.html:43
+msgid "comparatorv2.date.filter.title"
+msgstr "Filtrer par date"
+
+#: backend/tpl/comparator-v2.html:45
+msgid "comparatorv2.date.filter.start"
+msgstr "Début"
+
+#: backend/tpl/comparator-v2.html:54
+msgid "comparatorv2.date.filter.end"
+msgstr "Fin"
+
+
 #~ msgid "map.filter.themes"
 #~ msgstr "Thème"
 

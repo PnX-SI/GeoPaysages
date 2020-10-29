@@ -3,7 +3,7 @@
     <div class="mode-selector d-flex mb-1 mb-sm-0">
       <div class="col-6 p-0 justify-content-end d-flex">
         <span class="mode-selector-label">
-          <span class="pr-2">Disposition des photos</span>
+          <span class="pr-2">{{ _('comparatorv2.mode.title') }}</span>
         </span>
       </div>
       <b-dropdown :text="curMode.label">
@@ -30,7 +30,7 @@
     </div>
     <b-modal id="comparatorLoading" class="modal-contained" size="sm" static lazy centered no-fade no-close-on-backdrop
       no-close-on-esc hide-header hide-footer>
-      <p class="mb-0">Chargement</p>
+      <p class="mb-0">{{ _('comparatorv2.loading') }}</p>
       <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
     </b-modal>
   </div>
@@ -40,9 +40,9 @@
   <div class="photo-selector">
     <b-dropdown :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
       <div class="mx-2">
-        <span class="date_filter_title">Filtrer par date</span>
+        <span class="date_filter_title">{{ _('comparatorv2.date.filter.title') }}</span>
         <div class="d-flex justify-content-between align-items-center">
-          <span>Début</span>
+          <span>{{ _('comparatorv2.date.filter.start') }}</span>
           <div>
             <input type="date" v-model="dateFrom" />
             <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div class="d-flex justify-content-between align-items-center mt-1">
-          <span>Fin</span>
+          <span>{{ _('comparatorv2.date.filter.end') }}</span>
           <div>
             <input type="date" v-model="dateTo" />
             <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
