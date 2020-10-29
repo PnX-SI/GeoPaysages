@@ -31,11 +31,24 @@ geopsg.comparator = (options) => {
 
   //TODO use format as an argument
   Vue.filter('dateFormat', (value) => {
+    if (options.dbconf.comparator_date_format == 'year') {
+    return value.toLocaleString('fr-FR', {
+      year: 'numeric'
+    });
+    }
+    if (options.dbconf.comparator_date_format == 'month') {
+    return value.toLocaleString('fr-FR', {
+      month: '2-digit',
+      year: 'numeric'
+    });
+    }
+    else {
     return value.toLocaleString('fr-FR', {
       month: '2-digit',
       day: '2-digit',
       year: 'numeric'
     });
+  }
   });
 
   Vue.component('app-comparator-v2', {
@@ -164,30 +177,65 @@ geopsg.comparator = (options) => {
     template: '#tpl-app-comparator-v2-selector',
     props: ['items', 'selectedItem', 'right'],
     data: () => {
-      return {
-        dateFrom: null,
-        dateTo: null,
-        currentPage: 1,
-        perPage: 10,
-        pageItems: [],
-        nbFilteredItems: 0,
-        steps: [{
-          label: "0",
-          value: 0
-        }, {
-          label: "1 jour",
-          value: 3600 * 24
-        }, {
-          label: "1 semaine",
-          value: 3600 * 24 * 7
-        }, {
-          label: "1 mois",
-          value: 3600 * 24 * 30
-        }, {
-          label: "1 an",
-          value: 3600 * 24 * 365
-        }],
-        selectedStep: null
+      if (options.dbconf.comparator_date_format == 'year') {
+        return {
+          dateFrom: null,
+          dateTo: null,
+          currentPage: 1,
+          perPage: 10,
+          pageItems: [],
+          nbFilteredItems: 0,
+          steps: [{
+            label: "1 an",
+            value: 3600 * 24 * 365
+          }],
+          selectedStep: null
+        }
+      }
+      if (options.dbconf.comparator_date_format == 'month') {
+        return {
+          dateFrom: null,
+          dateTo: null,
+          currentPage: 1,
+          perPage: 10,
+          pageItems: [],
+          nbFilteredItems: 0,
+          steps: [{
+            label: "1 mois",
+            value: 3600 * 24 * 30
+          }, {
+            label: "1 an",
+            value: 3600 * 24 * 365
+          }],
+          selectedStep: null
+        }
+      }
+      else {
+        return {
+          dateFrom: null,
+          dateTo: null,
+          currentPage: 1,
+          perPage: 10,
+          pageItems: [],
+          nbFilteredItems: 0,
+          steps: [{
+            label: "0",
+            value: 0
+          }, {
+            label: "1 jour",
+            value: 3600 * 24
+          }, {
+            label: "1 semaine",
+            value: 3600 * 24 * 7
+          }, {
+            label: "1 mois",
+            value: 3600 * 24 * 30
+          }, {
+            label: "1 an",
+            value: 3600 * 24 * 365
+          }],
+          selectedStep: null
+        }
       }
     },
     beforeMount() {
