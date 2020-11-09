@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 15:02+0200\n"
+"POT-Creation-Date: 2020-11-09 11:25+0100\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -37,6 +37,54 @@ msgstr "Année"
 #: backend/tpl/comparator-v1.html:8
 msgid "obs_point.buttons.download"
 msgstr "Télécharger"
+
+#: backend/tpl/comparator-v2.html:6
+msgid "comparatorv2.mode.title"
+msgstr "Disposition des photos"
+
+#: backend/tpl/comparator-v2.html:33
+msgid "comparatorv2.loading"
+msgstr "Chargement"
+
+#: backend/tpl/comparator-v2.html:45
+msgid "comparatorv2.date.filter.title"
+msgstr "Filtrer par date"
+
+#: backend/tpl/comparator-v2.html:47
+msgid "comparatorv2.date.filter.start"
+msgstr "Début"
+
+#: backend/tpl/comparator-v2.html:56
+msgid "comparatorv2.date.filter.end"
+msgstr "Fin"
+
+#: backend/tpl/comparator-v2.html:98
+msgid "comparatorv2.mode.sidebyside"
+msgstr "Superposition"
+
+#: backend/tpl/comparator-v2.html:99
+msgid "comparatorv2.mode.split"
+msgstr "Côte à côte"
+
+#: backend/tpl/comparator-v2.html:100
+msgid "comparatorv2.date.steps.none"
+msgstr "0"
+
+#: backend/tpl/comparator-v2.html:101
+msgid "comparatorv2.date.steps.1d"
+msgstr "1 jour"
+
+#: backend/tpl/comparator-v2.html:102
+msgid "comparatorv2.date.steps.1w"
+msgstr "1 semaine"
+
+#: backend/tpl/comparator-v2.html:103
+msgid "comparatorv2.date.steps.1m"
+msgstr "1 mois"
+
+#: backend/tpl/comparator-v2.html:104
+msgid "comparatorv2.date.steps.1y"
+msgstr "1 an"
 
 #: backend/tpl/gallery.html:3
 msgid "gallery.meta_title"
@@ -153,27 +201,6 @@ msgstr "filtres : %(nb)s résultat(s)"
 #: backend/tpl/sites.html:75
 msgid "sites.observation_points.title"
 msgstr "Sites d'observation"
-
-#: backend/tpl/comparator-v2.html:6
-msgid "comparatorv2.mode.title"
-msgstr "Disposition des photos"
-
-#: backend/tpl/comparator-v2.html:33
-msgid "comparatorv2.loading"
-msgstr "Chargement"
-
-#: backend/tpl/comparator-v2.html:43
-msgid "comparatorv2.date.filter.title"
-msgstr "Filtrer par date"
-
-#: backend/tpl/comparator-v2.html:45
-msgid "comparatorv2.date.filter.start"
-msgstr "Début"
-
-#: backend/tpl/comparator-v2.html:54
-msgid "comparatorv2.date.filter.end"
-msgstr "Fin"
-
 
 #~ msgid "map.filter.themes"
 #~ msgstr "Thème"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-09-02 15:02+0200\n"
+"POT-Creation-Date: 2020-11-09 11:25+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,6 +35,54 @@ msgstr ""
 
 #: backend/tpl/comparator-v1.html:8
 msgid "obs_point.buttons.download"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:6
+msgid "comparatorv2.mode.title"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:33
+msgid "comparatorv2.loading"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:45
+msgid "comparatorv2.date.filter.title"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:47
+msgid "comparatorv2.date.filter.start"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:56
+msgid "comparatorv2.date.filter.end"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:98
+msgid "comparatorv2.mode.sidebyside"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:99
+msgid "comparatorv2.mode.split"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:100
+msgid "comparatorv2.date.steps.none"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:101
+msgid "comparatorv2.date.steps.1d"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:102
+msgid "comparatorv2.date.steps.1w"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:103
+msgid "comparatorv2.date.steps.1m"
+msgstr ""
+
+#: backend/tpl/comparator-v2.html:104
+msgid "comparatorv2.date.steps.1y"
 msgstr ""
 
 #: backend/tpl/gallery.html:3
@@ -153,22 +201,3 @@ msgstr ""
 msgid "sites.observation_points.title"
 msgstr ""
 
-#: backend/tpl/comparatorv2.html:6
-msgid "comparatorv2.mode.title"
-msgstr ""
-
-#: backend/tpl/comparator-v2.html:33
-msgid "comparatorv2.loading"
-msgstr ""
-
-#: backend/tpl/comparator-v2.html:43
-msgid "comparatorv2.date.filter.title"
-msgstr ""
-
-#: backend/tpl/comparator-v2.html:45
-msgid "comparatorv2.date.filter.start"
-msgstr ""
-
-#: backend/tpl/comparator-v2.html:54
-msgid "comparatorv2.date.filter.end"
-msgstr ""

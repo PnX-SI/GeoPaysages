@@ -94,6 +94,15 @@
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         photos: {{photos | tojson}},
+        translations: {
+          'mode_sidebyside': "{{ _('comparatorv2.mode.sidebyside') }}",
+          'mode_split': "{{ _('comparatorv2.mode.split') }}",
+          'date_steps_none': "{{ _('comparatorv2.date.steps.none') }}",
+          'date_steps_1d': "{{ _('comparatorv2.date.steps.1d') }}",
+          'date_steps_1w': "{{ _('comparatorv2.date.steps.1w') }}",
+          'date_steps_1m': "{{ _('comparatorv2.date.steps.1m') }}",
+          'date_steps_1y': "{{ _('comparatorv2.date.steps.1y') }}"
+        }
       });
     }
   });

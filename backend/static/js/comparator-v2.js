@@ -3,10 +3,10 @@ geopsg.comparator = (options) => {
   const maps = [];
   const modes = [{
     name: 'sidebyside',
-    label: "Superposition"
+    label: options.translations.mode_sidebyside
   }, {
     name: 'split',
-    label: "Côte à côte"
+    label: options.translations.mode_split
   }];
   let sbsCtrl;
 
