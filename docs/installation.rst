@@ -220,6 +220,16 @@ Certains paramètres sont gérés depuis la table ``geopaysages.conf`` de la bas
           }
         ]
 
+Si vous utiliser la version 2 du comparateur photos (paramètre ``COMPARATOR_VERSION = 2`` dans ``config.py.tpl``), vous pouvez personnaliser celui-ci selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
+
+- ``comparator_date_filter``, permet d'activer ``True`` ou de désactiver ``False`` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+
+- ``comparator_date_step_button``, permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à ``False`` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
+
+- ``comparator_date_format``, permet de personnaliser le format d'affichage des dates des photos dans le bouton sélecteur. Avec la valeur ``year`` on affiche la date au format ``YYYY``. Avec ``month`` --> ``MM/YYYY``.
+Le comportement par défaut reste l'affichage de la date complète au format ``day`` --> ``DD/MM/YYYY`` (si non-renseigné).
+Ce paramètre permet aussi de filtrer en conséquence les pas de temps disponibles dans le bouton ad-hoc (exemple : si ``month`` est défini, les pas de temps disponibles seront ``1 mois`` et ``1 an``). Utile dans le cas où les dates de photos sont parfois imprécises (photos ancienns, cartes postales...).
+
 
 Activation du bloc d'intro en page d'accueil
 ============================================
