@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   --tools-top: 50px;
+  font-family: 'Hind', sans-serif;
 }
 @media (min-width: 576px) {
   .page-site .app-comparator {
@@ -66,4 +67,8 @@
 }
 .page-site .app-comparator .photo-caption.right {
   right: 0;
+}
+
+.page-site .app-comparator .date_filter_title {
+  font-weight: bold;
 }

@@ -107,7 +107,7 @@ def home():
 
 @main.route('/gallery')
 def gallery():
-    get_sites = models.TSite.query.filter_by(publish_site = True).order_by('name_site')
+    get_sites = models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)
     dump_sites = site_schema.dump(get_sites).data
     
     #TODO get photos and cities by join on sites query
