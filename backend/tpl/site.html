@@ -91,20 +91,15 @@
 {% include 'comparator-v'+ comparator_version|string +'.html' %}
 
 <script>
-  document.onreadystatechange = () => {
+  document.addEventListener('readystatechange', (e) => {
     if (document.readyState == 'complete') {
-      geopsg.comparator({
-        dbconf: {{dbconf | tojson}},
-        site: {{site | tojson}},
-        photos: {{photos | tojson}},
-      });
       geopsg.site({
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         //photos: {{photos | tojson}}
       });
     }
-  };
+  });
 </script>
 
 {% endblock %}
