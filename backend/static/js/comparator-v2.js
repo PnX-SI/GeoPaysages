@@ -16,7 +16,7 @@ geopsg.comparator = (options) => {
     }
     if (!(item.shot_on instanceof Date)) {
       if (item.shot_on.length <= 10) {
-        item.shot_on += ' 00:00:00'
+        item.shot_on += 'T00:00:00'
       }
       item.shot_on = new Date(item.shot_on);
     }
