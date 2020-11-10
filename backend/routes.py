@@ -74,8 +74,6 @@ def home():
     )
     dump_communes = communes_schema.dump(query_commune)
 
-    print(dump_photos)
-
     for site in sites:
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
@@ -144,6 +142,7 @@ def gallery():
     dump_villes = communes_schema.dump(query_villes)
 
     for site in dump_sites:
+        print('PHOTO')
         id_site = site.get('id_site')
         photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
         site['photo'] = utils.getThumbnail(photo).get('output_url')
