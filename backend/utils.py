@@ -1,6 +1,6 @@
 from flask import url_for
 from config import DATA_IMAGES_PATH
-from PIL import Image, ImageFont, ImageDraw, ImageOps
+from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
 import os
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
@@ -8,6 +8,7 @@ import json
 from flask_babel import get_locale
 
 db = SQLAlchemy()
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def getImage(photo, prefixe, callback):
     #here = os.path.dirname(__file__)
