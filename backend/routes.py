@@ -31,11 +31,11 @@ def home():
     id_photos = json.loads(rows[0]['value'])
     get_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(id_photos))
-    dump_pĥotos = photo_schema.dump(get_photos).data
+    dump_pĥotos = photo_schema.dump(get_photos)
 
     site_ids = [photo.get('t_site') for photo in dump_pĥotos]
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
-    dump_sites = site_schema.dump(get_sites).data """
+    dump_sites = site_schema.dump(get_sites) """
 
     sql = text("SELECT * FROM geopaysages.t_site where publish_site=true ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
@@ -58,7 +58,7 @@ def home():
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
-    dump_photos = photo_schema.dump(query_photos).data
+    dump_photos = photo_schema.dump(query_photos)
 
     if len(sites_without_photo):
         sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
@@ -72,7 +72,9 @@ def home():
     query_commune = models.Communes.query.filter(
         models.Communes.code_commune.in_(code_communes)
     )
-    dump_communes = communes_schema.dump(query_commune).data
+    dump_communes = communes_schema.dump(query_commune)
+
+    print(dump_photos)
 
     for site in sites:
         id_site = site.get('id_site')
@@ -101,14 +103,14 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True)).data
+    all_sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True))
     
     return render_template('home.html', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
     get_sites = models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)
-    dump_sites = site_schema.dump(get_sites).data
+    dump_sites = site_schema.dump(get_sites)
     
     #TODO get photos and cities by join on sites query
     photo_ids = []
@@ -125,7 +127,7 @@ def gallery():
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
-    dump_photos = photo_schema.dump(query_photos).data
+    dump_photos = photo_schema.dump(query_photos)
 
     if len(sites_without_photo):
         sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
@@ -139,7 +141,7 @@ def gallery():
     query_villes = models.Communes.query.filter(
         models.Communes.code_commune.in_(ville_codes)
     )
-    dump_villes = communes_schema.dump(query_villes).data
+    dump_villes = communes_schema.dump(query_villes)
 
     for site in dump_sites:
         id_site = site.get('id_site')
@@ -152,17 +154,17 @@ def gallery():
 @main.route('/sites/<int:id_site>')
 def site(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
-    site=site_schema.dump(get_site_by_id).data
+    site=site_schema.dump(get_site_by_id)
     if len(site) == 0:
         return abort(404)
 
     site = site[0]
     
     get_villes = models.Communes.query.filter_by(code_commune = site.get('code_city_site'))
-    site['ville'] = communes_schema.dump(get_villes).data[0]
+    site['ville'] = communes_schema.dump(get_villes)[0]
 
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date')
-    photos = photo_schema.dump(get_photos_by_site).data
+    photos = photo_schema.dump(get_photos_by_site)
 
     def getPhoto(photo):
         date_diplay = {}
@@ -228,14 +230,14 @@ def site(id_site):
 @main.route('/sites/<int:id_site>/photos/latest')
 def site_photos_last(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
-    site=site_schema.dump(get_site_by_id).data
+    site=site_schema.dump(get_site_by_id)
     if len(site) == 0:
         return abort(404)
 
     site = site[0]
 
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date desc').limit(1)
-    photos = photo_schema.dump(get_photos_by_site).data
+    photos = photo_schema.dump(get_photos_by_site)
     photo=photos[0]
 
     date_approx = photo.get('date_photo')
@@ -251,7 +253,7 @@ def site_photos_last(id_site):
 @main.route('/sites')
 def sites():
 
-    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)).data
+    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES))
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
         cor_list = []
@@ -261,7 +263,7 @@ def sites():
             cor_list.append(cor.get('id_stheme_theme'))
         query = models.CorSthemeTheme.query.filter(
             models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
-        themes_sthemes = themes_sthemes_schema.dump(query).data
+        themes_sthemes = themes_sthemes_schema.dump(query)
 
         for item in themes_sthemes:
             if item.get('dico_theme').get('id_theme') not in themes_list:
@@ -271,7 +273,7 @@ def sites():
 
         get_photos_by_site = models.TPhoto.query.filter_by(
             id_site=site.get('id_site'))
-        photos = photo_schema.dump(get_photos_by_site).data
+        photos = photo_schema.dump(get_photos_by_site)
 
         site['link'] = url_for('main.site', id_site=site.get('id_site'), _external=True)
         site['latlon'] = site.get('geom')
@@ -289,7 +291,7 @@ def sites():
         site['years'] = list(site['years'])
         site['photos'] = photos
 
-    subthemes = dicostheme_schema.dump(models.DicoStheme.query.all()).data
+    subthemes = dicostheme_schema.dump(models.DicoStheme.query.all())
     for sub in subthemes:
         themes_of_subthemes = []
         for item in sub.get('cor_stheme_themes'):
@@ -328,7 +330,7 @@ def sites():
             else:
                 filter.get('items').add(val)
 
-    themes = dicotheme_schema.dump(models.DicoTheme.query.all()).data
+    themes = dicotheme_schema.dump(models.DicoTheme.query.all())
     themes = [{
         'id': item['id_theme'],
         'label': item['name_theme']
