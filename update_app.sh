@@ -1,10 +1,5 @@
 #!/bin/bash
-scripts_dir=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
-app_dir="$scripts_dir"
-cd "$app_dir"
-app_dir="$(pwd)"
-app_dir_name=$(basename $app_dir)
-
+read -p "Enter the folder name of the previous version (ex. geopaysages) "  app_dir_name
 read -p "Enter version tag (ex: v1.0.0-rc.3.4): "  version
 read -r -p "Start update to version $version? [y/N] " response
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
@@ -25,9 +20,6 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
     if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		echo "Copy custom config"
 		cp "$app_dir_name/backend/config.py" "$new_app_dir_name/backend/config.py"
-		echo "Copy custom translations"
-		mv "$new_app_dir_name/backend/i18n" "$new_app_dir_name/backend/i18n-$version"
-		cp -r "$app_dir_name/backend/i18n" "$new_app_dir_name/backend/i18n"
 		echo "Copy custom css and images"
 		cp -r "$app_dir_name/backend/static/custom" "$new_app_dir_name/backend/static"
 		echo "Copy backoffice config"
@@ -56,12 +48,22 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 		pip install wheel
 		pip install -r ./backend/requirements.txt
 
-		pybabel extract -F ./backend/babel.cfg -o ./backend/i18n/messages.pot ./backend
-		pybabel update -i ./backend/i18n/messages.pot -d ./backend/i18n
-		pybabel compile -d ./backend/i18n
+		cd ./backend/i18n
+		for lang in */; do
+			lang=${lang: : -1}
+			dir="$lang/LC_MESSAGES"
+			filename="messages.po"
+			old_path="$prev_app_dir_name/backend/i18n/$dir/$filename"
+			if test -f $old_path; then
+				old_dest="$dir/old_$filename"
+				cp $old_path $old_dest
+				msgcat $old_dest "$dir/$filename" -o "$dir/$filename" --use-first
+			fi
+		done
+		pybabel compile -d ./
 
 		deactivate
-		cd ../	
+		cd ../../../
 		echo "Restart"
 		sudo service supervisor restart
 
