@@ -18,10 +18,5 @@ npm install -g @angular/cli@7.0.5
 cd ./front-backOffice/
 npm install 
 
-# Creation du map config
-cp src/app/config.ts.tpl src/app/config.ts
-
 # build app
 ng build --prod --base-href /app_admin/
-mkdir -p ../../app_admin
-cp -r ./dist/front-backOffice/* ../../app_admin/
