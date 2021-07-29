@@ -25,7 +25,7 @@ class UsersView(db.Model):
 #schemas#
 
 
-class usersViewSchema(ma.ModelSchema):
+class usersViewSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_role', 'identifiant', 'nom_role',
                   'id_organisme', 'id_application', 'id_droit_max')

@@ -205,40 +205,42 @@ class GeographySerializationField(fields.String):
 #schemas#
 
 
-class DicoThemeSchema(ma.ModelSchema):
+class DicoThemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_theme', 'name_theme')
 
 
-class DicoSthemeSchema(ma.ModelSchema):
+class DicoSthemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = DicoStheme
+        include_relationships = True
 
 
-class CorThemeSthemeSchema(ma.ModelSchema):
+class CorThemeSthemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_stheme_theme',)
 
 
-class LicencePhotoSchema(ma.ModelSchema):
+class LicencePhotoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
 
-class RoleSchema(ma.ModelSchema):
+class RoleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-         fields = ('id_role', 'identifiant', 'nom_role',
+        fields = ('id_role', 'identifiant', 'nom_role',
                   'id_organisme')
 
 
-class TPhotoSchema(ma.ModelSchema):
+class TPhotoSchema(ma.SQLAlchemyAutoSchema):
     dico_licence_photo = ma.Nested(LicencePhotoSchema)
     t_role = ma.Nested(RoleSchema)
 
     class Meta:
         model = TPhoto
+        include_relationships = True
 
 
-class CorSthemeThemeSchema(ma.ModelSchema):
+class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
     dico_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme"])
     dico_stheme = ma.Nested(DicoSthemeSchema, only=["id_stheme", "name_stheme"])
 
@@ -247,18 +249,19 @@ class CorSthemeThemeSchema(ma.ModelSchema):
         #model = CorSthemeTheme
 
 
-class TSiteSchema(ma.ModelSchema):
+class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
 
     class Meta:
         model = TSite
+        include_relationships = True
 
 
-class VilleSchema(ma.ModelSchema):
+class VilleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
          fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
 
 
-class CommunesSchema(ma.ModelSchema):
+class CommunesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Communes

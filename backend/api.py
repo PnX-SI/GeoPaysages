@@ -29,7 +29,7 @@ ville_schema = models.VilleSchema(many=True)
 def returnAllSites():
     try:
         get_all_sites = models.TSite.query.order_by('ref_site').all()
-        sites = site_schema.dump(get_all_sites).data
+        sites = site_schema.dump(get_all_sites)
         for site in sites:
             if(site.get('main_photo') == None):
                 set_main_photo = models.TPhoto.query.filter_by(
@@ -40,12 +40,12 @@ def returnAllSites():
             '''
             get_photos = models.TPhoto.query.filter(
             models.TPhoto.id_photo.in_(site.get('t_photos')))
-            dump_photos = photo_schema.dump(get_photos).data
+            dump_photos = photo_schema.dump(get_photos)
             for photo in dump_photos :
                 photo['sm'] = utils.getThumbnail(photo).get('output_name'),
             site['photos'] = dump_photos
             '''
-            main_photo = photo_schema.dump(set_main_photo).data
+            main_photo = photo_schema.dump(set_main_photo)
             site['main_photo'] = utils.getThumbnail(
                 main_photo[0]).get('output_name')
     except Exception as exception:
@@ -57,10 +57,10 @@ def returnAllSites():
 def returnSiteById(id_site):
     try:
         get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
-        site = site_schema.dump(get_site_by_id).data
+        site = site_schema.dump(get_site_by_id)
         get_photos_by_site = models.TPhoto.query.order_by(
             'filter_date').filter_by(id_site=id_site).all()
-        dump_photos = photo_schema.dump(get_photos_by_site).data
+        dump_photos = photo_schema.dump(get_photos_by_site)
 
         cor_sthemes_themes = site[0].get('cor_site_stheme_themes')
         cor_list = []
@@ -70,7 +70,7 @@ def returnSiteById(id_site):
             cor_list.append(cor.get('id_stheme_theme'))
         query = models.CorSthemeTheme.query.filter(
             models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
-        themes_sthemes = themes_sthemes_schema.dump(query).data
+        themes_sthemes = themes_sthemes_schema.dump(query)
 
         for item in themes_sthemes:
             if item.get('dico_theme').get('id_theme') not in themes_list:
@@ -94,7 +94,7 @@ def returnSiteById(id_site):
 def gallery():
     try:
         get_photos = models.TPhoto.query.order_by('id_site').all()
-        dump_photos = photo_schema.dump(get_photos).data
+        dump_photos = photo_schema.dump(get_photos)
         for photo in dump_photos:
             photo['sm'] = utils.getThumbnail(photo).get('output_name'),
     except Exception as exception:
@@ -106,7 +106,7 @@ def gallery():
 def returnAllThemes():
     try:
         get_all_themes = models.DicoTheme.query.all()
-        themes = themes_schema.dump(get_all_themes).data
+        themes = themes_schema.dump(get_all_themes)
     except Exception as exception:
         return jsonify(error=exception), 400
     return jsonify(themes), 200
@@ -116,7 +116,7 @@ def returnAllThemes():
 def returnAllSubthemes():
     try:
         get_all_subthemes = models.DicoStheme.query.all()
-        subthemes = subthemes_schema.dump(get_all_subthemes).data
+        subthemes = subthemes_schema.dump(get_all_subthemes)
         for sub in subthemes:
             themes_of_subthemes = []
             for item in sub.get('cor_stheme_themes'):
@@ -132,7 +132,7 @@ def returnAllSubthemes():
 def returnAllLicences():
     try:
         get_all_licences = models.DicoLicencePhoto.query.all()
-        licences = licences_schema.dump(get_all_licences).data
+        licences = licences_schema.dump(get_all_licences)
     except Exception as exception:
         return jsonify(error=exception), 400
     return jsonify(licences), 200
@@ -143,7 +143,7 @@ def returnAllUsers(id_app):
     try:
         get_all_users = user_models.UsersView.query.filter_by(
             id_application=id_app).all()
-        users = users_schema.dump(get_all_users).data
+        users = users_schema.dump(get_all_users)
     except Exception as exception:
         return jsonify(error=exception), 400
     return jsonify(users), 200
@@ -155,7 +155,7 @@ def returnCurrentUser(id_role=None):
     try:
         get_current_user = user_models.UsersView.query.filter_by(
             id_role=id_role).all()
-        current_user = users_schema.dump(get_current_user).data
+        current_user = users_schema.dump(get_current_user)
     except Exception as exception:
         return jsonify(error=exception), 400
     return jsonify(current_user), 200
@@ -168,7 +168,7 @@ def deleteSite(id_site):
     try:
         models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
         photos = models.TPhoto.query.filter_by(id_site=id_site).all()
-        photos = photo_schema.dump(photos).data
+        photos = photo_schema.dump(photos)
         models.TPhoto.query.filter_by(id_site=id_site).delete()
         site = models.TSite.query.filter_by(id_site=id_site).delete()
         for photo in photos:
@@ -221,7 +221,7 @@ def add_cor_site_theme_stheme():
             get_id_stheme_theme = models.CorSthemeTheme.query.filter_by(
                 id_theme=d.get('id_theme'), id_stheme=d.get('id_stheme')).all()
             id_stheme_theme = corThemeStheme_Schema.dump(
-                get_id_stheme_theme).data
+                get_id_stheme_theme)
             id_stheme_theme[0]['id_site'] = d.get('id_site')
             site_theme_stheme = models.CorSiteSthemeTheme(**id_stheme_theme[0])
             db.session.add(site_theme_stheme)
@@ -260,7 +260,7 @@ def upload_file():
                 photos_query = models.TPhoto.query.filter_by(
                     path_file_photo=d_serialized.get('path_file_photo')).all()
                 photo_id = photo_schema.dump(
-                    photos_query).data[0].get('id_photo')
+                    photos_query)[0].get('id_photo')
                 models.TSite.query.filter_by(id_site=d_serialized.get(
                     'id_site')).update({models.TSite.main_photo: photo_id})
                 db.session.commit()
@@ -307,7 +307,7 @@ def update_photo():
         photos_query = models.TPhoto.query.filter_by(
             id_photo=data_serialized.get('id_photo')).all()
         photo_name = photo_schema.dump(
-            photos_query).data[0].get('path_file_photo')
+            photos_query)[0].get('path_file_photo')
         if (data_serialized.get('main_photo') == True):
             models.TSite.query.filter_by(id_site=data_serialized.get('id_site')).update(
                 {models.TSite.main_photo: data_serialized.get('id_photo')})
@@ -340,13 +340,13 @@ def deletePhotos():
         for photo in photos:
             photos_query = models.TPhoto.query.filter_by(
                 id_photo=photo.get('id_photo')).all()
-            photo_dump = photo_schema.dump(photos_query).data[0]
+            photo_dump = photo_schema.dump(photos_query)[0]
             photo_name = photo_dump.get('path_file_photo')
             models.TPhoto.query.filter_by(
                 id_photo=photo.get('id_photo')).delete()
             get_site_by_id = models.TSite.query.filter_by(
                 id_site=photo_dump.get('t_site'))
-            site = site_schema.dump(get_site_by_id).data[0]
+            site = site_schema.dump(get_site_by_id)[0]
             if (site.get('main_photo') == photo_dump.get('id_photo')):
                 models.TSite.query.filter_by(id_site=photo_dump.get(
                     't_site')).update({models.TSite.main_photo: None})
@@ -363,7 +363,7 @@ def deletePhotos():
 def returnAllcommunes():
     try:
         get_all_communes = models.Communes.query.order_by('nom_commune').all()
-        communes = models.CommunesSchema(many=True).dump(get_all_communes).data
+        communes = models.CommunesSchema(many=True).dump(get_all_communes)
     except Exception as exception:
         return ('error'), 400
     return jsonify(communes), 200
