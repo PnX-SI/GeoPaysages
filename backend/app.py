@@ -1,8 +1,6 @@
 # coding: utf-8
 from pypnusershub import routes
 from routes import main as main_blueprint
-from models import (db)
-import models
 from flask import Flask
 from flask_babel import Babel, gettext, ngettext, get_locale
 from flask_cors import CORS

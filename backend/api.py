@@ -19,7 +19,8 @@ site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
-users_schema = user_models.usersViewSchema(many=True)
+# Not used ?
+# users_schema = user_models.usersViewSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 ville_schema = models.VilleSchema(many=True)
@@ -137,28 +138,28 @@ def returnAllLicences():
         return jsonify(error=exception), 400
     return jsonify(licences), 200
 
+# NOT USED ?
+# @api.route('/api/users/<int:id_app>', methods=['GET'])
+# def returnAllUsers(id_app):
+#     try:
+#         get_all_users = user_models.UsersView.query.filter_by(
+#             id_application=id_app).all()
+#         users = users_schema.dump(get_all_users)
+#     except Exception as exception:
+#         return jsonify(error=exception), 400
+#     return jsonify(users), 200
 
-@api.route('/api/users/<int:id_app>', methods=['GET'])
-def returnAllUsers(id_app):
-    try:
-        get_all_users = user_models.UsersView.query.filter_by(
-            id_application=id_app).all()
-        users = users_schema.dump(get_all_users)
-    except Exception as exception:
-        return jsonify(error=exception), 400
-    return jsonify(users), 200
 
-
-@api.route('/api/me/', methods=['GET'])
-@fnauth.check_auth(2, True, None, None)
-def returnCurrentUser(id_role=None):
-    try:
-        get_current_user = user_models.UsersView.query.filter_by(
-            id_role=id_role).all()
-        current_user = users_schema.dump(get_current_user)
-    except Exception as exception:
-        return jsonify(error=exception), 400
-    return jsonify(current_user), 200
+# @api.route('/api/me/', methods=['GET'])
+# @fnauth.check_auth(2, True, None, None)
+# def returnCurrentUser(id_role=None):
+#     try:
+#         get_current_user = user_models.UsersView.query.filter_by(
+#             id_role=id_role).all()
+#         current_user = users_schema.dump(get_current_user)
+#     except Exception as exception:
+#         return jsonify(error=exception), 400
+#     return jsonify(current_user), 200
 
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])

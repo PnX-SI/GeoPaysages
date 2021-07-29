@@ -2,6 +2,7 @@
 from geoalchemy2.types import Geometry
 import geoalchemy2.functions as geo_funcs
 from marshmallow import fields
+from pypnusershub.db.models import User
 
 from env import db, ma
 
@@ -90,7 +91,7 @@ class DicoTheme(db.Model):
 
 class TRole(db.Model):
     __tablename__ = 't_roles'
-    __table_args__ = {'schema': 'utilisateurs'}
+    __table_args__ = {'schema': 'utilisateurs', 'extend_existing': True}
 
     groupe = db.Column(db.Boolean, nullable=False,
                        server_default=db.FetchedValue())
