@@ -2,16 +2,16 @@ from flask import Flask, request, Blueprint, Response, jsonify, url_for
 from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
-import fnmatch
 import re
 from pypnusershub import routes
 import models
 import json
 import user_models
 import utils
-from flask_cors import CORS
 import os
-from app import db
+
+from env import db
+
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)

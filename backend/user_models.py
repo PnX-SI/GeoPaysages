@@ -4,11 +4,10 @@ from sqlalchemy.dialects.postgresql.base import UUID
 from sqlalchemy.schema import FetchedValue
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 from marshmallow import fields
 
-db = SQLAlchemy()
-ma = Marshmallow()
+from env import db, ma
+
 
 
 class UsersView(db.Model):

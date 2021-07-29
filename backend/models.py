@@ -1,16 +1,9 @@
 # coding: utf-8
-from sqlalchemy import ARRAY, Boolean, CheckConstraint, Column, Date, Float, ForeignKey, Integer, String, Table, Text
 from geoalchemy2.types import Geometry
-from sqlalchemy.orm import relationship
-from sqlalchemy.schema import FetchedValue
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import geoalchemy2.functions as geo_funcs
 from marshmallow import fields
 
-db = SQLAlchemy()
-ma = Marshmallow()
-
+from env import db, ma
 
 class TSite(db.Model):
     __tablename__ = 't_site'

@@ -6,12 +6,12 @@ import models
 from flask import Flask
 from flask_babel import Babel, gettext, ngettext, get_locale
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from api import api
 import config
-import json
 import utils
+
+from env import db
 
 class ReverseProxied(object):
     '''Wrap the application in this middleware and configure the 
@@ -59,8 +59,6 @@ app.register_blueprint(routes.routes, url_prefix='/api/auth')
 
 app.config.from_pyfile('config.py')
 db.init_app(app)
-
-db = SQLAlchemy()
 
 @app.context_processor
 def inject_to_tpl():
