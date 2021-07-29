@@ -8,7 +8,6 @@ from pypnusershub.db.models import AppUser
 import re
 import models
 import json
-import user_models
 import utils
 import os
 
