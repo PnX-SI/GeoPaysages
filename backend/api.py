@@ -1,9 +1,11 @@
 from flask import Flask, request, Blueprint, Response, jsonify, url_for
+from werkzeug.exceptions import NotFound
+
 from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
+from pypnusershub.db.models import AppUser
 import re
-from pypnusershub import routes
 import models
 import json
 import user_models
@@ -138,28 +140,24 @@ def returnAllLicences():
         return jsonify(error=exception), 400
     return jsonify(licences), 200
 
-# NOT USED ?
-# @api.route('/api/users/<int:id_app>', methods=['GET'])
-# def returnAllUsers(id_app):
-#     try:
-#         get_all_users = user_models.UsersView.query.filter_by(
-#             id_application=id_app).all()
-#         users = users_schema.dump(get_all_users)
-#     except Exception as exception:
-#         return jsonify(error=exception), 400
-#     return jsonify(users), 200
+@api.route('/api/users/<int:id_app>', methods=['GET'])
+def returnAllUsers(id_app):
+    all_users = AppUser.query.filter_by(
+        id_application=id_app).all()
 
+    return jsonify([u.as_dict() for u in all_users])
 
-# @api.route('/api/me/', methods=['GET'])
-# @fnauth.check_auth(2, True, None, None)
-# def returnCurrentUser(id_role=None):
-#     try:
-#         get_current_user = user_models.UsersView.query.filter_by(
-#             id_role=id_role).all()
-#         current_user = users_schema.dump(get_current_user)
-#     except Exception as exception:
-#         return jsonify(error=exception), 400
-#     return jsonify(current_user), 200
+# TODO : remove this view ! 
+# use in the front at each refresh ... but why ?
+@api.route('/api/me/', methods=['GET'])
+@fnauth.check_auth(2, True, None, None)
+def returnCurrentUser(id_role=None):
+    current_user = AppUser.query.filter_by(
+        id_role=id_role
+    ).all()
+    if not current_user:
+        raise NotFound(f"No User with id {id_role}")
+    return jsonify([d.as_dict() for d in current_user])
 
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
