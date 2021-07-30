@@ -18,8 +18,6 @@ site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
-# Not used ?
-# users_schema = user_models.usersViewSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 ville_schema = models.VilleSchema(many=True)
@@ -30,23 +28,18 @@ def returnAllSites():
     get_all_sites = models.TSite.query.order_by('ref_site').all()
     sites = site_schema.dump(get_all_sites)
     for site in sites:
-        if(site.get('main_photo') == None):
-            set_main_photo = models.TPhoto.query.filter_by(
-                id_photo=site.get('t_photos')[0])
+        if len(site.get("t_photos")) > 0:
+            if site.get('main_photo') == None :
+                set_main_photo = models.TPhoto.query.filter_by(
+                    id_photo=site.get('t_photos')[0])
+            else:
+                set_main_photo = models.TPhoto.query.filter_by(
+                    id_photo=site.get('main_photo'))
+            main_photo = photo_schema.dump(set_main_photo)
+            site['main_photo'] = utils.getThumbnail(
+                main_photo[0]).get('output_name')
         else:
-            set_main_photo = models.TPhoto.query.filter_by(
-                id_photo=site.get('main_photo'))
-        '''
-        get_photos = models.TPhoto.query.filter(
-        models.TPhoto.id_photo.in_(site.get('t_photos')))
-        dump_photos = photo_schema.dump(get_photos)
-        for photo in dump_photos :
-            photo['sm'] = utils.getThumbnail(photo).get('output_name'),
-        site['photos'] = dump_photos
-        '''
-        main_photo = photo_schema.dump(set_main_photo)
-        site['main_photo'] = utils.getThumbnail(
-            main_photo[0]).get('output_name')
+            site["main_photo"] = "no_photo"
 
     return jsonify(sites), 200
 
