@@ -1,3 +1,17 @@
+backend/static/custom/images/sample.png
+backend/static/custom/css/custom-style.css
+backend/static/custom/css/page-style.css
+backend/static/custom/logo/logo_txt_blanc.png
+backend/static/custom/logo/logo_txt_color.png
+
+messages.pot 
+messages.po
+messages.mo
+
+src/favicon.ico
+
+
+
 # IDEs and editors
 /.idea
 .project

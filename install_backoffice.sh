@@ -18,5 +18,7 @@ npm install -g @angular/cli@7.0.5
 cd ./front-backOffice/
 npm install 
 
+cp src/favicon.ico.sample src/favicon.ico
+
 # build app
 ng build --prod --base-href /app_admin/
