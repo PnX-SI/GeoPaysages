@@ -2,10 +2,8 @@
 CHANGELOG
 =========
 
-1.1.0 (unreleased)
+1.1.0 (2021-07-30)
 ------------------
-
-Voir https://github.com/PnX-SI/GeoPaysages/compare/master...dev
 
 **🚀 Nouveautés**
 
@@ -26,11 +24,11 @@ Voir https://github.com/PnX-SI/GeoPaysages/compare/master...dev
 **🐛 Corrections**
 
 * Prise en compte du paramètre ``DEFAULT_SORT_SITES`` dans la page Galerie (par @xavyeah39)
+* Corrections diverses
 
 **⚠️ Notes de version**
 
-* Voir si il faut indiquer quelque chose par rapport à https://github.com/PnX-SI/GeoPaysages/issues/90
-* D'autres choses ?
+* Suivre la procédure de mise à jour (https://github.com/PnX-SI/GeoPaysages/blob/dev/docs/installation.rst#mise-%C3%A0-jour-de-lapplication-front-et-back / Non testée sur cette version)
 
 1.0.1 (2020-08-13)
 ------------------
