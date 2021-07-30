@@ -109,14 +109,14 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
 
 
 Installation de l'application
-============================
+=============================
 
 **1. Configuration de l'application :**
 
 Désampler le fichier de configuration puis l'éditer
 ``cp ./backend/config.py.tpl ./backend/config.py``.
 
-- Vérifier que la variable 'SQLALCHEMY_DATABASE_URI' contient les bonnes informations de connexion à la base
+- Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la base
 - Ne pas modifier les path des fichiers static
 - Renseigner les autres paramètres selon votre contexte
 
@@ -130,13 +130,13 @@ Désampler le fichier de configuration puis l'éditer
 Mise à jour de l'application (Front et back)
 ============================================
 
-- Au préalable, s'assurer que le fichier de configuration /geopaysages/front-backOffice/src/app/config.ts contienne la ligne suivante :
+- Au préalable, s'assurer que le fichier de configuration ``/geopaysages/front-backOffice/src/app/config.ts`` contienne la ligne suivante :
 
 ::
 
     customFiles: '<nom domaine ou url>/static/custom/',
     
-- Se placer dans le répertoire geopaysages
+- Se placer dans le répertoire ``geopaysages``
 - Lancer l'update
 
 ::
@@ -144,7 +144,7 @@ Mise à jour de l'application (Front et back)
     ./update_app.sh
     
 - Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
-- Un répertoire <user>/geopaysages-[date mise à jour] est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
+- Un répertoire ``<user>/geopaysages-[date mise à jour]`` est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
 
 :Attention:
 
@@ -152,13 +152,14 @@ Mise à jour de l'application (Front et back)
 
 Récupération depuis geopaysages-[date mise à jour] :
 
-- le fichier html de la page dans backend/tpl
-- le fichier layout.html ou les modifs faites dedans dans backend/tpl
-- le fichier routes.py ou les modifs faites dedans dans backend
-- le fichier d'internationalisation messages.po ou les modifs dedans dans backend/i18n/fr/LC_MESSAGES
-- s'il y a des images, les récupérer dans backend/static/custom/images
+- le fichier ``html`` de la page dans ``backend/tpl``
+- le fichier ``layout.html`` ou les modifs faites dedans dans ``backend/tpl``
+- le fichier ``routes.py`` ou les modifs faites dedans dans ``backend``
+- le fichier d'internationalisation ``messages.po`` ou les modifs dedans dans ``backend/i18n/fr/LC_MESSAGES``
+- s'il y a des images, les récupérer dans ``backend/static/custom/images``
 - lancer les commandes nécessaires, notamment pour python pour l'internationalisation (voir chapitre ci-dessous)
 - lancer
+
 ::
 
         sudo service supervisor restart
@@ -297,6 +298,7 @@ Configuration de NGINX
 Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port : 
 
 ::
+
     [program:geopaysages]
     directory=/home/<monuser>/geopaysages/backend
     command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
@@ -358,48 +360,8 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 **4. Connectez-vous au back-office :**
 
-::
-
-    - Allez sur l'URL: <mon_ip>/app_admin
-    - Connectez-vous avec :
-        Identifiant : admin
-        Mot de passe: admin
-    - Ajoutez vos données
-
-
-Mise à jour de l'application (Front et back)
-============================================
-
-- Au préalable, s'assurer que le fichier de configuration ``/geopaysages/front-backOffice/src/app/config.ts`` contienne la ligne suivante :
-
-::
-
-    customFiles: '<nom domaine ou url>/static/custom/',
-    
-- Se placer dans le répertoire ``geopaysages``
-- Lancer l'update
-
-::
-
-    ./update_app.sh
-    
-- Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
-- Un répertoire ``<user>/geopaysages-[date mise à jour]`` est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
-
-:Attention:
-
-        La mise à jour applicative ne prend pas en compte la récupération des pages personnalisées se basant sur le template backend/tpl/sample.html. Cela doit être récupérer manuellement après la mise à jour applicative.
-
-Récupération depuis ``geopaysages-[date mise à jour]`` :
-
-- le fichier ``html`` de la page dans ``backend/tpl``
-- le fichier ``layout.html`` ou les modifs faites dedans dans ``backend/tpl``
-- le fichier ``routes.py`` ou les modifs faites dedans dans ``backend``
-- le fichier d'internationalisation ``messages.po`` ou les modifs dedans dans ``backend/i18n/fr/LC_MESSAGES``
-- s'il y a des images, les récupérer dans ``backend/static/custom/images``
-- lancer les commandes nécessaires, notamment pour python pour l'internationalisation (voir chapitre ci-dessous)
-- lancer
-
-::
-
-        sudo service supervisor restart
+- Allez sur l'URL: <mon_ip>/app_admin
+- Connectez-vous avec :
+   - Identifiant : admin
+   - Mot de passe: admin
+- Ajoutez vos données
