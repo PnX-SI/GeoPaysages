@@ -2,7 +2,7 @@
 INSTALLATION
 ============
 
-.. image:: ./logo.png
+.. image:: https://www.vanoise-parcnational.fr/sites/vanoise-parcnational.fr/files/logo_pnv_0.jpg
 
 .. image:: http://geonature.fr/img/logo-pne.jpg
     :width: 117px
@@ -113,8 +113,11 @@ Installation de l'application
 
 **1. Configuration de l'application :**
 
-Désampler le fichier de configuration puis l'éditer
-``cp ./backend/config.py.tpl ./backend/config.py``.
+Désampler le fichier de configuration puis l'éditer : 
+
+::
+
+    ``cp ./backend/config.py.tpl ./backend/config.py``.
 
 - Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la base
 - Ne pas modifier les path des fichiers static
@@ -122,7 +125,7 @@ Désampler le fichier de configuration puis l'éditer
 
 
 **2. Lancer l'installation automatique de l'application :**
-	
+
 ::
 
     ./install_app.sh
@@ -341,12 +344,8 @@ Copiez/collez-y ces lignes en renseignant les bons chemins et le bon port :
 
 :notes:	
 
-    La limite de la taille des fichiers en upload est configurée à 100 Mo (``client_max_body_size``)
-    Modifier ``server_name`` pour ajouter le nom domaine associé à votre GeoPaysages :
-	 
-::
-
-    server_name mondomaine.fr
+    La limite de la taille des fichiers en upload est configurée à 100 Mo (``client_max_body_size``).
+    Modifier ``server_name`` pour ajouter le nom domaine associé à votre GeoPaysages : ``server_name mondomaine.fr``
 
 **3. Redémarrer supervisor et NGINX :**
  
