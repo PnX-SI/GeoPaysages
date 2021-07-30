@@ -30,18 +30,24 @@ def returnAllSites():
     for site in sites:
         if len(site.get("t_photos")) > 0:
             if site.get('main_photo') == None :
-                set_main_photo = models.TPhoto.query.filter_by(
-                    id_photo=site.get('t_photos')[0])
+                first_photo = site.get("t_photos")
+                main_photo = models.TPhoto.query.filter_by(
+                    id_photo=first_photo[0]
+                ).one_or_none()
             else:
-                set_main_photo = models.TPhoto.query.filter_by(
-                    id_photo=site.get('main_photo'))
-            main_photo = photo_schema.dump(set_main_photo)
-            site['main_photo'] = utils.getThumbnail(
-                main_photo[0]).get('output_name')
+                main_photo = models.TPhoto.query.filter_by(
+                    id_photo=site.get('main_photo')).one_or_none()
+            if main_photo:
+                photo_schema = models.TPhotoSchema()
+                main_photo = photo_schema.dump(main_photo)
+                site['main_photo'] = utils.getThumbnail(main_photo).get('output_name')
+            else:
+                site["main_photo"] = "no_photo"
+
         else:
             site["main_photo"] = "no_photo"
 
-    return jsonify(sites), 200
+    return jsonify(sites)
 
 
 @api.route('/api/site/<int:id_site>', methods=['GET'])
