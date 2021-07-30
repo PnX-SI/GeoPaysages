@@ -11,7 +11,7 @@ CHANGELOG
 * Mise en place d'un filtre et d'un selecteur navigation entre les dates des photos (#77)
 * Ajout de paramètres pour pouvoir configurer le comparateur v2 (#102 par @xavyeah39)
 * Mise en place d'un script d'import automatique des photos sur un serveur FTP (#79 et #85)
-* Documentation du script d'import automatique (https://github.com/PnX-SI/GeoPaysages/blob/dev/docs/import.md)
+* Documentation du script d'import automatique (https://github.com/PnX-SI/GeoPaysages/blob/master/docs/import.md)
 * Possibilité d'ajouter un texte de présentation HTML sur la page d'accueil, avant ou après la moisaïque (#65)
 * Création d'une page simple affichant la dernière photo d'un site, intégrable en iframe dans un autre site (#78)
 * Prise en compte du HTML dans les textes de description et de témoignage des sites (#82)
