@@ -3,7 +3,7 @@
 {% block title %}Sample meta title{% endblock %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/page-sample.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='custom/css/page-sample.css') }}">
 {% endblock %}
 
 
@@ -17,7 +17,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <img src="{{ url_for('static', filename='images/sample.png') }}" />
+      <img src="{{ url_for('static', filename='custom/images/sample.png') }}" />
     </div>
     <div class="col">
       <p>

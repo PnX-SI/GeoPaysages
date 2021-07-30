@@ -1,18 +1,14 @@
-from flask import Flask, render_template, redirect, Blueprint, jsonify, url_for, abort
-from flask_sqlalchemy import SQLAlchemy
+from flask import render_template, Blueprint, url_for, abort
 from sqlalchemy import text
 import models
 import utils
-import random
-from models import (db)
 from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
-import json
 from datetime import datetime
-from flask_babel import format_datetime, gettext, ngettext
+from flask_babel import format_datetime, gettext
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
-db = SQLAlchemy()
+from env import db 
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
 dicostheme_schema = models.DicoSthemeSchema(many=True)
@@ -251,7 +247,6 @@ def site_photos_last(id_site):
 
 @main.route('/sites')
 def sites():
-
     sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES))
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
