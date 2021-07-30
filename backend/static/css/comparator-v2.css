@@ -1,0 +1,74 @@
+.page-site .app-comparator {
+  height: calc(100vh - 190px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  --tools-top: 50px;
+  font-family: 'Hind', sans-serif;
+}
+@media (min-width: 576px) {
+  .page-site .app-comparator {
+    --tools-top: 8px;
+  }
+}
+
+.page-site .app-comparator .photo-selector {
+  position: absolute;
+  z-index: 1001;
+  top: var(--tools-top);
+}
+.page-site .app-comparator .photo-selector.show {
+  z-index: 1002;
+}
+.page-site .app-comparator .photo-selector.left {
+  left: 8px;
+}
+.page-site .app-comparator .photo-selector.right {
+  right: 8px;
+}
+
+.page-site .app-comparator .photo-selector .date-selector .dropdown-menu {
+  min-width: 320px;
+}
+
+.page-site .app-comparator .mode-selector {
+  z-index: 1003;
+}
+
+@media (min-width: 576px) {
+  .page-site .app-comparator .mode-selector {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    top: var(--tools-top);
+  }
+}
+
+.page-site .app-comparator .mode-selector-label {
+  background: rgba(120, 190, 32, 0.8);
+  color: #fff;
+  padding: 6px 0 0 12px;
+}
+
+.page-site .app-comparator .mode-selector-label > span {
+  border-right: 1px solid #fff;
+}
+
+.page-site .app-comparator .photo-caption {
+  position: absolute;
+  z-index: 1000;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0 5px;
+  max-width: calc(50% - 2px);
+}
+.page-site .app-comparator .photo-caption.left {
+  left: 0;
+}
+.page-site .app-comparator .photo-caption.right {
+  right: 0;
+}
+
+.page-site .app-comparator .date_filter_title {
+  font-weight: bold;
+}

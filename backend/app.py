@@ -1,16 +1,14 @@
 # coding: utf-8
 from pypnusershub import routes
 from routes import main as main_blueprint
-from models import (db)
-import models
 from flask import Flask
-from flask_babel import Babel, gettext, ngettext
+from flask_babel import Babel, get_locale
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from api import api
 import config
-import json
+import utils
+
+from env import db
 
 class ReverseProxied(object):
     '''Wrap the application in this middleware and configure the 
@@ -59,21 +57,9 @@ app.register_blueprint(routes.routes, url_prefix='/api/auth')
 app.config.from_pyfile('config.py')
 db.init_app(app)
 
-db = SQLAlchemy()
-
 @app.context_processor
-def inject_dbconf():
-    sql = text("SELECT key, value FROM geopaysages.conf")
-    result = db.engine.execute(sql).fetchall()
-    rows = [dict(row) for row in result]
-    conf = {}
-    for row in rows:
-        try:
-            conf[row.get('key')] = json.loads(row.get('value'))
-        except Exception as exception:
-            conf[row.get('key')] = row.get('value')
-        
-    return dict(dbconf=conf)
+def inject_to_tpl():
+    return dict(dbconf=utils.getDbConf(), debug=app.debug, locale=get_locale(), isDbPagePublished=utils.isDbPagePublished)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -20,8 +20,16 @@ echo "Installing requirements..."
 pip install wheel
 pip install -r ./backend/requirements.txt
 
-echo "Creating configuration files "
-cp ./backend/config.py.tpl ./backend/config.py
+
+cp backend/static/custom/images/sample.png.sample backend/static/custom/images/sample.png
+cp backend/static/custom/css/page-style.css.sample backend/static/custom/css/page-style.css
+cp backend/static/custom/css/page-sample.css.sample backend/static/custom/css/page-sample.css
+cp backend/static/custom/logo/logo_txt_blanc.png.sample backend/static/custom/logo/logo_txt_blanc.png
+cp backend/static/custom/logo/logo_txt_color.png.sample backend/static/custom/logo/logo_txt_color.png
+cp i18n/messages.pot.sample i18n/messages.pot 
+cp i18n/fr/LC_MESSAGES/messages.mo.sample i18n/fr/LC_MESSAGES/messages.mo
+cp i18n/fr/LC_MESSAGES/messages.po.sample i18n/fr/LC_MESSAGES/messages.po
+
 
 cp ./backend/static/assets/images/oppv-005-03-2014.jpg ../data/images/
 cp ./backend/static/assets/images/oppv-005-00-2006.jpg ../data/images/

@@ -1,8 +1,14 @@
 from flask import url_for
 from config import DATA_IMAGES_PATH
-from PIL import Image, ImageFont, ImageDraw, ImageOps
+from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
 import os
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
+import json
+from flask_babel import get_locale
 
+db = SQLAlchemy()
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 def getImage(photo, prefixe, callback):
     #here = os.path.dirname(__file__)
@@ -87,3 +93,36 @@ def addCaption(img, img_src, text):
             img_dest.save(img.get('output_path'))
         except Exception:
             print('addCaption Invalid image')
+
+
+def getDbConf():
+    sql = text("SELECT key, value FROM geopaysages.conf")
+    result = db.engine.execute(sql).fetchall()
+    rows = [dict(row) for row in result]
+    conf = {}
+    for row in rows:
+        try:
+            conf[row.get('key')] = json.loads(row.get('value'))
+        except Exception as exception:
+            conf[row.get('key')] = row.get('value')
+    
+    return conf
+
+
+def isDbPagePublished(name):
+    dbconf = getDbConf()
+
+    return dbconf.get('page_' + name + '_published_' + get_locale().__str__(), dbconf.get('page_' + name + '_published')) is True
+
+
+def getDbPage(name):
+    dbconf = getDbConf()
+
+    locale = get_locale()
+    title_locale = dbconf.get('page_' + name + '_title_' + locale.__str__())
+    content_locale = dbconf.get('page_' + name + '_content_' + locale.__str__())
+
+    return {
+        'title': title_locale if title_locale else dbconf.get('page_' + name + '_title', ''),
+        'content': content_locale if content_locale else dbconf.get('page_' + name + '_content', '')
+    }

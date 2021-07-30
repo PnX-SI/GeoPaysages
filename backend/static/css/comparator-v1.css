@@ -1,0 +1,105 @@
+.page-site .page-content .img-date {
+    font-family: 'Hind', sans-serif;
+    font-weight: 500;
+}
+
+.page-site .page-content .compared {
+    padding: 0 var(--padding-x);
+    background-color: #EFEFEF;
+}
+
+.page-site .page-content .compared .progress {
+    width: 150px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.page-site .page-content .compared .progress-bar {
+    width: 100%;
+}
+
+.page-site .page-content .compared .img-wrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-site .page-content .compared .img-wrapper img {
+    max-width: 100%;
+    /* max-height: 560px; */
+    max-height: calc(100vh - 382px);
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    outline: none;
+}
+
+.page-site .page-content .compared .img-wrapper .img-tools {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.page-site .page-content .compared .img-tools .btn {
+    text-shadow: #fff;
+    text-shadow: 1px 1px 0 #FFF;
+}
+
+.page-site .page-content .thumbs .thumb img {
+    /* width: 100%;
+    height: auto; */
+    background: #CCC;
+    height: 100px;
+    width: auto;
+    user-select: none;
+}
+
+.page-site .page-content .thumbs .thumb.selected .img-date {
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.page-site .thumbs {
+    width: 100%;
+    position: relative;
+}
+
+.page-site .thumbs .btn-arrow {
+    position: absolute;
+    top: 50px;
+    transform: translateY(-50%);
+}
+
+.page-site .thumbs .btn-arrow:not(.swiper-button-disabled) {
+    animation-name: blink-3;
+    animation-duration: .5s;
+}
+
+.page-site .thumbs .btn-prev {
+    right: 100%;
+    margin-right: 10px;
+}
+
+.page-site .thumbs .btn-next {
+    left: 100%;
+    margin-left: 10px;
+}
+
+.page-site .thumbs .swiper-button-disabled {
+    visibility: hidden;
+}
+
+.page-site .thumbs .swiper-container {
+    width: 100%;
+}
+
+.page-site .thumbs .swiper-slide {
+    display: inline-block;
+    width: 100px;
+    cursor: pointer;
+}
