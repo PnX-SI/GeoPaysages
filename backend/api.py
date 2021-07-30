@@ -1,11 +1,9 @@
-from flask import Flask, request, Blueprint, Response, jsonify, url_for
+from flask import Flask, request, Blueprint, Response, jsonify
 from werkzeug.exceptions import NotFound
 
-from routes import main as main_blueprint
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
 from pypnusershub.db.models import AppUser
-import re
 import models
 import json
 import utils

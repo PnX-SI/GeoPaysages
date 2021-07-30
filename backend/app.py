@@ -2,9 +2,8 @@
 from pypnusershub import routes
 from routes import main as main_blueprint
 from flask import Flask
-from flask_babel import Babel, gettext, ngettext, get_locale
+from flask_babel import Babel, get_locale
 from flask_cors import CORS
-from sqlalchemy import text
 from api import api
 import config
 import utils
