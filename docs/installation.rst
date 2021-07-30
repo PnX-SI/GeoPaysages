@@ -92,10 +92,10 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les executant une par une.
+    Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier ``install_db.sh`` en les éxecutant une par une.
 
 
-**2. Lancer le fichier fichier d'installation de la base de données en sudo :**
+**2. Lancer le fichier fichier d'installation de la base de données :**
 
 ::
 
@@ -103,9 +103,9 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
     
 :notes:
 
-    Vous pouvez consulter le log de cette installation de la base dans ``/var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
+    Vous pouvez consulter le log de cette installation de la BDD dans ``/var/log/install_db.log`` et vérifier qu'aucune erreur n'est intervenue.
     
-    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréer entièrement. 
+    Le script ``install_db.sh`` supprime la BDD de GeoPaysages et la recréé entièrement. 
 
 
 Installation de l'application
@@ -119,7 +119,7 @@ Désampler le fichier de configuration puis l'éditer :
 
     ``cp ./backend/config.py.tpl ./backend/config.py``.
 
-- Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la base
+- Vérifier que la variable ``SQLALCHEMY_DATABASE_URI`` contient les bonnes informations de connexion à la BDD
 - Ne pas modifier les path des fichiers static
 - Renseigner les autres paramètres selon votre contexte
 
@@ -249,7 +249,7 @@ Internationalisation de l'application
 ======================================   
 
 - Pour modifier les textes, éditer le fichier ``backend/i18n/fr/messages.po``
-- activer l'environnement virtuel (depuis le répertoire source, par exemple ``geopaysages``)
+- Activer l'environnement virtuel (depuis le répertoire source, par exemple ``geopaysages``)
 
 ::
 
