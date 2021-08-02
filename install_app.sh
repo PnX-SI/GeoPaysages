@@ -26,6 +26,7 @@ cp backend/static/custom/css/page-style.css.sample backend/static/custom/css/pag
 cp backend/static/custom/css/page-sample.css.sample backend/static/custom/css/page-sample.css
 cp backend/static/custom/logo/logo_txt_blanc.png.sample backend/static/custom/logo/logo_txt_blanc.png
 cp backend/static/custom/logo/logo_txt_color.png.sample backend/static/custom/logo/logo_txt_color.png
+cp backend/static/custom/logo/favicon.icon.sample backend/static/custom/logo/favicon.icon
 cp i18n/messages.pot.sample i18n/messages.pot 
 cp i18n/fr/LC_MESSAGES/messages.mo.sample i18n/fr/LC_MESSAGES/messages.mo
 cp i18n/fr/LC_MESSAGES/messages.po.sample i18n/fr/LC_MESSAGES/messages.po
