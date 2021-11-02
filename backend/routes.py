@@ -55,7 +55,7 @@ def home():
         models.TPhoto.id_photo.in_(photo_ids)
     )
     dump_photos = photo_schema.dump(query_photos)
-
+    # WAHO tordu l'histoire!
     if len(sites_without_photo):
         sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
         sql_missing_photos = text(sql_missing_photos_str)
@@ -69,11 +69,15 @@ def home():
         models.Communes.code_commune.in_(code_communes)
     )
     dump_communes = communes_schema.dump(query_commune)
-
     for site in sites:
         id_site = site.get('id_site')
-        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getMedium(photo).get('output_url')
+        photo = None
+        try:
+            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        except StopIteration:
+            pass
+        if photo:
+            site['photo'] = utils.getMedium(photo).get('output_url')
         site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
 
@@ -140,10 +144,15 @@ def gallery():
     for site in dump_sites:
         print('PHOTO')
         id_site = site.get('id_site')
-        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getThumbnail(photo).get('output_url')
+        photo = None
+        try:
+            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        except StopIteration:
+            pass 
+        if photo:
+            site['photo'] = utils.getThumbnail(photo).get('output_url')
         site['ville'] = next(ville for ville in dump_villes if (ville.get('code_commune') == site.get('code_city_site')))
-    
+
     return render_template('gallery.html', sites=dump_sites)
 
 @main.route('/sites/<int:id_site>')
