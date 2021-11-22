@@ -1,5 +1,6 @@
 from flask import render_template, Blueprint, url_for, abort
 from sqlalchemy import text
+from sqlalchemy.sql.expression import desc
 import models
 import utils
 from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
@@ -240,7 +241,7 @@ def site_photos_last(id_site):
 
     site = site[0]
 
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date desc').limit(1)
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by(desc(models.TPhoto.filter_date)).limit(1)
     photos = photo_schema.dump(get_photos_by_site)
     photo=photos[0]
 
