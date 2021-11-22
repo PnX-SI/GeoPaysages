@@ -177,65 +177,58 @@ geopsg.comparator = (options) => {
     template: '#tpl-app-comparator-v2-selector',
     props: ['items', 'selectedItem', 'right'],
     data: () => {
+      // {id : this.right ? this.items[0].id : this.items[this.items.length -1].items}
+      const sharedData = {
+        dateFrom: null,
+        dateTo: null,
+        currentPage: 1,
+        perPage: 10,
+        pageItems: [],
+        nbFilteredItems: 0,
+        selectedStep: null,
+        currentItem: {},
+      };
       if (options.dbconf.comparator_date_format == 'year') {
-        return {
-          dateFrom: null,
-          dateTo: null,
-          currentPage: 1,
-          perPage: 10,
-          pageItems: [],
-          nbFilteredItems: 0,
-          steps: [{
-            label: "1 an",
-            value: 3600 * 24 * 365
-          }],
-          selectedStep: null
-        }
+        sharedData.steps = [{
+          label: "1 an",
+          value: 3600 * 24 * 365
+        }];
       }
-      if (options.dbconf.comparator_date_format == 'month') {
-        return {
-          dateFrom: null,
-          dateTo: null,
-          currentPage: 1,
-          perPage: 10,
-          pageItems: [],
-          nbFilteredItems: 0,
-          steps: [{
-            label: "1 mois",
-            value: 3600 * 24 * 30
-          }, {
-            label: "1 an",
-            value: 3600 * 24 * 365
-          }],
-          selectedStep: null
-        }
+      else if (options.dbconf.comparator_date_format == 'month') {
+        sharedData.steps = [{
+          label: "1 mois",
+          value: 3600 * 24 * 30
+        }, {
+          label: "1 an",
+          value: 3600 * 24 * 365
+        }]
+      } else {
+        sharedData.steps = [{
+          label: "0",
+          value: 0
+        }, {
+          label: "1 jour",
+          value: 3600 * 24
+        }, {
+          label: "1 semaine",
+          value: 3600 * 24 * 7
+        }, {
+          label: "1 mois",
+          value: 3600 * 24 * 30
+        }, {
+          label: "1 an",
+          value: 3600 * 24 * 365
+        }];
       }
-      else {
-        return {
-          dateFrom: null,
-          dateTo: null,
-          currentPage: 1,
-          perPage: 10,
-          pageItems: [],
-          nbFilteredItems: 0,
-          steps: [{
-            label: "0",
-            value: 0
-          }, {
-            label: "1 jour",
-            value: 3600 * 24
-          }, {
-            label: "1 semaine",
-            value: 3600 * 24 * 7
-          }, {
-            label: "1 mois",
-            value: 3600 * 24 * 30
-          }, {
-            label: "1 an",
-            value: 3600 * 24 * 365
-          }],
-          selectedStep: null
-        }
+      return sharedData;
+    },
+    created(){
+      // set current page at the end for right comparator
+      if(this.right) {
+        this.currentPage = Math.ceil(this.items.length / 10);
+        this.currentItem = this.items[this.items.length - 1];
+      } else {
+        this.currentItem = this.items[0];
       }
     },
     beforeMount() {
@@ -256,6 +249,9 @@ geopsg.comparator = (options) => {
       },
       currentPage(val) {
         this.setPageItems();
+      },
+      items: function(newV, oldV) {
+        console.log("items changes", newV);
       }
     },
     methods: {
@@ -269,17 +265,22 @@ geopsg.comparator = (options) => {
         if (itemIndex < 0) {
           itemIndex = this.filteredItems.length - 1;
         }
-        this.setSelectedItem(this.filteredItems[itemIndex]);
+        this.currentItem = this.filteredItems[itemIndex];
+        this.setSelectedItem(this.currentItem);
+        this.currentPage = Math.ceil((itemIndex +1) / 10);
+
       },
       onNextBtnClick() {
         const dateFrom = new Date(this.selectedItem.shot_on);
-        console.log(this.selectedStep.value)
         dateFrom.setSeconds(dateFrom.getSeconds() + (this.selectedStep.value || 1), 0);
         let itemIndex = this.searchDateFromIndex(this.filteredItems, dateFrom, 0, this.filteredItems.length - 1);
         if (itemIndex < 0) {
           itemIndex = 0;
         }
-        this.setSelectedItem(this.filteredItems[itemIndex]);
+        this.currentItem = this.filteredItems[itemIndex];
+        this.setSelectedItem(this.currentItem);
+        this.currentPage = Math.ceil((itemIndex +1) / 10);
+
       },
       onItemClick(item) {
         this.setSelectedItem(item);
