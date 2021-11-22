@@ -283,6 +283,7 @@ geopsg.comparator = (options) => {
 
       },
       onItemClick(item) {
+        this.currentItem = item;
         this.setSelectedItem(item);
       },
       setSelectedItem(item) {
