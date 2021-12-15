@@ -4,7 +4,7 @@ Application web permettant de publier un observatoire photographique des paysage
 
 ## Installation
 
-Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.rst
+Documentation d'installation : https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md
 
 ## Contexte
 
