@@ -87,7 +87,7 @@ copyright_notice =
 | save_in_db            | Boolean that indicates whether or not to register the images in the database                                                                      |
 | copyright_notice      | **Optional**. Copyright notice to add to the retrieved files IPTC data. This will be ignored if the fetched image already has a copyright notice. |
 
-For the licence, the script first try to get image IMTC (from fields `copyright notice` and `by-line` for author). It concatenate copyright and author and search in database if this licence already exist, if not it add it. If no IPCT are found the script take the `copyright notice` parameter of the config file and make the same operation in database. If both are null, no licence is set for the image in the database.
+For the licence, the script first try to get image IPTC (from fields `copyright notice` and `by-line` for author). It concatenate copyright and author and search in database if this licence already exist, if not it add it. If no IPCT are found the script take the `copyright notice` parameter of the config file and make the same operation in database. If both are null, no licence is set for the image in the database.
 
 ### Patterns
 
