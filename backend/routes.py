@@ -364,6 +364,34 @@ def sites():
         'subthemes': subthemes,
         'township': townships
     }
+    
+    photo_ids = []
+    sites_without_photo = []
+    for site in sites:
+        photo_id = site.get('main_photo')
+        if photo_id:
+            photo_ids.append(site.get('main_photo'))
+        else:
+            sites_without_photo.append(str(site.get('id_site')))
+
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos).data
+
+    if len(sites_without_photo):
+        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos = text(sql_missing_photos_str)
+        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
+        missing_photos = [dict(row) for row in missing_photos_result]
+        for missing_photo in missing_photos:
+            missing_photo['t_site'] = missing_photo.get('id_site')
+            dump_photos.append(missing_photo)
+
+    for site in sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = utils.getThumbnail(photo).get('output_url')
 
     def getItem(name, id):
         return next(item for item in dbs.get(name) if item.get('id') == id)
