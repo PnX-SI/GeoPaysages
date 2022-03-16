@@ -2,10 +2,8 @@
 CHANGELOG
 =========
 
-1.2.0 (unreleased)
+1.2.0 (2022-03-16)
 ------------------
-
-Voir branche avec LATEST et PR de MAJ des dépendances ?
 
 **🚀 Nouveautés**
 
