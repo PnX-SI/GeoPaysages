@@ -1,7 +1,7 @@
 from sqlalchemy import engine_from_config, text
 from sqlalchemy.engine import Engine
 from configparser import ConfigParser
-
+from geopaysagesftpclient import printfailure
 from geopaysagesftpclient.patterns import date_from_group_dict
 
 def sqlalchemy_engine_from_config(configfile:str) -> Engine:

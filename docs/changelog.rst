@@ -2,6 +2,25 @@
 CHANGELOG
 =========
 
+1.2.0 (2022-03-16)
+------------------
+
+**🚀 Nouveautés**
+
+* Amélioration du calendrier de navigation entre les photos
+* Ajout du favicon de l'admin sur les pages du portail public
+* Améliorations mineures de l'interface
+* Affichage de la référence du site (si renseignée) dans la popup de la carte (#105)
+* Possibilité d'ajouter un site sans photo (#92)
+* Migration de la documentation .rst en .md (#132, par @Jeje2201)
+* Compléments de la documentation
+
+**🐛 Corrections**
+
+* Corrections mineures du module d'import FTP
+* Correction des photos principales (#106)
+* Correction du widget d'affichage de la dernière photo d'un site, disponible sur <URL>/sites/<id_site>/photos/latest)
+
 1.1.0 (2021-07-30)
 ------------------
 

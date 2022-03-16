@@ -45,7 +45,7 @@
 }
 
 .page-site .app-comparator .mode-selector-label {
-  background: rgba(120, 190, 32, 0.8);
+  background: var(--color-secondary);
   color: #fff;
   padding: 6px 0 0 12px;
 }

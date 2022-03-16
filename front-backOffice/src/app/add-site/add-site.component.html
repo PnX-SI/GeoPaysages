@@ -91,10 +91,11 @@
               id="testim" rows="3"></textarea>
             <app-form-error controlName="testim_site" errorKey="required"></app-form-error>
           </div>
+
+          
           <div class="form-group">
             <label class="label">Photos de site*</label>
             <div class="preview">
-              <div *ngIf="photoRequired" class="photo-required">* Champs requis</div>
               <div class="inner-photo" *ngFor="let photo of photos"><img *ngIf="photo.imgUrl" class="preview-img" width="120"
                   height="120" [src]="photo.imgUrl">
                 <div class="photo-ref">{{photo.name}}</div>
