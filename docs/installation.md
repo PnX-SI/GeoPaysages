@@ -62,7 +62,7 @@ cd /home/<monuser>/geopaysages
 ```
 
 Installation de la base de données
-===
+==================================
 
 **1. Configuration de la BDD :**
 
@@ -72,7 +72,9 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
 
 > Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
 
-> Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les éxecutant une par une.
+> Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost (sur le même serveur que l'application) car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les éxecutant une par une.
+
+La gestion des utilisateurs est centralisée dans le schéma `utilisateurs` de la BDD, hérité de l'application de gestion des utilisateurs UsersHub (https://github.com/PnX-SI/UsersHub). Ce schéma est créé automatiquement lors de l'installation de la BDD de GeoPaysages, localement ou sous forme de foreign data wrapper connecté à une BDD de UsersHub existante.
 
 **2. Lancer le fichier fichier d'installation de la base de données :**
 
@@ -85,7 +87,7 @@ Modifier le fichier de configuration de la BDD et de son installation automatiqu
 > Le script `install_db.sh` supprime la BDD de GeoPaysages et la recréé entièrement.
 
 Installation de l'application
-===
+=============================
 
 **1. Configuration de l'application :**
 
@@ -106,14 +108,14 @@ cp ./backend/config.py.tpl ./backend/config.py
 ```
 
 Internationalisation de l'application
-===
+=====================================
 
 - Pour modifier les textes, éditer le fichier `backend/i18n/fr/messages.po`
 - Activer l'environnement virtuel (depuis le répertoire source, par exemple `geopaysages`)
 
 ```
 cd geopaysages/
-source ./venv/bin/activate (venv doit apparitre en préfixe des commandes)
+source ./venv/bin/activate (venv doit apparaitre en préfixe des commandes)
 ```
 
 - lancer la commande de compilation en se plaçant au préalable dans le répertoire `backend` :
@@ -128,14 +130,14 @@ pybabel compile -d i18n
 > Pour sortir de l'environnement virtuel, taper `deactivate`
 
 Installation du back-office
-===
+===========================
 
 **1. Configuration de l'application :**
 
 Désampler et éditer le fichier de configuration
 `cp ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`.
 
-> Pour utiliser l'utilisateur \"admin\" installé par defaut, il faut renseigner `id_application : 1`
+> Pour utiliser l'utilisateur \"admin\" créé par défaut, il faut renseigner `id_application : 1`
 
 > Pour `apiUrl` et `staticPicturesUrl`, bien mettre <http://xxx.xxx.xxx.xxx>, si utilisation d'une adresse IP
 
@@ -145,7 +147,7 @@ Désampler et éditer le fichier de configuration
 ```
 
 Configuration de NGINX
-===
+======================
 
 **1. Configuration de supervisor :**
 
@@ -213,7 +215,7 @@ port :
 
 
 Personnalisation de l'application
-===
+=================================
 
 Vous pouvez personnaliser l'application en modifiant et ajoutant des
 fichiers dans le répertoire `backend/static/custom/` (css, logo).
@@ -221,7 +223,7 @@ fichiers dans le répertoire `backend/static/custom/` (css, logo).
 Certains paramètres sont dans la table `conf` :
 
 - `external_links`, les liens en bas à droite dans le footer, est un
-    tableu d'objets devant contenir un label et une url, ex.
+    tableeu d'objets devant contenir un label et une url, ex.
 
 ```json
 [{
@@ -266,8 +268,30 @@ Certains paramètres sont dans la table `conf` :
 ]
 ```
 
-Ajout et personnalisation d'une nouvelle page html
-===
+Si vous utiliser la version 2 du comparateur photos (paramètre `COMPARATOR_VERSION = 2` dans `config.py`), vous pouvez personnaliser celui-ci selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
+
+- `comparator_date_filter`, permet d'activer `True` ou de désactiver `False` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+
+- `comparator_date_step_button`, permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à `False` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
+
+- `comparator_date_format`, permet de personnaliser le format d'affichage des dates des photos dans le bouton sélecteur. Avec la valeur `year` on affiche la date au format `YYYY`. Avec `month` --> `MM/YYYY`.
+Le comportement par défaut reste l'affichage de la date complète au format `day` --> `DD/MM/YYYY` (si non-renseigné).
+Ce paramètre permet aussi de filtrer en conséquence les pas de temps disponibles dans le bouton ad-hoc (exemple : si `month` est défini, les pas de temps disponibles seront `1 mois` et `1 an`). Utile dans le cas où les dates de photos sont parfois imprécises (photos ancienns, cartes postales...).
+
+**Activation du bloc d'intro en page d'accueil**
+
+- Ajouter 1 ligne dans la table conf tel que `key` : `home_intro` et assigner à `value` le texte à afficher
+- En cas de contenue multilingue préférer `key` : `home_intro_<lang>` ex. `home_intro_fr`
+- Ajouter 1 ligne dans la table conf tel que `key` : `home_intro_position` et `value`: `top` ou `bottom`, toute autre valeur désactive le bloc
+
+**Activation de la page de présentation (/about)**
+
+- Ajouter 2 lignes dans la table conf tel que `key` : `page_about_title` et `key` : `page_about_content`
+- Activer le lien et la page en ajoutant une ligne dans la table `conf` tel que `key` : `page_about_published` et `value` : `true`, toute autre valeur vaut `false`
+- En cas de contenu multilingue, ajouter le suffixe `_<lang>` à `page_about_title`, `page_about_content` et `page_about_published`
+
+Ajout et personnalisation d'une nouvelle page HTML
+==================================================
 
 **1. Création de la page HTML**
 
@@ -304,7 +328,7 @@ sudo service supervisor restart
 ``` 
 
 Mise à jour de l'application (Front et back)
-===
+============================================
 
 - Au préalable, s'assurer que le fichier de configuration
     `/geopaysages/front-backOffice/src/app/config.ts` contienne la ligne
@@ -321,7 +345,7 @@ customFiles: '<nom domaine ou url>/static/custom/',
 ./update_app.sh
 ```
 
-- Taper la version de production (pas de version de développement) à installer (Ex : v1.0.0)
+- Renseigner la version de production (pas de version de développement) à installer (Ex : v1.0.0)
 - Un répertoire `<user>/geopaysages-[date mise à jour]` est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
 
 > La mise à jour applicative ne prend pas en compte la récupération des pages personnalisées se basant sur le template `backend/tpl/sample.html`. Cela doit être récupérer manuellement après la mise à jour applicative.
