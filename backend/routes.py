@@ -377,7 +377,7 @@ def sites():
     query_photos = models.TPhoto.query.filter(
         models.TPhoto.id_photo.in_(photo_ids)
     )
-    dump_photos = photo_schema.dump(query_photos).data
+    dump_photos = photo_schema.dump(query_photos)
 
     if len(sites_without_photo):
         sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
