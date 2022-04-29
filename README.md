@@ -30,3 +30,7 @@ A suivre...
 
 http://5.196.209.137/
 
+## Information 
+- https://natural-solutions-world
+- https://www.natural-solutions.eu
+
