@@ -13,12 +13,26 @@ class Config(db.Model):
     key = db.Column(db.String, primary_key=True)
     value = db.Column(db.String)
 
+
+class Observatory(db.Model):
+    __tablename__ = 't_observatory'
+    __table_args__ = {'schema': 'geopaysages'}
+
+    id = db.Column(db.Integer, primary_key=True,
+                   server_default=db.FetchedValue())
+    label = db.Column(db.String)
+    status = db.Column(db.Enum("draft", "online", name="publishing_status"), default="draft")
+
+
+
 class TSite(db.Model):
     __tablename__ = 't_site'
     __table_args__ = {'schema': 'geopaysages'}
 
     id_site = db.Column(db.Integer, primary_key=True,
                         server_default=db.FetchedValue())
+    id_observatory = db.Column(db.ForeignKey(
+        'geopaysages.t_observatory.id', name='t_site_fk_observatory'))
     name_site = db.Column(db.String)
     ref_site = db.Column(db.String)
     desc_site = db.Column(db.String)
