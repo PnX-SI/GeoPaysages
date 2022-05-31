@@ -7,8 +7,8 @@ from env import db, ma
 from sqlalchemy.dialects import postgresql
 
 
-class Conf(db.Model):
-    __tablename__ = 'conf'
+class Config(db.Model):
+    __tablename__ = 'config'
     __table_args__ = {'schema': 'geopaysages'}
     key = db.Column(db.String, primary_key=True)
     value = db.Column(db.String)
