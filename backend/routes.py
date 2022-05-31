@@ -33,12 +33,14 @@ def home():
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
     dump_sites = site_schema.dump(get_sites) """
 
-    sql = text("SELECT * FROM geopaysages.t_site where publish_site=true ORDER BY RANDOM() LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.status='online' ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
-    diff_nb = 6 - len(sites)
-    for x in range(0, diff_nb):
-        sites.append(sites[x])
+    
+    if len(sites):
+        diff_nb = 6 - len(sites)
+        for x in range(0, diff_nb):
+            sites.append(sites[x])
 
     photo_ids = []
     sites_without_photo = []
@@ -57,7 +59,7 @@ def home():
     dump_photos = photo_schema.dump(query_photos)
     # WAHO tordu l'histoire!
     if len(sites_without_photo):
-        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos_str = "select distinct on (id_site) p.* from geopaysages.t_photo p join geopaysages.t_observatory o on o.id=p.id_observatory where p.id_site IN (" + ",".join(sites_without_photo) + ") and o.status='online' order by id_site, filter_date desc"
         sql_missing_photos = text(sql_missing_photos_str)
         missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
         missing_photos = [dict(row) for row in missing_photos_result]
@@ -101,7 +103,7 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True))
+    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.status == 'online'))
     
     return render_template('home.html', blocks=sites, sites=all_sites)
 
