@@ -16,7 +16,6 @@ dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
-villes_schema = models.VilleSchema(many=True)
 communes_schema = models.CommunesSchema(many=True)
 
 

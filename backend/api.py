@@ -20,7 +20,6 @@ subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
-ville_schema = models.VilleSchema(many=True)
 
 
 @api.route('/api/sites', methods=['GET'])

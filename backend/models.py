@@ -31,9 +31,6 @@ class TSite(db.Model):
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
 
-    # TODO
-    #t_ville = db.relationship('Ville', primaryjoin='Ville.ville_code_commune == TSite.code_city_site')
-
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
@@ -154,39 +151,6 @@ class Communes(db.Model):
     nom_commune = db.Column(db.String)
 
 
-class Ville(db.Model):
-    __tablename__ = 'villes_france'
-    __table_args__ = {'schema': 'geopaysages'}
-
-    ville_id = db.Column(db.Integer, primary_key=True,
-                         server_default=db.FetchedValue())
-    ville_departement = db.Column(db.String)
-    ville_slug = db.Column(db.String)
-    ville_nom = db.Column(db.String)
-    ville_nom_simple = db.Column(db.String)
-    ville_nom_reel = db.Column(db.String)
-    ville_nom_soundex = db.Column(db.String)
-    ville_nom_metaphone = db.Column(db.String)
-    ville_code_postal = db.Column(db.String)
-    ville_commune = db.Column(db.String)
-    ville_code_commune = db.Column(db.String)
-    ville_arrondissement = db.Column(db.Integer)
-    ville_canton = db.Column(db.String)
-    ville_amdi = db.Column(db.Integer)
-    ville_population_2010 = db.Column(db.Integer)
-    ville_population_1999 = db.Column(db.Integer)
-    ville_population_2012 = db.Column(db.Integer)
-    ville_densite_2010 = db.Column(db.Integer)
-    ville_surface = db.Column(db.Integer)
-    ville_longitude_deg = db.Column(db.Integer)
-    ville_latitude_deg = db.Column(db.Integer)
-    ville_longitude_grd = db.Column(db.String)
-    ville_latitude_grd = db.Column(db.String)
-    ville_latitude_dms = db.Column(db.String)
-    ville_zmin = db.Column(db.Integer)
-    ville_zmax = db.Column(db.Integer)
-
-
 class GeographySerializationField(fields.String):
     def _serialize(self, value, attr, obj):
         if value is None:
@@ -262,12 +226,6 @@ class TSiteSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = TSite
         include_relationships = True
-
-
-class VilleSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        fields = ('ville_id', 'ville_code_commune',
-                  'ville_nom', 'ville_nom_reel')
 
 
 class CommunesSchema(ma.SQLAlchemyAutoSchema):
