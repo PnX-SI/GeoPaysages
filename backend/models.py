@@ -4,6 +4,14 @@ import geoalchemy2.functions as geo_funcs
 from marshmallow import fields
 
 from env import db, ma
+from sqlalchemy.dialects import postgresql
+
+
+class Conf(db.Model):
+    __tablename__ = 'conf'
+    __table_args__ = {'schema': 'geopaysages'}
+    key = db.Column(db.String, primary_key=True)
+    value = db.Column(db.String)
 
 class TSite(db.Model):
     __tablename__ = 't_site'
@@ -22,9 +30,10 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
-    
-    #TODO
+
+    # TODO
     #t_ville = db.relationship('Ville', primaryjoin='Ville.ville_code_commune == TSite.code_city_site')
+
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
@@ -103,19 +112,21 @@ class TRole(db.Model):
     _pass = db.Column('pass', db.String(100))
     _pass_plus = db.Column('pass_plus', db.String(100))
     email = db.Column(db.String(250))
-    id_organisme = db.Column(db.ForeignKey(
-        'utilisateurs.bib_organismes.id_organisme', onupdate='CASCADE'))
+    id_organisme = db.Column('id_organisme', db.INTEGER(), autoincrement=False, nullable=True)
     remarques = db.Column(db.Text)
     date_insert = db.Column(db.DateTime)
     date_update = db.Column(db.DateTime)
-
+    uuid_role = db.Column('uuid_role', postgresql.UUID(), server_default=db.text('uuid_generate_v4()'), autoincrement=False, nullable=False)
+    active = db.Column('active', db.BOOLEAN(), server_default=db.text('true'), autoincrement=False, nullable=True)
+    champs_addi = db.Column('champs_addi', postgresql.JSONB(astext_type=db.Text()), autoincrement=False, nullable=True)
 
 
 class TPhoto(db.Model):
     __tablename__ = 't_photo'
     __table_args__ = {'schema': 'geopaysages'}
 
-    id_photo = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
+    id_photo = db.Column(db.Integer, primary_key=True,
+                         server_default=db.FetchedValue())
     id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
@@ -127,28 +138,28 @@ class TPhoto(db.Model):
         'geopaysages.dico_licence_photo.id_licence_photo'))
 
     dico_licence_photo = db.relationship(
-'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
+        'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
     t_role = db.relationship(
         'TRole', primaryjoin='TPhoto.id_role == TRole.id_role', backref='t_photos')
     t_site = db.relationship(
         'TSite', primaryjoin='TPhoto.id_site == TSite.id_site', backref='t_photos')
 
 
-
 class Communes(db.Model):
     __tablename__ = 'communes'
     __table_args__ = {'schema': 'geopaysages'}
-    
-    code_commune = db.Column(db.String,primary_key=True,server_default=db.FetchedValue())
+
+    code_commune = db.Column(db.String, primary_key=True,
+                             server_default=db.FetchedValue())
     nom_commune = db.Column(db.String)
-    
 
 
 class Ville(db.Model):
     __tablename__ = 'villes_france'
     __table_args__ = {'schema': 'geopaysages'}
 
-    ville_id = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
+    ville_id = db.Column(db.Integer, primary_key=True,
+                         server_default=db.FetchedValue())
     ville_departement = db.Column(db.String)
     ville_slug = db.Column(db.String)
     ville_nom = db.Column(db.String)
@@ -216,7 +227,9 @@ class CorThemeSthemeSchema(ma.SQLAlchemyAutoSchema):
 
 class LicencePhotoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
+        fields = ('id_licence_photo', 'name_licence_photo',
+                  'description_licence_photo')
+
 
 class RoleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -235,7 +248,8 @@ class TPhotoSchema(ma.SQLAlchemyAutoSchema):
 
 class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
     dico_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme"])
-    dico_stheme = ma.Nested(DicoSthemeSchema, only=["id_stheme", "name_stheme"])
+    dico_stheme = ma.Nested(DicoSthemeSchema, only=[
+                            "id_stheme", "name_stheme"])
 
     class Meta:
         fields = ('dico_theme', 'dico_stheme')
@@ -252,7 +266,8 @@ class TSiteSchema(ma.SQLAlchemyAutoSchema):
 
 class VilleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-         fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
+        fields = ('ville_id', 'ville_code_commune',
+                  'ville_nom', 'ville_nom_reel')
 
 
 class CommunesSchema(ma.SQLAlchemyAutoSchema):

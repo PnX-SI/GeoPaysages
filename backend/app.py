@@ -8,7 +8,7 @@ from api import api
 import config
 import utils
 
-from env import db
+from env import db, migrate
 
 class ReverseProxied(object):
     '''Wrap the application in this middleware and configure the 
@@ -56,6 +56,8 @@ app.register_blueprint(routes.routes, url_prefix='/api/auth')
 
 app.config.from_pyfile('config.py')
 db.init_app(app)
+migrate.init_app(app, db)
+
 
 @app.context_processor
 def inject_to_tpl():
