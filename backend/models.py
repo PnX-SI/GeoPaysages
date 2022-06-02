@@ -3,6 +3,7 @@ from geoalchemy2.types import Geometry
 import geoalchemy2.functions as geo_funcs
 from marshmallow import fields
 
+from enum import Enum
 from env import db, ma
 from sqlalchemy.dialects import postgresql
 
@@ -13,6 +14,9 @@ class Config(db.Model):
     key = db.Column(db.String, primary_key=True)
     value = db.Column(db.String)
 
+class ComparatorEnum(Enum):
+    sidebyside = 'sidebyside'
+    split = 'split'
 
 class Observatory(db.Model):
     __tablename__ = 't_observatory'
@@ -20,8 +24,12 @@ class Observatory(db.Model):
 
     id = db.Column(db.Integer, primary_key=True,
                    server_default=db.FetchedValue())
-    label = db.Column(db.String)
-    status = db.Column(db.Enum("draft", "online", name="publishing_status"), default="draft")
+    title = db.Column(db.String)
+    ref = db.Column(db.String)
+    color = db.Column(db.String)
+    comparator = db.Column(db.Enum(ComparatorEnum, name="comparator_enum"))
+    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+    is_published = db.Column(db.Boolean)
 
 
 
