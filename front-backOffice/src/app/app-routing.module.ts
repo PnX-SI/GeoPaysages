@@ -9,18 +9,21 @@ import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
-  { path: 'sites', component: ManageSitesComponent, canActivate : [AuthGuard] },
-  { path: 'gallery', component: GalleryComponent, canActivate : [AuthGuard] },
-  { path: 'sites/form', component: AddSiteComponent, canActivate : [AuthGuard] },
-  { path: 'sites/details/:id', component: AddSiteComponent, canActivate : [AuthGuard], runGuardsAndResolvers: 'always'},
+  { path: 'sites', component: ManageSitesComponent, canActivate: [AuthGuard] },
+  { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
+  { path: 'sites/form', component: AddSiteComponent, canActivate: [AuthGuard] },
+  {
+    path: 'sites/details/:id',
+    component: AddSiteComponent,
+    canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
+  },
   { path: '', component: LoginPageComponent },
   { path: '**', redirectTo: 'login' },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload' })],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule {}
