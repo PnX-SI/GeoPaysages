@@ -1,7 +1,10 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
 import geoalchemy2.functions as geo_funcs
+from geoalchemy2.shape import to_shape
 from marshmallow import fields
+from marshmallow_enum import EnumField
+from shapely.geometry import mapping
 
 from enum import Enum
 from env import db, ma
@@ -240,6 +243,20 @@ class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('dico_theme', 'dico_stheme')
         #model = CorSthemeTheme
+
+
+class ObservatorySchema(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=True)
+    geom = fields.Method("geomToDict")
+    
+    @staticmethod
+    def geomToDict(obj):
+        #return to_shape(obj.geom)
+        return mapping(to_shape(obj.geom))
+
+    class Meta:
+        model = Observatory
+        include_relationships = True
 
 
 class TSiteSchema(ma.SQLAlchemyAutoSchema):

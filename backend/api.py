@@ -14,12 +14,31 @@ from env import db
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)
+observatory_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+
+@api.route('/api/observatories', methods=['GET'])
+def returnAllObservatories():
+    get_all = models.Observatory.query.order_by('ref').all()
+    items = observatory_schema.dump(get_all)
+    
+    return jsonify(items)
+
+
+@api.route('/api/observatories/<int:id>', methods=['GET'])
+def returnObservatoryById(id):
+    rows = models.Observatory.query.filter_by(id=id)
+    dict_rows = observatory_schema.dump(rows)
+    
+    if dict_rows[0]:
+        return jsonify(dict_rows[0])
+    else:
+        return 404
 
 
 @api.route('/api/sites', methods=['GET'])

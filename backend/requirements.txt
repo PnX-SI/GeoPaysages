@@ -15,6 +15,8 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 marshmallow==3.9.1
 marshmallow-sqlalchemy==0.24.0
+marshmallow-enum==1.5.1
+Shapely==1.8.2
 Pillow==8.0.1
 pycparser==2.19
 https://github.com/PnX-SI/UsersHub-authentification-module/archive/1.4.5.zip

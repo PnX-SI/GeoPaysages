@@ -7,6 +7,16 @@ export class FormService {
 
   constructor(private _fb: FormBuilder) {}
 
+  initFormObservatory(): FormGroup {
+    const formSite = this._fb.group({
+      title: [null, Validators.required],
+      ref: [null, Validators.required],
+      color: [null],
+      is_published: [false],
+    });
+    return formSite;
+  }
+
   initFormSite(): FormGroup {
     const formSite = this._fb.group({
       name_site: [null, Validators.required],
