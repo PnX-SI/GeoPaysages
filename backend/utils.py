@@ -96,7 +96,7 @@ def addCaption(img, img_src, text):
 
 
 def getDbConf():
-    sql = text("SELECT key, value FROM geopaysages.config")
+    sql = text("SELECT key, value FROM geopaysages.conf")
     result = db.engine.execute(sql).fetchall()
     rows = [dict(row) for row in result]
     conf = {}
