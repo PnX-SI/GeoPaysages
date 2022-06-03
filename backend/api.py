@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint, Response, jsonify
+from flask import Flask, request, Blueprint, Response, jsonify, abort
 from werkzeug.exceptions import NotFound
 
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
@@ -14,7 +14,8 @@ from env import db
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)
-observatory_schema = models.ObservatorySchema(many=True)
+observatory_schema = models.ObservatorySchema(many=False)
+observatories_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
@@ -25,20 +26,18 @@ themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 @api.route('/api/observatories', methods=['GET'])
 def returnAllObservatories():
     get_all = models.Observatory.query.order_by('ref').all()
-    items = observatory_schema.dump(get_all)
+    items = observatories_schema.dump(get_all)
     
     return jsonify(items)
 
 
 @api.route('/api/observatories/<int:id>', methods=['GET'])
 def returnObservatoryById(id):
-    rows = models.Observatory.query.filter_by(id=id)
-    dict_rows = observatory_schema.dump(rows)
-    
-    if dict_rows[0]:
-        return jsonify(dict_rows[0])
-    else:
-        return 404
+    row = models.Observatory.query.filter_by(id=id).first()
+    if not row:
+        abort(404)
+    dict = observatory_schema.dump(row)
+    return jsonify(dict)
 
 
 @api.route('/api/sites', methods=['GET'])
