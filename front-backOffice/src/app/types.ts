@@ -7,3 +7,5 @@ export type ObservatoryType = {
   comparator: string;
   geom: any;
 };
+
+export type ObservatoryPatchType = Partial<Omit<ObservatoryType, 'id'>>;

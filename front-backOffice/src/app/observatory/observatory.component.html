@@ -76,6 +76,22 @@
               ></app-form-error>
             </div>
           </div>
+          <div class="row form-item">
+            <div class="col">
+              <label class="label" for="observatory-geom">WKT</label>
+              <textarea
+                InputFeedBack
+                formControlName="geom"
+                id="observatory-geom"
+                class="form-control"
+                placeholder="WKT"
+              ></textarea>
+              <app-form-error
+                controlName="geom"
+                errorKey="required"
+              ></app-form-error>
+            </div>
+          </div>
           <ngb-alert
             class="alert"
             *ngIf="alert"
@@ -106,8 +122,8 @@
               class="btn btn-outline-danger btn-delete"
               (click)="openDeleteModal(content)"
             >
-              <i class="icon-trash delete-observatory"></i>Supprimer le
-              observatory
+              <i class="icon-trash delete-observatory"></i>Supprimer
+              l'observatoire
             </button>
             <button
               class="btn btn-outline-secondary btn-cancel"

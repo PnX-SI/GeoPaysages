@@ -13,6 +13,7 @@ export class FormService {
       ref: [null, Validators.required],
       color: [null],
       is_published: [false],
+      geom: [null],
     });
     return formSite;
   }

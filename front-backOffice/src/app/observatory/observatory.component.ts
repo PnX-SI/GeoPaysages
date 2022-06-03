@@ -13,7 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { ObservatoryType } from '../types';
+import { ObservatoryPatchType, ObservatoryType } from '../types';
+import * as io from 'jsts/org/locationtech/jts/io';
 
 @Component({
   selector: 'app-observatory',
@@ -82,7 +83,7 @@ export class ObservatoryComponent implements OnInit {
   zoom = 10;
   removed_notice: any = null;
   constructor(
-    private observatorysService: ObservatoriesService,
+    private observatoryService: ObservatoriesService,
     public formService: FormService,
     protected router: Router,
     private route: ActivatedRoute,
@@ -216,7 +217,27 @@ export class ObservatoryComponent implements OnInit {
     this.edit_btn = false;
 
     if (observatoryForm.valid) {
-      console.log(observatoryForm.value);
+      const reader = new io.WKTReader();
+      try {
+        const geom = reader.read(observatoryForm.value.geom);
+        if (geom.getGeometryType() !== 'MultiPolygon') {
+          this.toastr.error(
+            'Le geom doit être un MultiPolygon.',
+            'Geom invalide',
+            {
+              positionClass: 'toast-bottom-right',
+            }
+          );
+        }
+      } catch (error) {
+        this.toastr.error(error, 'Geom invalide', {
+          positionClass: 'toast-bottom-right',
+        });
+      }
+
+      //this.patchObservatory(observatoryForm.value);
+      /* this.spinner.show();
+      this.patchObservatory(observatoryForm.value); */
       /* this.observatoryJson = _.omit(observatoryForm.value, [
         'id_theme',
         'notice',
@@ -294,7 +315,7 @@ export class ObservatoryComponent implements OnInit {
   }
 
   getObservatory(id_observatory) {
-    this.observatorysService.getById(id_observatory).subscribe(
+    this.observatoryService.getById(id_observatory).subscribe(
       (observatory) => {
         this.observatory = observatory;
       },
@@ -314,24 +335,15 @@ export class ObservatoryComponent implements OnInit {
     );
   }
 
-  /* patchObservatory(observatoryJson, themes, sthemes) {
-    observatoryJson.id_observatory = this.id_observatory;
-    _.forEach(this.photos, (photo) => {
-      if (_.has(photo, 'filePhoto')) {
-        this.new_photos.push(photo);
-      }
-    });
-    this.observatorysService.updateObservatory(observatoryJson).subscribe(
+  patchObservatory(data: ObservatoryType) {
+    const patch: ObservatoryPatchType = _.omit(data, 'id');
+    this.observatoryService.patch(this.id_observatory, patch).subscribe(
       (res) => {
-        // tslint:disable-next-line:quotemark
-        this.toast_msg = "Point d'observation mis à jour";
+        this.spinner.hide();
         this.edit_btn_text = 'Éditer';
-        if (this.deleted_photos.length > 0) {
-          this.observatorysService
-            .deletePhotos(this.deleted_photos)
-            .subscribe();
-        }
-        this.addThemes(Number(this.id_observatory), themes, sthemes, false);
+        this.toastr.success('Observatoire mis à jour', '', {
+          positionClass: 'toast-bottom-right',
+        });
       },
       (err) => {
         this.spinner.hide();
@@ -346,7 +358,7 @@ export class ObservatoryComponent implements OnInit {
           });
       }
     );
-  } */
+  }
 
   editForm() {
     this.edit_btn = !this.edit_btn;
@@ -425,12 +437,7 @@ export class ObservatoryComponent implements OnInit {
   }
 
   patchForm() {
-    this.observatoryForm.patchValue({
-      title: this.observatory.title,
-      ref: this.observatory.ref,
-      color: this.observatory.color,
-      is_published: this.observatory.is_published,
-    });
+    this.observatoryForm.patchValue(this.observatory);
   }
   layerUrl(key, layer) {
     return (

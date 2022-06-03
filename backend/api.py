@@ -40,6 +40,23 @@ def returnObservatoryById(id):
     return jsonify(dict)
 
 
+@api.route('/api/observatories/<int:id>', methods=['PATCH'])
+@fnauth.check_auth(2, False, None, None)
+def patchObservatory(id):
+    try:
+        rows = models.Observatory.query.filter_by(id=id)
+        if not rows.count():
+            abort(404)
+        data = request.get_json()
+        rows.update(data)
+        db.session.commit()
+    except Exception as exception:
+        return str(exception), 400
+    row = models.Observatory.query.filter_by(id=id).first()
+    dict = observatory_schema.dump(row)
+    return jsonify(dict)
+
+
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
     get_all_sites = models.TSite.query.order_by('ref_site').all()

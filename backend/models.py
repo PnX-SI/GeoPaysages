@@ -247,12 +247,11 @@ class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
 
 class ObservatorySchema(ma.SQLAlchemyAutoSchema):
     comparator = EnumField(ComparatorEnum, by_value=True)
-    geom = fields.Method("geomToDict")
+    geom = fields.Method("geomSerialize")
     
     @staticmethod
-    def geomToDict(obj):
-        #return to_shape(obj.geom)
-        return mapping(to_shape(obj.geom))
+    def geomSerialize(obj):
+        return to_shape(obj.geom).wkt
 
     class Meta:
         model = Observatory
