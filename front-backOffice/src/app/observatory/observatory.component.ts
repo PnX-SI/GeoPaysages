@@ -212,11 +212,12 @@ export class ObservatoryComponent implements OnInit {
     this.selectedFile = null;
   }
 
-  submitObservatory(observatoryForm) {
+  async submitObservatory(observatoryForm) {
     this.alert = null;
-    this.edit_btn = false;
-
-    if (observatoryForm.valid) {
+    if (!observatoryForm.valid) {
+      return;
+    }
+    if (observatoryForm.value.geom) {
       const reader = new io.WKTReader();
       try {
         const geom = reader.read(observatoryForm.value.geom);
@@ -228,70 +229,42 @@ export class ObservatoryComponent implements OnInit {
               positionClass: 'toast-bottom-right',
             }
           );
+          return;
         }
       } catch (error) {
         this.toastr.error(error, 'Geom invalide', {
           positionClass: 'toast-bottom-right',
         });
+        return;
       }
-
-      //this.patchObservatory(observatoryForm.value);
-      /* this.spinner.show();
-      this.patchObservatory(observatoryForm.value); */
-      /* this.observatoryJson = _.omit(observatoryForm.value, [
-        'id_theme',
-        'notice',
-        'lat',
-        'lng',
-        'id_stheme',
-      ]);
-      this.observatoryJson.geom =
-        'SRID=4326;POINT(' +
-        observatoryForm.value.lng +
-        ' ' +
-        observatoryForm.value.lat +
-        ')';
-      this.observatoryJson.path_file_guide_observatory =
-        path_file_guide_observatory;
-      this.uploadNotice();
-      this.spinner.show();
-      if (!this.id_observatory) {
-        this.observatorysService.addObservatory(this.observatoryJson).subscribe(
-          (observatory) => {
-            // tslint:disable-next-line:quotemark
-            this.toast_msg = "Point d'observation ajouté avec succès";
-            this.addThemes(
-              Number(observatory.id_observatory),
-              observatoryForm.value.id_theme,
-              observatoryForm.value.id_stheme,
-              true
-            );
-          },
-          (err) => {
-            this.spinner.hide();
-            this.edit_btn = true;
-            if (err.status === 403) {
-              this.router.navigate(['']);
-              this.toastr.error('votre session est expirée', '', {
-                positionClass: 'toast-bottom-right',
-              });
-            } else {
-              this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-                positionClass: 'toast-bottom-right',
-              });
-            }
-          }
-        );
-      } else {
-        this.patchObservatory(
-          this.observatoryJson,
-          observatoryForm.value.id_theme,
-          observatoryForm.value.id_stheme
-        );
-      } */
-    } else {
-      this.edit_btn = true;
     }
+    this.edit_btn = false;
+    this.spinner.show();
+    try {
+      if (!this.id_observatory) {
+        const res = await this.postObservatory();
+        console.log('res', res);
+
+        this.router.navigate(['observatories', 'details', res.id]);
+        return;
+      } else {
+        await this.patchObservatory();
+      }
+    } catch (err) {
+      if (err.status === 403) {
+        this.router.navigate(['']);
+        this.toastr.error('votre session est expirée', '', {
+          positionClass: 'toast-bottom-right',
+        });
+      } else {
+        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+          positionClass: 'toast-bottom-right',
+        });
+      }
+    }
+    this.edit_btn = true;
+    this.edit_btn_text = 'Éditer';
+    this.spinner.hide();
   }
 
   getPhoto(photo) {
@@ -335,29 +308,40 @@ export class ObservatoryComponent implements OnInit {
     );
   }
 
-  patchObservatory(data: ObservatoryType) {
-    const patch: ObservatoryPatchType = _.omit(data, 'id');
-    this.observatoryService.patch(this.id_observatory, patch).subscribe(
-      (res) => {
-        this.spinner.hide();
-        this.edit_btn_text = 'Éditer';
-        this.toastr.success('Observatoire mis à jour', '', {
-          positionClass: 'toast-bottom-right',
-        });
-      },
-      (err) => {
-        this.spinner.hide();
-        if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', {
+  postObservatory(): Promise<ObservatoryType> {
+    return new Promise((resolve, reject) => {
+      this.observatoryService.post(this.observatoryForm.value).subscribe(
+        (res) => {
+          this.toastr.success('Observatoire ajouté', '', {
             positionClass: 'toast-bottom-right',
           });
-        } else
-          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+          resolve(res);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  patchObservatory(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const patch: ObservatoryPatchType = _.omit(
+        this.observatoryForm.value,
+        'id'
+      );
+      this.observatoryService.patch(this.id_observatory, patch).subscribe(
+        (res) => {
+          this.toastr.success('Observatoire mis à jour', '', {
             positionClass: 'toast-bottom-right',
           });
-      }
-    );
+          resolve();
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
   }
 
   editForm() {

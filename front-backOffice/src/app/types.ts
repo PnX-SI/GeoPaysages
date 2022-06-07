@@ -8,4 +8,8 @@ export type ObservatoryType = {
   geom: any;
 };
 
-export type ObservatoryPatchType = Partial<Omit<ObservatoryType, 'id'>>;
+export type ObservatoryPostType = Pick<
+  ObservatoryType,
+  'is_published' | 'ref' | 'title' | 'color' | 'geom'
+>;
+export type ObservatoryPatchType = Partial<ObservatoryPostType>;

@@ -22,6 +22,11 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always',
   },
+  {
+    path: 'observatories/form',
+    component: ObservatoryComponent,
+    canActivate: [AuthGuard],
+  },
   { path: 'sites', component: ManageSitesComponent, canActivate: [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
   { path: 'sites/form', component: AddSiteComponent, canActivate: [AuthGuard] },

@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Conf } from '../config';
-import { ObservatoryPatchType, ObservatoryType } from '../types';
+import {
+  ObservatoryPatchType,
+  ObservatoryPostType,
+  ObservatoryType,
+} from '../types';
 
 @Injectable()
 export class ObservatoriesService {
@@ -13,6 +17,14 @@ export class ObservatoriesService {
 
   getById(id) {
     return this.http.get<ObservatoryType>(Conf.apiUrl + 'observatories/' + id);
+  }
+
+  post(data: ObservatoryPostType) {
+    return this.http.post<ObservatoryType>(
+      Conf.apiUrl + 'observatories',
+      data,
+      { withCredentials: true }
+    );
   }
 
   patch(id, data: ObservatoryPatchType) {

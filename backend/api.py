@@ -31,6 +31,23 @@ def returnAllObservatories():
     return jsonify(items)
 
 
+@api.route('/api/observatories', methods=['POST'])
+@fnauth.check_auth(2, False, None, None)
+def postObservatory():
+    try:
+        data = dict(request.get_json())
+        db_obj = models.Observatory(**data)
+        db.session.add(db_obj)
+        db.session.commit()
+    except Exception as exception:
+        print(exception)
+        return str(exception), 400
+    
+    db.session.refresh(db_obj)
+    resp = observatory_schema.dump(db_obj)
+    return jsonify(resp)
+
+
 @api.route('/api/observatories/<int:id>', methods=['GET'])
 def returnObservatoryById(id):
     row = models.Observatory.query.filter_by(id=id).first()
