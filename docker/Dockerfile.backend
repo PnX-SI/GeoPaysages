@@ -9,4 +9,4 @@ RUN cp ./i18n/messages.pot.sample ./i18n/messages.pot && \
     cp ./i18n/fr/LC_MESSAGES/messages.po.sample ./i18n/fr/LC_MESSAGES/messages.po
 RUN pybabel compile -d ./i18n
 
-COPY ./docker/images /data/
+COPY ./docker/images/* /data/images/
