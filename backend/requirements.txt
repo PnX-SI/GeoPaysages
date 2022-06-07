@@ -1,6 +1,5 @@
 bcrypt==3.1.4
 blueprint==3.4.2
-cffi==1.11.5
 click==7.1.2
 Flask==1.1.2
 Flask-Babel==2.0.0
@@ -8,6 +7,7 @@ Flask-Cors==3.0.9
 flask-marshmallow==0.14.0
 flask-sqlacodegen==1.1.8
 Flask-SQLAlchemy==2.4.4
+Flask-Migrate==3.1.0
 GeoAlchemy2==0.5.0
 inflect==4.1.0
 itsdangerous==1.1.0
@@ -15,8 +15,9 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 marshmallow==3.9.1
 marshmallow-sqlalchemy==0.24.0
+marshmallow-enum==1.5.1
+Shapely==1.8.2
 Pillow==8.0.1
-psycopg2==2.7.5
 pycparser==2.19
 https://github.com/PnX-SI/UsersHub-authentification-module/archive/1.4.5.zip
 six==1.15.0

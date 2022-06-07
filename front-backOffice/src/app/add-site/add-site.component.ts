@@ -75,7 +75,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   submit_btn_text = 'Ajouter';
   initPhotos: any[] = [];
   deleted_photos = [];
-  photoRequired = false;
   new_photos = [];
   marker: Layer[] = [];
   center: any;
@@ -115,6 +114,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.themes_onChange();
         this.latlan_onChange();
       }
+
     });
   }
 
@@ -231,7 +231,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     } else {
       path_file_guide_site = this.noticeName;
     }
-    if (siteForm.valid && this.photos.length > 0) {
+    if (siteForm.valid){
       this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
       this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
       this.siteJson.path_file_guide_site = path_file_guide_site;
@@ -261,15 +261,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       }
     } else {
       this.edit_btn = true;
-      if (this.photos.length === 0)
-        this.photoRequired = true;
     }
 
   }
 
   getPhoto(photo) {
     this.alert = null;
-    this.photoRequired = false;
     const reader = new FileReader();
     reader.readAsDataURL(photo.photo_file[0]);
     reader.onload = () => {

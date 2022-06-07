@@ -1,5 +1,6 @@
 from flask import render_template, Blueprint, url_for, abort
 from sqlalchemy import text
+from sqlalchemy.sql.expression import desc
 import models
 import utils
 from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
@@ -15,7 +16,6 @@ dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
-villes_schema = models.VilleSchema(many=True)
 communes_schema = models.CommunesSchema(many=True)
 
 
@@ -33,12 +33,14 @@ def home():
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
     dump_sites = site_schema.dump(get_sites) """
 
-    sql = text("SELECT * FROM geopaysages.t_site where publish_site=true ORDER BY RANDOM() LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
-    diff_nb = 6 - len(sites)
-    for x in range(0, diff_nb):
-        sites.append(sites[x])
+    
+    if len(sites):
+        diff_nb = 6 - len(sites)
+        for x in range(0, diff_nb):
+            sites.append(sites[x])
 
     photo_ids = []
     sites_without_photo = []
@@ -55,9 +57,9 @@ def home():
         models.TPhoto.id_photo.in_(photo_ids)
     )
     dump_photos = photo_schema.dump(query_photos)
-
+    # WAHO tordu l'histoire!
     if len(sites_without_photo):
-        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos_str = "select distinct on (id_site) p.* from geopaysages.t_photo p join geopaysages.t_observatory o on o.id=p.id_observatory where p.id_site IN (" + ",".join(sites_without_photo) + ") and o.is_published is true order by id_site, filter_date desc"
         sql_missing_photos = text(sql_missing_photos_str)
         missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
         missing_photos = [dict(row) for row in missing_photos_result]
@@ -69,11 +71,15 @@ def home():
         models.Communes.code_commune.in_(code_communes)
     )
     dump_communes = communes_schema.dump(query_commune)
-
     for site in sites:
         id_site = site.get('id_site')
-        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getMedium(photo).get('output_url')
+        photo = None
+        try:
+            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        except StopIteration:
+            pass
+        if photo:
+            site['photo'] = utils.getMedium(photo).get('output_url')
         site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
 
@@ -97,7 +103,7 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True))
+    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
     
     return render_template('home.html', blocks=sites, sites=all_sites)
 
@@ -140,10 +146,15 @@ def gallery():
     for site in dump_sites:
         print('PHOTO')
         id_site = site.get('id_site')
-        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getThumbnail(photo).get('output_url')
+        photo = None
+        try:
+            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        except StopIteration:
+            pass 
+        if photo:
+            site['photo'] = utils.getThumbnail(photo).get('output_url')
         site['ville'] = next(ville for ville in dump_villes if (ville.get('code_commune') == site.get('code_city_site')))
-    
+
     return render_template('gallery.html', sites=dump_sites)
 
 @main.route('/sites/<int:id_site>')
@@ -231,7 +242,7 @@ def site_photos_last(id_site):
 
     site = site[0]
 
-    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date desc').limit(1)
+    get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by(desc(models.TPhoto.filter_date)).limit(1)
     photos = photo_schema.dump(get_photos_by_site)
     photo=photos[0]
 
@@ -354,6 +365,34 @@ def sites():
         'subthemes': subthemes,
         'township': townships
     }
+    
+    photo_ids = []
+    sites_without_photo = []
+    for site in sites:
+        photo_id = site.get('main_photo')
+        if photo_id:
+            photo_ids.append(site.get('main_photo'))
+        else:
+            sites_without_photo.append(str(site.get('id_site')))
+
+    query_photos = models.TPhoto.query.filter(
+        models.TPhoto.id_photo.in_(photo_ids)
+    )
+    dump_photos = photo_schema.dump(query_photos)
+
+    if len(sites_without_photo):
+        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
+        sql_missing_photos = text(sql_missing_photos_str)
+        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
+        missing_photos = [dict(row) for row in missing_photos_result]
+        for missing_photo in missing_photos:
+            missing_photo['t_site'] = missing_photo.get('id_site')
+            dump_photos.append(missing_photo)
+
+    for site in sites:
+        id_site = site.get('id_site')
+        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+        site['photo'] = utils.getThumbnail(photo).get('output_url')
 
     def getItem(name, id):
         return next(item for item in dbs.get(name) if item.get('id') == id)

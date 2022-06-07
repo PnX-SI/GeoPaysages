@@ -444,13 +444,19 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 /* HEADER */
 
-header h1 {
+
+
+.header-title {
     text-transform: uppercase;
-    font-size: 1.5em;
     line-height: 20px;
+    text-align: center;
+  }
+  
+.header-title h1 {
+font-size: 1.75em;
 }
 
-header h3 {
+header-title h3 {
     line-height: 20px;
 }
 

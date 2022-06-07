@@ -3,6 +3,7 @@ backend/static/custom/css/custom-style.css
 backend/static/custom/css/page-style.css
 backend/static/custom/logo/logo_txt_blanc.png
 backend/static/custom/logo/logo_txt_color.png
+backend/static/custom/logo/favicon.ico
 
 messages.pot 
 messages.po

@@ -26,7 +26,9 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { ObservatoriesComponent } from './observatories/observatories.component';
+import { ObservatoriesService } from './services/observatories.service';
+import { ObservatoryComponent } from './observatory/observatory.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AddSiteComponent,
     AddPhotoComponent,
     GalleryComponent,
+    ObservatoriesComponent,
+    ObservatoryComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,10 +57,11 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     NgSelectModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxSpinnerModule
+    NgxSpinnerModule,
   ],
   providers: [
     LoginService,
+    ObservatoriesService,
     SitesService,
     AuthService,
     AuthGuard,
@@ -67,6 +72,6 @@ import { NgxSpinnerModule } from 'ngx-spinner';
       multi: true,
     },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

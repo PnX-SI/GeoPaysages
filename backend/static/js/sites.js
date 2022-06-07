@@ -179,7 +179,10 @@ geopsg.initSites = (options) => {
           let marker = L.marker(site.latlon)
           site.marker = marker
           markerText = site.name_site + '<br />' + site.ville.label
-          marker.bindPopup('<div class="img" style="background-image: url(' + site.photos[site.photos.length - 1].url + ');"></div><div class="title">' + markerText + '</div>', {
+          if (site.ref_site) {
+            markerText += '<br/>' + '(réf : ' + site.ref_site + ')'
+          }
+          marker.bindPopup('<div class="img" style="background-image: url(' + site.photo + ');"></div><div class="title">' + markerText + '</div>', {
             closeButton: false
           })
           marker.on('mouseover', (e) => {

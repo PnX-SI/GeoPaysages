@@ -1,0 +1,68 @@
+<ngx-spinner size="medium" type="ball-spin">
+  <p style="color: white">Loading...</p>
+</ngx-spinner>
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6 col-table">
+      <div>
+        <button class="blue-btn btn-add" (click)="onAddClick()">
+          Ajouter un observatoire
+        </button>
+        <ngx-datatable
+          *ngIf="itemsLoaded"
+          class="material"
+          [rows]="rows"
+          [headerHeight]="40"
+          [footerHeight]="40"
+          [limit]="7"
+          [rowHeight]="'auto'"
+          [scrollbarH]="true"
+          [reorderable]="reorderable"
+          [selectionType]="'single'"
+          (activate)="onCenterChange($event)"
+          (select)="onSelect($event)"
+        >
+          <ngx-datatable-column prop="ref" name="Référence" width="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row.observatory.ref }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column
+            prop="title"
+            name="Nom de l'observatoire"
+            width="320"
+          >
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              {{ row.observatory.title }}
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column prop="is_published" name="Publication">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  class="success"
+                  [checked]="row.observatory.is_published"
+                  disabled
+                />
+                <span class="slider round"></span>
+              </label>
+            </ng-template>
+          </ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+    <div class="col-6 col-map">
+      <div
+        class="map"
+        leaflet
+        [leafletOptions]="options"
+        [leafletLayers]="markers"
+        [(leafletCenter)]="center"
+        [(leafletZoom)]="zoom"
+        (leafletMapReady)="onMapReady($event)"
+      ></div>
+    </div>
+  </div>
+</div>

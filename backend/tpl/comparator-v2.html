@@ -13,10 +13,22 @@
         </b-dropdown-item-button>
       </b-dropdown>
     </div>
-    <app-comparator-v2-selector class="left" :items="photos" :selected-item="comparedPhotos[0]"
-      v-on:item-selected="onPhotoSelected(0, $event)"></app-comparator-v2-selector>
-    <app-comparator-v2-selector class="right text-right" :items="photos" :selected-item="comparedPhotos[1]" :right="true"
-      v-on:item-selected="onPhotoSelected(1, $event)"></app-comparator-v2-selector>
+
+    <app-comparator-v2-selector 
+      class="left" 
+      :items="photos" 
+      :selected-item="comparedPhotos[0]"
+      v-on:item-selected="onPhotoSelected(0, $event)"
+
+    >
+    </app-comparator-v2-selector>
+    <app-comparator-v2-selector 
+      class="right text-right" 
+      :items="photos" :selected-item="comparedPhotos[1]" 
+      :right="true"
+      v-on:item-selected="onPhotoSelected(1, $event)"
+    >
+    </app-comparator-v2-selector>
     <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
     <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
     <div class="row h-100">
@@ -64,8 +76,16 @@
         </div>
         <b-dropdown-divider></b-dropdown-divider>
       {% endif %}
-      <b-dropdown-item-button v-for="item in pageItems" v-bind:key="item.id" v-on:click="onItemClick(item)">
-        <span :inner-html.prop="item.shot_on | dateFormat"></span>
+      <b-dropdown-item-button 
+        v-for="(item, index) in pageItems" 
+        v-bind:key="item.id" 
+        v-on:click="onItemClick(item)"
+      >
+        <span 
+          v-bind:class="{'current-image': item.id ==  currentItem?.id }"
+          :inner-html.prop="item.shot_on | dateFormat"
+        >
+        </span>
       </b-dropdown-item-button>
       <b-dropdown-divider></b-dropdown-divider>
       <div class="mx-2">

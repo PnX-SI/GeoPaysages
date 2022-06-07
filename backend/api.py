@@ -1,4 +1,4 @@
-from flask import Flask, request, Blueprint, Response, jsonify
+from flask import Flask, request, Blueprint, Response, jsonify, abort
 from werkzeug.exceptions import NotFound
 
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
@@ -14,13 +14,64 @@ from env import db
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)
+observatory_schema = models.ObservatorySchema(many=False)
+observatories_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
-ville_schema = models.VilleSchema(many=True)
+
+@api.route('/api/observatories', methods=['GET'])
+def returnAllObservatories():
+    get_all = models.Observatory.query.order_by('ref').all()
+    items = observatories_schema.dump(get_all)
+    
+    return jsonify(items)
+
+
+@api.route('/api/observatories', methods=['POST'])
+@fnauth.check_auth(2, False, None, None)
+def postObservatory():
+    try:
+        data = dict(request.get_json())
+        db_obj = models.Observatory(**data)
+        db.session.add(db_obj)
+        db.session.commit()
+    except Exception as exception:
+        print(exception)
+        return str(exception), 400
+    
+    db.session.refresh(db_obj)
+    resp = observatory_schema.dump(db_obj)
+    return jsonify(resp)
+
+
+@api.route('/api/observatories/<int:id>', methods=['GET'])
+def returnObservatoryById(id):
+    row = models.Observatory.query.filter_by(id=id).first()
+    if not row:
+        abort(404)
+    dict = observatory_schema.dump(row)
+    return jsonify(dict)
+
+
+@api.route('/api/observatories/<int:id>', methods=['PATCH'])
+@fnauth.check_auth(2, False, None, None)
+def patchObservatory(id):
+    try:
+        rows = models.Observatory.query.filter_by(id=id)
+        if not rows.count():
+            abort(404)
+        data = request.get_json()
+        rows.update(data)
+        db.session.commit()
+    except Exception as exception:
+        return str(exception), 400
+    row = models.Observatory.query.filter_by(id=id).first()
+    dict = observatory_schema.dump(row)
+    return jsonify(dict)
 
 
 @api.route('/api/sites', methods=['GET'])
