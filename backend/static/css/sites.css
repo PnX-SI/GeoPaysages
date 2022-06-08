@@ -3,7 +3,7 @@
 }
 
 .app-sites {
-    height: calc(100vh - 135px);
+    height: calc(100vh - 110px - 25px - 34px);/* window height - header height - header margin bottom - title height */
 }
 
 .app-sites .sidebar {
