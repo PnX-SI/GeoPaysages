@@ -391,8 +391,11 @@ def sites():
 
     for site in sites:
         id_site = site.get('id_site')
-        photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        site['photo'] = utils.getThumbnail(photo).get('output_url')
+        try:
+            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
+            site['photo'] = utils.getThumbnail(photo).get('output_url')
+        except StopIteration:
+            pass
 
     def getItem(name, id):
         return next(item for item in dbs.get(name) if item.get('id') == id)
@@ -408,6 +411,23 @@ def sites():
             filter['items'] = [getItem(filter.get('name'), item_id)
                                for item_id in filter.get('items')]
             filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
+
+    filter_observatories = []
+    for site in sites:
+        try:
+            next((item for item in filter_observatories if item["id"] == site['id_observatory']))
+        except StopIteration:
+            filter_observatories.append({
+                'id': site['id_observatory'],
+                'label': site['observatory']['title']
+            })
+
+    filters.insert(0, {
+        'name': 'id_observatory',
+        'label': 'Observatory',
+        'items': filter_observatories
+    })
+
 
     return render_template('sites.html', filters=filters, sites=sites, ign_Key=IGN_KEY)
 
