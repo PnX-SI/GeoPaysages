@@ -55,6 +55,27 @@
           </div>
           <div class="row form-item">
             <div class="col">
+              <label class="label" for="id_observatory">Observatoire*</label>
+              <select
+                InputFeedBack
+                formControlName="id_observatory"
+                id="id_observatory"
+                class="form-control"
+              >
+                <option class="select-placeholder" value="">---</option>
+                <option
+                  *ngFor="let observatory of observatories"
+                  [ngValue]="observatory.id"
+                >
+                  {{ observatory.ref }}
+                </option>
+              </select>
+              <app-form-error
+                controlName="id_observatory"
+                errorKey="required"
+              ></app-form-error>
+            </div>
+            <div class="col">
               <label class="label" for="city-code">Commune*</label>
               <select
                 InputFeedBack

@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ObservatoriesService } from '../services/observatories.service';
+import { ObservatoryType } from '../types';
 
 @Component({
   selector: 'app-add-site',
@@ -77,11 +79,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   center: any;
   toast_msg: string;
   communes: undefined;
+  observatories: ObservatoryType[] = [];
   currentUser: any;
   zoom = 10;
   removed_notice: any = null;
   constructor(
     private sitesService: SitesService,
+    private observatoriesSrv: ObservatoriesService,
     public formService: FormService,
     protected router: Router,
     private route: ActivatedRoute,
@@ -100,11 +104,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.sitesService.getThemes(),
       this.sitesService.getSubthemes(),
       this.sitesService.getCommunes(),
+      this.observatoriesSrv.getAll(),
     ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];
       this.communes = results[2];
       this.selectedSubthemes = this.subthemes;
+      this.observatories = results[3];
       if (this.id_site) {
         this.getSite(this.id_site);
         this.submit_btn_text = 'Enregistrer';
@@ -684,6 +690,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       id_stheme: this.site.subthemes,
       code_city_site: this.site.code_city_site,
       legend_site: this.site.legend_site,
+      id_observatory: this.site.id_observatory,
     });
     if (this.site.path_file_guide_site) {
       this.noticeName = this.site.path_file_guide_site;

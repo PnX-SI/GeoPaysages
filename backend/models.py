@@ -44,6 +44,8 @@ class TSite(db.Model):
                         server_default=db.FetchedValue())
     id_observatory = db.Column(db.ForeignKey(
         'geopaysages.t_observatory.id', name='t_site_fk_observatory'))
+    observatory = db.relationship(
+        'Observatory', primaryjoin='TSite.id_observatory == Observatory.id')
     name_site = db.Column(db.String)
     ref_site = db.Column(db.String)
     desc_site = db.Column(db.String)
@@ -260,9 +262,11 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
 
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
+    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color"])
 
     class Meta:
         model = TSite
+        include_fk = True
         include_relationships = True
 
 

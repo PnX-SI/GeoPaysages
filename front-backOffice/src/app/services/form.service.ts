@@ -23,6 +23,7 @@ export class FormService {
       name_site: [null, Validators.required],
       desc_site: [null],
       ref_site: [null, Validators.required],
+      id_observatory: [null, Validators.required],
       testim_site: [null],
       publish_site: [false],
       lng: [null, { validators: LatlngValidator.lng, updateOn: 'blur' }],
