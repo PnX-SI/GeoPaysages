@@ -18,7 +18,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   selector: 'app-add-site',
   templateUrl: './add-site.component.html',
   styleUrls: ['./add-site.component.scss'],
-
 })
 export class AddSiteComponent implements OnInit, OnDestroy {
   selectedFile: File[];
@@ -41,14 +40,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     iconSize: [25, 41],
     iconAnchor: [13, 41],
     iconUrl: './assets/marker-icon.png',
-    shadowUrl: './assets/marker-shadow.png'
+    shadowUrl: './assets/marker-shadow.png',
   });
   options = {
-    layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-    ],
+    layers: [tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')],
     zoom: 10,
-    center: latLng(Conf.map_lat_center, Conf.map_lan_center)
+    center: latLng(Conf.map_lat_center, Conf.map_lan_center),
   };
   drawOptions = {
     position: 'topleft',
@@ -59,16 +56,16 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       polyline: false,
       circlemarker: false,
       marker: {
-        icon: this.icon
-      }
+        icon: this.icon,
+      },
     },
     edit: {
-      featureGroup: this.drawnItems
-    }
+      featureGroup: this.drawnItems,
+    },
   };
   drawControl = new L.Control.Draw();
   previewImage: string | ArrayBuffer;
-  alert: { type: string; message: string; };
+  alert: { type: string; message: string };
   site: any;
   edit_btn = false;
   edit_btn_text = 'Éditer';
@@ -91,16 +88,19 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: NgbModal,
     private authService: AuthService,
-    private spinner: NgxSpinnerService,
-  ) {
-  }
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.currentUser = this.authService.currentUser;
     this.id_site = this.route.snapshot.params['id'];
     this.siteForm = this.formService.initFormSite();
     this.siteForm.controls['id_stheme'].disable();
-    forkJoin([this.sitesService.getThemes(), this.sitesService.getSubthemes(), this.sitesService.getCommunes()]).subscribe(results => {
+    forkJoin([
+      this.sitesService.getThemes(),
+      this.sitesService.getSubthemes(),
+      this.sitesService.getCommunes(),
+    ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];
       this.communes = results[2];
@@ -114,26 +114,31 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.themes_onChange();
         this.latlan_onChange();
       }
-
     });
   }
 
   onMapReady(map: Map) {
     L.control.scale().addTo(map);
-    const street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-    const ignLayer = L.tileLayer(this.layerUrl(
-      Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS'
-    ));
+    const street = L.tileLayer(
+      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    );
+    const ignLayer = L.tileLayer(
+      this.layerUrl(Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS')
+    );
     const baseLayers = {
       'IGN ': ignLayer,
-      'OSM': street
+      OSM: street,
     };
     L.control.layers(baseLayers).addTo(map);
     const info = new L.Control();
     info.setPosition('topleft');
     info.onAdd = () => {
-      const container = L.DomUtil.create('button', ' btn btn-sm btn-outline-shadow leaflet-bar leaflet-control ');
-      container.innerHTML = '<i style="line-height: unset" class="icon-full_screen"> </i>';
+      const container = L.DomUtil.create(
+        'button',
+        ' btn btn-sm btn-outline-shadow leaflet-bar leaflet-control '
+      );
+      container.innerHTML =
+        '<i style="line-height: unset" class="icon-full_screen"> </i>';
       container.style.backgroundColor = 'white';
       container.title = 'Recenter la catre';
       container.onclick = () => {
@@ -145,16 +150,20 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     info.addTo(map);
     map.addLayer(this.drawnItems);
     L.EditToolbar.Delete.include({
-      removeAllLayers: false
+      removeAllLayers: false,
     });
     this.map = map;
     map.on(L.Draw.Event.CREATED, (event) => {
       const layer = (event as any).layer;
       this.markerCoordinates.push(layer._latlng);
-      this.siteForm.controls['lat'].setValue(this.markerCoordinates[0].lat.toFixed(6));
-      this.siteForm.controls['lng'].setValue(this.markerCoordinates[0].lng.toFixed(6));
+      this.siteForm.controls['lat'].setValue(
+        this.markerCoordinates[0].lat.toFixed(6)
+      );
+      this.siteForm.controls['lng'].setValue(
+        this.markerCoordinates[0].lng.toFixed(6)
+      );
       this.drawControl.setDrawingOptions({
-        marker: false
+        marker: false,
       });
       map.removeControl(this.drawControl);
       map.addControl(this.drawControl);
@@ -164,8 +173,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       let layer = (event as any).layers._layers;
       layer = layer[Object.keys(layer)[0]];
       this.markerCoordinates.push(layer._latlng);
-      this.siteForm.controls['lat'].setValue(this.markerCoordinates[0].lat.toFixed(6));
-      this.siteForm.controls['lng'].setValue(this.markerCoordinates[0].lng.toFixed(6));
+      this.siteForm.controls['lat'].setValue(
+        this.markerCoordinates[0].lat.toFixed(6)
+      );
+      this.siteForm.controls['lng'].setValue(
+        this.markerCoordinates[0].lng.toFixed(6)
+      );
     });
     map.on(L.Draw.Event.DELETED, (event) => {
       const markers = [];
@@ -181,8 +194,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         map.removeControl(this.drawControl);
         this.drawControl.setDrawingOptions({
           marker: {
-            icon: this.icon
-          }
+            icon: this.icon,
+          },
         });
         map.addControl(this.drawControl);
       }
@@ -231,9 +244,20 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     } else {
       path_file_guide_site = this.noticeName;
     }
-    if (siteForm.valid){
-      this.siteJson = _.omit(siteForm.value, ['id_theme', 'notice', 'lat', 'lng', 'id_stheme']);
-      this.siteJson.geom = 'SRID=4326;POINT(' + siteForm.value.lng + ' ' + siteForm.value.lat + ')';
+    if (siteForm.valid) {
+      this.siteJson = _.omit(siteForm.value, [
+        'id_theme',
+        'notice',
+        'lat',
+        'lng',
+        'id_stheme',
+      ]);
+      this.siteJson.geom =
+        'SRID=4326;POINT(' +
+        siteForm.value.lng +
+        ' ' +
+        siteForm.value.lat +
+        ')';
       this.siteJson.path_file_guide_site = path_file_guide_site;
       this.uploadNotice();
       this.spinner.show();
@@ -242,27 +266,38 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           (site) => {
             // tslint:disable-next-line:quotemark
             this.toast_msg = "Point d'observation ajouté avec succès";
-            this.addThemes(Number(site.id_site), siteForm.value.id_theme, siteForm.value.id_stheme, true);
+            this.addThemes(
+              Number(site.id_site),
+              siteForm.value.id_theme,
+              siteForm.value.id_stheme,
+              true
+            );
           },
           (err) => {
             this.spinner.hide();
             this.edit_btn = true;
             if (err.status === 403) {
               this.router.navigate(['']);
-              this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-            }
-            else {
-              this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+              this.toastr.error('votre session est expirée', '', {
+                positionClass: 'toast-bottom-right',
+              });
+            } else {
+              this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+                positionClass: 'toast-bottom-right',
+              });
             }
           }
         );
       } else {
-        this.patchSite(this.siteJson, siteForm.value.id_theme, siteForm.value.id_stheme);
+        this.patchSite(
+          this.siteJson,
+          siteForm.value.id_theme,
+          siteForm.value.id_stheme
+        );
       }
     } else {
       this.edit_btn = true;
     }
-
   }
 
   getPhoto(photo) {
@@ -277,7 +312,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     photo.filePhoto = photo.photo_file[0];
     this.photos.push(photo);
   }
-
 
   addPhotos(id_site, new_site) {
     const photosData: FormData = new FormData();
@@ -302,26 +336,30 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             // console.log('resUplod', res.loaded);
           }
         },
-        err => {
+        (err) => {
           console.log('err upload photo', err);
           this.spinner.hide();
           if (err.error.error === 'image_already_exist') {
             this.edit_btn_text = 'Annuler';
             this.edit_btn = true;
             this.setAlert(err.error.image);
-          }
-          else if (err.status === 403) {
+          } else if (err.status === 403) {
             this.router.navigate(['']);
-            this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-          }
-          else {
-            this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+            this.toastr.error('votre session est expirée', '', {
+              positionClass: 'toast-bottom-right',
+            });
+          } else {
+            this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+              positionClass: 'toast-bottom-right',
+            });
           }
         },
         () => {
           this.siteForm.disable();
           this.spinner.hide();
-          this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+          this.toastr.success(this.toast_msg, '', {
+            positionClass: 'toast-bottom-right',
+          });
           // ###### can reload the same route #######
           this.router.routeReuseStrategy.shouldReuseRoute = function () {
             return false;
@@ -337,7 +375,9 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       );
     } else {
       this.siteForm.disable();
-      this.toastr.success(this.toast_msg, '', { positionClass: 'toast-bottom-right' });
+      this.toastr.success(this.toast_msg, '', {
+        positionClass: 'toast-bottom-right',
+      });
       // ###### can reload the same route #######
       this.router.routeReuseStrategy.shouldReuseRoute = function () {
         return false;
@@ -355,18 +395,22 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     // tslint:disable-next-line:prefer-const
     let tab_stheme = [];
     _.forEach(sthemes, (sub) => {
-      tab_stheme.push(_.find(this.subthemes, { 'id_stheme': sub }));
+      tab_stheme.push(_.find(this.subthemes, { id_stheme: sub }));
     });
     // tslint:disable-next-line:prefer-const
     let stheme_theme = [];
     _.forEach(tab_stheme, (stheme) => {
       _.forEach(stheme.themes, (item) => {
         if (_.includes(themes, item)) {
-          stheme_theme.push({ 'id_site': id_site, 'id_theme': item, 'id_stheme': stheme.id_stheme });
+          stheme_theme.push({
+            id_site: id_site,
+            id_theme: item,
+            id_stheme: stheme.id_stheme,
+          });
         }
       });
     });
-    this.sitesService.addThemes({ 'data': stheme_theme }).subscribe(
+    this.sitesService.addThemes({ data: stheme_theme }).subscribe(
       (response) => {
         this.addPhotos(id_site, new_site);
       },
@@ -374,10 +418,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.spinner.hide();
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-        else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
+        } else
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
       }
     );
   }
@@ -394,13 +441,23 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       (site) => {
         this.site = site.site[0];
         _.forEach(site.photos, (photo) => {
-          this.initPhotos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
-          this.photos.push({ 'id_photo': photo.id_photo, 'imgUrl': Conf.staticPicturesUrl + photo.sm, 'name': photo.path_file_photo });
+          this.initPhotos.push({
+            id_photo: photo.id_photo,
+            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            name: photo.path_file_photo,
+          });
+          this.photos.push({
+            id_photo: photo.id_photo,
+            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            name: photo.path_file_photo,
+          });
         });
       },
       (err) => {
         console.log('err', err);
-        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+          positionClass: 'toast-bottom-right',
+        });
       },
       () => {
         this.initMarker(this.site.geom[0], this.site.geom[1]);
@@ -415,73 +472,94 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   themes_onChange() {
-    this.siteForm.controls['id_theme'].statusChanges
-      .subscribe(() => {
-        this.selectedSubthemes = [];
-        // this.siteForm.controls['id_stheme'].reset();
-        if (this.siteForm.controls['id_theme'].value && this.siteForm.controls['id_theme'].value.length !== 0) {
-          this.siteForm.controls['id_stheme'].enable();
-          _.forEach(this.subthemes, (subtheme) => {
-            _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
-              if (_.includes(subtheme.themes, Number(idTheme)) && !_.find(this.selectedSubthemes, { 'id_stheme': subtheme.id_stheme })) {
-                this.selectedSubthemes.push(subtheme);
-              }
-            });
-          });
-          _.map(this.siteForm.controls['id_stheme'].value, (idStheme) => {
-            if (!_.find(this.selectedSubthemes, { 'id_stheme': idStheme })) {
-              _.remove(this.siteForm.controls['id_stheme'].value, (item) => {
-                return item === idStheme;
-              });
+    this.siteForm.controls['id_theme'].statusChanges.subscribe(() => {
+      this.selectedSubthemes = [];
+      // this.siteForm.controls['id_stheme'].reset();
+      if (
+        this.siteForm.controls['id_theme'].value &&
+        this.siteForm.controls['id_theme'].value.length !== 0
+      ) {
+        this.siteForm.controls['id_stheme'].enable();
+        _.forEach(this.subthemes, (subtheme) => {
+          _.forEach(this.siteForm.controls['id_theme'].value, (idTheme) => {
+            if (
+              _.includes(subtheme.themes, Number(idTheme)) &&
+              !_.find(this.selectedSubthemes, { id_stheme: subtheme.id_stheme })
+            ) {
+              this.selectedSubthemes.push(subtheme);
             }
           });
-          this.siteForm.patchValue({
-            'id_stheme': this.siteForm.controls['id_stheme'].value,
-          });
-
-        } else {
-          this.siteForm.controls['id_stheme'].setValue(null),
-            this.siteForm.controls['id_stheme'].disable();
-          this.selectedSubthemes = [];
-        }
-      });
+        });
+        _.map(this.siteForm.controls['id_stheme'].value, (idStheme) => {
+          if (!_.find(this.selectedSubthemes, { id_stheme: idStheme })) {
+            _.remove(this.siteForm.controls['id_stheme'].value, (item) => {
+              return item === idStheme;
+            });
+          }
+        });
+        this.siteForm.patchValue({
+          id_stheme: this.siteForm.controls['id_stheme'].value,
+        });
+      } else {
+        this.siteForm.controls['id_stheme'].setValue(null),
+          this.siteForm.controls['id_stheme'].disable();
+        this.selectedSubthemes = [];
+      }
+    });
   }
 
   latlan_onChange() {
-    this.siteForm.controls['lat'].statusChanges
-      .subscribe(() => {
-        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid && this.markerCoordinates.length === 0) {
-          this.drawnItems.clearLayers();
-          this.initMarker(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value);
-        } else if (this.siteForm.controls['lat'].invalid && this.siteForm.controls['lng'].invalid) {
-          this.drawnItems.clearLayers();
-          this.map.removeControl(this.drawControl);
-          this.drawControl.setDrawingOptions({
-            marker: {
-              icon: this.icon
-            }
-          });
-          this.map.addControl(this.drawControl);
-        }
-      });
-    this.siteForm.controls['lng'].statusChanges
-      .subscribe(() => {
-        if (this.siteForm.controls['lat'].valid && this.siteForm.controls['lng'].valid && this.markerCoordinates.length === 0) {
-          this.drawnItems.clearLayers();
-          this.initMarker(this.siteForm.controls['lat'].value, this.siteForm.controls['lng'].value);
-        } else if (this.siteForm.controls['lat'].invalid && this.siteForm.controls['lng'].invalid) {
-          this.drawnItems.clearLayers();
-          this.map.removeControl(this.drawControl);
-          this.drawControl.setDrawingOptions({
-            marker: {
-              icon: this.icon
-            }
-          });
-          this.map.addControl(this.drawControl);
-        }
-      });
+    this.siteForm.controls['lat'].statusChanges.subscribe(() => {
+      if (
+        this.siteForm.controls['lat'].valid &&
+        this.siteForm.controls['lng'].valid &&
+        this.markerCoordinates.length === 0
+      ) {
+        this.drawnItems.clearLayers();
+        this.initMarker(
+          this.siteForm.controls['lat'].value,
+          this.siteForm.controls['lng'].value
+        );
+      } else if (
+        this.siteForm.controls['lat'].invalid &&
+        this.siteForm.controls['lng'].invalid
+      ) {
+        this.drawnItems.clearLayers();
+        this.map.removeControl(this.drawControl);
+        this.drawControl.setDrawingOptions({
+          marker: {
+            icon: this.icon,
+          },
+        });
+        this.map.addControl(this.drawControl);
+      }
+    });
+    this.siteForm.controls['lng'].statusChanges.subscribe(() => {
+      if (
+        this.siteForm.controls['lat'].valid &&
+        this.siteForm.controls['lng'].valid &&
+        this.markerCoordinates.length === 0
+      ) {
+        this.drawnItems.clearLayers();
+        this.initMarker(
+          this.siteForm.controls['lat'].value,
+          this.siteForm.controls['lng'].value
+        );
+      } else if (
+        this.siteForm.controls['lat'].invalid &&
+        this.siteForm.controls['lng'].invalid
+      ) {
+        this.drawnItems.clearLayers();
+        this.map.removeControl(this.drawControl);
+        this.drawControl.setDrawingOptions({
+          marker: {
+            icon: this.icon,
+          },
+        });
+        this.map.addControl(this.drawControl);
+      }
+    });
   }
-
 
   patchSite(siteJson, themes, sthemes) {
     siteJson.id_site = this.id_site;
@@ -504,10 +582,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.spinner.hide();
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-        else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
+        } else
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
       }
     );
   }
@@ -535,7 +616,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.center = latLng(lat, lan);
     this.map.removeControl(this.drawControl);
     this.drawControl.setDrawingOptions({
-      marker: false
+      marker: false,
     });
     this.map.addControl(this.drawControl);
     if (this.id_site && !this.edit_btn) {
@@ -544,7 +625,10 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   openDeleteModal(content) {
-    this.modalRef = this.modalService.open(content, { windowClass: 'delete-modal', centered: true });
+    this.modalRef = this.modalService.open(content, {
+      windowClass: 'delete-modal',
+      centered: true,
+    });
   }
 
   cancelDelete() {
@@ -570,10 +654,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       (err) => {
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-        else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
+        } else
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
       }
     );
     this.modalRef.close();
@@ -586,28 +673,32 @@ export class AddSiteComponent implements OnInit, OnDestroy {
 
   patchForm() {
     this.siteForm.patchValue({
-      'name_site': this.site.name_site,
-      'desc_site': this.site.desc_site,
-      'ref_site': this.site.ref_site,
-      'testim_site': this.site.testim_site,
-      'publish_site': this.site.publish_site,
-      'lng': this.site.geom[1].toFixed(6),
-      'lat': this.site.geom[0].toFixed(6),
-      'id_theme': this.site.themes,
-      'id_stheme': this.site.subthemes,
-      'code_city_site': this.site.code_city_site,
-      'legend_site': this.site.legend_site,
+      name_site: this.site.name_site,
+      desc_site: this.site.desc_site,
+      ref_site: this.site.ref_site,
+      testim_site: this.site.testim_site,
+      publish_site: this.site.publish_site,
+      lng: this.site.geom[1].toFixed(6),
+      lat: this.site.geom[0].toFixed(6),
+      id_theme: this.site.themes,
+      id_stheme: this.site.subthemes,
+      code_city_site: this.site.code_city_site,
+      legend_site: this.site.legend_site,
     });
     if (this.site.path_file_guide_site) {
       this.noticeName = this.site.path_file_guide_site;
     }
-
   }
   layerUrl(key, layer) {
-    return 'http://wxs.ign.fr/' + key
-      + '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&'
-      + 'LAYER=' + layer + '&STYLE=normal&TILEMATRIXSET=PM&'
-      + 'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg';
+    return (
+      'http://wxs.ign.fr/' +
+      key +
+      '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&' +
+      'LAYER=' +
+      layer +
+      '&STYLE=normal&TILEMATRIXSET=PM&' +
+      'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg'
+    );
   }
 
   ngOnDestroy() {
@@ -617,6 +708,3 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     }
   }
 }
-
-
-
