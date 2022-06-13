@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layout.jinja" %}
 {% block title %}{{ site.name_site }}{% endblock %}
 {% block head %}
 {% if comparator_version == 1: %}
@@ -88,7 +88,7 @@
   </div>
 </div>
 
-{% include 'comparator-v'+ comparator_version|string +'.html' %}
+{% include 'comparator-v'+ comparator_version|string +'.jinja' %}
 
 <script>
   document.addEventListener('readystatechange', (e) => {

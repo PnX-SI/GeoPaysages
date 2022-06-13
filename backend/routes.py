@@ -105,7 +105,7 @@ def home():
 
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
     
-    return render_template('home.html', blocks=sites, sites=all_sites)
+    return render_template('home.jinja', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
@@ -155,7 +155,7 @@ def gallery():
             site['photo'] = utils.getThumbnail(photo).get('output_url')
         site['ville'] = next(ville for ville in dump_villes if (ville.get('code_commune') == site.get('code_city_site')))
 
-    return render_template('gallery.html', sites=dump_sites)
+    return render_template('gallery.jinja', sites=dump_sites)
 
 @main.route('/sites/<int:id_site>')
 def site(id_site):
@@ -230,7 +230,7 @@ def site(id_site):
 
     photos = [getPhoto(photo) for photo in photos]
     
-    return render_template('site.html', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
+    return render_template('site.jinja', site=site, photos=photos, comparator_version=COMPARATOR_VERSION)
 
 
 @main.route('/sites/<int:id_site>/photos/latest')
@@ -253,7 +253,7 @@ def site_photos_last(id_site):
         date_obj = datetime.strptime(photo.get('filter_date'), '%Y-%m-%d')
         photo['date_display'] = date_obj.strftime('%d-%m-%Y')
 
-    return render_template('site-photo.html', site=site, photo=photo)
+    return render_template('site-photo.jinja', site=site, photo=photo)
 
 
 @main.route('/sites')
@@ -429,12 +429,12 @@ def sites():
     })
 
 
-    return render_template('sites.html', filters=filters, sites=sites, ign_Key=IGN_KEY)
+    return render_template('sites.jinja', filters=filters, sites=sites, ign_Key=IGN_KEY)
 
 
 @main.route('/sample')
 def sample():
-    return render_template('sample.html')
+    return render_template('sample.jinja')
 
 
 @main.route('/about')
@@ -442,4 +442,4 @@ def about():
     if (not utils.isDbPagePublished('about')):
         return abort(404)
 
-    return render_template('db-page.html', name='about', page=utils.getDbPage('about'))
+    return render_template('db-page.jinja', name='about', page=utils.getDbPage('about'))
