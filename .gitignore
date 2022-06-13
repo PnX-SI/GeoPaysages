@@ -23,9 +23,6 @@ src/favicon.ico
 *.sublime-workspace
 jsconfig.json
 
-# IDE - VSCode
-.vscode/*
-
 # System Files
 .DS_Store
 Thumbs.db
