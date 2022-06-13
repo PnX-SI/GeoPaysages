@@ -1,10 +1,22 @@
 var geopsg = geopsg || {};
 geopsg.initSites = (options) => {
-  const storedSelectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+  let selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+  if (!Array.isArray(selectedFilters)) {
+    selectedFilters = [];
+  }
   options.filters.forEach((filter) => {
     filter.selectedItems = [];
     filter.items.forEach((item) => {
-      let isSelected = _.get(storedSelectedFilters, filter.name, []).indexOf(item.id) > -1;
+      const isSelected = Boolean(
+        selectedFilters.find((selectedFilter) => {
+          return (
+            selectedFilter.name == filter.name &&
+            selectedFilter.items.find((selectedItem) => {
+              return selectedItem.id == item.id;
+            })
+          );
+        }),
+      );
       Object.assign(item, {
         isSelected: isSelected,
       });
@@ -115,11 +127,41 @@ geopsg.initSites = (options) => {
         this.setFilters();
       },
       onFilterClick(filter, item) {
+        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
+          return selectedFilter.name == filter.name;
+        });
+        if (item.isSelected) {
+          if (!selectedFilterExists) {
+            selectedFilterExists = {
+              name: filter.name,
+              items: [],
+            };
+            selectedFilters.push(selectedFilterExists);
+          }
+          selectedFilterExists.items.push({
+            id: item.id,
+            label: item.label,
+          });
+        } else {
+          selectedFilterExists.items = selectedFilterExists.items.filter((selectedItem) => {
+            return selectedItem.id != item.id;
+          });
+          if (!selectedFilterExists.items.length) {
+            selectedFilters = selectedFilters.filter((selectedFilter) => {
+              return selectedFilter.name != filter.name;
+            });
+          }
+        }
+
+        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
+
         this.updateFilters();
         this.setFilters();
       },
       updateFilters() {
-        const filterThemes = filters.find((filter) => {
+        selectedFilters.forEach((selectedFilter) => {});
+
+        /* const filterThemes = filters.find((filter) => {
           return filter.name == 'themes';
         });
         let selectedThemes = filterThemes.items.filter((item) => {
@@ -141,31 +183,41 @@ geopsg.initSites = (options) => {
 
         filters.find((filter) => {
           return filter.name == 'subthemes';
-        }).items = selectedSubthemes;
+        }).items = selectedSubthemes; */
       },
       setFilters() {
-        let storedSelectedFilters = {};
-        let selectedFilters = filters.map((filter) => {
+        filters.forEach((filter) => {
           filter.selectedItems = filter.items.filter((item) => {
             return item.isSelected;
           });
-          //let items = selectedItems.length ? selectedItems : filter.items
           let selectedIds = filter.selectedItems.map((item) => {
             return item.id;
           });
-          if (selectedIds.length) {
-            storedSelectedFilters[filter.name] = selectedIds;
-          }
-          return Object.assign({}, filter, {
-            selectedIds: selectedIds,
+          filter.selectedIds = selectedIds;
+        });
+
+        filters.forEach((filter) => {
+          filter.items.forEach((item) => {
+            const matchedSites = options.sites.filter((site) => {
+              let prop = _.get(site, filter.name);
+              if (!Array.isArray(prop)) {
+                prop = [prop];
+              }
+              let ids = filter.selectedIds.length
+                ? filter.selectedIds
+                : filter.items.map((item) => {
+                    return item.id;
+                  });
+              return _.intersection(prop, ids).length;
+            });
+            console.log(filter.name, item.label, matchedSites.length);
           });
         });
-        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(storedSelectedFilters));
 
         let selectedSites = [];
         options.sites.forEach((site) => {
           site.marker = null;
-          unmatchedProp = selectedFilters.find((filter) => {
+          const unmatchedProp = filters.find((filter) => {
             let prop = _.get(site, filter.name);
             if (!Array.isArray(prop)) {
               prop = [prop];
@@ -177,6 +229,7 @@ geopsg.initSites = (options) => {
                 });
             return !_.intersection(prop, ids).length;
           });
+          // If one prop not match, the site is not pushed
           if (!unmatchedProp) {
             selectedSites.push(site);
           }
