@@ -292,8 +292,6 @@ def sites():
             year = str(photo.get('filter_date')).split('-')[0]
             site['years'].add(year)
             photo['year'] = year
-            photo['url'] = url_for(
-                'static', filename=DATA_IMAGES_PATH + utils.getThumbnail(photo).get('output_name'))
         site['years'] = list(site['years'])
         site['photos'] = photos
 
