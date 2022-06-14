@@ -14,6 +14,7 @@ from env import db
 dicotheme_schema = models.DicoThemeSchema(many=True)
 dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
+observatory_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 communes_schema = models.CommunesSchema(many=True)
@@ -417,9 +418,16 @@ def sites():
         try:
             next((item for item in filter_observatories if item["id"] == site['id_observatory']))
         except StopIteration:
+            observatory_row = models.Observatory.query.filter_by(id = site['id_observatory'])
+            observatory=observatory_schema.dump(observatory_row)
+            observatory=observatory[0]
             filter_observatories.append({
                 'id': site['id_observatory'],
-                'label': site['observatory']['title']
+                'label': site['observatory']['title'],
+                'data': {
+                    'geom': observatory['geom'],
+                    'color': observatory['color']
+                }
             })
 
     filters.insert(0, {

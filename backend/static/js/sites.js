@@ -32,6 +32,11 @@ geopsg.initSites = (options) => {
   let markers = [];
   let mapBounds;
 
+  const filterObservatories = filters.find((filter) => {
+    return filter.name == 'id_observatory';
+  });
+  const observatories = filterObservatories ? filterObservatories.items : null;
+
   new Vue({
     el: '#js-app-sites',
     data: () => {
@@ -100,6 +105,20 @@ geopsg.initSites = (options) => {
             },
           ],
         }).addTo(map);
+
+        if (observatories) {
+          observatories.forEach((observatory) => {
+            L.geoJson(wellknown.parse(observatory.data.geom), {
+              style: {
+                color: observatory.data.color,
+                weight: 2,
+                opacity: 1,
+                fillColor: observatory.data.color,
+                fillOpacity: 0.3,
+              },
+            }).addTo(map);
+          });
+        }
 
         map.addControl(
           new L.Control.Fullscreen({
@@ -275,7 +294,15 @@ geopsg.initSites = (options) => {
         });
         this.selectedSites = selectedSites;
         if (!markers.length) {
-          return;
+          try {
+            map.getBounds();
+            return;
+          } catch (error) {
+            options.sites.forEach((site) => {
+              lats.push(site.latlon[0]);
+              lons.push(site.latlon[1]);
+            });
+          }
         }
         lats.sort();
         lons.sort();
