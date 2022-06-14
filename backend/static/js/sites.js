@@ -18,6 +18,7 @@ geopsg.initSites = (options) => {
         }),
       );
       Object.assign(item, {
+        nbSites: 0,
         isSelected: isSelected,
       });
       if (isSelected) {
@@ -123,7 +124,7 @@ geopsg.initSites = (options) => {
           });
           filter.isOpen = false;
         });
-        this.updateFilters();
+        selectedFilters = [];
         this.setFilters();
       },
       onFilterClick(filter, item) {
@@ -153,14 +154,9 @@ geopsg.initSites = (options) => {
           }
         }
 
-        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
-
-        this.updateFilters();
         this.setFilters();
       },
-      updateFilters() {
-        selectedFilters.forEach((selectedFilter) => {});
-
+      setFilters() {
         /* const filterThemes = filters.find((filter) => {
           return filter.name == 'themes';
         });
@@ -184,9 +180,35 @@ geopsg.initSites = (options) => {
         filters.find((filter) => {
           return filter.name == 'subthemes';
         }).items = selectedSubthemes; */
-      },
-      setFilters() {
+
+        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
+
+        const cascadingFilters = selectedFilters.map((selectedFilter) => {
+          return selectedFilter.name;
+        });
         filters.forEach((filter) => {
+          if (!cascadingFilters.includes(filter.name)) {
+            cascadingFilters.push(filter.name);
+          }
+        });
+
+        let selectedSites = options.sites;
+        cascadingFilters.forEach((filterName) => {
+          const filter = filters.find((filter) => {
+            return filter.name == filterName;
+          });
+          filter.items.forEach((item) => {
+            let sitesByItem = selectedSites.filter((site) => {
+              let prop = _.get(site, filter.name);
+              if (!Array.isArray(prop)) {
+                prop = [prop];
+              }
+
+              return prop.includes(item.id);
+            });
+            item.nbSites = sitesByItem.length;
+          });
+
           filter.selectedItems = filter.items.filter((item) => {
             return item.isSelected;
           });
@@ -194,45 +216,22 @@ geopsg.initSites = (options) => {
             return item.id;
           });
           filter.selectedIds = selectedIds;
-        });
 
-        filters.forEach((filter) => {
-          filter.items.forEach((item) => {
-            const matchedSites = options.sites.filter((site) => {
-              let prop = _.get(site, filter.name);
-              if (!Array.isArray(prop)) {
-                prop = [prop];
-              }
-              let ids = filter.selectedIds.length
-                ? filter.selectedIds
-                : filter.items.map((item) => {
-                    return item.id;
-                  });
-              return _.intersection(prop, ids).length;
-            });
-            console.log(filter.name, item.label, matchedSites.length);
-          });
-        });
-
-        let selectedSites = [];
-        options.sites.forEach((site) => {
-          site.marker = null;
-          const unmatchedProp = filters.find((filter) => {
+          selectedSites = selectedSites.filter((site) => {
             let prop = _.get(site, filter.name);
             if (!Array.isArray(prop)) {
               prop = [prop];
             }
-            let ids = filter.selectedIds.length
-              ? filter.selectedIds
-              : filter.items.map((item) => {
-                  return item.id;
-                });
-            return !_.intersection(prop, ids).length;
+            const itemsToMap = filter.selectedIds.length ? filter.selectedItems : filter.items;
+            let ids = itemsToMap.map((item) => {
+              return item.id;
+            });
+            return _.intersection(prop, ids).length;
           });
-          // If one prop not match, the site is not pushed
-          if (!unmatchedProp) {
-            selectedSites.push(site);
-          }
+        });
+
+        options.sites.forEach((site) => {
+          site.marker = null;
         });
 
         markers.forEach((marker) => {

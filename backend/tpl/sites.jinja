@@ -59,7 +59,7 @@
                     <b-card-body>
                       <b-button-group vertical class="w-100">
                         <b-button class="btn-block" variant="default" v-for="item in filter.items" v-bind:key="item.id"
-                          :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="item.label"></b-button>
+                          :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="`${item.label} (${item.nbSites})`"></b-button>
                       </b-button-group>
                     </b-card-body>
                   </b-collapse>
