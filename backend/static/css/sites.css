@@ -155,10 +155,11 @@
 }
 
 .app-sites .leaflet-popup-content-wrapper {
-    border-radius: 0;
-    background: rgba(0, 0, 0, .8);
-    color: #FFF;
+    border-radius: 4px;
+    background: #FFF;
+    color: #000;
     box-shadow: none;
+    overflow: hidden;
 }
 
 .app-sites .leaflet-popup-content .title {
