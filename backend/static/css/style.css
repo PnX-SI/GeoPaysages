@@ -305,6 +305,9 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
         font-size: 12px;
     }
 }
+.header-title:empty {
+    display: none;
+}
 
 .header-logo {
     position: absolute;

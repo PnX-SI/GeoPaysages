@@ -32,30 +32,6 @@ geopsg.initSites = (options) => {
   let markers = [];
   let mapBounds;
 
-  const filterObservatories = filters.find((filter) => {
-    return filter.name == 'id_observatory';
-  });
-  const observatories = filterObservatories ? filterObservatories.items : null;
-
-  const getMarkerIcon = (site) => {
-    return L.divIcon({
-      html: `
-    <svg style="color: ${site.observatory.color}" width="40" height="40" viewBox="00 0 511.974 511.974">
-      <path fill="currentColor" d="M255.987,0C161.882,0,85.321,76.553,85.321,170.641c0,45.901,14.003,73.924,33.391,112.708
-			c3.012,6.025,6.17,12.331,9.438,19.038c47.753,98.065,120.055,204.792,120.781,205.858c1.587,2.33,4.233,3.729,7.057,3.729
-			s5.47-1.399,7.057-3.729c0.725-1.067,73.028-107.793,120.781-205.858c3.268-6.707,6.426-13.013,9.438-19.038
-			c19.388-38.784,33.391-66.807,33.391-112.708C426.654,76.553,350.093,0,255.987,0z M332.19,180.233
-			"/>
-    </svg>`,
-      className: '',
-      iconSize: [40, 40],
-      iconAnchor: [18, 40],
-      popupAnchor: [0, -40],
-    });
-  };
-
-  Vue.component('v-multiselect', window.VueMultiselect.default);
-
   new Vue({
     el: '#js-app-sites',
     data: () => {
@@ -64,9 +40,6 @@ geopsg.initSites = (options) => {
         filters: filters,
         sites: options.sites,
         selectedSites: [],
-        filterLimitText: (count) => {
-          return `+ ${count}`;
-        },
       };
     },
     mounted() {
@@ -128,18 +101,6 @@ geopsg.initSites = (options) => {
           ],
         }).addTo(map);
 
-        if (observatories) {
-          observatories.forEach((observatory) => {
-            L.geoJson(wellknown.parse(observatory.data.geom), {
-              style: {
-                opacity: 0,
-                fillColor: observatory.data.color,
-                fillOpacity: 0.3,
-              },
-            }).addTo(map);
-          });
-        }
-
         map.addControl(
           new L.Control.Fullscreen({
             position: 'topright',
@@ -161,48 +122,9 @@ geopsg.initSites = (options) => {
           filter.items.forEach((item) => {
             item.isSelected = false;
           });
-          filter.selectedItems = [];
           filter.isOpen = false;
         });
-        selectedFilters = [];
-        this.setFilters();
-      },
-      getMultiselectLabel(option) {
-        return `${option.label} (${option.nbSites})`;
-      },
-      onMultiselectInput(filter, selectedItems) {
-        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
-          return selectedFilter.name == filter.name;
-        });
-
-        if (selectedItems.length) {
-          if (!selectedFilterExists) {
-            selectedFilterExists = {
-              name: filter.name,
-              items: [],
-            };
-            selectedFilters.push(selectedFilterExists);
-          }
-          selectedFilterExists.items = selectedItems.map((item) => {
-            return {
-              id: item.id,
-              label: item.label,
-            };
-          });
-        } else {
-          selectedFilters = selectedFilters.filter((selectedFilter) => {
-            return selectedFilter.name != filter.name;
-          });
-        }
-
-        filter.items.forEach((item) => {
-          item.isSelected = Boolean(
-            selectedItems.find((selectedItem) => {
-              return selectedItem.id == item.id;
-            }),
-          );
-        });
-
+        this.updateFilters();
         this.setFilters();
       },
       onFilterClick(filter, item) {
@@ -232,13 +154,14 @@ geopsg.initSites = (options) => {
           }
         }
 
-        filter.selectedItems = filter.items.filter((item) => {
-          return item.isSelected;
-        });
+        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
 
+        this.updateFilters();
         this.setFilters();
       },
-      setFilters() {
+      updateFilters() {
+        selectedFilters.forEach((selectedFilter) => {});
+
         /* const filterThemes = filters.find((filter) => {
           return filter.name == 'themes';
         });
@@ -262,8 +185,17 @@ geopsg.initSites = (options) => {
         filters.find((filter) => {
           return filter.name == 'subthemes';
         }).items = selectedSubthemes; */
-
-        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
+      },
+      setFilters() {
+        /* filters.forEach((filter) => {
+          filter.selectedItems = filter.items.filter((item) => {
+            return item.isSelected;
+          });
+          let selectedIds = filter.selectedItems.map((item) => {
+            return item.id;
+          });
+          filter.selectedIds = selectedIds;
+        }); */
 
         const cascadingFilters = selectedFilters.map((selectedFilter) => {
           return selectedFilter.name;
@@ -279,6 +211,7 @@ geopsg.initSites = (options) => {
           const filter = filters.find((filter) => {
             return filter.name == filterName;
           });
+
           filter.items.forEach((item) => {
             let sitesByItem = selectedSites.filter((site) => {
               let prop = _.get(site, filter.name);
@@ -291,20 +224,17 @@ geopsg.initSites = (options) => {
             item.nbSites = sitesByItem.length;
           });
 
-          /*  filter.selectedItems = filter.items.filter((item) => {
+          filter.selectedItems = filter.items.filter((item) => {
             return item.isSelected;
-          }); */
-          let selectedIds = filter.selectedItems.map((item) => {
-            return item.id;
           });
-          filter.selectedIds = selectedIds;
 
           selectedSites = selectedSites.filter((site) => {
             let prop = _.get(site, filter.name);
             if (!Array.isArray(prop)) {
               prop = [prop];
             }
-            const itemsToMap = filter.selectedIds.length ? filter.selectedItems : filter.items;
+
+            const itemsToMap = filter.selectedItems.length ? filter.selectedItems : filter.items;
             let ids = itemsToMap.map((item) => {
               return item.id;
             });
@@ -326,7 +256,7 @@ geopsg.initSites = (options) => {
         selectedSites.forEach((site) => {
           lats.push(site.latlon[0]);
           lons.push(site.latlon[1]);
-          let marker = L.marker(site.latlon, { icon: getMarkerIcon(site) });
+          let marker = L.marker(site.latlon);
           site.marker = marker;
           markerText = site.name_site + '<br />' + site.ville.label;
           if (site.ref_site) {
@@ -357,15 +287,7 @@ geopsg.initSites = (options) => {
         });
         this.selectedSites = selectedSites;
         if (!markers.length) {
-          try {
-            map.getBounds();
-            return;
-          } catch (error) {
-            options.sites.forEach((site) => {
-              lats.push(site.latlon[0]);
-              lons.push(site.latlon[1]);
-            });
-          }
+          return;
         }
         lats.sort();
         lons.sort();

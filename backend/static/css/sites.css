@@ -1,12 +1,91 @@
+.page-sites #header {
+  margin-bottom: 0;
+}
+
+.page-sites .header-title {
+  display: none;
+}
+
 .page-sites .app-footer {
   display: none;
 }
 
 .app-sites {
-    height: calc(100vh - 110px - 25px - 34px);/* window height - header height - header margin bottom - title height */
+  position: relative;
+  /* window height - header height */
+  height: calc(100vh - 110px);
+  /* .header-filters height + some margin */
+  padding-top: 78px;
+}
+
+.app-sites .header-filters {
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 10001;
+  position: absolute;
+  width: 100%;
+  top: 0;
+}
+
+.app-sites .header-filters .floating-filter-label {
+  background: #fff;
+  z-index: 2;
+  position: absolute;
+  top: 9px;
+  transition: 0.2s;
+  font-size: 16px;
+}
+
+.app-sites .header-filters .floating-filter-label.active {
+  transform: scale(0.85) translate(-5px, -25px);
+}
+
+.app-sites .header-filters .multiselect__tags .multiselect__strong {
+  position: absolute;
+  right: 40px;
+  top: 10px;
+}
+
+.app-sites .header-filters .multiselect__tags-wrap {
+  display: block;
+  max-height: 26px;
+  overflow: hidden;
+  padding-top: 1px;
+}
+
+.app-sites .header-filters .multiselect__tag {
+  max-width: calc(100% - 20px);
+  margin-right: 0;
+  padding: 4px 26px 2px 7px;
+  background: var(--color-sites-filter-bg-active);
+  color: var(--color-sites-filter-txt-active);
+}
+
+.app-sites .header-filters .multiselect__tag-icon:focus,
+.multiselect__tag-icon:hover {
+  background: var(--color-sites-filter-bg-active);
+}
+
+.app-sites .header-filters .multiselect__content-wrapper {
+  width: auto;
+}
+
+.app-sites .header-filters .multiselect__element {
+  margin-bottom: 1px;
+}
+
+.app-sites .header-filters .multiselect__option--highlight {
+  background: var(--color-sites-filter-bg-hover);
+  color: var(--color-sites-filter-txt-hover);
+}
+
+.app-sites .header-filters .multiselect__option--selected {
+  background: var(--color-sites-filter-bg-active);
+  color: var(--color-sites-filter-txt-active);
+  font-weight: normal;
 }
 
 .app-sites .sidebar {
+  /* display: none; */
   position: absolute;
   z-index: 10000;
   height: 100%;

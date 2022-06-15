@@ -6,15 +6,17 @@
 {% block head %}
   {{ super() }}
   <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.css') }}"/>
+  <link rel="stylesheet"
         href="{{ url_for('static', filename='css/sites.css') }}"/>
   <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/wellknown.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/leaflet-fullscreen/Leaflet.fullscreen.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sites.js') }}"></script>
 {% endblock head %}
 {% block header_title %}
-  <h3 class="text-uppercase">{{ _('sites.title') }}</h3>
 {% endblock header_title %}
 {% block bodyClassNames %}
   page-sites
@@ -23,6 +25,32 @@
   <div id="js-app-sites"
        class="app-sites container-fluid"
        v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
+    <div class="row pt-4 pb-2 header-filters sans-serif">
+      <div v-for="(filter) in filters" v-bind:key="filter.name" class="col-2">
+        <small class="floating-filter-label d-block ml-2 px-1"
+               v-bind:class="{ active: filter.selectedItems.length }"
+               v-html="filter.label"></small>
+        <v-multiselect
+        :multiple="true"
+        :limit="1"
+        :limit-text="filterLimitText"
+        v-model="filter.selectedItems"
+        :options="filter.items"
+        track-by="label"
+        :custom-label="getMultiselectLabel"
+        placeholder=""
+        :show-labels="false"
+        @input="onMultiselectInput(filter, $event)"
+        >
+        <template><span slot="noResult">Pas de résultats</span></template>
+        </v-multiselect>
+      </div>
+      <div class="col-2">
+        <button type="button"
+                @click="onCancelClick()"
+                class="btn btn-outline-secondary">Réinitialiser</button>
+      </div>
+    </div>
     <div class="row h-100 position-relative">
       <div class="sidebar">
         <div class="sidebar-content">

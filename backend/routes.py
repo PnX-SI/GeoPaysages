@@ -430,7 +430,7 @@ def sites():
 
     filters.insert(0, {
         'name': 'id_observatory',
-        'label': 'Observatory',
+        'label': 'Observatoire',
         'items': filter_observatories
     })
 
