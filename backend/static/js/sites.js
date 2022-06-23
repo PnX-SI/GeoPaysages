@@ -1,6 +1,32 @@
 var geopsg = geopsg || {};
 geopsg.initSites = (options) => {
-  let selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+  let selectedFilters = [];
+  const url = new URL(window.location);
+  try {
+    selectedFilters = JSON.parse(url.searchParams.get('filters'));
+    if (!selectedFilters || !selectedFilters.length) {
+      selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+    } else {
+      selectedFilters = selectedFilters.map((filter) => {
+        return {
+          name: filter.name,
+          items: filter.values.map((value) => {
+            return {
+              id: value,
+            };
+          }),
+        };
+      });
+    }
+  } catch (error1) {
+    try {
+      selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+    } catch (error2) {}
+  }
+
+  url.searchParams.delete('filters');
+  window.history.replaceState({}, '', url);
+
   if (!Array.isArray(selectedFilters)) {
     selectedFilters = [];
   }
@@ -67,6 +93,7 @@ geopsg.initSites = (options) => {
         filterLimitText: (count) => {
           return `+ ${count}`;
         },
+        shareUrl: '',
       };
     },
     mounted() {
@@ -386,6 +413,35 @@ geopsg.initSites = (options) => {
       },
       onSiteMouseout(site) {
         site.marker.closePopup();
+      },
+      async onShareClick() {
+        this.shareUrl = url.origin + url.pathname;
+        try {
+          const filters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+          if (!filters || !filters.length) {
+            return;
+          }
+          const sharedFilters = filters.map((filter) => {
+            return {
+              name: filter.name,
+              values: (filter.items || []).map((item) => {
+                return item.id;
+              }),
+            };
+          });
+          this.shareUrl += `?filters=${JSON.stringify(sharedFilters)}`;
+        } catch (error) {}
+
+        try {
+          await navigator.clipboard.writeText(this.shareUrl);
+          this.$bvToast.toast('Le lien est prêt à être coller.', {
+            title: 'Copié !',
+            variant: 'success',
+            solid: true,
+          });
+        } catch (error) {
+          this.$refs['modal-copy-url'].show();
+        }
       },
     },
   });

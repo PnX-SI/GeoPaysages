@@ -151,10 +151,21 @@
           <i class="icon ion-ios-arrow-forward" v-if="isSidebarCollapsed"></i>
         </div>
       </div>
+      <div class="maptools-top-right">
+        <b-button @click="onShareClick()" variant="primary">Partager</b-button>
+      </div>
       <div class="col p-0">
         <div class="map-wrapper h-100" ref="map"></div>
       </div>
     </div>
+    <b-modal ref="modal-copy-url" title="Partager" modal-class="modal-copy-url" hide-footer centered>
+      <p>Copier et partager le lien ci-dessus</p>
+      <b-form-textarea
+        v-model="shareUrl"
+        rows="3"
+        no-resize
+      ></b-form-textarea>
+    </b-modal>
   </div>
   <script>
   document.onreadystatechange = () => {

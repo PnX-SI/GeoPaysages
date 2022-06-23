@@ -20,7 +20,7 @@
 
 .app-sites .header-filters {
   background: rgba(255, 255, 255, 0.5);
-  z-index: 10001;
+  z-index: 402;
   position: absolute;
   width: 100%;
   top: 0;
@@ -65,6 +65,10 @@
   background: var(--color-sites-filter-bg-active);
 }
 
+.app-sites .header-filters .multiselect__tag-icon:after {
+  color: var(--color-sites-filter-txt-active);
+}
+
 .app-sites .header-filters .multiselect__content-wrapper {
   width: auto;
 }
@@ -87,7 +91,7 @@
 .app-sites .sidebar {
   /* display: none; */
   position: absolute;
-  z-index: 10000;
+  z-index: 401;
   height: 100%;
   color: #fff;
   width: 270px;
@@ -229,6 +233,13 @@
   border-bottom: 1px solid transparent;
 }
 
+.app-sites .maptools-top-right {
+  z-index: 401;
+  position: absolute;
+  top: 10px;
+  right: 50px;
+}
+
 .app-sites .leaflet-popup-content {
   text-align: center;
   margin: 0;
@@ -255,4 +266,8 @@
   height: 150px;
   background: no-repeat center;
   background-size: contain;
+}
+
+.modal-copy-url textarea {
+  border: 1px solid #999;
 }
