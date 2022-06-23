@@ -7,12 +7,19 @@
   {{ super() }}
   <link rel="stylesheet"
         href="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.css') }}"/>
+
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/leaflet-markercluster/MarkerCluster.css') }}"/>
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/leaflet-markercluster/MarkerCluster.Default.css') }}"/>
+
   <link rel="stylesheet"
         href="{{ url_for('static', filename='css/sites.css') }}"/>
   <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/wellknown.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/leaflet-fullscreen/Leaflet.fullscreen.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/leaflet-markercluster/leaflet.markercluster.js') }}"></script>
   <script src="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sites.js') }}"></script>
 {% endblock head %}
@@ -171,6 +178,7 @@
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
       geopsg.initSites({
+        observatories: {{observatories | tojson}},
         sites: {{sites | tojson}},
         filters: {{filters | tojson}},
         dbconf: {{dbconf | tojson}},

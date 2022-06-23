@@ -411,15 +411,15 @@ def sites():
                                for item_id in filter.get('items')]
             filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
 
-    filter_observatories = []
+    observatories = []
     for site in sites:
         try:
-            next((item for item in filter_observatories if item["id"] == site['id_observatory']))
+            next((item for item in observatories if item["id"] == site['id_observatory']))
         except StopIteration:
             observatory_row = models.Observatory.query.filter_by(id = site['id_observatory'])
             observatory=observatory_schema.dump(observatory_row)
             observatory=observatory[0]
-            filter_observatories.append({
+            observatories.append({
                 'id': site['id_observatory'],
                 'label': site['observatory']['title'],
                 'data': {
@@ -431,11 +431,11 @@ def sites():
     filters.insert(0, {
         'name': 'id_observatory',
         'label': 'Observatoire',
-        'items': filter_observatories
+        'items': observatories
     })
 
 
-    return render_template('sites.jinja', filters=filters, sites=sites, ign_Key=IGN_KEY)
+    return render_template('sites.jinja', filters=filters, sites=sites, observatories=observatories, ign_Key=IGN_KEY)
 
 
 @main.route('/sample')

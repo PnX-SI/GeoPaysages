@@ -58,10 +58,7 @@ geopsg.initSites = (options) => {
   let markers = [];
   let mapBounds;
 
-  const filterObservatories = filters.find((filter) => {
-    return filter.name == 'id_observatory';
-  });
-  const observatories = filterObservatories ? filterObservatories.items : null;
+  const observatories = options.observatories;
 
   const getMarkerIcon = (site) => {
     return L.divIcon({
@@ -155,17 +152,27 @@ geopsg.initSites = (options) => {
           ],
         }).addTo(map);
 
-        if (observatories) {
-          observatories.forEach((observatory) => {
-            L.geoJson(wellknown.parse(observatory.data.geom), {
-              style: {
-                opacity: 0,
-                fillColor: observatory.data.color,
-                fillOpacity: 0.3,
-              },
-            }).addTo(map);
+        observatories.forEach((observatory) => {
+          L.geoJson(wellknown.parse(observatory.data.geom), {
+            style: {
+              opacity: 0,
+              fillColor: observatory.data.color,
+              fillOpacity: 0.3,
+            },
+          }).addTo(map);
+          observatory.markers = L.markerClusterGroup({
+            iconCreateFunction: (cluster) => {
+              return new L.DivIcon({
+                html: `<div style="background:${
+                  observatory.data.color
+                };"><span>${cluster.getChildCount()}</span></div>`,
+                className: 'marker-cluster',
+                iconSize: new L.Point(40, 40),
+              });
+            },
           });
-        }
+          map.addLayer(observatory.markers);
+        });
 
         map.addControl(
           new L.Control.Fullscreen({
@@ -343,8 +350,8 @@ geopsg.initSites = (options) => {
           site.marker = null;
         });
 
-        markers.forEach((marker) => {
-          map.removeLayer(marker);
+        observatories.forEach((observatory) => {
+          observatory.markers.clearLayers();
         });
         markers = [];
 
@@ -379,7 +386,11 @@ geopsg.initSites = (options) => {
             //TODO
             window.location.href = site.link.replace('http://127.0.0.1:8000', '');
           });
-          marker.addTo(map);
+          observatories
+            .find((observatory) => {
+              return observatory.id == site.id_observatory;
+            })
+            .markers.addLayer(marker);
           markers.push(marker);
         });
         this.selectedSites = selectedSites;

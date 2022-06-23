@@ -240,6 +240,12 @@
   right: 50px;
 }
 
+.app-sites .marker-cluster div {
+  color: #fff;
+  font-weight: bold;
+  box-shadow: inset 0px 0px 0px 2px #ffffff;
+}
+
 .app-sites .leaflet-popup-content {
   text-align: center;
   margin: 0;
