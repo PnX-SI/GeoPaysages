@@ -240,10 +240,35 @@
   right: 50px;
 }
 
+.app-sites .marker-cluster {
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px #000000;
+}
+
 .app-sites .marker-cluster div {
-  color: #fff;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border-radius: 20px;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.marker-cluster span {
   font-weight: bold;
-  box-shadow: inset 0px 0px 0px 2px #ffffff;
+  font-size: 18px;
+  line-height: 34px;
+}
+
+.app-sites .leaflet-marker-icon .icon {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 5px;
+  left: 50%;
+  margin-left: -10px;
+  fill: #fff;
+  color: #fff;
 }
 
 .app-sites .leaflet-popup-content {
@@ -253,10 +278,11 @@
 
 .app-sites .leaflet-popup-content-wrapper {
   border-radius: 4px;
-  background: #fff;
+  background: transparent;
   color: #000;
-  box-shadow: none;
   overflow: hidden;
+  padding: 0px;
+  box-shadow: 0px 0px 5px 0px #00000033;
 }
 
 .app-sites .leaflet-popup-content .title {
@@ -265,13 +291,37 @@
   padding: 3px;
   padding-left: 5px;
   font-size: 12px;
+  background: #fff;
+}
+
+.app-sites .leaflet-popup-content .title .site-name {
+  font-size: 14px;
+  text-transform: uppercase;
+  line-height: initial;
+}
+
+.app-sites .leaflet-popup-content .title .site-name * {
+  vertical-align: middle;
+}
+
+.app-sites .leaflet-popup-content .title .icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.app-sites .leaflet-popup-content .title .icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .app-sites .leaflet-popup-content .img {
   width: 150px;
   height: 150px;
-  background: no-repeat center;
-  background-size: contain;
+  background-size: cover;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .modal-copy-url textarea {

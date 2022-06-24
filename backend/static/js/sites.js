@@ -69,7 +69,7 @@ geopsg.initSites = (options) => {
 			s5.47-1.399,7.057-3.729c0.725-1.067,73.028-107.793,120.781-205.858c3.268-6.707,6.426-13.013,9.438-19.038
 			c19.388-38.784,33.391-66.807,33.391-112.708C426.654,76.553,350.093,0,255.987,0z M332.19,180.233
 			"/>
-    </svg>`,
+    </svg><div class="icon">${site.observatory.icon}</div>`,
       className: '',
       iconSize: [40, 40],
       iconAnchor: [18, 40],
@@ -153,6 +153,7 @@ geopsg.initSites = (options) => {
         }).addTo(map);
 
         observatories.forEach((observatory) => {
+          const color = observatory.data.color;
           L.geoJson(wellknown.parse(observatory.data.geom), {
             style: {
               opacity: 0,
@@ -163,9 +164,7 @@ geopsg.initSites = (options) => {
           observatory.markers = L.markerClusterGroup({
             iconCreateFunction: (cluster) => {
               return new L.DivIcon({
-                html: `<div style="background:${
-                  observatory.data.color
-                };"><span>${cluster.getChildCount()}</span></div>`,
+                html: `<div style="color:${color};border-color: ${color};"><span>${cluster.getChildCount()}</span></div>`,
                 className: 'marker-cluster',
                 iconSize: new L.Point(40, 40),
               });
@@ -362,9 +361,16 @@ geopsg.initSites = (options) => {
           lons.push(site.latlon[1]);
           let marker = L.marker(site.latlon, { icon: getMarkerIcon(site) });
           site.marker = marker;
-          markerText = site.name_site + '<br />' + site.ville.label;
+          const color = site.observatory.color;
+          markerText = `<div>
+            <div class="site-name" style="color:${color}">
+              <span class="icon" style="fill:${color};">${site.observatory.icon}</span>
+              <b>${site.name_site}</b>
+            </div>
+            ${site.ville.label}
+          </div>`;
           if (site.ref_site) {
-            markerText += '<br/>' + '(réf : ' + site.ref_site + ')';
+            markerText += '(réf : ' + site.ref_site + ')';
           }
           marker.bindPopup(
             '<div class="img" style="background-image: url(' +

@@ -30,6 +30,7 @@ class Observatory(db.Model):
     title = db.Column(db.String)
     ref = db.Column(db.String)
     color = db.Column(db.String)
+    icon = db.Column(db.String)
     comparator = db.Column(db.Enum(ComparatorEnum, name="comparator_enum"))
     geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
     is_published = db.Column(db.Boolean)
@@ -262,7 +263,7 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
 
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
-    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color"])
+    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color", "icon"])
 
     class Meta:
         model = TSite
