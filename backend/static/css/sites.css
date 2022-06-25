@@ -11,11 +11,19 @@
 }
 
 .app-sites {
+  --maptool-bg: rgba(255, 255, 255, 0.8);
+  --maptool-zindex: 401;
+}
+
+.app-sites {
   position: relative;
   /* window height - header height */
   height: calc(100vh - 110px);
+}
+
+.app-sites .header-spacer {
   /* .header-filters height + some margin */
-  padding-top: 78px;
+  height: 78px;
 }
 
 .app-sites .header-filters {
@@ -88,10 +96,54 @@
   font-weight: normal;
 }
 
+.app-sites .block-legend {
+  position: absolute;
+  z-index: var(--maptool-zindex);
+  bottom: 10px;
+  right: 10px;
+  background: var(--maptool-bg);
+  min-width: 300px;
+}
+
+.app-sites .block-list-sites {
+  position: absolute;
+  z-index: var(--maptool-zindex);
+  min-width: 450px;
+}
+
+.app-sites .block-list-sites .btn-toggle {
+  background: var(--maptool-bg);
+}
+
+.app-sites .list-sites-collapse {
+  background: var(--maptool-bg);
+  /* This hardcoded calc avoid writing some JS */
+  max-height: calc(100vh - 110px - 72px - 56px);
+  overflow-y: auto;
+}
+
+.app-sites .list-observatories .card,
+.app-sites .list-observatories .card-header {
+  background: transparent;
+}
+
+.app-sites .list-observatories .btn-observatory {
+  line-height: 1.3;
+  color: #000;
+}
+
+.app-sites .list-observatories .btn-observatory .icon {
+  width: 40px;
+  height: 40px;
+  background: #bdbdbd;
+  color: #fff;
+  fill: #fff;
+}
+
 .app-sites .sidebar {
   /* display: none; */
   position: absolute;
-  z-index: 401;
+  z-index: var(--maptool-zindex);
   height: 100%;
   color: #fff;
   width: 270px;
@@ -128,8 +180,8 @@
   text-transform: uppercase;
 }
 
-.app-sites .sidebar .card-header .btn.collapsed .hidden-collapsed,
-.app-sites .sidebar .card-header .btn:not(.collapsed) .visible-collapsed {
+.app-sites .btn.collapsed .hidden-collapsed,
+.app-sites .btn:not(.collapsed) .visible-collapsed {
   display: none;
 }
 
@@ -234,7 +286,7 @@
 }
 
 .app-sites .maptools-top-right {
-  z-index: 401;
+  z-index: var(--maptool-zindex);
   position: absolute;
   top: 10px;
   right: 50px;

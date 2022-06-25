@@ -424,7 +424,8 @@ def sites():
                 'label': site['observatory']['title'],
                 'data': {
                     'geom': observatory['geom'],
-                    'color': observatory['color']
+                    'color': observatory['color'],
+                    'icon': observatory['icon']
                 }
             })
 

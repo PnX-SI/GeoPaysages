@@ -58,7 +58,15 @@ geopsg.initSites = (options) => {
   let markers = [];
   let mapBounds;
 
-  const observatories = options.observatories;
+  const observatories = options.observatories.map((observatory) => {
+    return {
+      ...observatory,
+      isOpen: false,
+      /* sites: options.sites.filter((site) => {
+        return site.id_observatory == observatory.id;
+      }), */
+    };
+  });
 
   const getMarkerIcon = (site) => {
     return L.divIcon({
@@ -85,8 +93,8 @@ geopsg.initSites = (options) => {
       return {
         isSidebarCollapsed: false,
         filters: filters,
-        sites: options.sites,
         selectedSites: [],
+        observatories: observatories,
         filterLimitText: (count) => {
           return `+ ${count}`;
         },
@@ -126,7 +134,7 @@ geopsg.initSites = (options) => {
 
         L.control
           .scale({
-            position: 'bottomright',
+            position: 'bottomleft',
             imperial: false,
           })
           .addTo(map);
@@ -398,6 +406,11 @@ geopsg.initSites = (options) => {
             })
             .markers.addLayer(marker);
           markers.push(marker);
+        });
+        this.observatories.forEach((observatory) => {
+          observatory.selectedSites = selectedSites.filter((selectedSite) => {
+            return selectedSite.id_observatory == observatory.id;
+          });
         });
         this.selectedSites = selectedSites;
         if (!markers.length) {

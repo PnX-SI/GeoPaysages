@@ -30,9 +30,9 @@
 {% endblock bodyClassNames %}
 {% block content %}
   <div id="js-app-sites"
-       class="app-sites container-fluid"
+       class="app-sites container-fluid d-flex flex-column"
        v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
-    <div class="row pt-4 pb-2 header-filters sans-serif">
+    <div class="row pt-4 pb-2 d-none d-md-flex header-filters sans-serif">
       <div v-for="(filter) in filters" v-bind:key="filter.name" class="col-2">
         <small class="floating-filter-label d-block ml-2 px-1"
                v-bind:class="{ active: filter.selectedItems.length }"
@@ -58,8 +58,9 @@
                 class="btn btn-outline-secondary">Réinitialiser</button>
       </div>
     </div>
+    <div class="header-spacer d-none d-md-block"></div>
     <div class="row h-100 position-relative">
-      <div class="sidebar">
+      <div class="sidebar d-md-none">
         <div class="sidebar-content">
           <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
             <b-card-header header-tag="header" class="p-0">
@@ -158,8 +159,115 @@
           <i class="icon ion-ios-arrow-forward" v-if="isSidebarCollapsed"></i>
         </div>
       </div>
+      <div class="block-list-sites">
+        <a
+          block
+          href="#"
+          class="btn d-flex justify-content-between p-3 btn-toggle"
+          v-b-toggle="'app_map_list_sites_collapse'"
+        >
+          <span>{{ _('sites.observation_points.title') }}</span>
+          <span class="text-lowercase" v-html="'Filtre : ' + selectedSites.length + ' résulat(s)'"></span>
+          <i class="icon ion-ios-arrow-down visible-collapsed"></i>
+          <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
+        </a>
+        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse">
+          <div v-if="observatories.length" class="list-observatories">
+            <b-card
+              no-body
+              class="m-0 rounded-0 border-0 p-2"
+              v-for="(observatory) in observatories"
+              v-bind:key="observatory.id">
+              <b-card-header header-tag="header" class="p-0 border-0">
+                <b-btn
+                  block
+                  href="#"
+                  v-b-toggle="'app_map_observatory_' + observatory.id"
+                  variant="link"
+                  class="rounded-0 text-left btn-observatory border-0">
+                  <div class="icon d-inline-block align-middle rounded-circle mr-2 p-2" v-html="observatory.data.icon"></div>
+                  <div class="d-inline-block align-middle">
+                    <span class="d-block text-capitalize" v-html="observatory.label"></span>
+                    <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' sites d\'obs'"></small>
+                  </div>
+                </b-btn>
+              </b-card-header>
+              <b-collapse
+                :id="'app_map_observatory_' + observatory.id"
+                v-model="observatory.isOpen">
+                <b-card-body class="p-0 pl-5">
+                  <b-button-group v-if="observatory.selectedSites && observatory.selectedSites.length" vertical class="w-100">
+                    <a v-for="site in observatory.selectedSites"
+                      class="btn btn-sm btn-block text-left"
+                      @mouseenter="onSiteMousover(site)"
+                      @mouseleave="onSiteMouseout(site)"
+                      :href="'/sites/' + site.id_site">
+                      <span class="d-block" v-html="site.name_site"></span>
+                      <span class="d-block" v-html="site.ville.label"></span>
+                      <span class="d-block"
+                            v-if="site.ref_site"
+                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                    </a>
+                    <a v-for="site in observatory.selectedSites"
+                      class="btn btn-sm btn-block text-left"
+                      @mouseenter="onSiteMousover(site)"
+                      @mouseleave="onSiteMouseout(site)"
+                      :href="'/sites/' + site.id_site">
+                      <span class="d-block" v-html="site.name_site"></span>
+                      <span class="d-block" v-html="site.ville.label"></span>
+                      <span class="d-block"
+                            v-if="site.ref_site"
+                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                    </a>
+                    <a v-for="site in observatory.selectedSites"
+                      class="btn btn-sm btn-block text-left"
+                      @mouseenter="onSiteMousover(site)"
+                      @mouseleave="onSiteMouseout(site)"
+                      :href="'/sites/' + site.id_site">
+                      <span class="d-block" v-html="site.name_site"></span>
+                      <span class="d-block" v-html="site.ville.label"></span>
+                      <span class="d-block"
+                            v-if="site.ref_site"
+                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                    </a>
+                    <a v-for="site in observatory.selectedSites"
+                      class="btn btn-sm btn-block text-left"
+                      @mouseenter="onSiteMousover(site)"
+                      @mouseleave="onSiteMouseout(site)"
+                      :href="'/sites/' + site.id_site">
+                      <span class="d-block" v-html="site.name_site"></span>
+                      <span class="d-block" v-html="site.ville.label"></span>
+                      <span class="d-block"
+                            v-if="site.ref_site"
+                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                    </a>
+                  </b-button-group>
+                </b-card-body>
+              </b-collapse>
+            </b-card>
+          </div>
+        </b-collapse>
+      </div>
       <div class="maptools-top-right">
         <b-button @click="onShareClick()" variant="primary">Partager</b-button>
+      </div>
+      <div class="block-legend">
+        <b-collapse id="app_map_legend_collapse" class="list-sites-collapse">
+          <div>A</div>
+          <div>A</div>
+          <div>A</div>
+          <div>A</div>
+        </b-collapse>
+        <a
+          block
+          href="#"
+          class="btn d-flex justify-content-between p-3 btn-toggle"
+          v-b-toggle="'app_map_legend_collapse'"
+        >
+          <span class="mr-3">Légende</span>
+          <i class="icon ion-ios-arrow-up visible-collapsed"></i>
+          <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
+        </a>
       </div>
       <div class="col p-0">
         <div class="map-wrapper h-100" ref="map"></div>
