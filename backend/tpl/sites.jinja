@@ -208,39 +208,6 @@
                             v-if="site.ref_site"
                             v-html="'(réf. : ' + site.ref_site + ')'"></span>
                     </a>
-                    <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left"
-                      @mouseenter="onSiteMousover(site)"
-                      @mouseleave="onSiteMouseout(site)"
-                      :href="'/sites/' + site.id_site">
-                      <span class="d-block" v-html="site.name_site"></span>
-                      <span class="d-block" v-html="site.ville.label"></span>
-                      <span class="d-block"
-                            v-if="site.ref_site"
-                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
-                    </a>
-                    <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left"
-                      @mouseenter="onSiteMousover(site)"
-                      @mouseleave="onSiteMouseout(site)"
-                      :href="'/sites/' + site.id_site">
-                      <span class="d-block" v-html="site.name_site"></span>
-                      <span class="d-block" v-html="site.ville.label"></span>
-                      <span class="d-block"
-                            v-if="site.ref_site"
-                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
-                    </a>
-                    <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left"
-                      @mouseenter="onSiteMousover(site)"
-                      @mouseleave="onSiteMouseout(site)"
-                      :href="'/sites/' + site.id_site">
-                      <span class="d-block" v-html="site.name_site"></span>
-                      <span class="d-block" v-html="site.ville.label"></span>
-                      <span class="d-block"
-                            v-if="site.ref_site"
-                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
-                    </a>
                   </b-button-group>
                 </b-card-body>
               </b-collapse>
