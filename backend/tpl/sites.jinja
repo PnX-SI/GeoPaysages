@@ -252,11 +252,15 @@
         <b-button @click="onShareClick()" variant="primary">Partager</b-button>
       </div>
       <div class="block-legend">
-        <b-collapse id="app_map_legend_collapse" class="list-sites-collapse">
-          <div>A</div>
-          <div>A</div>
-          <div>A</div>
-          <div>A</div>
+        <b-collapse id="app_map_legend_collapse" class="p-3 sans-serif">
+          <div v-for="observatory in observatories" class="legend-item legend-item-observatory">
+            <div class="icon d-inline-block align-middle mr-2" v-bind:style="{background: observatory.data.color}"></div>
+            <span v-html="observatory.label"></span>
+          </div>
+          <div v-for="theme in themes" class="legend-item">
+            <div class="icon d-inline-block mr-2 text-dark" v-html="theme.icon"></div>
+            <span class="" v-html="theme.label"></span>
+          </div>
         </b-collapse>
         <a
           block

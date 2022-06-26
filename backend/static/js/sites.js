@@ -93,6 +93,7 @@ geopsg.initSites = (options) => {
       return {
         isSidebarCollapsed: false,
         filters: filters,
+        themes: filters.find((filter) => filter.name == 'themes').items,
         selectedSites: [],
         observatories: observatories,
         filterLimitText: (count) => {

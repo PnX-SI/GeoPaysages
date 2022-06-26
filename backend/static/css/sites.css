@@ -105,6 +105,23 @@
   min-width: 300px;
 }
 
+.app-sites .block-legend .legend-item-observatory .icon {
+  width: 20px;
+  height: 20px;
+}
+
+.app-sites .block-legend .legend-item > :not(.icon) {
+  line-height: 2;
+  display: inline-block;
+  vertical-align: text-top;
+}
+
+.app-sites .block-legend .icon svg {
+  fill: #000;
+  width: 20px;
+  height: 20px;
+}
+
 .app-sites .block-list-sites {
   position: absolute;
   z-index: var(--maptool-zindex);

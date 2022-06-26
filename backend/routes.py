@@ -337,7 +337,8 @@ def sites():
     themes = dicotheme_schema.dump(models.DicoTheme.query.all())
     themes = [{
         'id': item['id_theme'],
-        'label': item['name_theme']
+        'label': item['name_theme'],
+        'icon': item['icon'],
     } for item in themes]
 
     subthemes = [{

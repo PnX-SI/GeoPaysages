@@ -120,6 +120,7 @@ class DicoTheme(db.Model):
     id_theme = db.Column(db.Integer, primary_key=True,
                          server_default=db.FetchedValue())
     name_theme = db.Column(db.String)
+    icon = db.Column(db.String)
 
 
 class TRole(db.Model):
@@ -203,7 +204,7 @@ class GeographySerializationField(fields.String):
 
 class DicoThemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        fields = ('id_theme', 'name_theme')
+        fields = ('id_theme', 'name_theme', 'icon')
 
 
 class DicoSthemeSchema(ma.SQLAlchemyAutoSchema):
