@@ -1,6 +1,6 @@
 Créer un dossier "data" à coté du répertoire cloné  
 Désampler le fichier de configuration puis l'éditer :  
-`mv /docker/.env.example /docker.env`  
+`mv /docker/.env.example /docker/.env`  
 Désampler le fichier de configuration puis l'éditer :  
 `mv /backend/config.py.tpl /backend/config.py`  
 Lancer le container  
