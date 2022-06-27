@@ -1,4 +1,4 @@
-Créer un dossier "data" à coté du répertoir cloné  
+Créer un dossier "data" à coté du répertoire cloné  
 Désampler le fichier de configuration puis l'éditer :  
 `mv /docker/.env.example /docker.env`  
 Désampler le fichier de configuration puis l'éditer :  
