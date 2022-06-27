@@ -33,6 +33,7 @@ Thumbs.db
 # Conf
 *config.py
 *config.ts
+docker/.env
 
 # Typings file.
 typings/
