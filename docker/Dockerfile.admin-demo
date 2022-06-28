@@ -1,7 +1,7 @@
 FROM node:12.22.12-slim as build-stage
 WORKDIR /app
-#COPY ./front-backOffice/package*.json ./
-#RUN npm install
+COPY ./front-backOffice/package*.json ./
+RUN npm install
 COPY ./front-backOffice .
 RUN npm run ng -- build --base-href /admin/
 
