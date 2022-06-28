@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Conf } from '../config';
 import {
+  ObservatoryPatchImageType,
   ObservatoryPatchType,
   ObservatoryPostType,
   ObservatoryType,
@@ -32,5 +33,14 @@ export class ObservatoriesService {
       Conf.apiUrl + 'observatories/' + id,
       data
     );
+  }
+
+  patchImage(id, formData: FormData) {
+    return this.http
+      .patch<ObservatoryPatchImageType>(
+        `${Conf.apiUrl}observatories/${id}/image`,
+        formData
+      )
+      .toPromise();
   }
 }

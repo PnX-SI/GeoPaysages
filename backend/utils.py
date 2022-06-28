@@ -6,9 +6,15 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import json
 from flask_babel import get_locale
+import random
+import string
 
 db = SQLAlchemy()
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+def getRandStr(nb):
+    chars = string.ascii_lowercase + string.digits
+    return ''.join(random.choice(chars) for i in range(nb))
 
 def getImage(photo, prefixe, callback):
     #here = os.path.dirname(__file__)

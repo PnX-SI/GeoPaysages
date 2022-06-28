@@ -22,6 +22,7 @@ import * as io from 'jsts/org/locationtech/jts/io';
   styleUrls: ['./observatory.component.scss'],
 })
 export class ObservatoryComponent implements OnInit {
+  selectedPhoto: File;
   selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
@@ -198,6 +199,17 @@ export class ObservatoryComponent implements OnInit {
     }
   }
 
+  onPhotoChange(event) {
+    if (event.target && event.target.files.length > 0) {
+      this.selectedPhoto = event.target.files[0];
+    }
+  }
+
+  onPhotoCancel(input) {
+    input.value = '';
+    this.selectedPhoto = null;
+  }
+
   noticeSelect(event) {
     this.selectedFile = event.target.files;
     if (event.target.files && event.target.files.length > 0) {
@@ -243,12 +255,14 @@ export class ObservatoryComponent implements OnInit {
     try {
       if (!this.id_observatory) {
         const res = await this.postObservatory();
+        await this.patchImages(res.id);
         console.log('res', res);
 
         this.router.navigate(['observatories', 'details', res.id]);
         return;
       } else {
         await this.patchObservatory();
+        await this.patchImages(this.observatory.id);
       }
     } catch (err) {
       if (err.status === 403) {
@@ -342,6 +356,18 @@ export class ObservatoryComponent implements OnInit {
         }
       );
     });
+  }
+
+  async patchImages(id: number) {
+    if (this.selectedPhoto) {
+      const data: FormData = new FormData();
+      data.append('field', 'photo');
+      data.append('image', this.selectedPhoto);
+      const res = await this.observatoryService.patchImage(id, data);
+      if (this.observatory) {
+        this.observatory.photo = res.filename;
+      }
+    }
   }
 
   editForm() {

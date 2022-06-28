@@ -75,6 +75,25 @@
                 errorKey="required"
               ></app-form-error>
             </div>
+            <div class="col">
+              <label class="label">Photo</label>
+              <div *ngIf="observatory.photo">
+                <a [href]="'http://localhost:8082/static/data/images/' + observatory.photo" target="_blank">
+                  {{ observatory.photo }} <i class="icon-eye"></i>
+                </a>
+              </div>
+              <input style="display: none" accept="image/x-png,image/gif,image/jpeg"
+                type="file" (change)=onPhotoChange($event) #photoInput>
+              <button type="button" *ngIf="!selectedPhoto" class="blue-btn" (click)="photoInput.click()">
+                <i class="icon-download"></i>{{ observatory.photo ? 'Modifier la photo' : 'Ajouter une photo' }}
+              </button>
+              <div *ngIf="selectedPhoto">
+                Photo sélectionnée :<br />
+                <button class="btn p-0" type="button" (click)="onPhotoCancel(photoInput)">
+                  <i class="icon-cancel-circle text-danger"></i>
+                </button> {{ selectedPhoto.name }}
+              </div>
+            </div>
           </div>
           <div class="row form-item">
             <div class="col">

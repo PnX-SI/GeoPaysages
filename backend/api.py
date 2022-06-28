@@ -74,6 +74,41 @@ def patchObservatory(id):
     return jsonify(dict)
 
 
+@api.route('/api/observatories/<int:id>/image', methods=['PATCH'])
+@fnauth.check_auth(2, False, None, None)
+def patchObservatoryImage(id):
+    field = request.form.get('field')
+    if field not in ['photo', 'logo']:
+        return "Invalid field value: " + str(field), 400
+    image = request.files.get('image')
+    if not image:
+        return "Missing field: image", 400
+    rows = models.Observatory.query.filter_by(id=id)
+    if not rows.count():
+        abort(404)
+    
+    dicts = observatories_schema.dump(rows)
+    base_path = './static/' + DATA_IMAGES_PATH
+    
+    _, ext = os.path.splitext(image.filename)
+    filename = 'observatory-' + str(id) + '-' + field + '-' + utils.getRandStr(4) + ext
+    image.save(os.path.join(base_path + filename))
+    rows.update({
+        field: filename
+    })
+    db.session.commit()
+
+    if dicts[0][field]:
+        try:
+            os.remove(base_path + dicts[0][field])
+        except Exception as exception:
+            pass
+
+    return jsonify({
+        'filename': filename
+    }), 200
+
+
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
     get_all_sites = models.TSite.query.order_by('ref_site').all()
