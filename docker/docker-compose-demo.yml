@@ -1,0 +1,89 @@
+version: '3'
+services:
+  proxy:
+    depends_on:
+      - backend
+      - admin
+    image: traefik:v2.2
+    ports:
+      - "${PROXY_HTTP_PORT}:80"
+      - "${PROXY_API_PORT}:8080"
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --accesslog
+      - --log
+      - --api
+      - --api.insecure=true
+    networks:
+      - traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=true
+
+  backend:
+    container_name: geopaysage_backend
+    depends_on:
+      - db
+    networks:
+      - traefik
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.backend
+    volumes:
+      - ../backend:/app
+      - /app/static/data/images
+      - /app/i18n
+    ports:
+      - "${HTTP_PORT}:80"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=PathPrefix(`/`)
+      - traefik.http.services.backend.loadbalancer.server.port=80
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - 'RUN=flask run --host=0.0.0.0 --port=80'
+    #command: flask run --host=0.0.0.0 --port=80
+    # Infinite loop, to keep it alive, for debugging
+    command: bash -c "flask run --host=0.0.0.0 --port=80 && while true; do echo 'sleeping...' && sleep 10; done"
+  
+  admin:
+    container_name: geopaysage_admin
+    depends_on:
+      - backend
+    networks:
+      - traefik
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.admin-demo
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.admin.rule=PathPrefix(`/admin`)
+      - traefik.http.services.admin.loadbalancer.server.port=80
+
+  db:
+    container_name: geopaysage_db
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile.db
+    ports:
+      - "${DB_PORT}:5432"
+    networks:
+      - traefik
+    volumes:
+      - app-db-data:/var/lib/postgresql/data/pgdata
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=geopaysages
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_SERVER=db
+      - POSTGRES_USER=root
+
+volumes:
+  app-db-data:
+
+networks:
+  traefik:
+    external: true
