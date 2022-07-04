@@ -147,6 +147,10 @@ ng-select {
   text-transform: uppercase;
   font-size: 13px;
   width: fit-content;
+  &:disabled {
+    cursor: auto;
+    background-color: #aaa;
+  }
 }
 
 .green-btn {
