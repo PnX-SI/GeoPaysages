@@ -1,5 +1,26 @@
-.page-gallery .container {
-  min-height: var(--page-container-min-height);
+.page-gallery #header {
+  margin-bottom: 0;
+}
+
+.page-gallery .header-title {
+  display: none;
+}
+
+.page-gallery .app-footer {
+  display: none;
+}
+
+.app-gallery {
+  position: relative;
+}
+
+.app-gallery .photos {
+  padding-top: 90px;
+}
+
+.app-gallery .photo img {
+  width: 150px;
+  height: 150px;
 }
 
 .page-gallery .picture {

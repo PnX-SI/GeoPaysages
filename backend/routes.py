@@ -110,6 +110,12 @@ def home():
 
 @main.route('/gallery')
 def gallery():
+    data = utils.getFiltersData()
+
+    return render_template('gallery.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'])
+
+
+def galleryOld():
     get_sites = models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)
     dump_sites = site_schema.dump(get_sites)
     
@@ -259,185 +265,9 @@ def site_photos_last(id_site):
 
 @main.route('/sites')
 def sites():
-    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES))
-    for site in sites:
-        cor_sthemes_themes = site.get('cor_site_stheme_themes')
-        cor_list = []
-        themes_list = []
-        subthemes_list = []
-        for cor in cor_sthemes_themes:
-            cor_list.append(cor.get('id_stheme_theme'))
-        query = models.CorSthemeTheme.query.filter(
-            models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
-        themes_sthemes = themes_sthemes_schema.dump(query)
+    data = utils.getFiltersData()
 
-        for item in themes_sthemes:
-            if item.get('dico_theme').get('id_theme') not in themes_list:
-                themes_list.append(item.get('dico_theme').get('id_theme'))
-            if item.get('dico_stheme').get('id_stheme') not in subthemes_list:
-                subthemes_list.append(item.get('dico_stheme').get('id_stheme'))
-
-        get_photos_by_site = models.TPhoto.query.filter_by(
-            id_site=site.get('id_site'))
-        photos = photo_schema.dump(get_photos_by_site)
-
-        site['link'] = url_for('main.site', id_site=site.get('id_site'), _external=True)
-        site['latlon'] = site.get('geom')
-        site['themes'] = themes_list
-        site['subthemes'] = subthemes_list
-        site['township'] = site.get('code_city_site')
-
-        site['years'] = set()
-        for photo in photos:
-            year = str(photo.get('filter_date')).split('-')[0]
-            site['years'].add(year)
-            photo['year'] = year
-        site['years'] = list(site['years'])
-        site['photos'] = photos
-
-    subthemes = dicostheme_schema.dump(models.DicoStheme.query.all())
-    for sub in subthemes:
-        themes_of_subthemes = []
-        for item in sub.get('cor_stheme_themes'):
-            themes_of_subthemes.append(item.get('id_theme'))
-        sub['themes'] = themes_of_subthemes
-
-    filters = [{
-        'name': 'themes',
-        'label': gettext(u'sites.filter.themes'),
-        'items': set()
-    }, {
-        'name': 'subthemes',
-        'label': gettext(u'sites.filter.subthemes'),
-        'items': set()
-    }, {
-        'name': 'township',
-        'label': gettext(u'sites.filter.township'),
-        'items': set()
-    }, {
-        'name': 'years',
-        'label': gettext(u'sites.filter.years'),
-        'items': set()
-    }]
-
-    for site in sites:
-        # Compute the prop years
-        site['years'] = set()
-        for photo in site.get('photos'):
-            site['years'].add(photo.get('year'))
-        site['years'] = list(site['years'])
-
-        for filter in filters:
-            val = site.get(filter.get('name'))
-            if isinstance(val, (list, set)):
-                filter.get('items').update(val)
-            else:
-                filter.get('items').add(val)
-
-    themes = dicotheme_schema.dump(models.DicoTheme.query.all())
-    themes = [{
-        'id': item['id_theme'],
-        'label': item['name_theme'],
-        'icon': item['icon'],
-    } for item in themes]
-
-    subthemes = [{
-        'id': item['id_stheme'],
-        'label': item['name_stheme'],
-        'themes': item['themes']
-    } for item in subthemes]
-
-    filter_township = [
-        filter for filter in filters if filter.get('name') == 'township'][0]
-    str_map_in = ["'" + township +
-                  "'" for township in filter_township.get('items')]
-    sql_map_str = "SELECT code_commune AS id, nom_commune AS label FROM geopaysages.communes WHERE code_commune IN (" + ",".join(
-        str_map_in) + ")"
-    sql_map = text(sql_map_str)
-    townships_result = db.engine.execute(sql_map).fetchall()
-    townships = [dict(row) for row in townships_result]
-
-    for site in sites:
-        site['ville'] = next(township for township in townships if township.get('id') == site.get('township'))
-    
-    dbs = {
-        'themes': themes,
-        'subthemes': subthemes,
-        'township': townships
-    }
-    
-    photo_ids = []
-    sites_without_photo = []
-    for site in sites:
-        photo_id = site.get('main_photo')
-        if photo_id:
-            photo_ids.append(site.get('main_photo'))
-        else:
-            sites_without_photo.append(str(site.get('id_site')))
-
-    query_photos = models.TPhoto.query.filter(
-        models.TPhoto.id_photo.in_(photo_ids)
-    )
-    dump_photos = photo_schema.dump(query_photos)
-
-    if len(sites_without_photo):
-        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
-        sql_missing_photos = text(sql_missing_photos_str)
-        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
-        missing_photos = [dict(row) for row in missing_photos_result]
-        for missing_photo in missing_photos:
-            missing_photo['t_site'] = missing_photo.get('id_site')
-            dump_photos.append(missing_photo)
-
-    for site in sites:
-        id_site = site.get('id_site')
-        try:
-            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-            site['photo'] = utils.getThumbnail(photo).get('output_url')
-        except StopIteration:
-            pass
-
-    def getItem(name, id):
-        return next(item for item in dbs.get(name) if item.get('id') == id)
-
-    for filter in filters:
-        if (filter.get('name') == 'years'):
-            filter['items'] = [{
-                'label': str(year),
-                'id': year
-            } for year in filter.get('items')]
-            filter['items'] = sorted(filter['items'], key=lambda k: k['label'], reverse=True)
-        else:
-            filter['items'] = [getItem(filter.get('name'), item_id)
-                               for item_id in filter.get('items')]
-            filter['items'] = sorted(filter['items'], key=lambda k: k['label'])
-
-    observatories = []
-    for site in sites:
-        try:
-            next((item for item in observatories if item["id"] == site['id_observatory']))
-        except StopIteration:
-            observatory_row = models.Observatory.query.filter_by(id = site['id_observatory'])
-            observatory=observatory_schema.dump(observatory_row)
-            observatory=observatory[0]
-            observatories.append({
-                'id': site['id_observatory'],
-                'label': site['observatory']['title'],
-                'data': {
-                    'geom': observatory['geom'],
-                    'color': observatory['color'],
-                    'icon': observatory['icon']
-                }
-            })
-
-    filters.insert(0, {
-        'name': 'id_observatory',
-        'label': 'Observatoire',
-        'items': observatories
-    })
-
-
-    return render_template('sites.jinja', filters=filters, sites=sites, observatories=observatories, ign_Key=IGN_KEY)
+    return render_template('sites.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'], ign_Key=IGN_KEY)
 
 
 @main.route('/sample')
