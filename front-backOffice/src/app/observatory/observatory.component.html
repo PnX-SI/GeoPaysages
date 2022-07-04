@@ -19,7 +19,7 @@
               />
               <span
                 [ngClass]="{
-                  'slider-disabled': !this.edit_btn
+                  'slider-disabled': !this.isEditing
                 }"
                 class="slider round"
               ></span>
@@ -78,13 +78,13 @@
             <div class="col">
               <label class="label">Photo</label>
               <div *ngIf="observatory.photo">
-                <a [href]="'http://localhost:8082/static/data/images/' + observatory.photo" target="_blank">
+                <a [href]="photoBaseUrl + observatory.photo" target="_blank">
                   {{ observatory.photo }} <i class="icon-eye"></i>
                 </a>
               </div>
               <input style="display: none" accept="image/x-png,image/gif,image/jpeg"
                 type="file" (change)=onPhotoChange($event) #photoInput>
-              <button type="button" *ngIf="!selectedPhoto" class="blue-btn" (click)="photoInput.click()">
+              <button type="button" *ngIf="!selectedPhoto" class="blue-btn" (click)="photoInput.click()" [disabled]="!isEditing">
                 <i class="icon-download"></i>{{ observatory.photo ? 'Modifier la photo' : 'Ajouter une photo' }}
               </button>
               <div *ngIf="selectedPhoto">
@@ -92,6 +92,27 @@
                 <button class="btn p-0" type="button" (click)="onPhotoCancel(photoInput)">
                   <i class="icon-cancel-circle text-danger"></i>
                 </button> {{ selectedPhoto.name }}
+              </div>
+            </div>
+          </div>
+          <div class="row form-item">
+            <div class="col">
+              <label class="label">Logo</label>
+              <div *ngIf="observatory.logo">
+                <a [href]="photoBaseUrl + observatory.logo" target="_blank">
+                  {{ observatory.logo }} <i class="icon-eye"></i>
+                </a>
+              </div>
+              <input style="display: none" accept="image/x-png,image/gif,image/jpeg"
+                type="file" (change)=onLogoChange($event) #logoInput>
+              <button type="button" *ngIf="!selectedLogo" class="blue-btn" (click)="logoInput.click()" [disabled]="!isEditing">
+                <i class="icon-download"></i>{{ observatory.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
+              </button>
+              <div *ngIf="selectedLogo">
+                Logo sélectionnée :<br />
+                <button class="btn p-0" type="button" (click)="onLogoCancel(logoInput)">
+                  <i class="icon-cancel-circle text-danger"></i>
+                </button> {{ selectedLogo.name }}
               </div>
             </div>
           </div>
@@ -123,7 +144,7 @@
               type="button"
               *ngIf="id_observatory"
               class="btn btn-outline-warning btn-edit"
-              [class.active_edit]="edit_btn"
+              [class.active_edit]="isEditing"
               (click)="editForm()"
             >
               <i class="icon-pen"></i>{{ edit_btn_text }}
@@ -131,7 +152,7 @@
             <button
               class="btn btn-outline-success btn-submit"
               type="submit"
-              [disabled]="!edit_btn"
+              [disabled]="!isEditing"
             >
               {{ submit_btn_text }}
             </button>

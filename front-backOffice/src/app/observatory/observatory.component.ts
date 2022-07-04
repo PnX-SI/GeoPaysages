@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ObservatoriesService } from '../services/observatories.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
@@ -22,7 +22,11 @@ import * as io from 'jsts/org/locationtech/jts/io';
   styleUrls: ['./observatory.component.scss'],
 })
 export class ObservatoryComponent implements OnInit {
+  @ViewChild('photoInput') photoInput;
+  @ViewChild('logoInput') logoInput;
+
   selectedPhoto: File;
+  selectedLogo: File;
   selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
@@ -50,6 +54,7 @@ export class ObservatoryComponent implements OnInit {
     zoom: 10,
     center: latLng(Conf.map_lat_center, Conf.map_lan_center),
   };
+  photoBaseUrl = Conf.staticPicturesUrl;
   drawOptions = {
     position: 'topleft',
     draw: {
@@ -70,7 +75,7 @@ export class ObservatoryComponent implements OnInit {
   previewImage: string | ArrayBuffer;
   alert: { type: string; message: string };
   observatory: ObservatoryType;
-  edit_btn = false;
+  isEditing = false;
   edit_btn_text = 'Éditer';
   submit_btn_text = 'Ajouter';
   initPhotos: any[] = [];
@@ -102,7 +107,7 @@ export class ObservatoryComponent implements OnInit {
       this.getObservatory(this.id_observatory);
       this.submit_btn_text = 'Enregistrer';
     } else {
-      this.edit_btn = true;
+      this.isEditing = true;
       this.loadForm = true;
     }
   }
@@ -210,6 +215,17 @@ export class ObservatoryComponent implements OnInit {
     this.selectedPhoto = null;
   }
 
+  onLogoChange(event) {
+    if (event.target && event.target.files.length > 0) {
+      this.selectedLogo = event.target.files[0];
+    }
+  }
+
+  onLogoCancel(input) {
+    input.value = '';
+    this.selectedLogo = null;
+  }
+
   noticeSelect(event) {
     this.selectedFile = event.target.files;
     if (event.target.files && event.target.files.length > 0) {
@@ -250,7 +266,7 @@ export class ObservatoryComponent implements OnInit {
         return;
       }
     }
-    this.edit_btn = false;
+    this.isEditing = false;
     this.spinner.show();
     try {
       if (!this.id_observatory) {
@@ -276,12 +292,12 @@ export class ObservatoryComponent implements OnInit {
         });
       }
     }
-    this.edit_btn = true;
+    this.isEditing = true;
     this.edit_btn_text = 'Éditer';
     this.spinner.hide();
   }
 
-  getPhoto(photo) {
+  /* getPhoto(photo) {
     this.alert = null;
     const reader = new FileReader();
     reader.readAsDataURL(photo.photo_file[0]);
@@ -292,7 +308,7 @@ export class ObservatoryComponent implements OnInit {
     photo.name = photo.path_file_photo;
     photo.filePhoto = photo.photo_file[0];
     this.photos.push(photo);
-  }
+  } */
 
   setAlert(message) {
     this.alert = {
@@ -367,17 +383,32 @@ export class ObservatoryComponent implements OnInit {
       if (this.observatory) {
         this.observatory.photo = res.filename;
       }
+      this.selectedPhoto = null;
+    }
+    if (this.selectedLogo) {
+      const data: FormData = new FormData();
+      data.append('field', 'logo');
+      data.append('image', this.selectedLogo);
+      const res = await this.observatoryService.patchImage(id, data);
+      if (this.observatory) {
+        this.observatory.logo = res.filename;
+      }
+      this.selectedLogo = null;
     }
   }
 
   editForm() {
-    this.edit_btn = !this.edit_btn;
-    if (!this.edit_btn) {
+    this.isEditing = !this.isEditing;
+    if (!this.isEditing) {
       //this.map.removeControl(this.drawControl);
       this.edit_btn_text = 'Éditer';
       this.patchForm();
       this.alert = null;
       this.observatoryForm.disable();
+      this.selectedPhoto = null;
+      this.photoInput.nativeElement.value = '';
+      this.selectedLogo = null;
+      this.logoInput.nativeElement.value = '';
       //this.initMarker(this.observatory.geom[0], this.observatory.geom[1]);
     } else {
       //this.map.addControl(this.drawControl);
@@ -394,7 +425,7 @@ export class ObservatoryComponent implements OnInit {
       marker: false,
     });
     this.map.addControl(this.drawControl);
-    if (this.id_observatory && !this.edit_btn) {
+    if (this.id_observatory && !this.isEditing) {
       this.map.removeControl(this.drawControl);
     }
   }
@@ -443,7 +474,7 @@ export class ObservatoryComponent implements OnInit {
 
   onCancel() {
     this.observatoryForm.reset();
-    this.router.navigate(['observatorys']);
+    this.router.navigate(['observatories']);
   }
 
   patchForm() {
