@@ -163,13 +163,15 @@ geopsg.initSites = (options) => {
 
         observatories.forEach((observatory) => {
           const color = observatory.data.color;
-          L.geoJson(wellknown.parse(observatory.data.geom), {
+          const layer = L.geoJson(wellknown.parse(observatory.data.geom), {
             style: {
               opacity: 0,
               fillColor: observatory.data.color,
               fillOpacity: 0.3,
             },
-          }).addTo(map);
+          });
+          layer.addTo(map);
+          observatory.layer = layer;
           observatory.markers = L.markerClusterGroup({
             iconCreateFunction: (cluster) => {
               return new L.DivIcon({
@@ -473,6 +475,11 @@ geopsg.initSites = (options) => {
         } catch (error) {
           this.$refs['modal-copy-url'].show();
         }
+      },
+      onBtnObservatoryClick(observatory) {
+        map.fitBounds(observatory.layer.getBounds(), {
+          maxZoom: options.dbconf.zoom_max_fitbounds_map,
+        });
       },
     },
   });
