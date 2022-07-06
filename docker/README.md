@@ -68,16 +68,16 @@ Avant de continuer, s'assurer que la base de donnée est up avec un client de ba
 
 ## Édition
 
-Modifier le fichier `fr/LC_MESSAGES/messages.po.sample`
-Copier le fichier dans le container  
+1. Modifier le fichier `fr/LC_MESSAGES/messages.po.sample`
+2. Copier le fichier dans le container  
 `docker cp i18n/fr/LC_MESSAGES/messages.po.sample geopaysage_backend:/app/i18n/fr/LC_MESSAGES/messages.po`
-Entrer dans le container  
+3. Entrer dans le container  
 `docker-compose exec backend /bin/bash`
-Compiler le fichier  
+4. Compiler le fichier  
 `pybabel compile -d ./i18n`
-Sortir du container  
+5. Sortir du container  
 `exit`
-Redémarrer le container  
+6. Redémarrer le container  
 `docker-compose restart backend`
 
 ## Création
