@@ -200,7 +200,7 @@ msgstr "Filtrer par"
 
 #: backend/tpl/sites.html:39
 msgid "sites.filters.nb_result"
-msgstr "filtres : %(nb)s résultat(s)"
+msgstr "Filtre(s) : %(nb)s résultat(s)"
 
 #: backend/tpl/sites.html:75
 msgid "sites.observation_points.title"
