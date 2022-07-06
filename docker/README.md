@@ -62,3 +62,22 @@ Avant de continuer, s'assurer que la base de donnée est up avec un client de ba
 `docker compose exec backend /bin/bash`  
 `flask db upgrade`  
 `exit`
+
+
+# Internationalisation
+
+## Édition
+
+Modifier le fichier `fr/LC_MESSAGES/messages.po.sample`
+Copier le fichier dans le container  
+`docker cp i18n/fr/LC_MESSAGES/messages.po.sample geopaysage_backend:/app/i18n/fr/LC_MESSAGES/messages.po`
+Entrer dans le container  
+`docker-compose exec backend /bin/bash`
+Compiler le fichier  
+`pybabel compile -d ./i18n`
+Sortir du container  
+`exit`
+Redémarrer le container  
+`docker-compose restart backend`
+
+## Création
