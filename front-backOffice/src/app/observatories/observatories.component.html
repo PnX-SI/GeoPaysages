@@ -23,6 +23,17 @@
           (activate)="onCenterChange($event)"
           (select)="onSelect($event)"
         >
+          <ngx-datatable-column prop="photo" name="Photo" width="100">
+            <ng-template let-row="row" ngx-datatable-cell-template>
+              <img
+                class="main-photo"
+                src="{{ row.observatory.photo }}"
+                alt=""
+                width="80"
+              />
+            </ng-template>
+          </ngx-datatable-column>
+
           <ngx-datatable-column prop="ref" name="Référence" width="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row.observatory.ref }}
