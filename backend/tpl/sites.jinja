@@ -167,7 +167,8 @@
           v-b-toggle="'app_map_list_sites_collapse'"
         >
           <span>{{ _('sites.observation_points.title') }}</span>
-          <span class="text-lowercase" v-html="'Filtre : ' + selectedSites.length + ' résulat(s)'"></span>
+          <span class="text-lowercase">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          >') }} {% endautoescape %}</span>
           <i class="icon ion-ios-arrow-down visible-collapsed"></i>
           <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
         </a>
