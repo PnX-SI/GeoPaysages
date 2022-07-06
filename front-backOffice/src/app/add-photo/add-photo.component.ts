@@ -1,9 +1,21 @@
-import { Component, OnInit, Injectable, Output, Input, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Injectable,
+  Output,
+  Input,
+  EventEmitter,
+} from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { FormService } from '../services/form.service';
 import { SitesService } from '../services/sites.service';
-import { NgbDatepickerConfig, NgbDatepickerI18n, NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbDatepickerConfig,
+  NgbDatepickerI18n,
+  NgbDateStruct,
+  NgbCalendar,
+} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { Router } from '@angular/router';
@@ -13,10 +25,23 @@ import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 const I18N_VALUES = {
-  'fr': {
+  fr: {
     weekdays: ['Lu', 'Ma', 'Me', 'Je', 'Ve', 'Sa', 'Di'],
-    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc'],
-  }
+    months: [
+      'Jan',
+      'Fév',
+      'Mar',
+      'Avr',
+      'Mai',
+      'Juin',
+      'Juil',
+      'Aou',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Déc',
+    ],
+  },
   // other languages you would support
 };
 
@@ -48,9 +73,12 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
   selector: 'app-add-photo',
   templateUrl: './add-photo.component.html',
   styleUrls: ['./add-photo.component.scss'],
-  providers: [NgbDatepickerConfig, I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }]
+  providers: [
+    NgbDatepickerConfig,
+    I18n,
+    { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n },
+  ],
 })
-
 export class AddPhotoComponent implements OnInit {
   selectedPhoto: any;
   photoForm: FormGroup;
@@ -77,7 +105,7 @@ export class AddPhotoComponent implements OnInit {
     public calendar: NgbCalendar,
     datePickerConfig: NgbDatepickerConfig,
     private authService: AuthService,
-    private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService
   ) {
     datePickerConfig.minDate = { year: 1800, month: 1, day: 1 };
     datePickerConfig.maxDate = { year: 2200, month: 12, day: 31 };
@@ -86,7 +114,10 @@ export class AddPhotoComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.authService.currentUser;
-    forkJoin([this.sitesService.getLicences(), this.sitesService.getUsers()]).subscribe(results => {
+    forkJoin([
+      this.sitesService.getLicences(),
+      this.sitesService.getUsers(),
+    ]).subscribe((results) => {
       this.licences = results[0];
       this.authors = results[1];
       if (this.inputImage) {
@@ -97,7 +128,6 @@ export class AddPhotoComponent implements OnInit {
         this.initForm();
       }
     });
-
   }
 
   initForm() {
@@ -109,7 +139,7 @@ export class AddPhotoComponent implements OnInit {
     this.photoForm = this.formService.initFormPhoto();
     const dateF = moment(this.inputImage.filter_date).toDate();
     const filter_date_format = {
-      'year': moment(dateF).year(),
+      year: moment(dateF).year(),
       month: moment(dateF).month() + 1,
       day: Number(moment(dateF).format('DD')),
     };
@@ -126,14 +156,14 @@ export class AddPhotoComponent implements OnInit {
       id_role = null;
     }
     this.photoForm.patchValue({
-      'id_role': id_role,
-      'display_gal_photo': this.inputImage.display_gal_photo,
-      'id_licence_photo': id_licence_photo,
-      'date_photo': this.inputImage.date_photo,
+      id_role: id_role,
+      display_gal_photo: this.inputImage.display_gal_photo,
+      id_licence_photo: id_licence_photo,
+      date_photo: this.inputImage.date_photo,
       // 'legende_photo': this.inputImage.legende_photo,
-      'filter_date': filter_date_format,
-      'photo_file': this.inputImage.photo_file,
-      'main_photo': this.inputImage.main_photo,
+      filter_date: filter_date_format,
+      photo_file: this.inputImage.photo_file,
+      main_photo: this.inputImage.main_photo,
     });
     if (this.inputImage.main_photo === true) {
       this.photoForm.controls['main_photo'].disable();
@@ -144,7 +174,10 @@ export class AddPhotoComponent implements OnInit {
   }
 
   openPhotoModal(content: any) {
-    this.modalRef = this.modalService.open(content, { windowClass: 'custom-modal', centered: true });
+    this.modalRef = this.modalService.open(content, {
+      windowClass: 'custom-modal',
+      centered: true,
+    });
   }
 
   onFileSelected(event: any) {
@@ -173,7 +206,11 @@ export class AddPhotoComponent implements OnInit {
       photoForm.value.id_licence_photo = null;
     }
     if (photoForm.valid && this.imageName) {
-      photoForm.value.filter_date = photoForm.value.filter_date.year + '-' + photoForm.value.filter_date.month + '-' +
+      photoForm.value.filter_date =
+        photoForm.value.filter_date.year +
+        '-' +
+        photoForm.value.filter_date.month +
+        '-' +
         photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
@@ -200,7 +237,6 @@ export class AddPhotoComponent implements OnInit {
         this.alert = 'Veuillez importer une photo ';
       }
     }
-
   }
   onCancel() {
     this.alert = null;
@@ -215,7 +251,10 @@ export class AddPhotoComponent implements OnInit {
 
   openDeleteModal(photoModal: any) {
     this.modalRef.close();
-    this.modalRef = this.modalService.open(photoModal, { windowClass: 'delete-modal', centered: true });
+    this.modalRef = this.modalService.open(photoModal, {
+      windowClass: 'delete-modal',
+      centered: true,
+    });
   }
 
   cancelDelete() {
@@ -232,10 +271,13 @@ export class AddPhotoComponent implements OnInit {
         this.modalRef.close();
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-        else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
+        } else
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
       }
     );
   }
@@ -263,15 +305,17 @@ export class AddPhotoComponent implements OnInit {
         this.modalRef.close();
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
-        }
-        else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
+        } else
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
       },
       () => {
         this.photoModal.emit(this.inputImage.t_site);
       }
     );
   }
-
 }

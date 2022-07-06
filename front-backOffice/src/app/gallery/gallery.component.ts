@@ -9,21 +9,22 @@ import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-gallery',
   templateUrl: './gallery.component.html',
-  styleUrls: ['./gallery.component.scss']
+  styleUrls: ['./gallery.component.scss'],
 })
 export class GalleryComponent implements OnInit {
-
   sitesLoaded = false;
   sites: any;
   isMainPhoto;
   selected_site;
   photos: any;
+  licences: any;
+  authors: any;
   constructor(
     public sitesService: SitesService,
     protected router: Router,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService,
-  ) { }
+    private spinner: NgxSpinnerService
+  ) {}
 
   ngOnInit() {
     this.spinner.show();
@@ -37,10 +38,11 @@ export class GalleryComponent implements OnInit {
       (error) => {
         this.spinner.hide();
         console.log('getGallery error', error);
-        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
-      },
+        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+          positionClass: 'toast-bottom-right',
+        });
+      }
     );
-
   }
 
   getPhotosSite(id) {
@@ -55,14 +57,15 @@ export class GalleryComponent implements OnInit {
           }
           photo.sm = Conf.staticPicturesUrl + photo.sm;
           photo.cssClass = 'gallery';
-
         });
         this.sitesLoaded = true;
         this.spinner.hide();
       },
       (error) => {
         console.log('getPhotosSite error', error);
-        this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
+        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+          positionClass: 'toast-bottom-right',
+        });
         this.spinner.hide();
       }
     );
@@ -76,8 +79,8 @@ export class GalleryComponent implements OnInit {
     const photo: FormData = new FormData();
     let photoJson: any = {};
     photoJson = {
-      'display_gal_photo': !edit_photo.display_gal_photo,
-      'id_photo': edit_photo.id_photo,
+      display_gal_photo: !edit_photo.display_gal_photo,
+      id_photo: edit_photo.id_photo,
     };
     photo.append('data', JSON.stringify(photoJson));
     this.sitesService.updatePhoto(photo).subscribe(
@@ -87,10 +90,14 @@ export class GalleryComponent implements OnInit {
       (err) => {
         if (err.status === 403) {
           this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', { positionClass: 'toast-bottom-right' });
+          this.toastr.error('votre session est expirée', '', {
+            positionClass: 'toast-bottom-right',
+          });
         } else
-          this.toastr.error("Une erreur est survenue sur le serveur.", '', { positionClass: 'toast-bottom-right' });
-      },
+          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
+            positionClass: 'toast-bottom-right',
+          });
+      }
     );
   }
 
