@@ -315,7 +315,7 @@ def getFiltersData():
 
     filters.insert(0, {
         'name': 'id_observatory',
-        'label': 'Observatoire',
+        'label': gettext(u'sites.filter.obervatories'),
         'items': observatories
     })
 
