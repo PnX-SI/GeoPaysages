@@ -82,9 +82,9 @@ export class CustomDatepickerI18n extends NgbDatepickerI18n {
 export class AddPhotoComponent implements OnInit {
   selectedPhoto: any;
   photoForm: FormGroup;
-  licences: any;
+  @Input() licences: any;
   loadForm = false;
-  authors: any;
+  @Input() authors: any;
   imageName: any;
   imageLaoded = false;
   private modalRef: NgbModalRef;
@@ -114,20 +114,29 @@ export class AddPhotoComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.authService.currentUser;
-    forkJoin([
-      this.sitesService.getLicences(),
-      this.sitesService.getUsers(),
-    ]).subscribe((results) => {
-      this.licences = results[0];
-      this.authors = results[1];
-      if (this.inputImage) {
-        this.title = 'Modifier la photo';
-        this.btn_text = 'Modifier';
-        this.updateForm();
-      } else {
-        this.initForm();
-      }
-    });
+
+    if (this.licences && this.authors) {
+      this.onInitData();
+    } else {
+      forkJoin([
+        this.sitesService.getLicences(),
+        this.sitesService.getUsers(),
+      ]).subscribe((results) => {
+        this.licences = results[0];
+        this.authors = results[1];
+        this.onInitData();
+      });
+    }
+  }
+
+  onInitData() {
+    if (this.inputImage) {
+      this.title = 'Modifier la photo';
+      this.btn_text = 'Modifier';
+      this.updateForm();
+    } else {
+      this.initForm();
+    }
   }
 
   initForm() {

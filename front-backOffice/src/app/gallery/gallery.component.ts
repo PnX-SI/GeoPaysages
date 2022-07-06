@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-gallery',
@@ -58,8 +59,16 @@ export class GalleryComponent implements OnInit {
           photo.sm = Conf.staticPicturesUrl + photo.sm;
           photo.cssClass = 'gallery';
         });
-        this.sitesLoaded = true;
-        this.spinner.hide();
+
+        forkJoin([
+          this.sitesService.getLicences(),
+          this.sitesService.getUsers(),
+        ]).subscribe((results) => {
+          this.licences = results[0];
+          this.authors = results[1];
+          this.sitesLoaded = true;
+          this.spinner.hide();
+        });
       },
       (error) => {
         console.log('getPhotosSite error', error);
