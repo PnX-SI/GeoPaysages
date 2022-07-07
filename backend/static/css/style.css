@@ -105,7 +105,7 @@ button {
 .btn-primary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary-light);
   border-color: var(--color-primary-light);
@@ -128,7 +128,7 @@ button {
 
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
@@ -138,7 +138,7 @@ button {
   color: var(--color-primary);
 }
 
-.btn-group-vertical>.btn+.btn {
+.btn-group-vertical > .btn + .btn {
   margin-top: 0;
 }
 
@@ -183,7 +183,7 @@ button {
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
-.show>.btn-outline-primary.dropdown-toggle {
+.show > .btn-outline-primary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary) !important;
