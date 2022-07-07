@@ -22,18 +22,23 @@
   0% {
     opacity: 0;
   }
+
   20% {
     opacity: 1;
   }
+
   40% {
     opacity: 0;
   }
+
   60% {
     opacity: 1;
   }
+
   80% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
   }
@@ -77,12 +82,15 @@ button {
 .btn {
   border-radius: 0;
 }
+
 .btn:not(.btn-no-uppercase) {
   text-transform: uppercase;
 }
+
 .btn:focus {
   box-shadow: none !important;
 }
+
 .btn-sm {
   padding-bottom: 2px;
 }
@@ -97,7 +105,7 @@ button {
 .btn-primary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary-light);
   border-color: var(--color-primary-light);
@@ -107,17 +115,20 @@ button {
   background-color: var(--color-secondary);
   border-color: var(--color-secondary);
 }
+
 .btn-secondary:hover {
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
 }
+
 .btn-secondary:focus {
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
 }
+
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
@@ -127,7 +138,7 @@ button {
   color: var(--color-primary);
 }
 
-.btn-group-vertical > .btn + .btn {
+.btn-group-vertical>.btn+.btn {
   margin-top: 0;
 }
 
@@ -172,7 +183,7 @@ button {
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
-.show > .btn-outline-primary.dropdown-toggle {
+.show>.btn-outline-primary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary) !important;
@@ -202,9 +213,10 @@ button {
   color: #fff;
   font-style: italic;
   background-color: var(--color-discover);
-  z-index: 9999;
+  z-index: 1;
   transition: transform 0.5s ease;
 }
+
 .discover a {
   height: 100%;
   width: 100%;
@@ -330,19 +342,23 @@ h6 .light {
   padding-left: 120px;
   padding-right: 120px;
 }
+
 @media (max-width: 991px) {
   .header-title {
     padding-right: 3px;
   }
+
   .header-title h3 {
     font-size: 18px;
   }
 }
+
 @media (max-width: 575px) {
   .header-title h3 {
     font-size: 12px;
   }
 }
+
 .header-title:empty {
   display: none;
 }
@@ -363,6 +379,7 @@ h6 .light {
 .async:not(.async-resolved) .visible-async-resolved {
   display: none;
 }
+
 .async.async-resolved .hidden-async-resolved {
   display: none;
 }

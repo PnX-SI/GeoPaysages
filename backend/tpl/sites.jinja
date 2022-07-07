@@ -167,7 +167,8 @@
           v-b-toggle="'app_map_list_sites_collapse'"
         >
           <span>{{ _('sites.observation_points.title') }}</span>
-          <span class="text-lowercase" v-html="'Filtre : ' + selectedSites.length + ' résulat(s)'"></span>
+          <span class="text-lowercase">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          >') }} {% endautoescape %}</span>
           <i class="icon ion-ios-arrow-down visible-collapsed"></i>
           <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
         </a>
@@ -189,7 +190,7 @@
                   <div class="icon d-inline-block align-middle rounded-circle mr-2 p-2" v-html="observatory.data.icon"></div>
                   <div class="d-inline-block align-middle">
                     <span class="d-block text-capitalize" v-html="observatory.label"></span>
-                    <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' sites d\'obs'"></small>
+                    <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' site(s) d\'observation(s)'"></small>
                   </div>
                 </b-btn>
               </b-card-header>

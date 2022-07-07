@@ -20,19 +20,23 @@ msgstr ""
 
 #: backend/routes.py:301
 msgid "sites.filter.themes"
-msgstr "Thème"
+msgstr "Filtrer par thème(s)"
 
 #: backend/routes.py:305
 msgid "sites.filter.subthemes"
-msgstr "Sous-thème"
+msgstr "Filtrer par sous-thème(s)"
 
 #: backend/routes.py:309
 msgid "sites.filter.township"
-msgstr "Commune"
+msgstr "Filtrer par commune(s)"
 
 #: backend/routes.py:313
 msgid "sites.filter.years"
-msgstr "Année"
+msgstr "Filtrer par année(s)"
+
+#: backend/routes.py:x
+msgid "sites.filter.obervatories"
+msgstr "Filtrer par observatoire(s)"
 
 #: backend/tpl/comparator-v1.html:8
 msgid "obs_point.buttons.download"
@@ -196,7 +200,7 @@ msgstr "Filtrer par"
 
 #: backend/tpl/sites.html:39
 msgid "sites.filters.nb_result"
-msgstr "filtres : %(nb)s résultat(s)"
+msgstr "Filtre(s) : %(nb)s résultat(s)"
 
 #: backend/tpl/sites.html:75
 msgid "sites.observation_points.title"

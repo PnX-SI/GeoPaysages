@@ -87,6 +87,14 @@
 
 
       </div>
+      <div class="row">
+        <div class="col d-flex justify-content-center">
+          <span class="center-filter px-3 py-2">
+          {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          >') }} {% endautoescape %}
+        </div>
+      </div>
+
     </div>
   </div>
 

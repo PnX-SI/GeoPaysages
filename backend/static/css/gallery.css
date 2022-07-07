@@ -67,3 +67,11 @@
 .page-gallery .picture:hover .discover {
   transform: translateY(-100%);
 }
+
+.app-gallery .center-filter {
+  border-radius: 10rem;
+  background-color: #EEEEEE;
+  position: fixed;
+  bottom: 30px;
+  z-index: 2;
+}

@@ -28,7 +28,7 @@ services:
     ports:
       - "${DB_PORT}:5432"
     volumes:
-      - app-db-data:/var/lib/postgresql/data/pgdata
+      - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_DB=geopaysages
@@ -37,4 +37,4 @@ services:
       - POSTGRES_USER=root
 
 volumes:
-  app-db-data:
+  geopaysages-db-data:

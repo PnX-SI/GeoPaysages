@@ -61,14 +61,16 @@
           </div>
           <div class="row form-item">
             <div class="col">
-              <label class="label" for="observatory-color">Couleur</label>
+              <label class="label" for="observatory-color"
+                >Couleur du thème</label
+              >
               <input
                 InputFeedBack
                 type="text"
                 formControlName="color"
                 id="observatory-color"
                 class="form-control"
-                placeholder="Couleur"
+                placeholder="#454545"
               />
               <app-form-error
                 controlName="color"
@@ -82,16 +84,35 @@
                   {{ observatory.photo }} <i class="icon-eye"></i>
                 </a>
               </div>
-              <input style="display: none" accept="image/x-png,image/gif,image/jpeg"
-                type="file" (change)=onPhotoChange($event) #photoInput>
-              <button type="button" *ngIf="!selectedPhoto" class="blue-btn" (click)="photoInput.click()" [disabled]="!isEditing">
-                <i class="icon-download"></i>{{ observatory.photo ? 'Modifier la photo' : 'Ajouter une photo' }}
+              <input
+                style="display: none"
+                accept="image/x-png,image/gif,image/jpeg"
+                type="file"
+                (change)="onPhotoChange($event)"
+                #photoInput
+              />
+              <button
+                type="button"
+                *ngIf="!selectedPhoto"
+                class="blue-btn"
+                (click)="photoInput.click()"
+                [disabled]="!isEditing"
+              >
+                <i class="icon-download"></i
+                >{{
+                  observatory.photo ? 'Modifier la photo' : 'Ajouter une photo'
+                }}
               </button>
               <div *ngIf="selectedPhoto">
                 Photo sélectionnée :<br />
-                <button class="btn p-0" type="button" (click)="onPhotoCancel(photoInput)">
+                <button
+                  class="btn p-0"
+                  type="button"
+                  (click)="onPhotoCancel(photoInput)"
+                >
                   <i class="icon-cancel-circle text-danger"></i>
-                </button> {{ selectedPhoto.name }}
+                </button>
+                {{ selectedPhoto.name }}
               </div>
             </div>
           </div>
@@ -103,28 +124,45 @@
                   {{ observatory.logo }} <i class="icon-eye"></i>
                 </a>
               </div>
-              <input style="display: none" accept="image/x-png,image/gif,image/jpeg"
-                type="file" (change)=onLogoChange($event) #logoInput>
-              <button type="button" *ngIf="!selectedLogo" class="blue-btn" (click)="logoInput.click()" [disabled]="!isEditing">
-                <i class="icon-download"></i>{{ observatory.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
+              <input
+                style="display: none"
+                accept="image/x-png,image/gif,image/jpeg"
+                type="file"
+                (change)="onLogoChange($event)"
+                #logoInput
+              />
+              <button
+                type="button"
+                *ngIf="!selectedLogo"
+                class="blue-btn"
+                (click)="logoInput.click()"
+                [disabled]="!isEditing"
+              >
+                <i class="icon-download"></i
+                >{{ observatory.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
               </button>
               <div *ngIf="selectedLogo">
                 Logo sélectionnée :<br />
-                <button class="btn p-0" type="button" (click)="onLogoCancel(logoInput)">
+                <button
+                  class="btn p-0"
+                  type="button"
+                  (click)="onLogoCancel(logoInput)"
+                >
                   <i class="icon-cancel-circle text-danger"></i>
-                </button> {{ selectedLogo.name }}
+                </button>
+                {{ selectedLogo.name }}
               </div>
             </div>
           </div>
           <div class="row form-item">
             <div class="col">
-              <label class="label" for="observatory-geom">WKT</label>
+              <label class="label" for="observatory-geom">Zonage</label>
               <textarea
                 InputFeedBack
                 formControlName="geom"
                 id="observatory-geom"
                 class="form-control"
-                placeholder="WKT"
+                placeholder="Coller ici la géométrie de la zone de l’observatoire au format WKT"
               ></textarea>
               <app-form-error
                 controlName="geom"
@@ -157,15 +195,6 @@
               {{ submit_btn_text }}
             </button>
             <button
-              type="button"
-              *ngIf="id_observatory && currentUser.id_droit_max > 5"
-              class="btn btn-outline-danger btn-delete"
-              (click)="openDeleteModal(content)"
-            >
-              <i class="icon-trash delete-observatory"></i>Supprimer
-              l'observatoire
-            </button>
-            <button
               class="btn btn-outline-secondary btn-cancel"
               type="button"
               (click)="onCancel()"
@@ -183,27 +212,3 @@
     </div>
   </div>
 </div>
-
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title"><i class="icon-trash"></i></h5>
-  </div>
-  <div class="modal-body">
-    Êtes-vous sûr de vouloir supprimer cet observatoire ?
-    <br />
-    Sa suppression sera définitive
-  </div>
-  <div class="modal-footer">
-    <button
-      type="button"
-      class="cancel-btn"
-      style="margin-right: 10px"
-      (click)="cancelDelete()"
-    >
-      ANNULER
-    </button>
-    <button type="button" class="green-btn" (click)="deleteObservatory()">
-      OUI
-    </button>
-  </div>
-</ng-template>
