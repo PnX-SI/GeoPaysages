@@ -73,7 +73,10 @@
           <a :href="'/sites/' + site.id_site">
             <img v-lazy="site.photo" :alt="site.name_site">
           </a>
-          <div class="discover">
+          <div class="discover" :style="{
+            'background-color': site.observatory.color + 'BB'
+            }"
+          >
             <a :href="'/sites/' + site.id_site" class="d-block">
               <span v-if="isMultiObservatories" class="observatory-label" v-html="site.observatory.title"></span>
               <span v-if="!isMultiObservatories" class="site-label" v-html="site.name_site"></span>
