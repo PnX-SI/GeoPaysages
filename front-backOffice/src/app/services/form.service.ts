@@ -33,6 +33,7 @@ export class FormService {
       code_city_site: [null, Validators.required],
       legend_site: [null, Validators.required],
       notice: [null],
+      main_theme_id: [null],
     });
     return formSite;
   }

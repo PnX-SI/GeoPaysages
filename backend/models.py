@@ -60,6 +60,9 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
+    main_theme_id = db.Column(db.ForeignKey('geopaysages.dico_theme.id_theme'))
+    main_theme = db.relationship(
+        'DicoTheme', primaryjoin='TSite.main_theme_id == DicoTheme.id_theme')
 
 
 class CorSiteSthemeTheme(db.Model):
@@ -268,6 +271,7 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
     observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color", "icon"])
+    main_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme", "icon"])
 
     class Meta:
         model = TSite

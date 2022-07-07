@@ -689,6 +689,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       id_theme: this.site.themes,
       id_stheme: this.site.subthemes,
       code_city_site: this.site.code_city_site,
+      main_theme_id: this.site.main_theme_id,
       legend_site: this.site.legend_site,
       id_observatory: this.site.id_observatory,
     });
