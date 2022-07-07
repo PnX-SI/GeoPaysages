@@ -84,7 +84,6 @@ export class AddPhotoComponent implements OnInit {
   photoForm: FormGroup;
   @Input() licences: any;
   loadForm = false;
-  @Input() authors: any;
   imageName: any;
   imageLaoded = false;
   private modalRef: NgbModalRef;
@@ -115,15 +114,11 @@ export class AddPhotoComponent implements OnInit {
   ngOnInit() {
     this.currentUser = this.authService.currentUser;
 
-    if (this.licences && this.authors) {
+    if (this.licences) {
       this.onInitData();
     } else {
-      forkJoin([
-        this.sitesService.getLicences(),
-        this.sitesService.getUsers(),
-      ]).subscribe((results) => {
+      forkJoin([this.sitesService.getLicences()]).subscribe((results) => {
         this.licences = results[0];
-        this.authors = results[1];
         this.onInitData();
       });
     }

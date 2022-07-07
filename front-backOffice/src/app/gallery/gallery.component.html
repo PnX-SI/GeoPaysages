@@ -16,7 +16,7 @@
             <i *ngIf="!photo.display_gal_photo" class='icon-eye-blocked' (click)='editPhoto(photo)'></i>   
             <i *ngIf="photo.main_photo" class='icon-star-full'></i>
           </div>
-        <app-add-photo  class="picture" [licences]="licences" [authors]="authors" [inputImage]="photo" (photoModal)='updatePhotos($event)'></app-add-photo>
+        <app-add-photo  class="picture" [licences]="licences" [inputImage]="photo" (photoModal)='updatePhotos($event)'></app-add-photo>
         <div class="photo-name">{{photo.path_file_photo}}</div>
       </div>
     </div>

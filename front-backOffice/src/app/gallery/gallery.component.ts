@@ -19,7 +19,6 @@ export class GalleryComponent implements OnInit {
   selected_site;
   photos: any;
   licences: any;
-  authors: any;
   constructor(
     public sitesService: SitesService,
     protected router: Router,
@@ -62,10 +61,9 @@ export class GalleryComponent implements OnInit {
 
         forkJoin([
           this.sitesService.getLicences(),
-          this.sitesService.getUsers(),
+          //this.sitesService.getUsers(),
         ]).subscribe((results) => {
           this.licences = results[0];
-          this.authors = results[1];
           this.sitesLoaded = true;
           this.spinner.hide();
         });
