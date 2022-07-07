@@ -79,9 +79,9 @@
             </div>
             <div class="col">
               <label class="label">Photo</label>
-              <div *ngIf="observatory.photo">
-                <a [href]="photoBaseUrl + observatory.photo" target="_blank">
-                  {{ observatory.photo }} <i class="icon-eye"></i>
+              <div *ngIf="observatory?.photo">
+                <a [href]="photoBaseUrl + observatory?.photo" target="_blank">
+                  {{ observatory?.photo }} <i class="icon-eye"></i>
                 </a>
               </div>
               <input
@@ -100,7 +100,7 @@
               >
                 <i class="icon-download"></i
                 >{{
-                  observatory.photo ? 'Modifier la photo' : 'Ajouter une photo'
+                  observatory?.photo ? 'Modifier la photo' : 'Ajouter une photo'
                 }}
               </button>
               <div *ngIf="selectedPhoto">
@@ -119,9 +119,9 @@
           <div class="row form-item">
             <div class="col">
               <label class="label">Logo</label>
-              <div *ngIf="observatory.logo">
-                <a [href]="photoBaseUrl + observatory.logo" target="_blank">
-                  {{ observatory.logo }} <i class="icon-eye"></i>
+              <div *ngIf="observatory?.logo">
+                <a [href]="photoBaseUrl + observatory?.logo" target="_blank">
+                  {{ observatory?.logo }} <i class="icon-eye"></i>
                 </a>
               </div>
               <input
@@ -139,7 +139,7 @@
                 [disabled]="!isEditing"
               >
                 <i class="icon-download"></i
-                >{{ observatory.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
+                >{{ observatory?.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
               </button>
               <div *ngIf="selectedLogo">
                 Logo sélectionnée :<br />
