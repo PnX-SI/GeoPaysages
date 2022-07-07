@@ -156,6 +156,7 @@ class TPhoto(db.Model):
     id_photo = db.Column(db.Integer, primary_key=True,
                          server_default=db.FetchedValue())
     id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
+    id_observatory = db.Column(db.ForeignKey('geopaysages.t_observatory.id'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
     date_photo = db.Column(db.String)
