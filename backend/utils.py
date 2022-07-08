@@ -37,7 +37,16 @@ def getImage(photo, prefixe, callback):
     else:
         output_name = input_name
     output_path = base_path + output_name
-    image = Image.open(input_path)
+    try:
+        image = Image.open(input_path)
+    except Exception as exception:
+        return {
+            'input_exists': False,
+            'output_name': '',
+            'output_path': '',
+            'output_url': url_for('static', filename=DATA_IMAGES_PATH + output_name),
+            'image': None
+        }
     output_exists = os.path.exists(output_path)
 
     img = {
