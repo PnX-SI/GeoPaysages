@@ -187,7 +187,9 @@
                   v-b-toggle="'app_map_observatory_' + observatory.id"
                   variant="link"
                   class="rounded-0 text-left btn-observatory border-0 text-decoration-none">
-                  <div class="icon d-inline-block align-middle rounded-circle mr-2 p-2" v-html="observatory.data.icon"></div>
+                  <div class="icon d-inline-block mr-2">
+                    <img :src="observatory.data.logo" />
+                  </div>
                   <div class="d-inline-block align-middle">
                     <span class="d-block text-capitalize" v-html="observatory.label"></span>
                     <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' site(s) d\'observation(s)'"></small>

@@ -318,7 +318,7 @@ def getFiltersData():
                 'data': {
                     'geom': observatory['geom'],
                     'color': observatory['color'],
-                    'icon': observatory['icon']
+                    'logo': url_for('static', filename=DATA_IMAGES_PATH + observatory['logo'])
                 }
             })
 

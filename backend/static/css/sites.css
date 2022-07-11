@@ -82,9 +82,12 @@
 .app-sites .list-observatories .btn-observatory .icon {
   width: 40px;
   height: 40px;
-  background: #bdbdbd;
-  color: #fff;
-  fill: #fff;
+}
+
+.app-sites .list-observatories .btn-observatory .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .app-sites .sidebar {
