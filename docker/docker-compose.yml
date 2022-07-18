@@ -7,7 +7,7 @@ services:
       - ${VOLUME_PATH}/upload:/mnt/data
     environment:
        PORT: 9000
-    command: -enable-url-source -mount /mnt/data
+    command: -enable-placeholder -mount /mnt/data
     ports:
       - "9000:9000"
   backend:
