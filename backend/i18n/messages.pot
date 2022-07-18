@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-11 10:01+0000\n"
+"POT-Creation-Date: 2022-07-18 13:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "gallery.meta_title"
 msgstr ""
 
-#: tpl/gallery.jinja:96 tpl/sites.jinja:83 tpl/sites.jinja:170
+#: tpl/gallery.jinja:96 tpl/sites.jinja:84 tpl/sites.jinja:171
 msgid "sites.filters.nb_result"
 msgstr ""
 
@@ -189,11 +189,15 @@ msgstr ""
 msgid "sites.meta_title"
 msgstr ""
 
-#: tpl/sites.jinja:73
+#: tpl/sites.jinja:36 tpl/sites.jinja:74
 msgid "sites.filters.title"
 msgstr ""
 
-#: tpl/sites.jinja:134 tpl/sites.jinja:169
+#: tpl/sites.jinja:59
+msgid "sites.filters.reset"
+msgstr ""
+
+#: tpl/sites.jinja:135 tpl/sites.jinja:170
 msgid "sites.observation_points.title"
 msgstr ""
 

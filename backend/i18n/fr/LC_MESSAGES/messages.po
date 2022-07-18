@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-07-11 10:01+0000\n"
+"POT-Creation-Date: 2022-07-18 13:22+0000\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -20,23 +20,23 @@ msgstr ""
 
 #: utils.py:199
 msgid "sites.filter.themes"
-msgstr "Filtrer par thème(s)"
+msgstr "Thèmes"
 
 #: utils.py:203
 msgid "sites.filter.subthemes"
-msgstr "Filtrer par sous-thème(s)"
+msgstr "Sous-thème(s)"
 
 #: utils.py:207
 msgid "sites.filter.township"
-msgstr "Filtrer par commune(s)"
+msgstr "Commune(s)"
 
 #: utils.py:211
 msgid "sites.filter.years"
-msgstr "Filtrer par année(s)"
+msgstr "Année(s)"
 
 #: utils.py:327
 msgid "sites.filter.obervatories"
-msgstr "Filtrer par observatoire(s)"
+msgstr "Observatoire(s)"
 
 #: tpl/comparator-v1.jinja:8
 msgid "obs_point.buttons.download"
@@ -94,7 +94,7 @@ msgstr "1 an"
 msgid "gallery.meta_title"
 msgstr "Galerie photo"
 
-#: tpl/gallery.jinja:96 tpl/sites.jinja:83 tpl/sites.jinja:170
+#: tpl/gallery.jinja:96 tpl/sites.jinja:84 tpl/sites.jinja:171
 msgid "sites.filters.nb_result"
 msgstr "Filtre(s) : %(nb)s résultat(s)"
 
@@ -190,11 +190,11 @@ msgstr "Témoignages"
 msgid "sites.meta_title"
 msgstr "Sites d'observation"
 
-#: tpl/sites.jinja:73
+#: tpl/sites.jinja:36 tpl/sites.jinja:74
 msgid "sites.filters.title"
 msgstr "Filtrer par"
 
-#: tpl/sites.jinja:134 tpl/sites.jinja:169
+#: tpl/sites.jinja:135 tpl/sites.jinja:170
 msgid "sites.observation_points.title"
 msgstr "Sites d'observation"
 
