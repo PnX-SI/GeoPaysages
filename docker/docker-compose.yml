@@ -19,9 +19,7 @@ services:
       dockerfile: ./docker/Dockerfile.backend
     volumes:
       - ../backend:/app
-      #- ../backend/start.sh:/start.sh
       - /app/static/data/images
-      - ${VOLUME_PATH}/custom:/app/static/custom
       - ${VOLUME_PATH}/upload:/upload
     ports:
       - "${HTTP_PORT}:80"

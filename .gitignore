@@ -34,6 +34,7 @@ Thumbs.db
 *config.py
 *config.ts
 docker/.env
+docker/docker-compose.override.yml
 
 # Typings file.
 typings/

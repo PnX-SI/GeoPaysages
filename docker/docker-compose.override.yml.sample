@@ -1,0 +1,6 @@
+version: '3'
+services:
+  backend:
+    volumes:
+      - ${VOLUME_PATH}/custom:/app/static/custom
+      - ${VOLUME_PATH}/i18n:/app/i18n
