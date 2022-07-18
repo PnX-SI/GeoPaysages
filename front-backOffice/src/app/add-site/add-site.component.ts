@@ -449,12 +449,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         _.forEach(site.photos, (photo) => {
           this.initPhotos.push({
             id_photo: photo.id_photo,
-            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            imgUrl: Conf.img_srv + 'crop?file=' + photo.path_file_photo + '&width=120&height=120&type=jpeg',
             name: photo.path_file_photo,
           });
           this.photos.push({
             id_photo: photo.id_photo,
-            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            imgUrl: Conf.img_srv + 'crop?file=' + photo.path_file_photo + '&width=120&height=120&type=jpeg',
             name: photo.path_file_photo,
           });
         });
@@ -648,7 +648,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     _.remove(this.new_photos, (item) => {
       return item === photo;
     });
-    photo.imgUrl = photo.imgUrl.replace(Conf.staticPicturesUrl, '');
+    photo.imgUrl = photo.imgUrl.replace(Conf.img_srv, '');
     this.deleted_photos.push(photo);
   }
 

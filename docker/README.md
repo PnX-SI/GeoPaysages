@@ -44,7 +44,7 @@ Exemple :
 ```
 export const Conf = {
   apiUrl: '/api/',
-  staticPicturesUrl: '/static/data/images/',
+  img_srv: '/static/data/images/',
   customFiles: '/static/custom/',
   id_application: 1,
   ign_Key: 'ign key',

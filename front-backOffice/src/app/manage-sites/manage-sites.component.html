@@ -12,7 +12,7 @@
           [reorderable]="reorderable" [selectionType]="'single'" (activate)="onCenterChange($event)" (select)='onSelect($event)'>
           <ngx-datatable-column name="Photo">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <img class="main-photo" src="{{row.main_photo}}" alt="" width="80">
+              <img class="main-photo" src="{{row.main_photo}}" alt="">
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column  prop="ref_site" name="Référence" width="100">

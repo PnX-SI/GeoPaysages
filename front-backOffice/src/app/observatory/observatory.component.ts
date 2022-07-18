@@ -54,7 +54,7 @@ export class ObservatoryComponent implements OnInit {
     zoom: 10,
     center: latLng(Conf.map_lat_center, Conf.map_lan_center),
   };
-  photoBaseUrl = Conf.staticPicturesUrl;
+  photoBaseUrl = Conf.img_srv;
   drawOptions = {
     position: 'topleft',
     draw: {
@@ -448,7 +448,7 @@ export class ObservatoryComponent implements OnInit {
     _.remove(this.new_photos, (item) => {
       return item === photo;
     });
-    photo.imgUrl = photo.imgUrl.replace(Conf.staticPicturesUrl, '');
+    photo.imgUrl = photo.imgUrl.replace(Conf.img_srv, '');
     this.deleted_photos.push(photo);
   }
 
