@@ -304,7 +304,7 @@
               {{ noticeName
               }}<i
                 *ngIf="edit_btn"
-                class="icon-trash remove-file"
+                class="icon-bin remove-file"
                 (click)="removeNotice()"
               ></i>
             </div>
@@ -324,7 +324,7 @@
               [class.active_edit]="edit_btn"
               (click)="editForm()"
             >
-              <i class="icon-pen"></i>{{ edit_btn_text }}
+              <i class="icon-pencil"></i>{{ edit_btn_text }}
             </button>
             <button
               class="btn btn-outline-success btn-submit"
@@ -339,7 +339,7 @@
               class="btn btn-outline-danger btn-delete"
               (click)="openDeleteModal(content)"
             >
-              <i class="icon-trash delete-site"></i>Supprimer le site
+              <i class="icon-bin delete-site"></i>Supprimer le site
             </button>
             <button
               class="btn btn-outline-secondary btn-cancel"
@@ -370,7 +370,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h5 class="modal-title"><i class="icon-trash"></i></h5>
+    <h5 class="modal-title"><i class="icon-bin"></i></h5>
   </div>
   <div class="modal-body">
     Êtes-vous sûr de vouloir supprimer ce Site ?
