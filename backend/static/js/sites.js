@@ -387,9 +387,10 @@ geopsg.initSites = (options) => {
           if (site.ref_site) {
             markerText += '(réf : ' + site.ref_site + ')';
           }
+          imgUrl = `${options.img_srv}/crop?file=${site.photo}&width=300&height=150`;
           marker.bindPopup(
             '<div class="img" style="background-image: url(' +
-              site.photo +
+              imgUrl +
               ');"></div><div class="title">' +
               markerText +
               '</div>',

@@ -285,7 +285,7 @@ def getFiltersData():
         id_site = site.get('id_site')
         try:
             photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-            site['photo'] = getThumbnail(photo).get('output_url')
+            site['photo'] = photo.get('path_file_photo') #getThumbnail(photo).get('output_url')
         except StopIteration:
             pass
 
@@ -318,7 +318,7 @@ def getFiltersData():
                 'data': {
                     'geom': observatory['geom'],
                     'color': observatory['color'],
-                    'logo': url_for('static', filename=DATA_IMAGES_PATH + observatory['logo'])
+                    'logo': observatory['logo'] #url_for('static', filename=DATA_IMAGES_PATH + observatory['logo'])
                 }
             })
 

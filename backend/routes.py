@@ -80,7 +80,7 @@ def home():
         except StopIteration:
             pass
         if photo:
-            site['photo'] = utils.getMedium(photo).get('output_url')
+            site['photo'] = photo.get('path_file_photo') #utils.getMedium(photo).get('output_url')
         site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
 

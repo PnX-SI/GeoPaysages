@@ -61,7 +61,13 @@ migrate.init_app(app, db)
 
 @app.context_processor
 def inject_to_tpl():
-    return dict(dbconf=utils.getDbConf(), debug=app.debug, locale=get_locale(), isDbPagePublished=utils.isDbPagePublished)
+    return dict(
+        dbconf=utils.getDbConf(), 
+        debug=app.debug, 
+        locale=get_locale(), 
+        isDbPagePublished=utils.isDbPagePublished,
+        img_srv=app.config['IMG_SRV']
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

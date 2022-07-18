@@ -188,7 +188,7 @@
                   variant="link"
                   class="rounded-0 text-left btn-observatory border-0 text-decoration-none">
                   <div class="icon d-inline-block mr-2">
-                    <img :src="observatory.data.logo" />
+                    <img :src="'{{img_srv}}/crop?file=' + observatory.data.logo + '&width=100&height=100'" />
                   </div>
                   <div class="d-inline-block align-middle">
                     <span class="d-block text-capitalize" v-html="observatory.label"></span>
@@ -265,7 +265,8 @@
         sites: {{sites | tojson}},
         filters: {{filters | tojson}},
         dbconf: {{dbconf | tojson}},
-        ign_Key : {{ign_Key  | tojson}}
+        ign_Key: {{ign_Key  | tojson}},
+        img_srv: {{img_srv  | tojson}},
       })
     }
   };

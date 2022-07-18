@@ -88,7 +88,8 @@ def patchObservatoryImage(id):
         abort(404)
     
     dicts = observatories_schema.dump(rows)
-    base_path = './static/' + DATA_IMAGES_PATH
+    #base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/upload/'
     
     _, ext = os.path.splitext(image.filename)
     filename = 'observatory-' + str(id) + '-' + field + '-' + utils.getRandStr(4) + ext
@@ -230,7 +231,8 @@ def returnCurrentUser(id_role=None):
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
 def deleteSite(id_site):
-    base_path = './static/' + DATA_IMAGES_PATH
+    #base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/upload/'
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
     photos = photo_schema.dump(photos)
@@ -358,7 +360,8 @@ def delete_notice(notice):
 @api.route('/api/updatePhoto', methods=['PATCH'])
 @fnauth.check_auth(2, False, None, None)
 def update_photo():
-    base_path = './static/' + DATA_IMAGES_PATH
+    #base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/upload/'
     data = request.form.get('data')
     image = request.files.get('image')
     data_serialized = json.loads(data)
@@ -391,7 +394,8 @@ def update_photo():
 @api.route('/api/deletePhotos', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def deletePhotos():
-    base_path = './static/' + DATA_IMAGES_PATH
+    #base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/upload/'
     photos = request.get_json()
     for photo in photos:
         photos_query = models.TPhoto.query.filter_by(
