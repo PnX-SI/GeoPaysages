@@ -85,12 +85,12 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
 						site.name_site +
 						'</div>' +
 						'<div class=""> <img src=' +
-						Conf.staticPicturesUrl + 'crop?file=' +  site.main_photo + '&width=80&height=80&type=jpeg' +
+						Conf.img_srv + 'crop?file=' +  site.main_photo + '&width=80&height=80&type=jpeg' +
 						'> </div>';
 					const customOptions = {
 						className: 'custom-popup'
 					};
-					site.main_photo = Conf.staticPicturesUrl + 'crop?file=' +  site.main_photo + '&width=50&height=50&type=jpeg'
+					site.main_photo = Conf.img_srv + 'crop?file=' +  site.main_photo + '&width=50&height=50&type=jpeg'
 					site.marker = newMarker.bindPopup(customPopup, customOptions);
 					newMarker
 						.bindPopup(customPopup, customOptions)

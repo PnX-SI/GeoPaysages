@@ -55,7 +55,7 @@ export class GalleryComponent implements OnInit {
           if (photo.id_photo === data.site[0].main_photo) {
             photo.main_photo = true;
           }
-          photo.sm = Conf.staticPicturesUrl + 'crop?file=' + photo.path_file_photo + '&width=150&height=150&type=jpeg';
+          photo.sm = Conf.img_srv + 'crop?file=' + photo.path_file_photo + '&width=150&height=150&type=jpeg';
           photo.cssClass = 'gallery';
         });
 

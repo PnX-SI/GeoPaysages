@@ -139,7 +139,7 @@ Désampler et éditer le fichier de configuration
 
 > Pour utiliser l'utilisateur \"admin\" créé par défaut, il faut renseigner `id_application : 1`
 
-> Pour `apiUrl` et `staticPicturesUrl`, bien mettre <http://xxx.xxx.xxx.xxx>, si utilisation d'une adresse IP
+> Pour `apiUrl` et `img_srv`, bien mettre <http://xxx.xxx.xxx.xxx>, si utilisation d'une adresse IP
 
 **2. Lancer l'installation automatique de l'application :**
 ```

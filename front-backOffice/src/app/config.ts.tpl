@@ -1,6 +1,6 @@
 export const Conf = {
     apiUrl: '<server_name>/api/',
-    staticPicturesUrl: '<server_name>/pictures/',
+    img_srv: '<server_name>/pictures/',
     customFiles: '<server_name>/static/custom/',
     id_application: id_app,
     ign_Key : 'ign key',
