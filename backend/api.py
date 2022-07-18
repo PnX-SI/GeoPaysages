@@ -127,7 +127,7 @@ def returnAllSites():
             if main_photo:
                 photo_schema = models.TPhotoSchema()
                 main_photo = photo_schema.dump(main_photo)
-                site['main_photo'] = utils.getThumbnail(main_photo).get('output_name')
+                site['main_photo'] = main_photo.get("path_file_photo") #utils.getThumbnail(main_photo).get('output_name')
             else:
                 site["main_photo"] = "no_photo"
 
@@ -164,9 +164,6 @@ def returnSiteById(id_site):
     site[0]['themes'] = themes_list
     site[0]['subthemes'] = subthemes_list
 
-    for photo in dump_photos:
-        photo['sm'] = utils.getThumbnail(photo).get('output_name'),
-
     photos = dump_photos
     return jsonify(site=site, photos=photos), 200
 
@@ -175,8 +172,6 @@ def returnSiteById(id_site):
 def gallery():
     get_photos = models.TPhoto.query.order_by('id_site').all()
     dump_photos = photo_schema.dump(get_photos)
-    for photo in dump_photos:
-        photo['sm'] = utils.getThumbnail(photo).get('output_name')
 
     return jsonify(dump_photos), 200
 

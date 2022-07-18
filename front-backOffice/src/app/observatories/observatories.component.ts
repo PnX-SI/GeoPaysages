@@ -92,7 +92,7 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
     this.observatoriesSrv.getAll().subscribe(
       (items) => {
         _.forEach(items, (observatory) => {
-          observatory.photo = Conf.staticPicturesUrl + observatory.photo
+          observatory.logo = Conf.staticPicturesUrl + 'crop?file=' +  observatory.logo + '&width=50&height=50&type=jpeg'
           /* const newMarker = Marker(observatory.geom, {
             icon: L.icon({
               iconSize: [25, 41],

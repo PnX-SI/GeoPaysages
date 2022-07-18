@@ -72,7 +72,6 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
 		this.siteService.getAllSites().subscribe(
 			(sites) => {
 				_.forEach(sites, (site) => {
-					site.main_photo = Conf.staticPicturesUrl + site.main_photo;
 					const newMarker = marker(site.geom, {
 						icon: L.icon({
 							iconSize: [ 25, 41 ],
@@ -85,12 +84,13 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
 						'<div class="title">' +
 						site.name_site +
 						'</div>' +
-						'<div class="img-inner"> <img " src=' +
-						site.main_photo +
+						'<div class=""> <img src=' +
+						Conf.staticPicturesUrl + 'crop?file=' +  site.main_photo + '&width=80&height=80&type=jpeg' +
 						'> </div>';
 					const customOptions = {
 						className: 'custom-popup'
 					};
+					site.main_photo = Conf.staticPicturesUrl + 'crop?file=' +  site.main_photo + '&width=50&height=50&type=jpeg'
 					site.marker = newMarker.bindPopup(customPopup, customOptions);
 					newMarker
 						.bindPopup(customPopup, customOptions)

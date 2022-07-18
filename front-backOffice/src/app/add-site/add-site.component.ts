@@ -449,12 +449,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         _.forEach(site.photos, (photo) => {
           this.initPhotos.push({
             id_photo: photo.id_photo,
-            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            imgUrl: Conf.staticPicturesUrl + 'crop?file=' + photo.path_file_photo + '&width=120&height=120&type=jpeg',
             name: photo.path_file_photo,
           });
           this.photos.push({
             id_photo: photo.id_photo,
-            imgUrl: Conf.staticPicturesUrl + photo.sm,
+            imgUrl: Conf.staticPicturesUrl + 'crop?file=' + photo.path_file_photo + '&width=120&height=120&type=jpeg',
             name: photo.path_file_photo,
           });
         });
