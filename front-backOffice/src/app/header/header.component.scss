@@ -63,16 +63,13 @@ li {
   font-weight: 500
 }
 
-.icon-user {
-  color: gray;
-  font-size: 20px;
-}
 
-.icon-logout{
-  font-size: 26px
-}
 .logout{
   padding-bottom: 3px;
   padding-left: 0px;
-  padding-right: 20px
+  padding-right: 20px;
+
+  .icon-exit{
+    font-size: 26px
+  }
 }

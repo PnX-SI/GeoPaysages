@@ -33,6 +33,9 @@
        class="app-sites container-fluid d-flex flex-column"
        v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
     <div class="row pt-4 pb-2 d-none d-md-flex header-filters sans-serif">
+    <div class="col-1">
+      <h5 class="pt-2">{{ _('sites.filters.title') }}</h5>
+    </div>
       <div v-for="(filter) in filters" v-bind:key="filter.name" class="col-2">
         <small class="floating-filter-label d-block ml-2 px-1"
                v-bind:class="{ active: filter.selectedItems.length }"
@@ -52,7 +55,7 @@
         <template><span slot="noResult">Pas de résultats</span></template>
         </v-multiselect>
       </div>
-      <div class="col-2">
+      <div class="col-1">
         <button type="button"
                 @click="onCancelClick()"
                 class="btn btn-outline-secondary">Réinitialiser</button>

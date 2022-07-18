@@ -211,6 +211,16 @@ html {
   font-family: 'Crimson Text', serif;
 }
 
+
+// Surchage du body pour appliquer du gris sur toute la page quand on est dans la gestion d'un observatoire
+body {
+  background-color: #e8e8e8 !important;
+}
+
+.navbar  {
+  background-color: white;
+}
+
 h1,
 h2,
 h3,
