@@ -152,7 +152,7 @@ geopsg.comparator = (options) => {
           img.onload = function () {
             resolve(this);
           };
-          img.src = '/static/data/images/' + filename;
+          img.src = options.img_srv + '/convert?type=jpeg&file=' + filename;
         });
       },
       clearMaps() {
