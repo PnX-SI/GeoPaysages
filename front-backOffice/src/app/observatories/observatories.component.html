@@ -48,17 +48,10 @@
               {{ row.observatory.title }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column prop="is_published" name="Publication">
+          <ngx-datatable-column prop="is_published" name="Est publié">
             <ng-template let-row="row" ngx-datatable-cell-template>
-              <label class="switch">
-                <input
-                  type="checkbox"
-                  class="success"
-                  [checked]="row.observatory.is_published"
-                  disabled
-                />
-                <span class="slider round"></span>
-              </label>
+                <div *ngIf="row.observatory.is_published; else elseBlock"><span class="icon-checkmark text-success"></span></div>
+                <ng-template #elseBlock><span class="icon-cross text-danger"></span></ng-template>
             </ng-template>
           </ngx-datatable-column>
         </ngx-datatable>
