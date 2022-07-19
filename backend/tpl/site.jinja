@@ -25,8 +25,11 @@
 
 {% block header_title %}
 <div class="mb-4">
-  <h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }}</h3>
-  <h5 class="text-secondary"><img class="mr-2" src="{{ img_srv }}/resize?width=25&heigth=25&file={{ site.observatory.logo }}">{{ site.observatory.title }}</h5>
+  <h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} 
+  {% if site.ref_site: %}
+    <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
+  {% endif %}</h3>
+  <h5 class="text-secondary"><img class="mr-2" src="{{ img_srv }}/resize?width=25&height=25&file={{ site.observatory.logo }}">{{ site.observatory.title }}</h5>
 </div>
 {% endblock %}
 
@@ -34,6 +37,7 @@
 
 {% block content %}
 <div class="page-content container-fluid" id="js-app-site">
+  <div class="text-center mb-sm-3"><i>{{ site.legend_site }}</i></div>
   <div class="row">
     <div class="col col-main">
       <app-comparator-v{{ comparator_version }}></app-comparator-v{{ comparator_version }}>
@@ -66,14 +70,14 @@
             </div>
           </div>
           <h5 class="text-uppercase">Mots clés</h5>
-          <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
+          <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
             <div class="target font-italic">
             {% for un_sous_theme in site.stheme %}
-                {{ un_sous_theme }}{{ ", " if not loop.last else "" }}
+                <span>{{ un_sous_theme }}</span>{{ ", " if not loop.last else "" }}
             {% endfor %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('stheme')">
                 <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
                 <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
