@@ -4,7 +4,7 @@ geopsg.site = (options) => {
     el: '#js-app-site',
     data: () => {
       return {
-        textCollapses: ['description', 'testimonial'],
+        textCollapses: ['description', 'testimonial', 'stheme'],
         textCollapsables: [],
         textCollapseds: []
       }
@@ -24,6 +24,12 @@ geopsg.site = (options) => {
         return {
           'text-collapsable': this.textCollapsables.indexOf('testimonial') > -1,
           'text-collapsed': this.textCollapseds.indexOf('testimonial') > -1
+        }
+      },
+      textCollapseClsStheme() {
+        return {
+          'text-collapsable': this.textCollapsables.indexOf('stheme') > -1,
+          'text-collapsed': this.textCollapseds.indexOf('stheme') > -1
         }
       }
     },

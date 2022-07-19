@@ -24,11 +24,13 @@
 {% endblock %}
 
 {% block header_title %}
-<h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }}
+<div class="mb-4">
+  <h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} 
   {% if site.ref_site: %}
-  <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
-  {% endif %}
-</h3>
+    <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
+  {% endif %}</h3>
+  <h5 class="text-secondary"><img class="mr-2" src="{{ img_srv }}/resize?width=25&height=25&file={{ site.observatory.logo }}">{{ site.observatory.title }}</h5>
+</div>
 {% endblock %}
 
 {% block bodyClassNames %}page-site with-comparator-v{{ comparator_version }} {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
@@ -67,6 +69,20 @@
               </button>
             </div>
           </div>
+          <h5 class="text-uppercase">Mots clés</h5>
+          <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
+            <div class="target font-italic">
+            {% for un_sous_theme in site.stheme %}
+                <span>{{ un_sous_theme }}</span>{{ ", " if not loop.last else "" }}
+            {% endfor %}
+            </div>
+            <div class="gradient text-right visible-text-collapsable pt-3">
+              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('stheme')">
+                <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
+              </button>
+            </div>
+          </div>
           {% if site.testim_site %}
           <h5 class="text-uppercase mt-4">{{ _('obs_point.testimonials') }}</h5>
           <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
@@ -96,7 +112,6 @@
       geopsg.site({
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
-        //photos: {{photos | tojson}}
       });
     }
   });
