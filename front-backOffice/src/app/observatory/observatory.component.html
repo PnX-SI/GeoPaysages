@@ -4,201 +4,139 @@
   <div class="row">
     <div class="col-6 col-table">
       <div *ngIf="loadForm" class="observatory-block">
-        <form
-          [formGroup]="observatoryForm"
-          (submit)="submitObservatory(observatoryForm)"
-          disabled
-        >
+        <form [formGroup]="observatoryForm" (submit)="submitObservatory(observatoryForm)" disabled>
           <div class="inner-checkbox form-group">
             <div class="label">Publier:</div>
             <label class="switch">
-              <input
-                formControlName="is_published"
-                type="checkbox"
-                class="success form-control"
-              />
-              <span
-                [ngClass]="{
+              <input formControlName="is_published" type="checkbox" class="success form-control" />
+              <span [ngClass]="{
                   'slider-disabled': !this.isEditing
-                }"
-                class="slider round"
-              ></span>
+                }" class="slider round"></span>
             </label>
           </div>
-          <div class="row form-item">
+          <div class="row mb-3">
             <div class="col">
-              <label class="label" for="observatory-title"
-                >Nom de l'observatoire*</label
-              >
-              <input
-                InputFeedBack
-                type="text"
-                formControlName="title"
-                id="observatory-title"
-                class="form-control"
-                placeholder="nom du observatory"
-              />
-              <app-form-error
-                controlName="title"
-                errorKey="required"
-              ></app-form-error>
+              <label class="label" for="observatory-title">Nom de l'observatoire*</label>
+              <input InputFeedBack type="text" formControlName="title" id="observatory-title" class="form-control"
+                placeholder="nom du observatory" />
+              <app-form-error controlName="title" errorKey="required"></app-form-error>
             </div>
             <div class="col">
               <label class="label" for="observatory-ref">RÉFÉRENCE*</label>
-              <input
-                InputFeedBack
-                type="text"
-                formControlName="ref"
-                id="observatory-ref"
-                class="form-control"
-                placeholder="référence"
-              />
-              <app-form-error
-                controlName="ref"
-                errorKey="required"
-              ></app-form-error>
+              <input InputFeedBack type="text" formControlName="ref" id="observatory-ref" class="form-control"
+                placeholder="référence" />
+              <app-form-error controlName="ref" errorKey="required"></app-form-error>
             </div>
           </div>
-          <div class="row form-item">
-            <div class="col">
-              <label class="label" for="observatory-color"
-                >Couleur du thème</label
-              >
-              <input
-                InputFeedBack
-                type="text"
-                formControlName="color"
-                id="observatory-color"
-                class="form-control"
-                placeholder="#454545"
-              />
-              <app-form-error
-                controlName="color"
-                errorKey="required"
-              ></app-form-error>
-            </div>
-            <div class="col">
-              <label class="label">Photo</label>
-              <div *ngIf="observatory?.photo">
-                <a [href]="photoBaseUrl + 'convert?file='+ observatory?.photo + '&type=jpeg'" target="_blank">
-                  {{ observatory?.photo }} <i class="icon-eye"></i>
-                </a>
+          <div class="row mb-3">
+            <div class="col-6">
+              <div class='row justify-content-between'>
+                <div class='col-6'>
+                  <label class="label" for="observatory-color">Couleur du thème</label>
+                </div>
+                <div class='col-6 text-right'>
+                  <span class="icon-info" placement="top" ngbTooltip="S'applique sur les pins et le zonage"></span>
+                </div>
               </div>
-              <input
-                style="display: none"
-                accept="image/x-png,image/gif,image/jpeg"
-                type="file"
-                (change)="onPhotoChange($event)"
-                #photoInput
-              />
-              <button
-                type="button"
-                *ngIf="!selectedPhoto"
-                class="blue-btn"
-                (click)="photoInput.click()"
-                [disabled]="!isEditing"
-              >
-                <i class="icon-download"></i
-                >{{
-                  observatory?.photo ? 'Modifier la photo' : 'Ajouter une photo'
+
+              <input InputFeedBack type="text" formControlName="color" id="observatory-color" class="form-control"
+                placeholder="#454545" />
+              <app-form-error controlName="color" errorKey="required"></app-form-error>
+            </div>
+            <div class='col-6'>
+
+            </div>
+
+          </div>
+          <div class="row mb-3">
+            <div class="col-6">
+              <div class='row justify-content-between'>
+                <div class='col-6'>
+                  <label class="label" for="observatory-color">Photo</label>
+                </div>
+                <div class='col-6 text-right'>
+                  <span class="icon-info" placement="top"
+                    ngbTooltip="S'applique sur la vignette en page d’accueil"></span>
+                </div>
+              </div>
+              <div>
+                <div *ngIf="observatory?.photo">
+                  <a [href]="photoBaseUrl + 'convert?file='+ observatory?.photo + '&type=jpeg'" target="_blank">
+                    {{ observatory?.photo }} <i class="icon-eye"></i>
+                  </a>
+                </div>
+              </div>
+              <input style="display: none" accept="image/x-png,image/gif,image/jpeg" type="file"
+                (change)="onPhotoChange($event)" #photoInput />
+              <button type="button" *ngIf="!selectedPhoto" class="blue-btn w-100" (click)="photoInput.click()"
+                [disabled]="!isEditing">
+                {{
+                observatory?.photo ? 'Modifier la photo' : 'Importer une photo'
                 }}
               </button>
               <div *ngIf="selectedPhoto">
                 Photo sélectionnée :<br />
-                <button
-                  class="btn p-0"
-                  type="button"
-                  (click)="onPhotoCancel(photoInput)"
-                >
+                <button class="btn p-0" type="button" (click)="onPhotoCancel(photoInput)">
                   <i class="icon-cancel-circle text-danger"></i>
                 </button>
                 {{ selectedPhoto.name }}
               </div>
+              <br>
+              <small class="text-secondary">Formats JPG/PNG</small>
             </div>
-          </div>
-          <div class="row form-item">
-            <div class="col">
-              <label class="label">Logo</label>
-              <div *ngIf="observatory?.logo">
-                <a [href]="photoBaseUrl + 'blur?file='+ observatory?.logo + '&sigma=0.2'" target="_blank">
-                  {{ observatory?.logo }} <i class="icon-eye"></i>
-                </a>
+            <div class="col-6">
+              <div class='row justify-content-between'>
+                <div class='col-6'>
+                  <label class="label" for="observatory-color">Logo</label>
+                </div>
+                <div class='col-6 text-right'>
+                  <span class="icon-info" placement="top"
+                    ngbTooltip="S’applique sur les différentes listes des observatoires (page gestion des observatoires et sur la carte) ainsi que sur la fiche des sites"></span>
+                </div>
               </div>
-              <input
-                style="display: none"
-                accept="image/x-png,image/gif,image/jpeg"
-                type="file"
-                (change)="onLogoChange($event)"
-                #logoInput
-              />
-              <button
-                type="button"
-                *ngIf="!selectedLogo"
-                class="blue-btn"
-                (click)="logoInput.click()"
-                [disabled]="!isEditing"
-              >
-                <i class="icon-download"></i
-                >{{ observatory?.logo ? 'Modifier le logo' : 'Ajouter un logo' }}
+              <div>
+                <div *ngIf="observatory?.logo">
+                  <a [href]="photoBaseUrl + 'blur?file='+ observatory?.logo + '&sigma=0.2'" target="_blank">
+                    {{ observatory?.logo }} <i class="icon-eye"></i>
+                  </a>
+                </div>
+              </div>
+              <input style="display: none" accept="image/x-png,image/gif,image/jpeg" type="file"
+                (change)="onLogoChange($event)" #logoInput />
+              <button type="button" *ngIf="!selectedLogo" class="blue-btn w-100" (click)="logoInput.click()"
+                [disabled]="!isEditing">
+                {{ observatory?.logo ? 'Modifier le logo' : 'Importer un logo' }}
               </button>
               <div *ngIf="selectedLogo">
                 Logo sélectionnée :<br />
-                <button
-                  class="btn p-0"
-                  type="button"
-                  (click)="onLogoCancel(logoInput)"
-                >
+                <button class="btn p-0" type="button" (click)="onLogoCancel(logoInput)">
                   <i class="icon-cancel-circle text-danger"></i>
                 </button>
                 {{ selectedLogo.name }}
               </div>
+              <br>
+              <small class="text-secondary">Formats JPG/PNG/SVG</small>
             </div>
           </div>
-          <div class="row form-item">
+          <div class="row mb-3">
             <div class="col">
               <label class="label" for="observatory-geom">Zonage</label>
-              <textarea
-                InputFeedBack
-                formControlName="geom"
-                id="observatory-geom"
-                class="form-control"
-                placeholder="Coller ici la géométrie de la zone de l’observatoire au format WKT"
-              ></textarea>
-              <app-form-error
-                controlName="geom"
-                errorKey="required"
-              ></app-form-error>
+              <textarea InputFeedBack formControlName="geom" id="observatory-geom" rows="5" class="form-control"
+                placeholder="Coller ici la géométrie de la zone de l’observatoire au format WKT"></textarea>
+              <app-form-error controlName="geom" errorKey="required"></app-form-error>
             </div>
           </div>
-          <ngb-alert
-            class="alert"
-            *ngIf="alert"
-            [dismissible]="false"
-            [type]="alert.type"
-            >{{ alert.message }}</ngb-alert
-          >
+          <ngb-alert class="alert" *ngIf="alert" [dismissible]="false" [type]="alert.type">{{ alert.message }}
+          </ngb-alert>
           <div class="submit-btn-group">
-            <button
-              type="button"
-              *ngIf="id_observatory"
-              class="btn btn-outline-warning btn-edit"
-              [class.active_edit]="isEditing"
-              (click)="editForm()"
-            >
+            <button type="button" *ngIf="id_observatory" class="btn btn-outline-warning btn-edit"
+              [class.active_edit]="isEditing" (click)="editForm()">
               <i class="icon-pencil"></i>{{ edit_btn_text }}
             </button>
-            <button
-              class="btn btn-outline-success btn-submit"
-              type="submit"
-              [disabled]="!isEditing"
-            >
+            <button class="btn btn-outline-success btn-submit" type="submit" [disabled]="!isEditing">
               {{ submit_btn_text }}
             </button>
-            <button
-              class="btn btn-outline-secondary btn-cancel"
-              type="button"
-              (click)="onCancel()"
-            >
+            <button class="btn btn-outline-secondary btn-cancel" type="button" (click)="onCancel()">
               Retour à la liste
             </button>
           </div>
