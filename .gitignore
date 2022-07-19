@@ -31,9 +31,7 @@ Thumbs.db
 *.swp
 
 # Conf
-*config.py
 *config.ts
-docker/.env
 docker/docker-compose.override.yml
 
 # Typings file.
@@ -73,3 +71,5 @@ geopaysagesftpclient/.vscode/
 geopaysagesftpclient/geopaysagesftpclient.egg-info/
 geopaysagesftpclient/output/
 geopaysagesftpclient/env/
+
+data
