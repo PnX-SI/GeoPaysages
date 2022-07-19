@@ -269,7 +269,7 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
 
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
-    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color"])
+    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color", "logo"])
     main_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme", "icon"])
 
     class Meta:

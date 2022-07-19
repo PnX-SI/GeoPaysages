@@ -179,6 +179,21 @@ def site(id_site):
     get_photos_by_site = models.TPhoto.query.filter_by(id_site = id_site, display_gal_photo=True).order_by('filter_date')
     photos = photo_schema.dump(get_photos_by_site)
 
+    cor_sthemes_themes = site.get('cor_site_stheme_themes')
+    cor_list = []
+    subthemes_list = []
+    for cor in cor_sthemes_themes:
+        cor_list.append(cor.get('id_stheme_theme'))
+    query = models.CorSthemeTheme.query.filter(
+        models.CorSthemeTheme.id_stheme_theme.in_(cor_list))
+    themes_sthemes = themes_sthemes_schema.dump(query)
+
+    for item in themes_sthemes:
+        if item.get('dico_stheme').get('id_stheme') not in subthemes_list:
+            subthemes_list.append(item.get('dico_stheme').get('name_stheme'))
+    
+    site['stheme'] = list(set(subthemes_list))
+
     def getPhoto(photo):
         date_diplay = {}
         date_approx = photo.get('date_photo')
