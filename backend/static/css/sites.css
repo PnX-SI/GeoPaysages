@@ -40,7 +40,7 @@
   height: 20px;
 }
 
-.app-sites .block-legend .legend-item > :not(.icon) {
+.app-sites .block-legend .legend-item> :not(.icon) {
   line-height: 2;
   display: inline-block;
   vertical-align: text-top;
@@ -142,10 +142,6 @@
 
 .app-sites .sidebar .filters {
   width: 100%;
-}
-
-.app-sites .sidebar .text-right .align-text-top {
-  font-family: 'Hind', sans-serif;
 }
 
 .app-sites .sidebar .text-right .mr-1 {

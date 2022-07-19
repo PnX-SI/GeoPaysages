@@ -4,8 +4,8 @@
   display: flex;
   flex-direction: column;
   --tools-top: 50px;
-  font-family: 'Hind', sans-serif;
 }
+
 @media (min-width: 576px) {
   .page-site .app-comparator {
     --tools-top: 8px;
@@ -17,12 +17,15 @@
   z-index: 1001;
   top: var(--tools-top);
 }
+
 .page-site .app-comparator .photo-selector.show {
   z-index: 1002;
 }
+
 .page-site .app-comparator .photo-selector.left {
   left: 8px;
 }
+
 .page-site .app-comparator .photo-selector.right {
   right: 8px;
 }
@@ -50,7 +53,7 @@
   padding: 6px 0 0 12px;
 }
 
-.page-site .app-comparator .mode-selector-label > span {
+.page-site .app-comparator .mode-selector-label>span {
   border-right: 1px solid #fff;
 }
 
@@ -62,9 +65,11 @@
   padding: 0 5px;
   max-width: calc(50% - 2px);
 }
+
 .page-site .app-comparator .photo-caption.left {
   left: 0;
 }
+
 .page-site .app-comparator .photo-caption.right {
   right: 0;
 }

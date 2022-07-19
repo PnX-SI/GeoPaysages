@@ -111,7 +111,6 @@ a:hover {
 }
 
 button {
-  font-family: 'Hind', sans-serif;
   cursor: pointer;
 }
 
@@ -210,7 +209,7 @@ ng-select {
 
 body,
 html {
-  font-family: 'Crimson Text', serif;
+  font-family: Roboto;
 }
 
 
@@ -221,17 +220,6 @@ body {
 
 .navbar  {
   background-color: white;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.sans-serif,
-.btn {
-  font-family: 'Hind', sans-serif;
 }
 
 h1,

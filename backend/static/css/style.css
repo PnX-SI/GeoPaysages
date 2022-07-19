@@ -60,7 +60,6 @@ a:hover {
 }
 
 button {
-  font-family: 'Hind', sans-serif;
   cursor: pointer;
 }
 
@@ -105,7 +104,7 @@ button {
 .btn-primary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary-light);
   border-color: var(--color-primary-light);
@@ -128,7 +127,7 @@ button {
 
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show > .btn-secondary.dropdown-toggle {
+.show>.btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
@@ -138,7 +137,7 @@ button {
   color: var(--color-primary);
 }
 
-.btn-group-vertical > .btn + .btn {
+.btn-group-vertical>.btn+.btn {
   margin-top: 0;
 }
 
@@ -183,7 +182,7 @@ button {
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
-.show > .btn-outline-primary.dropdown-toggle {
+.show>.btn-outline-primary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary) !important;
@@ -245,20 +244,7 @@ button {
 
 body,
 html {
-  font-family: 'Crimson Text', serif;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.sans-serif,
-.btn,
-.modal,
-.b-toaster {
-  font-family: 'Hind', sans-serif;
+  font-family: Roboto;
 }
 
 h1,
@@ -490,7 +476,6 @@ h6 .light {
 }
 
 .modal-fs.modal-img figcaption {
-  font-family: 'Hind', sans-serif;
   font-weight: 700 !important;
   position: absolute;
   bottom: 10px;
@@ -555,7 +540,6 @@ footer ul {
 
 footer h6 {
   font-weight: bold;
-  font-family: 'Hind', sans-serif;
   margin-bottom: 15px;
 }
 
