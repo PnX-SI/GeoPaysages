@@ -106,7 +106,7 @@
       if (document.readyState == 'complete') {
         geopsg.initGallery({
           observatories: {{observatories | tojson}},
-          sites: {{sites | tojson}},
+          sites: {{sites | tojson}}.sort(() => Math.random() - 0.5),
           filters: {{filters | tojson}},
           dbconf: {{dbconf | tojson}}
         })
