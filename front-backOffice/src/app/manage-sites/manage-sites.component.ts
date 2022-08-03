@@ -135,6 +135,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
               'id_site',
               'marker',
               'ref_site',
+              'observatory.title',
             ])
           );
         });
