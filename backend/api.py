@@ -265,14 +265,6 @@ def update_site():
         id_site=site.get('id_site')).delete()
     models.TSite.query.filter_by(id_site=site.get('id_site')).update(site)
     db.session.commit()
-    photos = models.TPhoto.query.filter_by(id_site=site.get('id_site')).all()
-    photos = photo_schema.dump(photos)
-    base_path = './static/' + DATA_IMAGES_PATH
-    for photo in photos:
-        photo_name = photo.get('path_file_photo')
-        for fileName in os.listdir(base_path):
-            if fileName.endswith('_' + photo_name):
-                os.remove(base_path + fileName)
     return jsonify('site updated successfully'), 200
 
 
@@ -296,7 +288,8 @@ def add_cor_site_theme_stheme():
 @api.route('/api/addPhotos', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
 def upload_file():
-    base_path = './static/' + DATA_IMAGES_PATH
+    # base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/upload/'
     data = request.form.getlist('data')
     new_site = request.form.getlist('new_site')
     uploaded_images = request.files.getlist('image')
