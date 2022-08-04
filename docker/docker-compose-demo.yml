@@ -33,6 +33,8 @@ services:
     command: -enable-placeholder -mount /mnt/data
     ports:
       - "9000:9000"
+    networks:
+      - traefik
     labels:
       - traefik.enable=true
       - traefik.http.routers.imaginary.rule=PathPrefix(`/imaginary`)
