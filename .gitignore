@@ -32,6 +32,7 @@ Thumbs.db
 
 # Conf
 *config.ts
+docker/.env-demo
 docker/docker-compose.override.yml
 
 # Typings file.
