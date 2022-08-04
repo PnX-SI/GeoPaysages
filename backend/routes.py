@@ -34,14 +34,9 @@ def home():
     get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
     dump_sites = site_schema.dump(get_sites) """
 
-    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY RANDOM() LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
-    
-    if len(sites):
-        diff_nb = 6 - len(sites)
-        for x in range(0, diff_nb):
-            sites.append(sites[x])
 
     photo_ids = []
     sites_without_photo = []
