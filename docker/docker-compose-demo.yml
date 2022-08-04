@@ -99,10 +99,10 @@ services:
       - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_DB=geopaysages
+      - POSTGRES_DB=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_SERVER=db
-      - POSTGRES_USER=root
+      - POSTGRES_USER=${DB_USER}
 
 volumes:
   geopaysages-db-data:
