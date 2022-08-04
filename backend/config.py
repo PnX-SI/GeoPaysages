@@ -12,7 +12,7 @@ SESSION_TYPE = 'filesystem'
 SECRET_KEY = 'secret key'
 
 # Do not edit except in exceptional cases
-IMG_SRV = "http://localhost:9000"
+IMG_SRV = f'{os.getenv("IMG_SRV")}'
 DATA_IMAGES_PATH = 'data/images/'  # From ./static dir
 DATA_NOTICES_PATH = 'data/notice-photo/'  # From ./static dir
 BABEL_TRANSLATION_DIRECTORIES = './i18n'  # From ./ dir
