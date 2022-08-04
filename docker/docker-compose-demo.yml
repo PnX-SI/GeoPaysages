@@ -30,7 +30,7 @@ services:
       - ${VOLUME_PATH}/upload:/mnt/data
     environment:
        PORT: 9000
-    command: -enable-placeholder -mount /mnt/data
+    command: -enable-placeholder -mount /mnt/data -path-prefix /imaginary
     ports:
       - "9000:9000"
     networks:
@@ -38,7 +38,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.imaginary.rule=PathPrefix(`/imaginary`)
-      - traefik.http.services.imaginary.loadbalancer.server.port=80
+      - traefik.http.services.imaginary.loadbalancer.server.port=9000
 
   backend:
     container_name: geopaysage_backend
