@@ -22,10 +22,26 @@ services:
     labels:
       - traefik.enable=true
 
+  imaginary:
+    image: h2non/imaginary:latest
+    # optionally mount a volume as local image source
+    volumes:
+      - ${VOLUME_PATH}/upload:/mnt/data
+    environment:
+       PORT: 9000
+    command: -enable-placeholder -mount /mnt/data
+    ports:
+      - "9000:9000"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=PathPrefix(`/imaginary`)
+      - traefik.http.services.backend.loadbalancer.server.port=80
+
   backend:
     container_name: geopaysage_backend
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - traefik
     build:
@@ -33,21 +49,22 @@ services:
       dockerfile: ./docker/Dockerfile.backend
     volumes:
       - ../backend:/app
-      - /app/static/data/images
-      - /app/i18n
+      - ${VOLUME_PATH}/upload:/upload
     ports:
       - "${HTTP_PORT}:80"
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=PathPrefix(`/`)
       - traefik.http.services.backend.loadbalancer.server.port=80
+    env_file:
+      - ./.env
     environment:
       - FLASK_APP=app.py
       - FLASK_DEBUG=1
       - 'RUN=flask run --host=0.0.0.0 --port=80'
     #command: flask run --host=0.0.0.0 --port=80
     # Infinite loop, to keep it alive, for debugging
-    command: bash -c "flask run --host=0.0.0.0 --port=80 && while true; do echo 'sleeping...' && sleep 10; done"
+    command: bash -c "/app/prestart.sh && flask run --host=0.0.0.0 --port=80 && while true; do echo 'sleeping...' && sleep 10; done"
   
   admin:
     container_name: geopaysage_admin
@@ -70,10 +87,16 @@ services:
       dockerfile: ./docker/Dockerfile.db
     ports:
       - "${DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -h 127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
     networks:
       - traefik
     volumes:
-      - app-db-data:/var/lib/postgresql/data/pgdata
+      - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_DB=geopaysages
@@ -82,7 +105,7 @@ services:
       - POSTGRES_USER=root
 
 volumes:
-  app-db-data:
+  geopaysages-db-data:
 
 networks:
   traefik:
