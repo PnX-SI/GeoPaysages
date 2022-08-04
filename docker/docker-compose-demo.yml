@@ -4,6 +4,7 @@ services:
     depends_on:
       - backend
       - admin
+      - imaginary
     image: traefik:v2.2
     ports:
       - "${PROXY_HTTP_PORT}:80"
@@ -34,8 +35,8 @@ services:
       - "9000:9000"
     labels:
       - traefik.enable=true
-      - traefik.http.routers.backend.rule=PathPrefix(`/imaginary`)
-      - traefik.http.services.backend.loadbalancer.server.port=80
+      - traefik.http.routers.imaginary.rule=PathPrefix(`/imaginary`)
+      - traefik.http.services.imaginary.loadbalancer.server.port=80
 
   backend:
     container_name: geopaysage_backend
