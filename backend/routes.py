@@ -23,20 +23,14 @@ communes_schema = models.CommunesSchema(many=True)
 
 @main.route('/')
 def home():
-    """ sql = text("SELECT value FROM geopaysages.conf WHERE key = 'home_blocks'")
-    rows = db.engine.execute(sql).fetchall()
-    id_photos = json.loads(rows[0]['value'])
-    get_photos = models.TPhoto.query.filter(
-        models.TPhoto.id_photo.in_(id_photos))
-    dump_pĥotos = photo_schema.dump(get_photos)
-
-    site_ids = [photo.get('t_site') for photo in dump_pĥotos]
-    get_sites = models.TSite.query.filter(models.TSite.id_site.in_(site_ids))
-    dump_sites = site_schema.dump(get_sites) """
-
-    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
+
+    if len(sites):
+        diff_nb = 6 - len(sites)
+        for x in range(0, diff_nb):
+            sites.append(sites[x])
 
     photo_ids = []
     sites_without_photo = []
@@ -100,8 +94,14 @@ def home():
     ] """
 
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
-    
-    return render_template('home.jinja', blocks=sites, sites=all_sites)
+
+    # On a juste besoin de ça pour la home en multi obs
+    all_observatories = observatory_schema.dump(models.Observatory.query.filter(models.Observatory.is_published == True))
+
+    if (utils.isMultiObservatories() == 1 ) : 
+        return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites)
+    else :
+        return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():

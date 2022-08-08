@@ -1,0 +1,68 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'home' %}
+{% block title %}{{ _('home.meta_title') }}{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_multi_obs.css') }}">
+
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home_multi_obs.js') }}"></script>
+{% endblock %}
+
+{% block bodyClassNames %}page-home{% endblock %}
+
+{% block header_title %}
+<h1>{{ _('home.title') }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="page-content">
+
+  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
+  {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
+  {% if dbconf.home_intro_position == 'top': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
+
+  <div class="container">
+MULTI
+    <div class='row'>
+    
+      {% for observatory in observatories %}
+
+        <div class='col-3' class="">
+          <img src="{{ img_srv }}/crop?file={{ observatory.get('photo') }}&width=100&height=100"><br>
+          <span class="text-uppercase">{{ observatory.get('title') }}</span><br>
+          <a href='/sites?filters=[{"name":"id_observatory","values":[{{ observatory.get("id") }}]}]' class="text-uppercase">voir</a>
+        </div>
+
+      {% endfor %}
+    
+    </div>
+
+    <div class="">
+      <div class="js-map-wrapper" style="height:200px"></div>
+      <a href="/sites">{{ _('home.block.explore_sites') }}</a>
+    </div>
+    
+  </div>
+
+  {% if dbconf.home_intro_position == 'bottom': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
+</div>
+
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      geopsg.initHome({
+        observatories: {{observatories | tojson}},
+        sites: {{sites | tojson}}
+      })
+    }
+  }
+</script>
+{% endblock %}

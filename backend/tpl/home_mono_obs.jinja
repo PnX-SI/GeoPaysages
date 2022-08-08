@@ -5,9 +5,11 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_mono_obs.css') }}">
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home_mono_obs.js') }}"></script>
 {% endblock %}
 
 {% block bodyClassNames %}page-home{% endblock %}
@@ -25,26 +27,27 @@
   {% autoescape false %}{{ intro }}{% endautoescape %}
   {% endif %}
 
-  <div class="container">
+  <div class="blocks">
 
-    <div class='row'>
-    
-      {% for block in blocks %}
-
-        <div class='col-3' class="">
-          <img src="{{ img_srv }}/crop?file={{ block.get('photo') }}&width=100&height=100"><br>
-          <span class="text-uppercase">{{ block.get('title') }}</span><br>
-          <a href='/sites?filters=[{"name":"id_observatory","values":[{{ block.get("id_observatory") }}]}]' class="text-uppercase">voir</a>
-        </div>
-
-      {% endfor %}
-    
-    </div>
-
-    <div class="">
-      <div class="js-map-wrapper" style="height:200px"></div>
+    <div class="block block-map">
+      <div class="js-map-wrapper h-100"></div>
       <a href="/sites">{{ _('home.block.explore_sites') }}</a>
     </div>
+
+    {% for block in blocks %}
+    <div class="block block-{{ loop.index }}">
+      <div class="img" style="background-image: url('{{ img_srv }}/resize?file={{ block.get('photo') }}&width=800');"></div>
+      <div class="discover">
+        {{ _('home.block.discover') }}
+      </div>
+      <div class="legend">
+        <h6>{{ _('home.block.photography') }}</h6>
+        <h5>{{ block.get('name_site') }}<br />{{ block.get('commune').get('nom_commune') }}</h5>
+        {{ block.get('legend_site') }}
+      </div>
+      <a href="/sites/{{ block.get('id_site') }}"></a>
+    </div>
+    {% endfor %}
     
   </div>
 
@@ -56,9 +59,11 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
+
       geopsg.initHome({
         sites: {{sites | tojson}}
       })
+
     }
   }
 </script>
