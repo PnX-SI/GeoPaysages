@@ -104,18 +104,9 @@
   <script>
     document.onreadystatechange = () => {
       if (document.readyState == 'complete') {
-
-        //Groupe les sites par observatories pour savoir si il y en a plusieurs
-        group_by_observatories = {{sites | tojson}}.reduce(function (r, a) {
-            r[a.id_observatory] = r[a.id_observatory] || [];
-            r[a.id_observatory].push(a);
-            return r;
-        }, Object.create(null));
-
-        //Si on a plus d'un observatory, on randomise les images, sinon on les affiches dans l'ordre
         geopsg.initGallery({
           observatories: {{observatories | tojson}},
-          sites: Object.keys(group_by_observatories).length > 1 ? {{sites | tojson}}.sort(() => Math.random() - 0.5) : {{sites | tojson}},
+          sites: {{sites | tojson}},
           filters: {{filters | tojson}},
           dbconf: {{dbconf | tojson}}
         })
