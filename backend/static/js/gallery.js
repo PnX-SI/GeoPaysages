@@ -202,6 +202,11 @@ geopsg.initGallery = (options) => {
             return selectedSite.id_observatory == observatory.id;
           });
         });
+
+        if (selectedFilters.length == 0 && isMultiObservatories) {
+          selectedSites = selectedSites.sort(() => Math.random() - 0.5)
+        }
+
         this.selectedSites = selectedSites;
         console.log(selectedSites);
       },
