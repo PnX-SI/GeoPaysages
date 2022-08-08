@@ -125,8 +125,8 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
             });
           this.markers.push(newMarker);
 
-          this.rows.push(
-            _.pick(site, [
+          this.rows.push({
+            ..._.pick(site, [
               'main_photo',
               'name_site',
               'code_city_site',
@@ -135,9 +135,9 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
               'id_site',
               'marker',
               'ref_site',
-              'observatory.title',
-            ])
-          );
+            ]),
+            observatory_title: _.get(site, 'observatory.title'),
+          });
         });
         this.sitesLoaded = true;
         this.spinner.hide();
