@@ -28,22 +28,50 @@
   {% endif %}
 
   <div class="container">
-MULTI
-    <div class='row'>
     
-      {% for observatory in observatories %}
+      {% set count = namespace(value=0) %}
+      {% set is_break = namespace(value=false) %}
 
-        <div class='col-3' class="">
-          <img src="{{ img_srv }}/crop?file={{ observatory.get('photo') }}&width=100&height=100"><br>
-          <span class="text-uppercase">{{ observatory.get('title') }}</span><br>
-          <a href='/sites?filters=[{"name":"id_observatory","values":[{{ observatory.get("id") }}]}]' class="text-uppercase">voir</a>
-        </div>
+      {% for i in range(patchwork_options.nb_rows) %}
 
-      {% endfor %}
-    
-    </div>
+       <div class="d-flex justify-content-center">
 
-    <div class="">
+        {% for j in range(patchwork_options.nb_cols) %}
+
+          {% if is_break.value == false  %}
+          
+            {% if observatories[count.value] is defined  %}
+              <div class="patchwork-item">
+                <a class="d-block position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
+                  <img src="{{ img_srv }}/crop?file={{ observatories[count.value].photo }}&width=200&height=200">
+                  <span class="d-flex flex-column position-absolute w-100 h-100 info text-white">
+                    <span class="text-uppercase">{{ observatories[count.value].title }}</span>
+                    <span class="text-uppercase">voir</a>
+                  </span>
+                </a>
+              </div>
+
+            {% else %}
+
+                <div class="text-white patchwork-item" style="background-color: #447e72;">
+                  <a href='/sites' class="text-uppercase">Découvrez nos observatoires</a>
+                </div> 
+
+                {% set is_break.value = true %}
+
+            {% endif %}
+
+            {% set count.value = count.value + 1 %}
+
+          {% endif %}
+
+        {% endfor %}
+
+      </div>
+
+    {% endfor %}   
+
+    <div>
       <div class="js-map-wrapper" style="height:200px"></div>
       <a href="/sites">{{ _('home.block.explore_sites') }}</a>
     </div>
@@ -60,6 +88,7 @@ MULTI
     if (document.readyState == 'complete') {
       geopsg.initHome({
         observatories: {{observatories | tojson}},
+        patchwork_options: {{patchwork_options | tojson}},
         sites: {{sites | tojson}}
       })
     }

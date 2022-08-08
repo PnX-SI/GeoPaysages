@@ -6,6 +6,7 @@ import utils
 from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
 from datetime import datetime
 from flask_babel import format_datetime, gettext
+import math
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -98,8 +99,19 @@ def home():
     # On a juste besoin de ça pour la home en multi obs
     all_observatories = observatory_schema.dump(models.Observatory.query.filter(models.Observatory.is_published == True))
 
+    col_max = 5
+    nb_obs = len(all_observatories)+1
+    nb_rows = math.ceil( nb_obs / col_max )
+    nb_cols = math.ceil( nb_obs / nb_rows )
+
+
+    patchwork_options = {
+    "nb_cols" : nb_cols,
+    "nb_rows" : nb_rows
+    }
+
     if (utils.isMultiObservatories() == 1 ) : 
-        return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites)
+        return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites, patchwork_options=patchwork_options)
     else :
         return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
 

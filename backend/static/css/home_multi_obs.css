@@ -1,0 +1,10 @@
+.page-home .patchwork-item .info {
+    z-index: 1;
+    top: 0;
+    left: 0;
+}
+
+.patchwork-item {
+    width: 200px;
+    height: 200px;
+}
