@@ -77,8 +77,8 @@
             'background-color': site.observatory.color + 'BB'
             }"
           >
-            <a :href="'/sites/' + site.id_site" class="d-block">
-              <span v-if="isMultiObservatories" class="observatory-label" v-html="site.observatory.title"></span>
+            <a :href="'/sites/' + site.id_site" class="d-flex flex-column justify-content-space-evenly">
+              <span v-if="isMultiObservatories" class="observatory-label text-uppercase font-weight-bold" v-html="site.observatory.title"></span>
               <span v-if="!isMultiObservatories" class="site-label" v-html="site.name_site"></span>
               <span class="township" v-html="site.ville.label"></span>
               <span v-if="isMultiObservatories" class="label" v-html="site.name_site"></span>
