@@ -106,7 +106,7 @@ button {
 .btn-primary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary-light);
   border-color: var(--color-primary-light);
@@ -129,7 +129,7 @@ button {
 
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
-.show>.btn-secondary.dropdown-toggle {
+.show > .btn-secondary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-secondary-light);
   border-color: var(--color-secondary-light);
@@ -139,7 +139,7 @@ button {
   color: var(--color-primary);
 }
 
-.btn-group-vertical>.btn+.btn {
+.btn-group-vertical > .btn + .btn {
   margin-top: 0;
 }
 
@@ -184,7 +184,7 @@ button {
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
-.show>.btn-outline-primary.dropdown-toggle {
+.show > .btn-outline-primary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary) !important;
   border-color: var(--color-primary) !important;
@@ -569,25 +569,39 @@ footer span {
 }
 
 .header-filters {
-  background: rgba(255, 255, 255, 0.5);
+  position: fixed;
+  background: rgba(255, 255, 255, 0.95);
   z-index: 402;
-  position: absolute;
   width: 100%;
   top: 0;
 }
 
-.header-filters .floating-filter-label {
-  background: #fff;
-  z-index: 2;
-  position: absolute;
-  top: 9px;
-  transition: 0.2s;
-  font-size: 16px;
-  pointer-events: none;
+@media (min-width: 768px) {
+  .header-filters {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+  }
 }
 
-.header-filters .floating-filter-label.active {
-  transform: scale(0.85) translate(-5px, -25px);
+.header-filters .floating-filter-label {
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  .header-filters .floating-filter-label {
+    background: #fff;
+    z-index: 2;
+    position: absolute;
+    top: 9px;
+    transition: 0.2s;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-filters .floating-filter-label.active {
+    transform: scale(0.85) translate(-5px, -25px);
+  }
 }
 
 .header-filters .multiselect__tags .multiselect__strong {

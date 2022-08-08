@@ -37,8 +37,17 @@
   <div id="js-app-gallery"
         class="app-gallery container-fluid d-flex flex-column"
         v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
-    <div class="row pt-4 pb-2 d-none d-md-flex header-filters sans-serif">
-      <div v-for="(filter) in filters" v-bind:key="filter.name" class="col-2">
+    <button type="button" @click="onShowFiltersClick()" class="btn btn-block btn-light d-md-none mt-2">
+      Filtres
+    </button>
+    <div class="row pt-3 pt-md-4 pb-md-2 d-md-flex header-filters sans-serif" v-bind:class="{ 'd-none': !showFilters, 'd-block': showFilters }">
+      <div class="d-md-none mb-3 col d-flex justify-content-between">
+        <h5 class="text-uppercase">Filtres</h5>
+        <button type="button" @click="onCloseFiltersClick()" class="btn btn-link px-1 py-0">
+          <span class="material-icons">clear</span>
+        </button>
+      </div>
+      <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-md-2 mb-2 mb-md-0">
           <small class="floating-filter-label d-block ml-2 px-1"
                 v-bind:class="{ active: filter.selectedItems.length }"
                 v-html="filter.label"></small>
@@ -57,13 +66,18 @@
           <template><span slot="noResult">Pas de résultats</span></template>
           </v-multiselect>
       </div>
-      <div class="col-2">
+      <div class="col col-md-2 d-flex d-md-block align-items-center">
+        <div class="col d-md-none">
+          {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
+        </div>
+        
         <button type="button"
                 @click="onCancelClick()"
                 class="btn btn-outline-secondary">Réinitialiser</button>
       </div>
     </div>
-    <div class="container sans-serif">
+    <div class="container sans-serif mt-3 mt-md-0">
+      <div class="photos-spacer d-none d-md-block"></div>
       <div class="photos row justify-content-center">
         <div v-for="site in selectedSites"
           class="picture col-lg-2 col-md-3 col-sm-4 col-6"
@@ -90,7 +104,7 @@
 
 
       </div>
-      <div class="row">
+      <div class="row d-none d-md-block">
         <div class="col d-flex justify-content-center">
           <span class="center-filter px-3 py-2">
           {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span

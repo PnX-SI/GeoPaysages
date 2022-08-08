@@ -59,6 +59,7 @@ geopsg.initGallery = (options) => {
         selectedSites: [],
         observatories: observatories,
         isMultiObservatories: isMultiObservatories,
+        showFilters: false,
         filterLimitText: (count) => {
           return `+ ${count}`;
         },
@@ -78,6 +79,12 @@ geopsg.initGallery = (options) => {
         });
         selectedFilters = [];
         this.setFilters();
+      },
+      onShowFiltersClick() {
+        this.showFilters = true;
+      },
+      onCloseFiltersClick() {
+        this.showFilters = false;
       },
       getMultiselectLabel(option) {
         return `${option.label} (${option.nbSites})`;
