@@ -59,11 +59,9 @@
 <script>
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
-
       geopsg.initHome({
         sites: {{sites | tojson}}
       })
-
     }
   }
 </script>
