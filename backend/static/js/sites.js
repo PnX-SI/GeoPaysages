@@ -91,11 +91,13 @@ geopsg.initSites = (options) => {
     el: '#js-app-sites',
     data: () => {
       return {
-        isSidebarCollapsed: false,
+        isSitesListOpen: window.outerWidth >= 768,
         filters: filters,
+        selectedFilters: selectedFilters,
         themes: filters.find((filter) => filter.name == 'themes').items,
         selectedSites: [],
         observatories: observatories,
+        showModalFilters: false,
         filterLimitText: (count) => {
           return `+ ${count}`;
         },
@@ -208,14 +210,20 @@ geopsg.initSites = (options) => {
           filter.selectedItems = [];
           filter.isOpen = false;
         });
-        selectedFilters = [];
+        this.selectedFilters = [];
         this.setFilters();
+      },
+      onShowModalFiltersClick() {
+        this.showModalFilters = true;
+      },
+      onCloseModalFiltersClick() {
+        this.showModalFilters = false;
       },
       getMultiselectLabel(option) {
         return `${option.label} (${option.nbSites})`;
       },
       onMultiselectInput(filter, selectedItems) {
-        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
+        let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;
         });
 
@@ -225,7 +233,7 @@ geopsg.initSites = (options) => {
               name: filter.name,
               items: [],
             };
-            selectedFilters.push(selectedFilterExists);
+            this.selectedFilters.push(selectedFilterExists);
           }
           selectedFilterExists.items = selectedItems.map((item) => {
             return {
@@ -234,7 +242,7 @@ geopsg.initSites = (options) => {
             };
           });
         } else {
-          selectedFilters = selectedFilters.filter((selectedFilter) => {
+          this.selectedFilters = this.selectedFilters.filter((selectedFilter) => {
             return selectedFilter.name != filter.name;
           });
         }
@@ -250,7 +258,7 @@ geopsg.initSites = (options) => {
         this.setFilters();
       },
       onFilterClick(filter, item) {
-        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
+        let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;
         });
         if (item.isSelected) {
@@ -259,7 +267,7 @@ geopsg.initSites = (options) => {
               name: filter.name,
               items: [],
             };
-            selectedFilters.push(selectedFilterExists);
+            this.selectedFilters.push(selectedFilterExists);
           }
           selectedFilterExists.items.push({
             id: item.id,
@@ -270,7 +278,7 @@ geopsg.initSites = (options) => {
             return selectedItem.id != item.id;
           });
           if (!selectedFilterExists.items.length) {
-            selectedFilters = selectedFilters.filter((selectedFilter) => {
+            this.selectedFilters = this.selectedFilters.filter((selectedFilter) => {
               return selectedFilter.name != filter.name;
             });
           }
@@ -307,9 +315,9 @@ geopsg.initSites = (options) => {
           return filter.name == 'subthemes';
         }).items = selectedSubthemes; */
 
-        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(selectedFilters));
+        localStorage.setItem('geopsg.sites.selectedFilters', JSON.stringify(this.selectedFilters));
 
-        const cascadingFilters = selectedFilters.map((selectedFilter) => {
+        const cascadingFilters = this.selectedFilters.map((selectedFilter) => {
           return selectedFilter.name;
         });
         filters.forEach((filter) => {
@@ -451,6 +459,13 @@ geopsg.initSites = (options) => {
       },
       onSiteMouseout(site) {
         site.marker.closePopup();
+      },
+      onSiteClick(site) {
+        if (window.outerWidth >= 768) {
+          window.location.href = `/sites/${site.id_site}`;
+        } else {
+          this.onSiteMousover(site);
+        }
       },
       async onShareClick() {
         this.shareUrl = url.origin + url.pathname;

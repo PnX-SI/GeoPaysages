@@ -30,138 +30,12 @@
 {% endblock bodyClassNames %}
 {% block content %}
   <div id="js-app-sites"
-       class="app-sites container-fluid d-flex flex-column"
-       v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
-    <div class="row pt-4 pb-2 d-none d-md-flex header-filters sans-serif">
-    <div class="col-1">
-      <h5 class="pt-2">{{ _('sites.filters.title') }}</h5>
-    </div>
-      <div v-for="(filter) in filters" v-bind:key="filter.name" class="col-2">
-        <small class="floating-filter-label d-block ml-2 px-1"
-               v-bind:class="{ active: filter.selectedItems.length }"
-               v-html="filter.label"></small>
-        <v-multiselect
-        :multiple="true"
-        :limit="1"
-        :limit-text="filterLimitText"
-        v-model="filter.selectedItems"
-        :options="filter.items"
-        track-by="label"
-        :custom-label="getMultiselectLabel"
-        placeholder=""
-        :show-labels="false"
-        @input="onMultiselectInput(filter, $event)"
-        >
-        <template><span slot="noResult">Pas de résultats</span></template>
-        </v-multiselect>
-      </div>
-      <div class="col-1">
-        <button type="button"
-                @click="onCancelClick()"
-                class="btn btn-outline-secondary">Réinitialiser</button>
-      </div>
-    </div>
+       class="app-sites container-fluid d-flex flex-column">
+    
+    {% include 'sites-filter.jinja' %}
+
     <div class="header-spacer d-none d-md-block"></div>
     <div class="row h-100 position-relative">
-      <div class="sidebar d-md-none">
-        <div class="sidebar-content">
-          <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
-            <b-card-header header-tag="header" class="p-0">
-              <b-btn
-                block
-                href="#"
-                class="rounded-0 card-group-header-btn"
-                v-b-toggle="'app_map_filters'"
-                variant="secondary">
-                <span>{{ _('sites.filters.title') }}</span>
-                <i class="icon ion-ios-arrow-down visible-collapsed"></i>
-                <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
-              </b-btn>
-            </b-card-header>
-            <b-collapse :id="'app_map_filters'" visible>
-              <b-card-body class="pt-0 px-3 pb-3">
-                <div class="text-right">
-                  <span class="align-text-top">
-                    {% autoescape false %}
-                      {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }}
-                    {% endautoescape %}
-                  </span>
-                  <button type="button"
-                          @click="onCancelClick()"
-                          class="btn btn-clear-primary btn-sm btn-no-uppercase align-top">
-                    <i class="icon ion-md-close mr-1"></i>
-                  </button>
-                </div>
-                <div class="filters">
-                  <b-card
-                    no-body
-                    class="m-0 rounded-0"
-                    :class="['filter-' + filter.name, !filter.selectedItems.length ? '' : 'has-selected']"
-                    v-for="(filter) in filters"
-                    v-bind:key="filter.name">
-                    <b-card-header header-tag="header" class="p-0 border-0">
-                      <b-btn
-                        block
-                        href="#"
-                        v-b-toggle="'app_map_filter_' + filter.name"
-                        variant="link"
-                        class="rounded-0 text-left">
-                        <i class="icon ion-ios-arrow-forward ml-1 visible-collapsed"></i>
-                        <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
-                        <span v-html="filter.label"></span>
-                      </b-btn>
-                    </b-card-header>
-                    <b-collapse
-                      :id="'app_map_filter_' + filter.name"
-                      v-model="filter.isOpen">
-                      <b-card-body>
-                        <b-button-group vertical class="w-100">
-                          <b-button class="btn-block" variant="default" v-for="item in filter.items" v-bind:key="item.id"
-                          :pressed.sync="item.isSelected" v-on:click="onFilterClick(filter, item)" v-html="`${item.label} (${item.nbSites})`"></b-button>
-                        </b-button-group>
-                      </b-card-body>
-                    </b-collapse>
-                  </b-card>
-                </div>
-              </b-card-body>
-            </b-collapse>
-          </b-card>
-          <b-card no-body class="mb-1 card-group border-0 d-block rounded-0">
-            <b-card-header header-tag="header" class="p-0">
-              <b-btn
-                block
-                href="#"
-                class="rounded-0 card-group-header-btn"
-                v-b-toggle="'app_map_sites'"
-                variant="secondary">
-                <span>{{ _('sites.observation_points.title') }}</span>
-                <i class="icon ion-ios-arrow-down visible-collapsed"></i>
-                <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
-              </b-btn>
-            </b-card-header>
-            <b-collapse :id="'app_map_sites'" visible>
-              <b-card-body class="p-3">
-                <a v-for="site in selectedSites"
-                   class="btn btn-sm btn-block btn-site"
-                   @mouseenter="onSiteMousover(site)"
-                   @mouseleave="onSiteMouseout(site)"
-                   :href="'/sites/' + site.id_site">
-                  <span class="d-block" v-html="site.name_site"></span>
-                  <span class="d-block" v-html="site.ville.label"></span>
-                  <span class="d-block"
-                        v-if="site.ref_site"
-                        v-html="'(réf. : ' + site.ref_site + ')'"></span>
-                </a>
-              </b-card-body>
-            </b-collapse>
-          </b-card>
-        </div>
-        <div class="btn-toggle btn-big-icon"
-             @click="isSidebarCollapsed = !isSidebarCollapsed">
-          <i class="icon ion-ios-arrow-back" v-if="!isSidebarCollapsed"></i>
-          <i class="icon ion-ios-arrow-forward" v-if="isSidebarCollapsed"></i>
-        </div>
-      </div>
       <div class="block-list-sites">
         <a
           block
@@ -170,12 +44,12 @@
           v-b-toggle="'app_map_list_sites_collapse'"
         >
           <span>{{ _('sites.observation_points.title') }}</span>
-          <span class="text-lowercase">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          <span class="text-lowercase d-none d-md-inline-block">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
           >') }} {% endautoescape %}</span>
           <i class="icon ion-ios-arrow-down visible-collapsed"></i>
           <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
         </a>
-        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse" visible>
+        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse" :visible="isSitesListOpen">
           <div v-if="observatories.length" class="list-observatories">
             <b-card
               no-body
@@ -208,7 +82,7 @@
                       class="btn btn-sm btn-block text-left"
                       @mouseenter="onSiteMousover(site)"
                       @mouseleave="onSiteMouseout(site)"
-                      :href="'/sites/' + site.id_site">
+                      @click="onSiteClick(site)">
                       <span class="d-block" v-html="site.name_site"></span>
                       <span class="d-block" v-html="site.ville.label"></span>
                       <span class="d-block"
@@ -223,29 +97,34 @@
         </b-collapse>
       </div>
       <div class="maptools-top-right">
-        <b-button @click="onShareClick()" variant="primary">Partager</b-button>
+        <b-button class="d-none d-md-inline-block" @click="onShareClick()" variant="primary">Partager</b-button>
       </div>
-      <div class="block-legend">
-        <b-collapse id="app_map_legend_collapse" class="p-3 sans-serif">
-          <div v-for="observatory in observatories" class="legend-item legend-item-observatory">
-            <div class="icon d-inline-block align-middle mr-2" v-bind:style="{background: observatory.data.color}"></div>
-            <span v-html="observatory.label"></span>
-          </div>
-          <div v-for="theme in themes" class="legend-item">
-            <div class="icon d-inline-block mr-2 text-dark" v-html="theme.icon"></div>
-            <span class="" v-html="theme.label"></span>
-          </div>
-        </b-collapse>
-        <a
-          block
-          href="#"
-          class="btn d-flex justify-content-between p-3 btn-toggle"
-          v-b-toggle="'app_map_legend_collapse'"
-        >
-          <span class="mr-3">Légende</span>
-          <i class="icon ion-ios-arrow-up visible-collapsed"></i>
-          <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
-        </a>
+      <div class="maptools-bottom">
+        <b-button class="d-md-none" @click="onShareClick()" variant="primary">Partager</b-button>
+      </div>
+      <div class="maptools-bottom-right">
+        <div class="block-legend d-none d-md-block">
+          <b-collapse id="app_map_legend_collapse" class="p-3 sans-serif">
+            <div v-for="observatory in observatories" class="legend-item legend-item-observatory">
+              <div class="icon d-inline-block align-middle mr-2" v-bind:style="{background: observatory.data.color}"></div>
+              <span v-html="observatory.label"></span>
+            </div>
+            <div v-for="theme in themes" class="legend-item">
+              <div class="icon d-inline-block mr-2 text-dark" v-html="theme.icon"></div>
+              <span class="" v-html="theme.label"></span>
+            </div>
+          </b-collapse>
+          <a
+            block
+            href="#"
+            class="btn d-flex justify-content-between p-3 btn-toggle"
+            v-b-toggle="'app_map_legend_collapse'"
+          >
+            <span class="mr-3">Légende</span>
+            <i class="icon ion-ios-arrow-up visible-collapsed"></i>
+            <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
+          </a>
+        </div>
       </div>
       <div class="col p-0">
         <div class="map-wrapper h-100" ref="map"></div>

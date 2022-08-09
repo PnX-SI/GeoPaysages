@@ -11,8 +11,13 @@
 }
 
 .app-sites {
-  --maptool-bg: rgba(255, 255, 255, 0.8);
-  --maptool-zindex: 401;
+  --maptool-bg: rgba(255, 255, 255, 0.95);
+  --maptool-zindex: 1001;
+}
+@media (min-width: 768px) {
+  .app-sites {
+    --maptool-bg: rgba(255, 255, 255, 0.8);
+  }
 }
 
 .app-sites {
@@ -26,11 +31,12 @@
   height: 78px;
 }
 
+.app-sites .btn.collapsed .hidden-collapsed,
+.app-sites .btn:not(.collapsed) .visible-collapsed {
+  display: none;
+}
+
 .app-sites .block-legend {
-  position: absolute;
-  z-index: var(--maptool-zindex);
-  bottom: 10px;
-  right: 10px;
   background: var(--maptool-bg);
   min-width: 300px;
 }
@@ -40,7 +46,7 @@
   height: 20px;
 }
 
-.app-sites .block-legend .legend-item> :not(.icon) {
+.app-sites .block-legend .legend-item > :not(.icon) {
   line-height: 2;
   display: inline-block;
   vertical-align: text-top;
@@ -55,7 +61,15 @@
 .app-sites .block-list-sites {
   position: absolute;
   z-index: var(--maptool-zindex);
-  min-width: 450px;
+  width: 100%;
+  box-shadow: 0px 2px 2px #00000044;
+}
+@media (min-width: 768px) {
+  .app-sites .block-list-sites {
+    width: auto;
+    min-width: 450px;
+    box-shadow: none;
+  }
 }
 
 .app-sites .block-list-sites .btn-toggle {
@@ -90,152 +104,26 @@
   object-fit: cover;
 }
 
-.app-sites .sidebar {
-  /* display: none; */
-  position: absolute;
-  z-index: var(--maptool-zindex);
-  height: 100%;
-  color: #fff;
-  width: 270px;
-  transition: transform 0.3s;
-}
-
-.app-sites.sidebar-collapsed .sidebar {
-  transform: translateX(-100%);
-}
-
-.app-sites .sidebar .btn-toggle {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 30px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.9);
-}
-
-.app-sites .sidebar-content {
-  background: rgba(0, 0, 0, 0.8);
-  overflow: auto;
-  overflow-x: hidden;
-  height: 100%;
-}
-
-.app-sites .sidebar .card-group-header-btn {
-  background: rgba(0, 0, 0, 0.3);
-  border: none;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.app-sites .btn.collapsed .hidden-collapsed,
-.app-sites .btn:not(.collapsed) .visible-collapsed {
-  display: none;
-}
-
-.app-sites .sidebar .card-header .btn .icon {
-  position: absolute;
-  right: 10px;
-}
-
-.app-sites .sidebar .filters {
-  width: 100%;
-}
-
-.app-sites .sidebar .text-right .mr-1 {
-  margin-right: 0 !important;
-}
-
-.app-sites .sidebar .filters .card-header .btn .icon {
-  right: auto;
-  left: -10px;
-}
-
-.app-sites .sidebar .filters .card {
-  border: none;
-  background: transparent;
-}
-
-.app-sites .sidebar .filters .card.has-selected header a::after {
-  content: '';
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: red;
-  margin-left: 5px;
-}
-
-.app-sites .sidebar .filters .card-header .btn {
-  text-decoration: none;
-  color: #fff;
-  font-weight: 600;
-}
-
-.app-sites .sidebar .filters .card:not(:first-child) .card-header .btn {
-  border-top: none;
-}
-
-.app-sites .sidebar .filters .card-header .btn:not(.collapsed) {
-  color: #fff;
-}
-
-.app-sites .sidebar .filters .card-body {
-  color: var(--color-primary);
-  padding: 0;
-  border: none;
-}
-
-.app-sites .sidebar .filters .card-body .btn,
-.app-sites .sidebar .btn-site {
-  text-transform: none;
-  white-space: normal;
-  font-size: 14px;
-  text-align: left;
-  background: transparent;
-  color: #fff;
-  border-color: transparent;
-  margin-bottom: 1px;
-}
-
-.app-sites .sidebar .filters .card-body .btn:hover {
-  background: var(--color-sites-filter-bg-hover);
-  color: var(--color-sites-filter-txt-hover);
-}
-
-.app-sites .sidebar .filters .card-body .btn.active,
-.app-sites .sidebar .btn-site:hover {
-  background: var(--color-sites-filter-bg-active);
-  color: var(--color-sites-filter-txt-active);
-}
-
-.app-sites .sidebar .filters .filter-years .btn-group-vertical {
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.app-sites .sidebar .filters .filter-years .card-body .btn {
-  display: inline-block;
-  width: 30%;
-}
-
-.app-sites .sidebar .card-group {
-  background: transparent;
-}
-
-.app-sites .sidebar .card-header {
-  background-color: transparent;
-  border-bottom: 1px solid transparent;
-}
-
 .app-sites .maptools-top-right {
   z-index: var(--maptool-zindex);
   position: absolute;
   top: 10px;
   right: 50px;
+}
+
+.app-sites .maptools-bottom-right {
+  z-index: var(--maptool-zindex);
+  position: absolute;
+  bottom: 16px;
+  right: 10px;
+}
+
+.app-sites .maptools-bottom {
+  z-index: var(--maptool-zindex);
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .app-sites .marker-cluster {
@@ -256,6 +144,12 @@
   font-weight: bold;
   font-size: 18px;
   line-height: 34px;
+}
+
+@media (max-width: 767px) {
+  .app-sites .leaflet-top {
+    top: 60px;
+  }
 }
 
 .app-sites .leaflet-marker-icon .icon {

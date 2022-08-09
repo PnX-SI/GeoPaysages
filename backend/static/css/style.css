@@ -571,15 +571,17 @@ footer span {
 .header-filters {
   position: fixed;
   background: rgba(255, 255, 255, 0.95);
-  z-index: 402;
+  z-index: 1002;
   width: 100%;
   top: 0;
+  bottom: 0;
 }
 
 @media (min-width: 768px) {
   .header-filters {
     position: absolute;
     background: rgba(255, 255, 255, 0.5);
+    bottom: auto;
   }
 }
 
