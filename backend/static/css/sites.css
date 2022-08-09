@@ -90,6 +90,10 @@
   object-fit: cover;
 }
 
+.app-sites .list-observatories .btn-site:hover{
+  background: var(--color-discover);
+}
+
 .app-sites .sidebar {
   /* display: none; */
   position: absolute;
