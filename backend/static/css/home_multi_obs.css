@@ -8,3 +8,19 @@
     width: 200px;
     height: 200px;
 }
+
+.patchwork-item .info{
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.patchwork-item button {
+    width: fit-content;
+}
+
+.patchwork-item:hover button{
+    display: block !important;
+}
+
+.test>* {
+    flex: 1 1 100%;
+}

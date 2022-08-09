@@ -34,7 +34,7 @@
 
       {% for i in range(patchwork_options.nb_rows) %}
 
-       <div class="d-flex justify-content-center">
+       <div class="d-flex justify-content-center flex-wrap my-5">
 
         {% for j in range(patchwork_options.nb_cols) %}
 
@@ -44,16 +44,16 @@
               <div class="patchwork-item">
                 <a class="d-block position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
                   <img src="{{ img_srv }}/crop?file={{ observatories[count.value].photo }}&width=200&height=200">
-                  <span class="d-flex flex-column position-absolute w-100 h-100 info text-white">
+                  <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
                     <span class="text-uppercase">{{ observatories[count.value].title }}</span>
-                    <span class="text-uppercase">voir</a>
+                    <button type="button" class="btn btn-outline-light d-none">Voir</button>
                   </span>
                 </a>
               </div>
 
             {% else %}
 
-                <div class="text-white patchwork-item" style="background-color: #447e72;">
+                <div class="text-white patchwork-item d-flex align-items-center text-center" style="background-color: #447e72;">
                   <a href='/sites' class="text-uppercase">Découvrez nos observatoires</a>
                 </div> 
 
