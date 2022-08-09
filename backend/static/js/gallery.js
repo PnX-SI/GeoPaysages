@@ -6,7 +6,7 @@ geopsg.initGallery = (options) => {
   } catch (error1) {
     try {
       selectedFilters = JSON.parse(localStorage.getItem('geopsg.gallery.selectedFilters'));
-    } catch (error2) {}
+    } catch (error2) { }
   }
 
   if (!Array.isArray(selectedFilters)) {
@@ -202,11 +202,16 @@ geopsg.initGallery = (options) => {
             return selectedSite.id_observatory == observatory.id;
           });
         });
+
+        if (selectedFilters.length == 0 && isMultiObservatories) {
+          selectedSites = selectedSites.sort(() => Math.random() - 0.5)
+        }
+
         this.selectedSites = selectedSites;
         console.log(selectedSites);
       },
-      onSiteMousover(site) {},
-      onSiteMouseout(site) {},
+      onSiteMousover(site) { },
+      onSiteMouseout(site) { },
     },
   });
 };
