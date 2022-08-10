@@ -87,7 +87,7 @@
 }
 
 .app-sites .list-observatories .btn-site:hover {
-  background: var(--color-discover);
+  background: var(--color-primary-50);
 }
 
 .app-sites .list-observatories .btn-observatory {

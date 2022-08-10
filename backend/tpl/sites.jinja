@@ -82,7 +82,7 @@
                 <b-card-body class="p-0 pl-5">
                   <b-button-group v-if="observatory.selectedSites && observatory.selectedSites.length" vertical class="w-100">
                     <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left btn-site"
+                      class="btn btn-sm btn-block text-left btn-site rounded-0"
                       @mouseenter="onSiteMousover(site)"
                       @mouseleave="onSiteMouseout(site)"
                       @click="onSiteClick(site)">
