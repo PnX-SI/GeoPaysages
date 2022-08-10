@@ -85,6 +85,9 @@
 .app-sites .list-observatories .card-header {
   background: transparent;
 }
+.app-sites:not(.multi-observatories) .list-observatories .card-header {
+  display: none;
+}
 
 .app-sites .list-observatories .btn-site:hover {
   background: var(--color-primary-50);

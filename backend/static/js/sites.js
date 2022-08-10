@@ -58,10 +58,11 @@ geopsg.initSites = (options) => {
   let markers = [];
   let mapBounds;
 
+  const isMultiObservatories = Boolean(options.observatories.length > 1);
   const observatories = options.observatories.map((observatory) => {
     return {
       ...observatory,
-      isOpen: false,
+      isOpen: !isMultiObservatories,
       /* sites: options.sites.filter((site) => {
         return site.id_observatory == observatory.id;
       }), */
@@ -97,6 +98,7 @@ geopsg.initSites = (options) => {
         themes: filters.find((filter) => filter.name == 'themes').items,
         selectedSites: [],
         observatories: observatories,
+        isMultiObservatories: isMultiObservatories,
         showModalFilters: false,
         filterLimitText: (count) => {
           return `+ ${count}`;

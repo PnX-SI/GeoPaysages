@@ -159,7 +159,7 @@ def getDbPage(name):
     }
 
 def getFiltersData():
-    sites=site_schema.dump(models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES))
+    sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(DEFAULT_SORT_SITES))
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
         cor_list = []
