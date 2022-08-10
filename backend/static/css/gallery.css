@@ -3,7 +3,7 @@
 }
 
 .page-gallery .header-title {
-  display: none;
+  display: none !important;
 }
 
 .page-gallery .app-footer {
@@ -14,7 +14,7 @@
   position: relative;
 }
 
-.app-gallery .photos {
+.app-gallery .photos-spacer {
   padding-top: 90px;
 }
 
