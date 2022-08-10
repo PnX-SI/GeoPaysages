@@ -110,7 +110,7 @@ def home():
     "nb_rows" : nb_rows
     }
 
-    if (utils.isMultiObservatories() == 1 ) : 
+    if (utils.isMultiObservatories() == True ) : 
         return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites, patchwork_options=patchwork_options)
     else :
         return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)

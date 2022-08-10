@@ -143,9 +143,9 @@ def isMultiObservatories():
     result = db.engine.execute(sql).fetchall()
     rows = [dict(row) for row in result]
     if len(rows) > 1 :
-        return 1
+        return True
     else :
-        return 0
+        return False
 
 def getDbPage(name):
     dbconf = getDbConf()
