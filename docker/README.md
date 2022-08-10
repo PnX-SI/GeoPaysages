@@ -96,6 +96,10 @@
 - Si l'on met aussi à jour la partie admin
   - Se placer à la source du projet geopaysage
   - Mettre à jour toute l'application `./scripts/docker-demo.sh up -d --build`
+- Si l'on ne met à jour les traductions
+  - Se placer à la source du projet geopaysage
+  - Stopper les containers `./scripts/docker-demo.sh down`
+  - Démarrer les container `./scripts/docker-demo.sh up -d`
 - Vérifier que les changements sont appliqués
   - Se rendre sur l'application / site web
   - Vider le cache
