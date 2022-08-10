@@ -112,7 +112,7 @@ def home():
 
     if (utils.isMultiObservatories() == True ) : 
         return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites, patchwork_options=patchwork_options)
-return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
+    return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():
