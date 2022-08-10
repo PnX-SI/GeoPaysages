@@ -25,6 +25,7 @@
 {% endblock head %}
 {% block header_title %}
 {% endblock header_title %}
+{% block title_mobile %}{{ _('sites.title') }}{% endblock title_mobile %}
 {% block bodyClassNames %}
   page-sites
 {% endblock bodyClassNames %}
@@ -32,7 +33,7 @@
   <div id="js-app-sites"
        class="app-sites container-fluid d-flex flex-column">
     
-    {% include 'sites-filter.jinja' %}
+    {% include 'components/sites-filter.jinja' %}
 
     <div class="header-spacer d-none d-md-block"></div>
     <div class="row h-100 position-relative">

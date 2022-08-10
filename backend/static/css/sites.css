@@ -3,7 +3,7 @@
 }
 
 .page-sites .header-title {
-  display: none;
+  display: none !important;
 }
 
 .page-sites .app-footer {
@@ -13,17 +13,15 @@
 .app-sites {
   --maptool-bg: rgba(255, 255, 255, 0.95);
   --maptool-zindex: 1001;
+  position: relative;
+  /* window height - header height */
+  height: calc(100vh - 50px);
 }
 @media (min-width: 768px) {
   .app-sites {
     --maptool-bg: rgba(255, 255, 255, 0.8);
+    height: calc(100vh - 110px);
   }
-}
-
-.app-sites {
-  position: relative;
-  /* window height - header height */
-  height: calc(100vh - 110px);
 }
 
 .app-sites .header-spacer {

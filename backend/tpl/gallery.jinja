@@ -16,6 +16,7 @@
 {% block bodyClassNames %}page-gallery{% endblock %}
 
 {% block header_title %}{% endblock %}
+{% block title_mobile %}{{ _('gallery.title') }}{% endblock title_mobile %}
 
 {% block content %}
 
@@ -38,7 +39,7 @@
         class="app-gallery container-fluid d-flex flex-column"
         v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
     
-    {% include 'sites-filter.jinja' %}
+    {% include 'components/sites-filter.jinja' %}
 
     <div class="container sans-serif mt-1 mt-md-0">
       <div class="photos-spacer d-none d-md-block"></div>

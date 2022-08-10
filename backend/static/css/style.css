@@ -92,6 +92,10 @@ button {
   padding-bottom: 2px;
 }
 
+.text-primary {
+  color: var(--color-primary) !important;
+}
+
 .btn-primary {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
@@ -100,6 +104,9 @@ button {
 .btn-primary:hover,
 .btn-primary:active,
 .btn-primary:focus,
+.btn-outline-primary:hover,
+.btn-outline-primary:active,
+.btn-outline-primary:focus,
 .btn-secondary:not(:disabled):not(.disabled).active,
 .btn-secondary:not(:disabled):not(.disabled):active,
 .show > .btn-secondary.dropdown-toggle {
@@ -291,7 +298,15 @@ h6 .light {
 }
 
 .navbar-brand {
-  padding: 0;
+  width: calc(100% - 36px);
+}
+
+.popover_nav {
+  top: 36px !important;
+}
+
+.popover_nav .arrow {
+  display: none;
 }
 
 .bg-light {
@@ -304,19 +319,32 @@ h6 .light {
 }
 
 .nav-bar {
-  justify-content: flex-end;
   margin: 0;
-  padding-top: 10px;
-  padding-right: 40px;
+}
+@media (min-width: 768px) {
+  .nav-bar {
+    justify-content: flex-end;
+  }
+}
+
+.navbar-toggler {
+  border: none;
 }
 
 #header {
-  height: 110px;
+  height: 50px;
   padding-left: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   margin-bottom: 25px;
+  box-shadow: 0px 2px 2px #00000044;
+}
+@media (min-width: 768px) {
+  #header {
+    height: 110px;
+    box-shadow: none;
+  }
 }
 
 .header-title {
@@ -344,7 +372,7 @@ h6 .light {
 }
 
 .header-title:empty {
-  display: none;
+  display: none !important;
 }
 
 .header-logo {
@@ -352,12 +380,9 @@ h6 .light {
   height: 110px;
 }
 
-#collapse ul {
-  align-items: flex-end;
-}
-
 .nav-item.active .nav-link {
   font-weight: 600;
+  color: var(--color-primary) !important;
 }
 
 .async:not(.async-resolved) .visible-async-resolved {
