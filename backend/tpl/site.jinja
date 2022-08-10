@@ -42,8 +42,8 @@
     <div class="col col-main">
       <app-comparator-v{{ comparator_version }}></app-comparator-v{{ comparator_version }}>
       <div class="container-fluid">
-      <div class="row mt-3 info">
-        <div class="col-lg-5 pl-0 pr-0 pr-lg-3 mb-5 text-right">
+      <div class="row mt-3 info rounded">
+        <div class="col-lg-5 pl-0 pr-0 pr-lg-3 text-right">
           <div class="map-wrapper" ref="map"></div>
           {% if site.path_file_guide_site: %}
           <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
@@ -59,25 +59,28 @@
         <div class="col-lg-7 pr-0">
           <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
-            <div class="target font-italic">
+            <div class="target">
               {% autoescape false %}{{ site.desc_site }}{% endautoescape %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+              <button class="btn btn-sm btn-outline-primary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
                 <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
                 <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row mt-3 info rounded flex-column">
           <h5 class="text-uppercase">Mots clés</h5>
           <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
-            <div class="target font-italic">
+            <div class="target">
             {% for un_sous_theme in site.stheme %}
                 <span>{{ un_sous_theme }}</span>{{ ", " if not loop.last else "" }}
             {% endfor %}
             </div>
             <div class="gradient text-right visible-text-collapsable pt-3">
-              <button class="btn btn-sm btn-secondary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('stheme')">
+              <button class="btn btn-sm btn-outline-primary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('stheme')">
                 <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
                 <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
               </button>
@@ -98,7 +101,6 @@
           </div>
           {% endif %}
         </div>
-      </div>
     </div>
     </div>
   </div>

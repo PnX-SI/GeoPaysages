@@ -80,10 +80,6 @@ button {
   text-decoration: none !important;
 }
 
-.btn {
-  border-radius: 0;
-}
-
 .btn:not(.btn-no-uppercase) {
   text-transform: uppercase;
 }

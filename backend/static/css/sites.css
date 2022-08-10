@@ -88,6 +88,10 @@
   background: transparent;
 }
 
+.app-sites .list-observatories .btn-site:hover {
+  background: var(--color-discover);
+}
+
 .app-sites .list-observatories .btn-observatory {
   line-height: 1.3;
   color: #000;

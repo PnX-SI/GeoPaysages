@@ -63,7 +63,7 @@
                   @click="onBtnObservatoryClick(observatory)"
                   v-b-toggle="'app_map_observatory_' + observatory.id"
                   variant="link"
-                  class="rounded-0 text-left btn-observatory border-0 text-decoration-none">
+                  class="rounded-0 text-left btn-observatory border-0 text-decoration-none d-flex align-items-center">
                   <div class="icon d-inline-block mr-2">
                     <img :src="'{{img_srv}}/crop?file=' + observatory.data.logo + '&width=100&height=100'" />
                   </div>
@@ -71,6 +71,8 @@
                     <span class="d-block text-capitalize" v-html="observatory.label"></span>
                     <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' site(s) d\'observation(s)'"></small>
                   </div>
+                  <i class="ion-ios-arrow-down visible-collapsed ml-auto justify-content-center align-items-center"></i>
+                  <i class="ion-ios-arrow-up hidden-collapsed ml-auto justify-content-center align-items-center"></i>
                 </b-btn>
               </b-card-header>
               <b-collapse
@@ -79,16 +81,17 @@
                 <b-card-body class="p-0 pl-5">
                   <b-button-group v-if="observatory.selectedSites && observatory.selectedSites.length" vertical class="w-100">
                     <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left"
+                      class="btn btn-sm btn-block text-left btn-site"
                       @mouseenter="onSiteMousover(site)"
                       @mouseleave="onSiteMouseout(site)"
                       @click="onSiteClick(site)">
-                      <span class="d-block" v-html="site.name_site"></span>
-                      <span class="d-block" v-html="site.ville.label"></span>
-                      <span class="d-block"
+                      <span class="d-block font-weight-bold" v-html="site.name_site"></span>
+                      <span class="d-block text-black-50" v-html="site.ville.label"></span>
+                      <span class="d-block text-black-50"
                             v-if="site.ref_site"
                             v-html="'(réf. : ' + site.ref_site + ')'"></span>
                     </a>
+                    <hr class="w-100 m-1"/>
                   </b-button-group>
                 </b-card-body>
               </b-collapse>
