@@ -1,0 +1,99 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'home' %}
+{% block title %}{{ _('home.meta_title') }}{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_multi_obs.css') }}">
+
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home_multi_obs.js') }}"></script>
+{% endblock %}
+
+{% block bodyClassNames %}page-home{% endblock %}
+
+{% block header_title %}
+<h1>{{ _('home.title') }}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="page-content">
+
+  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
+  {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
+  {% if dbconf.home_intro_position == 'top': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
+
+  <div class="container">
+    
+      {% set count = namespace(value=0) %}
+      {% set is_break = namespace(value=false) %}
+
+      {% for i in range(patchwork_options.nb_rows) %}
+
+       <div class="d-flex justify-content-center flex-wrap my-5">
+
+        {% for j in range(patchwork_options.nb_cols) %}
+
+          {% if is_break.value == false  %}
+          
+            {% if observatories[count.value] is defined  %}
+              <div class="patchwork-item">
+                <a class="d-block position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
+                  <img src="{{ img_srv }}/crop?file={{ observatories[count.value].photo }}&width=200&height=200">
+                  <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
+                    <span class="text-uppercase">{{ observatories[count.value].title }}</span>
+                    <button type="button" class="btn btn-outline-light d-none">Voir</button>
+                  </span>
+                </a>
+              </div>
+
+            {% else %}
+
+                  <a href='/sites' class="text-uppercase">
+                    <div class="text-white patchwork-item d-flex align-items-center text-center" style="background-color: #447e72;">
+                    Découvrez nos observatoires
+                    </div>
+                  </a>
+
+                {% set is_break.value = true %}
+
+            {% endif %}
+
+            {% set count.value = count.value + 1 %}
+
+          {% endif %}
+
+        {% endfor %}
+
+      </div>
+
+    {% endfor %}   
+
+    <div>
+      <div class="js-map-wrapper" style="height:200px"></div>
+      <a href="/sites">{{ _('home.block.explore_sites') }}</a>
+    </div>
+    
+  </div>
+
+  {% if dbconf.home_intro_position == 'bottom': %}
+  {% autoescape false %}{{ intro }}{% endautoescape %}
+  {% endif %}
+</div>
+
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      geopsg.initHome({
+        observatories: {{observatories | tojson}},
+        patchwork_options: {{patchwork_options | tojson}},
+        sites: {{sites | tojson}}
+      })
+    }
+  }
+</script>
+{% endblock %}

@@ -65,6 +65,7 @@ def inject_to_tpl():
         dbconf=utils.getDbConf(), 
         debug=app.debug, 
         locale=get_locale(), 
+        isMultiObservatories=utils.isMultiObservatories,
         isDbPagePublished=utils.isDbPagePublished,
         img_srv=app.config['IMG_SRV']
     )

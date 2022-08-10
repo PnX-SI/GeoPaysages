@@ -137,6 +137,14 @@ def isDbPagePublished(name):
 
     return dbconf.get('page_' + name + '_published_' + get_locale().__str__(), dbconf.get('page_' + name + '_published')) is True
 
+def isMultiObservatories():
+    # Pourrait passer par un count sql
+    sql = text("SELECT id FROM geopaysages.t_observatory where is_published is true")
+    result = db.engine.execute(sql).fetchall()
+    rows = [dict(row) for row in result]
+    if len(rows) > 1 :
+        return True
+    return False
 
 def getDbPage(name):
     dbconf = getDbConf()

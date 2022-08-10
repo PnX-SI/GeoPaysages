@@ -5,9 +5,11 @@
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_mono_obs.css') }}">
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home_mono_obs.js') }}"></script>
 {% endblock %}
 
 {% block bodyClassNames %}page-home{% endblock %}
