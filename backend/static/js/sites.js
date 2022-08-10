@@ -91,7 +91,7 @@ geopsg.initSites = (options) => {
     el: '#js-app-sites',
     data: () => {
       return {
-        isSitesListOpen: window.outerWidth >= 768,
+        isSitesListOpen: window.innerWidth >= 768,
         filters: filters,
         selectedFilters: selectedFilters,
         themes: filters.find((filter) => filter.name == 'themes').items,
@@ -461,7 +461,7 @@ geopsg.initSites = (options) => {
         site.marker.closePopup();
       },
       onSiteClick(site) {
-        if (window.outerWidth >= 768) {
+        if (window.innerWidth >= 768) {
           window.location.href = `/sites/${site.id_site}`;
         } else {
           this.onSiteMousover(site);

@@ -41,11 +41,11 @@
     
     {% include 'components/sites-filter.jinja' %}
 
-    <div class="container sans-serif mt-1 mt-md-0">
-      <div class="photos-spacer d-none d-md-block"></div>
+    <div class="container sans-serif mt-1 mt-lg-0">
+      <div class="photos-spacer d-none d-lg-block"></div>
       <div class="photos row justify-content-center">
         <div v-for="site in selectedSites"
-          class="picture col-lg-2 col-md-3 col-sm-4 col-6"
+          class="picture col-lg-2 col-lg-3 col-sm-4 col-6"
           @mouseenter="onSiteMousover(site)"
           @mouseleave="onSiteMouseout(site)"
         >
@@ -69,7 +69,7 @@
 
 
       </div>
-      <div class="row d-none d-md-block">
+      <div class="row d-none d-lg-block">
         <div class="col d-flex justify-content-center">
           <span class="center-filter px-3 py-2">
           {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
