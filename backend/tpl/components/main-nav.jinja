@@ -1,0 +1,16 @@
+<ul class="navbar-nav sans-serif align-items-md-end">
+  <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
+    <a class="nav-link " href="/">{{ _('header.nav.home') }}</a>
+  </li>
+  {% if isDbPagePublished('about'): %}
+  <li class="nav-item {% if active_page == 'about' %}active{% endif %}">
+    <a class="nav-link" href="/about" >{{ _('header.nav.about') }}</a>
+  </li>
+  {% endif %}
+  <li class="nav-item {% if active_page == 'sites' %}active{% endif %}">
+    <a class="nav-link" href="/sites" >{{ _('header.nav.sites') }}</a>
+  </li>
+  <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
+    <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
+  </li>
+</ul>

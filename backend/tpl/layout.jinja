@@ -39,35 +39,28 @@
 <body class="{% block bodyClassNames %}{% endblock %}">
 
     <header class="container-fluid" id="header">
-      <a href="/">
+      <a href="/" class="d-none d-sm-inline">
         <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_color.png') }}" />
       </a>
-      <div class="row nav-bar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <b-btn v-b-toggle.collapse class="navbar-toggler" variant="light"><span class="navbar-toggler-icon"></span></b-btn>
+      <div class="row nav-bar pt-2 pt-md-3 pr-0 pr-md-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 w-md-auto">
+          <b-btn id="popover_nav_toggle" class="navbar-toggler w-100 text-left pr-0" variant="link">
+            <span class="navbar-toggler-icon"></span>
+            <span class="align-middle d-inline-block d-md-none navbar-brand p-0 pl-2 m-0 text-primary text-uppercase text-truncate">
+              {% block title_mobile %}{% endblock title_mobile %}
+            </span>
+          </b-btn>
+          <b-popover target="popover_nav_toggle" triggers="click blur" placement="right" custom-class="popover_nav">
+            {% include 'components/main-nav.jinja' %}
+          </b-popover>
           <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
-            <ul class="navbar-nav sans-serif">
-              <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
-                <a class="nav-link " href="/">{{ _('header.nav.home') }}</a>
-              </li>
-              {% if isDbPagePublished('about'): %}
-              <li class="nav-item {% if active_page == 'about' %}active{% endif %}">
-                <a class="nav-link" href="/about" >{{ _('header.nav.about') }}</a>
-              </li>
-              {% endif %}
-              <li class="nav-item {% if active_page == 'sites' %}active{% endif %}">
-                <a class="nav-link" href="/sites" >{{ _('header.nav.sites') }}</a>
-              </li>
-              <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
-                <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
-              </li>
-            </ul>
+            {% include 'components/main-nav.jinja' %}
           </b-collapse>
         </nav>
       </div>
 
     </header>
-    <div class="header-title  ">{% block header_title %}{% endblock %}</div>
+    <div class="header-title d-none d-sm-block">{% block header_title %}{% endblock %}</div>
     {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
@@ -129,9 +122,6 @@
     window.onload =
       new Vue({
         el: '#header',
-        data: {
-          name: 'GéoPaysage'
-        },
       })
   </script>
 </body>

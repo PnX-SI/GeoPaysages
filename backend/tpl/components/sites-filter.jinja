@@ -1,0 +1,45 @@
+<button type="button" @click="onShowModalFiltersClick()" class="btn btn-block d-md-none mt-2 mb-1" 
+      v-bind:class="[selectedFilters.length ? 'btn-primary':'btn-outline-primary']"
+    >
+      <span v-if="!selectedFilters.length">
+        Filtrer
+      </span>
+      <span v-if="selectedFilters.length">
+        {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
+      </span>
+    </button>
+
+<div class="row pt-3 pt-md-4 pb-md-2 d-md-flex header-filters sans-serif" v-bind:class="{ 'd-none': !showModalFilters, 'd-block': showModalFilters }">
+  <div class="d-md-none mb-3 col d-flex justify-content-between">
+    <h5>
+      {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
+    </h5>
+    <button type="button" @click="onCloseModalFiltersClick()" class="btn btn-link px-1 py-0">
+      OK
+    </button>
+  </div>
+  <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-md-2 mb-2 mb-md-0">
+      <small class="floating-filter-label d-block ml-2 px-1"
+            v-bind:class="{ active: filter.selectedItems.length }"
+            v-html="filter.label"></small>
+      <v-multiselect
+      :multiple="true"
+      :limit="1"
+      :limit-text="filterLimitText"
+      v-model="filter.selectedItems"
+      :options="filter.items"
+      track-by="label"
+      :custom-label="getMultiselectLabel"
+      placeholder=""
+      :show-labels="false"
+      @input="onMultiselectInput(filter, $event)"
+      >
+      <template><span slot="noResult">Pas de résultats</span></template>
+      </v-multiselect>
+  </div>
+  <div class="col col-md-2 text-right mt-4 mt-md-0">
+    <button type="button"
+            @click="onCancelClick()"
+            class="btn btn-outline-secondary">Réinitialiser</button>
+  </div>
+</div>

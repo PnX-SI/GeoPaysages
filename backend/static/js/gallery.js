@@ -55,10 +55,12 @@ geopsg.initGallery = (options) => {
       return {
         isSidebarCollapsed: false,
         filters: filters,
+        selectedFilters: selectedFilters,
         themes: filters.find((filter) => filter.name == 'themes').items,
         selectedSites: [],
         observatories: observatories,
         isMultiObservatories: isMultiObservatories,
+        showModalFilters: false,
         filterLimitText: (count) => {
           return `+ ${count}`;
         },
@@ -76,14 +78,20 @@ geopsg.initGallery = (options) => {
           filter.selectedItems = [];
           filter.isOpen = false;
         });
-        selectedFilters = [];
+        this.selectedFilters = [];
         this.setFilters();
+      },
+      onShowModalFiltersClick() {
+        this.showModalFilters = true;
+      },
+      onCloseModalFiltersClick() {
+        this.showModalFilters = false;
       },
       getMultiselectLabel(option) {
         return `${option.label} (${option.nbSites})`;
       },
       onMultiselectInput(filter, selectedItems) {
-        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
+        let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;
         });
 
@@ -93,7 +101,7 @@ geopsg.initGallery = (options) => {
               name: filter.name,
               items: [],
             };
-            selectedFilters.push(selectedFilterExists);
+            this.selectedFilters.push(selectedFilterExists);
           }
           selectedFilterExists.items = selectedItems.map((item) => {
             return {
@@ -102,7 +110,7 @@ geopsg.initGallery = (options) => {
             };
           });
         } else {
-          selectedFilters = selectedFilters.filter((selectedFilter) => {
+          this.selectedFilters = this.selectedFilters.filter((selectedFilter) => {
             return selectedFilter.name != filter.name;
           });
         }
@@ -118,7 +126,7 @@ geopsg.initGallery = (options) => {
         this.setFilters();
       },
       onFilterClick(filter, item) {
-        let selectedFilterExists = selectedFilters.find((selectedFilter) => {
+        let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;
         });
         if (item.isSelected) {
@@ -127,7 +135,7 @@ geopsg.initGallery = (options) => {
               name: filter.name,
               items: [],
             };
-            selectedFilters.push(selectedFilterExists);
+            this.selectedFilters.push(selectedFilterExists);
           }
           selectedFilterExists.items.push({
             id: item.id,
@@ -138,7 +146,7 @@ geopsg.initGallery = (options) => {
             return selectedItem.id != item.id;
           });
           if (!selectedFilterExists.items.length) {
-            selectedFilters = selectedFilters.filter((selectedFilter) => {
+            this.selectedFilters = this.selectedFilters.filter((selectedFilter) => {
               return selectedFilter.name != filter.name;
             });
           }
@@ -151,9 +159,9 @@ geopsg.initGallery = (options) => {
         this.setFilters();
       },
       setFilters() {
-        localStorage.setItem('geopsg.gallery.selectedFilters', JSON.stringify(selectedFilters));
+        localStorage.setItem('geopsg.gallery.selectedFilters', JSON.stringify(this.selectedFilters));
 
-        const cascadingFilters = selectedFilters.map((selectedFilter) => {
+        const cascadingFilters = this.selectedFilters.map((selectedFilter) => {
           return selectedFilter.name;
         });
         filters.forEach((filter) => {
