@@ -40,7 +40,7 @@ export class LoginPageComponent implements OnInit {
         this.currentUser = currentUser.user;
         this.authService.currentUser = this.currentUser;
         this.loginForm.reset();
-        this.route.navigate(['sites']);
+        this.route.navigate(['observatories']);
       },
       (err) => {
         console.log('err', err.error);
