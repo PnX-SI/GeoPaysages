@@ -30,6 +30,9 @@
   page-sites
 {% endblock bodyClassNames %}
 {% block content %}
+
+<h4 class="mt-3 ml-4 mb-n1">{{ _('map.filters.title') }}</h4>
+
   <div id="js-app-sites"
        class="app-sites container-fluid d-flex flex-column"
        v-bind:class="{'multi-observatories': isMultiObservatories}"
@@ -46,7 +49,7 @@
           class="btn d-flex justify-content-between p-3 btn-toggle"
           v-b-toggle="'app_map_list_sites_collapse'"
         >
-          <span>{{ _('sites.observation_points.title') }}</span>
+          <span></span>
           <span class="text-lowercase d-none d-md-inline-block">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
           >') }} {% endautoescape %}</span>
           <i class="icon ion-ios-arrow-down visible-collapsed"></i>
