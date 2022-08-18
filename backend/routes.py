@@ -24,7 +24,7 @@ communes_schema = models.CommunesSchema(many=True)
 
 @main.route('/')
 def home():
-    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY RANDOM() LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY p.name_site LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
 
@@ -94,7 +94,7 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
+    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(DEFAULT_SORT_SITES))
 
     # On a juste besoin de ça pour la home en multi obs
     all_observatories = observatory_schema.dump(models.Observatory.query.filter(models.Observatory.is_published == True))
