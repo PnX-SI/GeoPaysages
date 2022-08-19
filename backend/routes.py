@@ -24,7 +24,7 @@ communes_schema = models.CommunesSchema(many=True)
 
 @main.route('/')
 def home():
-    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY p.name_site LIMIT 6")
+    sql = text("SELECT * FROM geopaysages.t_site p join geopaysages.t_observatory o on o.id=p.id_observatory where p.publish_site=true and o.is_published is true ORDER BY RANDOM() LIMIT 6")
     sites_proxy = db.engine.execute(sql).fetchall()
     sites = [dict(row.items()) for row in sites_proxy]
 
