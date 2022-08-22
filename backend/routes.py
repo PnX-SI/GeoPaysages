@@ -94,7 +94,7 @@ def home():
         for id_photo in id_photos
     ] """
 
-    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(DEFAULT_SORT_SITES))
+    all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
 
     # On a juste besoin de ça pour la home en multi obs
     all_observatories = observatory_schema.dump(models.Observatory.query.filter(models.Observatory.is_published == True).order_by(models.Observatory.title))
