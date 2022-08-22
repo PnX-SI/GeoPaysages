@@ -260,7 +260,11 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
     
     @staticmethod
     def geomSerialize(obj):
-        return to_shape(obj.geom).wkt if obj.geom is not None else obj.geom
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        s = p.simplify(.0001, preserve_topology=False)
+        return s.wkt
 
     class Meta:
         model = Observatory
