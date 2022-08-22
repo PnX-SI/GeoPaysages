@@ -2,7 +2,7 @@
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-6 col-table">
+    <div class="col-12 col-table">
       <div *ngIf="loadForm" class="observatory-block">
         <form [formGroup]="observatoryForm" (submit)="submitObservatory(observatoryForm)" disabled>
           <div class="inner-checkbox form-group">
