@@ -212,10 +212,12 @@ def getFiltersData():
         'items': set()
     }, {
         'name': 'township',
+        'hideNoMatched': True,
         'label': gettext(u'sites.filter.township'),
         'items': set()
     }, {
         'name': 'years',
+        'hideNoMatched': True,
         'label': gettext(u'sites.filter.years'),
         'items': set()
     }]

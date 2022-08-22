@@ -261,17 +261,27 @@ geopsg.initSites = (options) => {
           const filter = filters.find((filter) => {
             return filter.name == filterName;
           });
-          filter.items.forEach((item) => {
-            let sitesByItem = selectedSites.filter((site) => {
-              let prop = _.get(site, filter.name);
-              if (!Array.isArray(prop)) {
-                prop = [prop];
-              }
-
-              return prop.includes(item.id);
-            });
-            item.nbSites = sitesByItem.length;
+          const initFilter = options.filters.find((initFilter) => {
+            return initFilter.name == filter.name;
           });
+          filter.items = initFilter.items
+            .map((item) => {
+              let sitesByItem = selectedSites.filter((site) => {
+                let prop = _.get(site, filter.name);
+                if (!Array.isArray(prop)) {
+                  prop = [prop];
+                }
+
+                return prop.includes(item.id);
+              });
+              return {
+                ...item,
+                nbSites: sitesByItem.length,
+              };
+            })
+            .filter((item) => {
+              return !filter.hideNoMatched || item.nbSites > 0;
+            });
 
           let selectedIds = filter.selectedItems.map((item) => {
             return item.id;
