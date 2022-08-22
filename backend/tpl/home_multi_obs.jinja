@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/home_multi_obs.css') }}">
 
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/wellknown.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 <script src="{{ url_for('static', filename='js/home_multi_obs.js') }}"></script>
 {% endblock %}
@@ -76,7 +77,7 @@
     {% endfor %}   
 
     <div>
-      <div class="js-map-wrapper" style="height:200px"></div>
+      <div class="js-map-wrapper" style="height:500px"></div>
       <a href="/sites">{{ _('home.block.explore_sites') }}</a>
     </div>
     

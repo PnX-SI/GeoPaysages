@@ -15,7 +15,7 @@ from env import db
 dicotheme_schema = models.DicoThemeSchema(many=True)
 dicostheme_schema = models.DicoSthemeSchema(many=True)
 photo_schema = models.TPhotoSchema(many=True)
-observatory_schema = models.ObservatorySchema(many=True)
+observatory_schema_lite = models.ObservatorySchemaLite(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 communes_schema = models.CommunesSchema(many=True)
@@ -96,22 +96,22 @@ def home():
 
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
 
-    # On a juste besoin de ça pour la home en multi obs
-    all_observatories = observatory_schema.dump(models.Observatory.query.filter(models.Observatory.is_published == True))
-
-    col_max = 5
-    nb_obs = len(all_observatories)+1
-    nb_rows = math.ceil( nb_obs / col_max )
-    nb_cols = math.ceil( nb_obs / nb_rows )
-
-
-    patchwork_options = {
-    "nb_cols" : nb_cols,
-    "nb_rows" : nb_rows
-    }
-
     if (utils.isMultiObservatories() == True ) : 
-        return render_template('home_multi_obs.jinja', observatories=all_observatories, sites=all_sites, patchwork_options=patchwork_options)
+        observatories = models.Observatory.query.filter(models.Observatory.is_published == True)
+        dump_observatories = observatory_schema_lite.dump(observatories)
+
+        col_max = 5
+        nb_obs = len(dump_observatories)+1
+        nb_rows = math.ceil( nb_obs / col_max )
+        nb_cols = math.ceil( nb_obs / nb_rows )
+
+
+        patchwork_options = {
+        "nb_cols" : nb_cols,
+        "nb_rows" : nb_rows
+        }
+        return render_template('home_multi_obs.jinja', observatories=dump_observatories, sites=all_sites, patchwork_options=patchwork_options)
+
     return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
 
 @main.route('/gallery')

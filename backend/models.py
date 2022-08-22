@@ -266,6 +266,22 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
         model = Observatory
         include_relationships = True
 
+class ObservatorySchemaLite(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=False)
+    geom = fields.Method("geomSerialize")
+    
+    @staticmethod
+    def geomSerialize(obj):
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        s = p.simplify(.001, preserve_topology=True)
+        return s.wkt
+
+    class Meta:
+        model = Observatory
+        include_relationships = True
+
 
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
