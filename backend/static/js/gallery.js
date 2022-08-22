@@ -6,7 +6,7 @@ geopsg.initGallery = (options) => {
   } catch (error1) {
     try {
       selectedFilters = JSON.parse(localStorage.getItem('geopsg.gallery.selectedFilters'));
-    } catch (error2) { }
+    } catch (error2) {}
   }
 
   if (!Array.isArray(selectedFilters)) {
@@ -72,9 +72,6 @@ geopsg.initGallery = (options) => {
     methods: {
       onCancelClick() {
         filters.forEach((filter) => {
-          filter.items.forEach((item) => {
-            item.isSelected = false;
-          });
           filter.selectedItems = [];
           filter.isOpen = false;
         });
@@ -115,47 +112,6 @@ geopsg.initGallery = (options) => {
           });
         }
 
-        filter.items.forEach((item) => {
-          item.isSelected = Boolean(
-            selectedItems.find((selectedItem) => {
-              return selectedItem.id == item.id;
-            }),
-          );
-        });
-
-        this.setFilters();
-      },
-      onFilterClick(filter, item) {
-        let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
-          return selectedFilter.name == filter.name;
-        });
-        if (item.isSelected) {
-          if (!selectedFilterExists) {
-            selectedFilterExists = {
-              name: filter.name,
-              items: [],
-            };
-            this.selectedFilters.push(selectedFilterExists);
-          }
-          selectedFilterExists.items.push({
-            id: item.id,
-            label: item.label,
-          });
-        } else {
-          selectedFilterExists.items = selectedFilterExists.items.filter((selectedItem) => {
-            return selectedItem.id != item.id;
-          });
-          if (!selectedFilterExists.items.length) {
-            this.selectedFilters = this.selectedFilters.filter((selectedFilter) => {
-              return selectedFilter.name != filter.name;
-            });
-          }
-        }
-
-        filter.selectedItems = filter.items.filter((item) => {
-          return item.isSelected;
-        });
-
         this.setFilters();
       },
       setFilters() {
@@ -175,17 +131,27 @@ geopsg.initGallery = (options) => {
           const filter = filters.find((filter) => {
             return filter.name == filterName;
           });
-          filter.items.forEach((item) => {
-            let sitesByItem = selectedSites.filter((site) => {
-              let prop = _.get(site, filter.name);
-              if (!Array.isArray(prop)) {
-                prop = [prop];
-              }
-
-              return prop.includes(item.id);
-            });
-            item.nbSites = sitesByItem.length;
+          const initFilter = options.filters.find((initFilter) => {
+            return initFilter.name == filter.name;
           });
+          filter.items = initFilter.items
+            .map((item) => {
+              let sitesByItem = selectedSites.filter((site) => {
+                let prop = _.get(site, filter.name);
+                if (!Array.isArray(prop)) {
+                  prop = [prop];
+                }
+
+                return prop.includes(item.id);
+              });
+              return {
+                ...item,
+                nbSites: sitesByItem.length,
+              };
+            })
+            .filter((item) => {
+              return !filter.hideNoMatched || item.nbSites > 0;
+            });
 
           let selectedIds = filter.selectedItems.map((item) => {
             return item.id;
@@ -212,14 +178,13 @@ geopsg.initGallery = (options) => {
         });
 
         if (selectedFilters.length == 0 && isMultiObservatories) {
-          selectedSites = selectedSites.sort(() => Math.random() - 0.5)
+          selectedSites = selectedSites.sort(() => Math.random() - 0.5);
         }
 
         this.selectedSites = selectedSites;
-        console.log(selectedSites);
       },
-      onSiteMousover(site) { },
-      onSiteMouseout(site) { },
+      onSiteMousover(site) {},
+      onSiteMouseout(site) {},
     },
   });
 };
