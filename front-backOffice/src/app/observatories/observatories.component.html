@@ -4,7 +4,7 @@
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
-    <div class="col-6 col-table">
+    <div class="col-12 col-table">
       <div>
         <button class="blue-btn btn-add" (click)="onAddClick()">
           Ajouter un observatoire
@@ -54,17 +54,6 @@
           </ngx-datatable-column>
         </ngx-datatable>
       </div>
-    </div>
-    <div class="col-6 col-map">
-      <div
-        class="map"
-        leaflet
-        [leafletOptions]="options"
-        [leafletLayers]="markers"
-        [(leafletCenter)]="center"
-        [(leafletZoom)]="zoom"
-        (leafletMapReady)="onMapReady($event)"
-      ></div>
     </div>
   </div>
 </div>
