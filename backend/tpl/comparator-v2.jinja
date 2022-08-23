@@ -1,50 +1,71 @@
 <template id="tpl-app-comparator-v2">
-  <div class="app-comparator">
-    <div class="mode-selector d-flex mb-1 mb-sm-0">
-      <div class="col-6 p-0 justify-content-end d-flex">
-        <span class="mode-selector-label">
-          <span class="pr-2">{{ _('comparatorv2.mode.title') }}</span>
-        </span>
+  <div>
+    <div class="app-comparator" v-bind:style="{height: 'calc(100vh - ' + (thumbsListH + 50) + 'px)'}">
+      <div class="mode-selector d-flex mb-1 mb-sm-0">
+        <div class="col-6 p-0 justify-content-end d-flex">
+          <span class="mode-selector-label">
+            <span class="pr-2">{{ _('comparatorv2.mode.title') }}</span>
+          </span>
+        </div>
+        <b-dropdown :text="curMode.label">
+          <b-dropdown-item-button v-for="mode in modes" :key="mode.name" :active="mode.name == curMode.name"
+            v-on:click="onBtnModeClick(mode)">
+            <span v-html="mode.label"></span>
+          </b-dropdown-item-button>
+        </b-dropdown>
       </div>
-      <b-dropdown :text="curMode.label">
-        <b-dropdown-item-button v-for="mode in modes" :key="mode.name" :active="mode.name == curMode.name"
-          v-on:click="onBtnModeClick(mode)">
-          <span v-html="mode.label"></span>
-        </b-dropdown-item-button>
-      </b-dropdown>
-    </div>
 
-    <app-comparator-v2-selector 
-      class="left" 
-      :items="photos" 
-      :selected-item="comparedPhotos[0]"
-      v-on:item-selected="onPhotoSelected(0, $event)"
+      <app-comparator-v2-selector 
+        class="left" 
+        :items="photos" 
+        :selected-item="comparedPhotos[0]"
+        v-on:item-selected="onPhotoSelected(0, $event)"
 
-    >
-    </app-comparator-v2-selector>
-    <app-comparator-v2-selector 
-      class="right text-right" 
-      :items="photos" :selected-item="comparedPhotos[1]" 
-      :right="true"
-      v-on:item-selected="onPhotoSelected(1, $event)"
-    >
-    </app-comparator-v2-selector>
-    <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
-    <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
-    <div class="row h-100">
-      <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
-        <div class="h-100" ref="photo1"></div>
+      >
+      </app-comparator-v2-selector>
+      <app-comparator-v2-selector 
+        class="right text-right" 
+        :items="photos" :selected-item="comparedPhotos[1]" 
+        :right="true"
+        v-on:item-selected="onPhotoSelected(1, $event)"
+      >
+      </app-comparator-v2-selector>
+      <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
+      <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
+      <div class="row h-100">
+        <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
+          <div class="h-100" ref="photo1"></div>
+        </div>
+        <div class="col col-map"
+          v-bind:class="{'d-none': curMode.name == 'sidebyside', 'pl-2': curMode.name != 'sidebyside'}">
+          <div class="h-100" ref="photo2"></div>
+        </div>
       </div>
-      <div class="col col-map"
-        v-bind:class="{'d-none': curMode.name == 'sidebyside', 'pl-2': curMode.name != 'sidebyside'}">
-        <div class="h-100" ref="photo2"></div>
-      </div>
+      <b-modal id="comparatorLoading" class="modal-contained" size="sm" static lazy centered no-fade no-close-on-backdrop
+        no-close-on-esc hide-header hide-footer>
+        <p class="mb-0">{{ _('comparatorv2.loading') }}</p>
+        <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
+      </b-modal>
     </div>
-    <b-modal id="comparatorLoading" class="modal-contained" size="sm" static lazy centered no-fade no-close-on-backdrop
-      no-close-on-esc hide-header hide-footer>
-      <p class="mb-0">{{ _('comparatorv2.loading') }}</p>
-      <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
-    </b-modal>
+    <div class="app-comparator-thumbs-wrapper w-100 d-flex overflow-auto mt-3" v-bind:style="{height: thumbsListH + 'px'}">
+      <recyclescroller
+        direction="horizontal"
+        :buffer="5"
+        class="scroller"
+        :items="photos"
+        :item-size="thumbProps.width"
+        key-field="filename"
+        v-slot="{ item }"
+      >
+        <div class="thumb position-relative">
+          <img :src="getThumbUrl(item)" :alt="item.date_diplay.md" />
+          <div class="thumb-tools">
+            <b-button @click="onPhotoSelected(0, item)">1</b-button>
+            <b-button @click="onPhotoSelected(1, item)">2</b-button>
+          </div>
+        </div>
+      </recyclescroller>
+    </div>
   </div>
 </template>
 

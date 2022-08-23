@@ -50,6 +50,13 @@ geopsg.comparator = (options) => {
     }
   });
 
+  Vue.component('recyclescroller', VueVirtualScroller.RecycleScroller);
+
+  const thumbProps = {
+    width: 150,
+    height: 150,
+  };
+
   Vue.component('app-comparator-v2', {
     template: '#tpl-app-comparator-v2',
     data: () => {
@@ -58,6 +65,8 @@ geopsg.comparator = (options) => {
         modes: modes,
         photos: options.photos,
         comparedPhotos: [defaultItems[0], defaultItems[1]],
+        thumbProps: thumbProps,
+        thumbsListH: thumbProps.height + 30,
       };
     },
     mounted() {
@@ -168,6 +177,10 @@ geopsg.comparator = (options) => {
             map.invalidateSize();
           });
         });
+      },
+      getThumbUrl(photo) {
+        const { width, height } = this.thumbProps;
+        return `${options.img_srv}/crop?file=${photo.filename}&width=${width}&height=${height}`;
       },
     },
   });

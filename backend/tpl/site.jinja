@@ -4,6 +4,9 @@
 {% if comparator_version == 1: %}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" />
 {% endif %}
+{% if comparator_version == 2: %}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/vue-virtual-scroller/vue-virtual-scroller.css') }}" />
+{% endif %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
 <link rel="stylesheet" href="{{ url_for('static', filename='css/comparator-v' + comparator_version|string + '.css') }}" />
@@ -18,6 +21,7 @@
 <script src="{{ url_for('static', filename='vendor/L.Map.Sync.js') }}"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.css') }}" type="text/css">
 <script src="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/vue-virtual-scroller/vue-virtual-scroller.min.js') }}"></script>
 {% endif %}
 <script src="{{ url_for('static', filename='js/site.js') }}"></script>
 <script src="{{ url_for('static', filename='js/comparator-v' + comparator_version|string + '.js') }}"></script>
