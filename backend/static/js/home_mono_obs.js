@@ -1,6 +1,5 @@
 var geopsg = geopsg || {};
-geopsg.initHome = (options) => {
-
+geopsg.initHomeMono = (options) => {
   let gutter = 20;
   let pageContainer = document.querySelector('.page-content');
   let container = document.querySelector('.blocks');
@@ -14,9 +13,9 @@ geopsg.initHome = (options) => {
   let block_6 = document.querySelector('.block-6');
 
   window.addEventListener('resize', () => {
-    onResize()
-  })
-  onResize()
+    onResize();
+  });
+  onResize();
 
   const map = L.map(document.getElementsByClassName('js-map-wrapper')[0], {
     attributionControl: false,
@@ -26,75 +25,71 @@ geopsg.initHome = (options) => {
     keyboard: false,
     scrollWheelZoom: false,
     tap: false,
-    zoomControl: false
-  })
-  const tileLayer = L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    zoomControl: false,
+  });
+  const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-  }
-  )
-  tileLayer.addTo(map)
+  });
+  tileLayer.addTo(map);
 
-  const lats = []
-  const lons = []
-  options.sites.forEach(site => {
-    lats.push(site.geom[0])
-    lons.push(site.geom[1])
-    L.marker(site.geom).addTo(map)
-    lats.sort()
-    lons.sort()
+  const lats = [];
+  const lons = [];
+  options.sites.forEach((site) => {
+    lats.push(site.geom[0]);
+    lons.push(site.geom[1]);
+    L.marker(site.geom).addTo(map);
+    lats.sort();
+    lons.sort();
     map.fitBounds([
       [lats[0], lons[0]],
-      [lats[lats.length - 1], lons[lons.length - 1]]
-    ])
-  })
+      [lats[lats.length - 1], lons[lons.length - 1]],
+    ]);
+  });
 
   function onResize() {
     container.style.transform = null;
-    if (window.matchMedia("(min-width: 800px)").matches) {
-
+    if (window.matchMedia('(min-width: 800px)').matches) {
       container.style.height = null;
       container.style.width = null;
 
       let containerW = container.clientWidth;
       let containerH = container.clientHeight;
 
+      let blockSM = (containerH * 1) / 3;
+      let blockBG = (containerH * 2) / 3;
+      let nextContainerW = blockSM * 5 + gutter * 3;
 
-      let blockSM = (containerH * 1 / 3);
-      let blockBG = (containerH * 2 / 3);
-      let nextContainerW = (blockSM * 5 + gutter * 3);
-
-      block_1.style.height = (blockSM * 2) + 'px';
+      block_1.style.height = blockSM * 2 + 'px';
       block_1.style.width = block_1.style.height;
 
       block_2.style.height = blockSM + 'px';
-      block_2.style.width = (blockSM * 2 + gutter) + 'px';
-      block_2.style.left = (blockBG + gutter) + 'px';
+      block_2.style.width = blockSM * 2 + gutter + 'px';
+      block_2.style.left = blockBG + gutter + 'px';
 
-      block_3.style.height = (blockSM * 2) + 'px';
+      block_3.style.height = blockSM * 2 + 'px';
       block_3.style.width = blockSM + 'px';
-      block_3.style.left = (blockBG * 2 + gutter * 3) + 'px';
+      block_3.style.left = blockBG * 2 + gutter * 3 + 'px';
 
-      block_4.style.height = (blockSM - gutter) + 'px';
+      block_4.style.height = blockSM - gutter + 'px';
       block_4.style.width = blockSM + 'px';
-      block_4.style.left = (blockBG + gutter) + 'px';
-      block_4.style.top = (blockSM + gutter) + 'px';
+      block_4.style.left = blockBG + gutter + 'px';
+      block_4.style.top = blockSM + gutter + 'px';
 
-      block_5.style.height = (blockSM * 2 - gutter) + 'px';
+      block_5.style.height = blockSM * 2 - gutter + 'px';
       block_5.style.width = blockSM + 'px';
-      block_5.style.left = (blockBG + blockSM + gutter * 2) + 'px';
-      block_5.style.top = (blockSM + gutter) + 'px';
+      block_5.style.left = blockBG + blockSM + gutter * 2 + 'px';
+      block_5.style.top = blockSM + gutter + 'px';
 
-      block_map.style.height = (blockSM - gutter) + 'px';
-      block_map.style.width = (blockSM * 3 + gutter) + 'px';
+      block_map.style.height = blockSM - gutter + 'px';
+      block_map.style.width = blockSM * 3 + gutter + 'px';
       block_map.style.left = 0 + 'px';
-      block_map.style.top = (blockBG + gutter) + 'px';
+      block_map.style.top = blockBG + gutter + 'px';
 
-      block_6.style.height = (blockSM - gutter) + 'px';
+      block_6.style.height = blockSM - gutter + 'px';
       block_6.style.width = blockSM + 'px';
-      block_6.style.left = (blockBG * 2 + gutter * 3) + 'px';
-      block_6.style.top = (blockSM * 2 + gutter) + 'px';
+      block_6.style.left = blockBG * 2 + gutter * 3 + 'px';
+      block_6.style.top = blockSM * 2 + gutter + 'px';
 
       container.style.width = nextContainerW + 'px';
 
@@ -105,11 +100,9 @@ geopsg.initHome = (options) => {
 
       if (nextContainerW > pageContainer.clientWidth) {
         let rate = pageContainer.clientWidth / nextContainerW;
-        container.style.transform = 'scale(' + rate + ')'
+        container.style.transform = 'scale(' + rate + ')';
       }
-
     } else {
-
       container.style.height = 'auto';
       container.style.width = 'auto';
 
@@ -145,4 +138,4 @@ geopsg.initHome = (options) => {
       block_6.style.top = null;
     }
   }
-}
+};

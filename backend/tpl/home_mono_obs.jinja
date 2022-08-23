@@ -15,7 +15,9 @@
 {% block bodyClassNames %}page-home{% endblock %}
 
 {% block header_title %}
+{% if carousel_photos|length <= 0 %}
 <h1>{{ _('home.title') }}</h1>
+{% endif %}
 {% endblock %}
 
 {% block title_mobile %}{{ _('home.title_mobile') }}{% endblock title_mobile %}
@@ -23,13 +25,15 @@
 {% block content %}
 <div class="page-content">
 
+  {% include 'components/home-carousel.jinja' %}
+
   {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
   {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
   {% if dbconf.home_intro_position == 'top': %}
   {% autoescape false %}{{ intro }}{% endautoescape %}
   {% endif %}
 
-  <div class="blocks">
+  <div class="blocks mt-4">
 
     <div class="block block-map">
       <div class="js-map-wrapper h-100"></div>
@@ -62,6 +66,11 @@
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
       geopsg.initHome({
+        carousel: {
+          photos: {{carousel_photos | tojson}},
+        }
+      });
+      geopsg.initHomeMono({
         sites: {{sites | tojson}}
       })
     }
