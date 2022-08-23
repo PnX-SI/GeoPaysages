@@ -18,6 +18,9 @@
       OK
     </button>
   </div>
+  <div class="d-none d-lg-block pl-1 text-right mt-2">
+    <b>{{ _('map.filters.title') }}</b>
+  </div>
   <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-lg-2 mb-2 mb-lg-0">
       <small class="floating-filter-label d-block ml-2 px-1"
             v-bind:class="{ active: filter.selectedItems.length }"
@@ -37,9 +40,12 @@
       <template><span slot="noResult">Pas de résultats</span></template>
       </v-multiselect>
   </div>
-  <div class="col col-lg-2 text-right mt-4 mt-lg-0">
+  <div class="col mt-4 mt-lg-0">
     <button type="button"
             @click="onCancelClick()"
-            class="btn btn-outline-secondary">Réinitialiser</button>
+            class="btn btn-outline-secondary">
+      <span class="d-none d-lg-inline d-xl-none icon ion-md-refresh h5"></span>
+      <span class="d-lg-none d-xl-inline">Réinitialiser</span>
+    </button>
   </div>
 </div>
