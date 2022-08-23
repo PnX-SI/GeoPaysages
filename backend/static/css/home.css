@@ -1,4 +1,15 @@
 .page-home .page-content {
-    background: url("../images/bg-home.jpg") no-repeat center;
-    background-size: cover;
+  background: url('../images/bg-home.jpg') no-repeat center;
+  background-size: cover;
+}
+
+.page-home .app-home-carousel > h1 {
+  z-index: 2;
+  text-shadow: 2px 2px 2px #00000099;
+  right: 0;
+}
+
+.page-home .app-home-carousel .carousel-item {
+  background-size: cover;
+  background-position: center;
 }

@@ -16,13 +16,17 @@
 {% block bodyClassNames %}page-home{% endblock %}
 
 {% block header_title %}
+{% if carousel_photos|length <= 0 %}
 <h1>{{ _('home.title') }}</h1>
+{% endif %}
 {% endblock %}
 
 {% block title_mobile %}{{ _('home.title_mobile') }}{% endblock title_mobile %}
 
 {% block content %}
 <div class="page-content">
+
+  {% include 'components/home-carousel.jinja' %}
 
   {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
   {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
@@ -41,7 +45,7 @@
 
         {% for j in range(patchwork_options.nb_cols) %}
 
-          {% if is_break.value == false  %}
+          {% if is_break.value == false %}
           
             {% if observatories[count.value] is defined  %}
               <div class="patchwork-item">
@@ -92,6 +96,11 @@
   document.onreadystatechange = () => {
     if (document.readyState == 'complete') {
       geopsg.initHome({
+        carousel: {
+          photos: {{carousel_photos | tojson}},
+        }
+      });
+      geopsg.initHomeMulti({
         observatories: {{observatories | tojson}},
         patchwork_options: {{patchwork_options | tojson}},
         sites: {{sites | tojson}}

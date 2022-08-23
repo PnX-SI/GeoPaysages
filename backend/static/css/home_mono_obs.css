@@ -9,7 +9,7 @@
 
 .page-home .blocks {
   position: relative;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 240px);
   width: 50%;
   margin: 0 auto;
   transform-origin: left;

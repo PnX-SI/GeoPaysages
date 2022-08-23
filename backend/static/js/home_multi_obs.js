@@ -1,6 +1,6 @@
 var geopsg = geopsg || {};
 
-geopsg.initHome = (options) => {
+geopsg.initHomeMulti = (options) => {
   const getMarkerIcon = (site) => {
     return L.divIcon({
       html: `

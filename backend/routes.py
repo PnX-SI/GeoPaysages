@@ -7,6 +7,7 @@ from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_S
 from datetime import datetime
 from flask_babel import format_datetime, gettext
 import math
+import os
 
 main = Blueprint('main', __name__, template_folder='tpl')
 
@@ -96,6 +97,8 @@ def home():
 
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
 
+    carousel_photos = [fileName for fileName in os.listdir('/app/static/custom/home-carousel')]
+
     if (utils.isMultiObservatories() == True ) : 
         observatories = models.Observatory.query.filter(models.Observatory.is_published == True)
         dump_observatories = observatory_schema_lite.dump(observatories)
@@ -110,9 +113,9 @@ def home():
         "nb_cols" : nb_cols,
         "nb_rows" : nb_rows
         }
-        return render_template('home_multi_obs.jinja', observatories=dump_observatories, sites=all_sites, patchwork_options=patchwork_options)
+        return render_template('home_multi_obs.jinja', carousel_photos=carousel_photos, observatories=dump_observatories, sites=all_sites, patchwork_options=patchwork_options)
 
-    return render_template('home_mono_obs.jinja', blocks=sites, sites=all_sites)
+    return render_template('home_mono_obs.jinja', carousel_photos=carousel_photos, blocks=sites, sites=all_sites)
 
 @main.route('/gallery')
 def gallery():

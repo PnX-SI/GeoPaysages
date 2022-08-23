@@ -1,5 +1,5 @@
 var geopsg = geopsg || {};
-geopsg.initHome = (options) => {
+geopsg.initHomeMono = (options) => {
   let gutter = 20;
   let pageContainer = document.querySelector('.page-content');
   let container = document.querySelector('.blocks');
