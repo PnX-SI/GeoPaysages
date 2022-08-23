@@ -30,6 +30,11 @@ geopsg.initSites = (options) => {
   if (!Array.isArray(selectedFilters)) {
     selectedFilters = [];
   }
+  selectedFilters = selectedFilters.filter((selectedFilter) => {
+    return options.filters.find((filter) => {
+      return filter.name === selectedFilter.name;
+    });
+  });
   options.filters.forEach((filter) => {
     filter.selectedItems = [];
     filter.items.forEach((item) => {

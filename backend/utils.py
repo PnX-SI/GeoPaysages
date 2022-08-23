@@ -332,11 +332,12 @@ def getFiltersData():
                 }
             })
 
-    filters.insert(0, {
-        'name': 'id_observatory',
-        'label': gettext(u'sites.filter.obervatories'),
-        'items': observatories
-    })
+    if len(observatories) > 1:
+        filters.insert(0, {
+            'name': 'id_observatory',
+            'label': gettext(u'sites.filter.obervatories'),
+            'items': observatories
+        })
 
     return {
         'filters': filters,
