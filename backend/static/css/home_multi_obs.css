@@ -1,22 +1,22 @@
 .page-home .patchwork-item .info {
-    z-index: 1;
-    top: 0;
-    left: 0;
+  z-index: 1;
+  top: 0;
+  left: 0;
 }
 
 .page-home .patchwork-item {
-    width: 200px;
-    height: 200px;
+  width: 200px;
+  height: 200px;
 }
 
 .page-home .patchwork-item .info {
-    background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .page-home .patchwork-item button {
-    width: fit-content;
+  width: fit-content;
 }
 
 .page-home .patchwork-item:hover button {
-    display: block !important;
+  display: block !important;
 }
