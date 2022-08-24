@@ -22,7 +22,11 @@ geopsg.initHomeMulti = (options) => {
   const layers = options.sites.map((site) => L.marker(site.geom, { icon: utils.getMarkerIcon(site) }));
   options.observatories.forEach((observatory) => {
     if (observatory.geom) {
-      layers.push(utils.getObservatoryLayer(observatory.geom, observatory.color));
+      const layer = utils.getObservatoryLayer(observatory.geom, observatory.color);
+      layer.on('click', (e) => {
+        window.location.href = `/sites?filters=[{"name":"id_observatory","values":[${observatory.id}]}]`;
+      });
+      layers.push(layer);
     }
   });
 

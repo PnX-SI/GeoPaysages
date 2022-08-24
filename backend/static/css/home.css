@@ -13,3 +13,7 @@
   background-size: cover;
   background-position: center;
 }
+
+.page-home .marker-site {
+  pointer-events: none;
+}
