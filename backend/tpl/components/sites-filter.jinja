@@ -38,6 +38,9 @@
       @input="onMultiselectInput(filter, $event)"
       >
       <template><span slot="noResult">Pas de résultats</span></template>
+      <template slot="option" slot-scope="props">
+        <div v-html="props.option.label + ' (' + props.option.nbSites + ')'"></div>
+      </template>
       </v-multiselect>
   </div>
   <div class="col mt-4 mt-lg-0">

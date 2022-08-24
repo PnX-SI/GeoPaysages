@@ -85,7 +85,7 @@ geopsg.initGallery = (options) => {
         this.showModalFilters = false;
       },
       getMultiselectLabel(option) {
-        return `${option.label} (${option.nbSites})`;
+        return option.label;
       },
       onMultiselectInput(filter, selectedItems) {
         let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
