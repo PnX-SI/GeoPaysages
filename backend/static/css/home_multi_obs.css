@@ -5,8 +5,17 @@
 }
 
 .page-home .patchwork-item {
-  width: 200px;
+  flex: 1;
   height: 200px;
+}
+.page-home .patchwork-item img {
+  object-fit: cover;
+}
+
+@media (min-width: 992px) {
+  .page-home .patchwork-item {
+    max-width: 200px;
+  }
 }
 
 .page-home .patchwork-item .info {

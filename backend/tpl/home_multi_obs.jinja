@@ -35,14 +35,13 @@
   {% autoescape false %}{{ intro }}{% endautoescape %}
   {% endif %}
 
-  <div class="container">
-    
-      {% set count = namespace(value=0) %}
-      {% set is_break = namespace(value=false) %}
+  <div class="container-fluid px-0 my-4 my-md-5">
+    {% set count = namespace(value=0) %}
+    {% set is_break = namespace(value=false) %}
 
-      {% for i in range(patchwork_options.nb_rows) %}
+    {% for i in range(patchwork_options.nb_rows) %}
 
-       <div class="d-flex justify-content-center flex-wrap my-5">
+      <div class="d-md-flex justify-content-center">
 
         {% for j in range(patchwork_options.nb_cols) %}
 
@@ -50,8 +49,8 @@
           
             {% if observatories[count.value] is defined  %}
               <div class="patchwork-item">
-                <a class="d-block position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
-                  <img src="{{ img_srv }}/crop?file={{ observatories[count.value].photo }}&width=200&height=200">
+                <a class="d-block w-100 h-100 position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
+                  <img class="w-100 h-100" src="{{ img_srv }}/crop?file={{ observatories[count.value].photo }}&width=700&height=200">
                   <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
                     <span class="text-uppercase">{{ observatories[count.value].title }}</span>
                     <button type="button" class="btn btn-outline-light d-none">Voir</button>
@@ -61,11 +60,11 @@
 
             {% else %}
 
-                  <a href='/sites' class="text-uppercase">
-                    <div class="text-white patchwork-item d-flex align-items-center text-center" style="background-color: #447e72;">
+                <div class="text-center text-white text-uppercase patchwork-item d-flex" style="background-color: #447e72;">
+                  <a href='/sites' class="d-flex align-items-center justify-content-center w-100">
                     Découvrez nos observatoires
-                    </div>
                   </a>
+                </div>
 
                 {% set is_break.value = true %}
 
@@ -79,13 +78,14 @@
 
       </div>
 
-    {% endfor %}   
+    {% endfor %}  
+  </div>
 
-    <div>
-      <div class="js-map-wrapper" style="height:500px"></div>
+  <div class="container-xl">
+    <div class="text-center">
       <a href="/sites">{{ _('home.block.explore_sites') }}</a>
     </div>
-    
+    <div class="js-map-wrapper" style="height:500px"></div>
   </div>
 
   {% if dbconf.home_intro_position == 'bottom': %}
