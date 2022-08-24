@@ -53,15 +53,18 @@
         :buffer="5"
         class="scroller"
         :items="photos"
-        :item-size="thumbProps.width"
+        :item-size="thumbProps.width + 10"
         key-field="filename"
         v-slot="{ item }"
       >
         <div class="thumb position-relative">
           <img :src="getThumbUrl(item)" :alt="item.date_diplay.md" />
-          <div class="thumb-tools">
-            <b-button @click="onPhotoSelected(0, item)">1</b-button>
-            <b-button @click="onPhotoSelected(1, item)">2</b-button>
+          <div class="thumb-overlay">
+            <div class="thumb-btns">
+              <b-button @click="onPhotoSelected(0, item)">1</b-button>
+              <b-button @click="onPhotoSelected(1, item)">2</b-button>
+            </div>
+            <div class="mt-1 text-white text-shadow" :inner-html.prop="item.shot_on | dateFormat"></div>
           </div>
         </div>
       </recyclescroller>

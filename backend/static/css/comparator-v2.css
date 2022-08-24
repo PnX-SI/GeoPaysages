@@ -77,15 +77,15 @@
   font-weight: bold;
 }
 
-.page-site .app-comparator-thumbs-wrapper .thumb .thumb-tools {
+.page-site .app-comparator-thumbs-wrapper .thumb .thumb-overlay {
   display: none;
 }
 
-.page-site .app-comparator-thumbs-wrapper .thumb:hover .thumb-tools {
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .thumb-overlay {
   display: block;
 }
 
-.page-site .app-comparator-thumbs-wrapper .thumb-tools {
+.page-site .app-comparator-thumbs-wrapper .thumb-overlay {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
