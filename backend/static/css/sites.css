@@ -157,17 +157,6 @@
   }
 }
 
-.app-sites .leaflet-marker-icon .icon {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  top: 5px;
-  left: 50%;
-  margin-left: -10px;
-  fill: #fff;
-  color: #fff;
-}
-
 .app-sites .leaflet-popup-content {
   text-align: center;
   margin: 0;
