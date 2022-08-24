@@ -100,7 +100,7 @@ def home():
     carousel_photos = [fileName for fileName in os.listdir('/app/static/custom/home-carousel')]
 
     if (utils.isMultiObservatories() == True ) : 
-        observatories = models.Observatory.query.filter(models.Observatory.is_published == True)
+        observatories = models.Observatory.query.filter(models.Observatory.is_published == True).order_by(models.Observatory.title)
         dump_observatories = observatory_schema_lite.dump(observatories)
 
         col_max = 5
