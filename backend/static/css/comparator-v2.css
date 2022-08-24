@@ -1,5 +1,4 @@
 .page-site .app-comparator {
-  height: calc(100vh - 190px);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -53,7 +52,7 @@
   padding: 6px 0 0 12px;
 }
 
-.page-site .app-comparator .mode-selector-label>span {
+.page-site .app-comparator .mode-selector-label > span {
   border-right: 1px solid #fff;
 }
 
@@ -76,4 +75,21 @@
 
 .page-site .app-comparator .date_filter_title {
   font-weight: bold;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb .thumb-overlay {
+  display: none;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .thumb-overlay {
+  display: block;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb-overlay {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
