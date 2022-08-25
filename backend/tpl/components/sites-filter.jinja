@@ -9,7 +9,7 @@
       </span>
     </button>
 
-<div class="row pt-3 pt-lg-4 pb-lg-2 d-lg-flex header-filters sans-serif" v-bind:class="{ 'd-none': !showModalFilters, 'd-block': showModalFilters }">
+<div class="row mx-ln-1 pt-3 pt-lg-4 pb-lg-2 d-lg-flex header-filters sans-serif" v-bind:class="{ 'd-none': !showModalFilters, 'd-block': showModalFilters }">
   <div class="d-lg-none mb-3 col d-flex justify-content-between">
     <h5>
       {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
@@ -21,7 +21,7 @@
   <div class="d-none d-lg-block pl-1 text-right mt-2">
     <b>{{ _('map.filters.title') }}</b>
   </div>
-  <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-lg-2 mb-2 mb-lg-0">
+  <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-lg-2 px-1 mb-2 mb-lg-0">
       <small class="floating-filter-label d-block ml-2 px-1"
             v-bind:class="{ active: filter.selectedItems.length }"
             v-html="filter.label"></small>
@@ -43,7 +43,7 @@
       </template>
       </v-multiselect>
   </div>
-  <div class="col mt-4 mt-lg-0">
+  <div class="col mt-4 mt-lg-0 px-1">
     <button type="button"
             @click="onCancelClick()"
             class="btn btn-outline-secondary">
