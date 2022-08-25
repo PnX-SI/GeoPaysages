@@ -1,19 +1,15 @@
 <template id="tpl-app-comparator-v2">
   <div>
     <div class="app-comparator" v-bind:style="{height: 'calc(100vh - ' + (thumbsListH + 50) + 'px)'}">
-      <div class="mode-selector d-flex mb-1 mb-sm-0">
-        <div class="col-6 p-0 justify-content-end d-flex">
-          <span class="mode-selector-label">
-            <span class="pr-2">{{ _('comparatorv2.mode.title') }}</span>
-          </span>
-        </div>
-        <b-dropdown :text="curMode.label">
-          <b-dropdown-item-button v-for="mode in modes" :key="mode.name" :active="mode.name == curMode.name"
-            v-on:click="onBtnModeClick(mode)">
-            <span v-html="mode.label"></span>
-          </b-dropdown-item-button>
-        </b-dropdown>
-      </div>
+      <b-button-group class="mode-selector">
+        <b-button 
+          v-for="mode in modes"
+          :key="mode.name"
+          v-on:click="onBtnModeClick(mode)"
+          :pressed="mode.name == curMode.name"
+          v-html="mode.label">
+        </b-button>
+      </b-button-group>
 
       <app-comparator-v2-selector 
         class="left" 
