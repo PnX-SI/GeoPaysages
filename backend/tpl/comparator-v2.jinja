@@ -30,8 +30,24 @@
         v-on:item-selected="onPhotoSelected(1, $event)"
       >
       </app-comparator-v2-selector>
-      <div class="photo-caption left" v-html="this.comparedPhotos[0].caption"></div>
-      <div class="photo-caption right" v-html="this.comparedPhotos[1].caption"></div>
+      <div class="photo-caption left">
+        <b-badge 
+          pill 
+          variant="light" 
+          class="ml-3 mb-3 photo-caption-date" 
+          :inner-html.prop="this.comparedPhotos[0] | dateDisplay">
+        </b-badge>
+        <span class="photo-caption-cpr" v-html="this.comparedPhotos[0].caption"></span>
+      </div>
+      <div class="photo-caption right text-right">
+        <b-badge 
+          pill 
+          variant="light" 
+          class="mr-3 mb-3 photo-caption-date" 
+          :inner-html.prop="this.comparedPhotos[1] | dateDisplay">
+        </b-badge>
+        <span class="photo-caption-cpr" v-html="this.comparedPhotos[1].caption"></span>
+      </div>
       <div class="row h-100">
         <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
           <div class="h-100" ref="photo1"></div>
@@ -58,7 +74,7 @@
         v-slot="{ item }"
       >
         <div class="thumb position-relative">
-          <img :src="getThumbUrl(item)" :alt="item.date_diplay.md" />
+          <img :src="getThumbUrl(item)" :alt="item | dateDisplay" />
           <div class="thumb-overlay">
             <div class="thumb-btns">
               <b-button @click="onPhotoSelected(0, item)">1</b-button>

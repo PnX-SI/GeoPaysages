@@ -255,7 +255,7 @@ def site(id_site):
             'id': photo.get('id_photo'),
             'filename': photo.get('path_file_photo'),
             'shot_on': photo.get('filter_date'),
-            'date_diplay': date_diplay,
+            'date_approx': photo.get('date_photo'),
             'caption': caption
         }
 

@@ -29,8 +29,7 @@ geopsg.comparator = (options) => {
   computeItem(defaultItems[0]);
   computeItem(defaultItems[1]);
 
-  //TODO use format as an argument
-  Vue.filter('dateFormat', (value) => {
+  const getFormatedDate = (value) => {
     if (options.dbconf.comparator_date_format == 'year') {
       return value.toLocaleString('fr-FR', {
         year: 'numeric',
@@ -48,6 +47,15 @@ geopsg.comparator = (options) => {
         year: 'numeric',
       });
     }
+  };
+
+  //TODO use format as an argument
+  Vue.filter('dateFormat', (value) => {
+    return getFormatedDate(value);
+  });
+
+  Vue.filter('dateDisplay', (photo) => {
+    return photo.date_approx || getFormatedDate(photo.shot_on);
   });
 
   Vue.component('recyclescroller', VueVirtualScroller.RecycleScroller);
@@ -88,7 +96,9 @@ geopsg.comparator = (options) => {
       },
       initMap(num) {
         const hasZoom =
-          options.dbconf.comparator_zoom_control === undefined ? true : options.dbconf.comparator_zoom_control;
+          num === 1 && options.dbconf.comparator_zoom_control === undefined
+            ? true
+            : options.dbconf.comparator_zoom_control;
         const map = L.map(this.$refs['photo' + num], {
           crs: L.CRS.Simple,
           center: [0, 0],

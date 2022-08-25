@@ -41,8 +41,9 @@
   .page-site .app-comparator .mode-selector {
     position: absolute;
     z-index: 1000;
-    width: 100%;
     top: var(--tools-top);
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
@@ -60,8 +61,6 @@
   position: absolute;
   z-index: 1000;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 0 5px;
   max-width: calc(50% - 2px);
 }
 
@@ -71,6 +70,16 @@
 
 .page-site .app-comparator .photo-caption.right {
   right: 0;
+}
+
+.page-site .app-comparator .photo-caption-date {
+  font-size: 100%;
+}
+
+.page-site .app-comparator .photo-caption-cpr {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0 5px;
+  display: block;
 }
 
 .page-site .app-comparator .date_filter_title {
