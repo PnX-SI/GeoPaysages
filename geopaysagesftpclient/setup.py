@@ -21,8 +21,7 @@ setup(
         'IPTCInfo3',
         'pillow',
         'sqlalchemy',
-        'psycopg2==2.7.5',
-        'psycopg2-binary==2.7.5'
+        'psycopg2==2.9.3',
     ],
     packages=setuptools.find_packages(),
     entry_points={
