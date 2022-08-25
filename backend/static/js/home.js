@@ -8,7 +8,11 @@ geopsg.initHome = (options) => {
       el: '#js-app-home-carousel',
       data: () => {
         return {
-          photos: options.carousel.photos,
+          photos: options.carousel.photos
+            .map((filename) => {
+              return encodeURIComponent(filename);
+            })
+            .sort(),
         };
       },
     });
