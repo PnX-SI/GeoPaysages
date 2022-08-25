@@ -368,10 +368,16 @@ h6 .light {
   .header-title h3 {
     font-size: 18px;
   }
+  .header-title h5 {
+    font-size: 16px;
+  }
 }
 
 @media (max-width: 575px) {
   .header-title h3 {
+    font-size: 12px;
+  }
+  .header-title h5 {
     font-size: 12px;
   }
 }
@@ -522,10 +528,6 @@ h6 .light {
 
 .header-title h1 {
   font-size: 1.75em;
-}
-
-header-title h3 {
-  line-height: 20px;
 }
 
 .navbar-collapse {

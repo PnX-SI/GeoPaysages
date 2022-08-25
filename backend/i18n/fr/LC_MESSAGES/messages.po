@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-10 10:00+0000\n"
+"POT-Creation-Date: 2022-08-25 08:19+0000\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: utils.py:199
+#: utils.py:207
 msgid "sites.filter.themes"
 msgstr "Thèmes"
 
-#: utils.py:203
+#: utils.py:211
 msgid "sites.filter.subthemes"
 msgstr "Sous-thème(s)"
 
-#: utils.py:207
+#: utils.py:216
 msgid "sites.filter.township"
 msgstr "Commune(s)"
 
-#: utils.py:211
+#: utils.py:221
 msgid "sites.filter.years"
 msgstr "Année(s)"
 
-#: utils.py:327
+#: utils.py:338
 msgid "sites.filter.obervatories"
 msgstr "Observatoire(s)"
 
@@ -42,51 +42,47 @@ msgstr "Observatoire(s)"
 msgid "obs_point.buttons.download"
 msgstr "Télécharger"
 
-#: tpl/comparator-v2.jinja:6
-msgid "comparatorv2.mode.title"
-msgstr "Disposition des photos"
-
-#: tpl/comparator-v2.jinja:45
+#: tpl/comparator-v2.jinja:58
 msgid "comparatorv2.loading"
 msgstr "Chargement"
 
-#: tpl/comparator-v2.jinja:57
+#: tpl/comparator-v2.jinja:93
 msgid "comparatorv2.date.filter.title"
 msgstr "Filtrer par date"
 
-#: tpl/comparator-v2.jinja:59
+#: tpl/comparator-v2.jinja:95
 msgid "comparatorv2.date.filter.start"
 msgstr "Début"
 
-#: tpl/comparator-v2.jinja:68
+#: tpl/comparator-v2.jinja:104
 msgid "comparatorv2.date.filter.end"
 msgstr "Fin"
 
-#: tpl/comparator-v2.jinja:119
+#: tpl/comparator-v2.jinja:155
 msgid "comparatorv2.mode.sidebyside"
 msgstr "Superposition"
 
-#: tpl/comparator-v2.jinja:120
+#: tpl/comparator-v2.jinja:156
 msgid "comparatorv2.mode.split"
 msgstr "Côte à côte"
 
-#: tpl/comparator-v2.jinja:121
+#: tpl/comparator-v2.jinja:157
 msgid "comparatorv2.date.steps.none"
 msgstr "0"
 
-#: tpl/comparator-v2.jinja:122
+#: tpl/comparator-v2.jinja:158
 msgid "comparatorv2.date.steps.1d"
 msgstr "1 jour"
 
-#: tpl/comparator-v2.jinja:123
+#: tpl/comparator-v2.jinja:159
 msgid "comparatorv2.date.steps.1w"
 msgstr "1 semaine"
 
-#: tpl/comparator-v2.jinja:124
+#: tpl/comparator-v2.jinja:160
 msgid "comparatorv2.date.steps.1m"
 msgstr "1 mois"
 
-#: tpl/comparator-v2.jinja:125
+#: tpl/comparator-v2.jinja:161
 msgid "comparatorv2.date.steps.1y"
 msgstr "1 an"
 
@@ -98,100 +94,89 @@ msgstr "Galerie photo"
 msgid "gallery.title"
 msgstr "Galerie photo"
 
-#: tpl/gallery.jinja:75 tpl/sites-filter.jinja:8 tpl/sites-filter.jinja:15
-#: tpl/sites.jinja:48
+#: tpl/components/sites-filter.jinja:8 tpl/components/sites-filter.jinja:15
+#: tpl/gallery.jinja:75 tpl/sites.jinja:52
 msgid "sites.filters.nb_result"
 msgstr "Filtre(s) : %(nb)s résultat(s)"
 
-#: tpl/home.jinja:3
+#: tpl/home_mono_obs.jinja:3 tpl/home_multi_obs.jinja:3
 msgid "home.meta_title"
 msgstr "Observatoire photographique des paysages de Vanoise"
 
-#: tpl/home.jinja:16
+#: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:16
+#: tpl/home_mono_obs.jinja:19 tpl/home_multi_obs.jinja:21
 msgid "home.title"
 msgstr "L'Observatoire photographique des paysages de Vanoise"
 
-#: tpl/home.jinja:19
+#: tpl/home_mono_obs.jinja:23 tpl/home_multi_obs.jinja:25
 msgid "home.title_mobile"
 msgstr "Accueil"
 
-#: tpl/home.jinja:34
+#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:86
 msgid "home.block.explore_sites"
 msgstr "Explorer les sites d'observation"
 
-#: tpl/home.jinja:41
+#: tpl/home_mono_obs.jinja:47
 msgid "home.block.discover"
 msgstr "Découvrir ce point d'observation"
 
-#: tpl/home.jinja:44
+#: tpl/home_mono_obs.jinja:50
 msgid "home.block.photography"
 msgstr "Photographie"
 
-#: tpl/layout.jinja:56
-msgid "header.nav.home"
-msgstr "Accueil"
-
-#: tpl/layout.jinja:60
-msgid "header.nav.about"
-msgstr "À propos"
-
-#: tpl/layout.jinja:64
-msgid "header.nav.sites"
-msgstr "Sites d'observation"
-
-#: tpl/layout.jinja:67
-msgid "header.nav.gallery"
-msgstr "Galerie photo"
-
-#: tpl/layout.jinja:83
+#: tpl/layout.jinja:71
 msgid "footer.internal_title"
 msgstr "Le site"
 
-#: tpl/layout.jinja:87
+#: tpl/layout.jinja:75
 msgid "footer.internal_links.home"
 msgstr "Accueil"
 
-#: tpl/layout.jinja:92
+#: tpl/layout.jinja:80
 msgid "footer.internal_links.sites"
 msgstr "Sites d'observation"
 
-#: tpl/layout.jinja:97
+#: tpl/layout.jinja:85
 msgid "footer.internal_links.gallery"
 msgstr "Galerie photo"
 
-#: tpl/layout.jinja:103
+#: tpl/layout.jinja:91
 msgid "footer.internal_links.contact"
 msgstr "Contactez-nous"
 
-#: tpl/layout.jinja:112
+#: tpl/layout.jinja:100
 msgid "footer.external_title"
 msgstr "Le Parc national de Vanoise"
 
-#: tpl/layout.jinja:129
+#: tpl/layout.jinja:117
 msgid "footer.copyright"
 msgstr "© 2018 Parc national de la Vanoise"
 
-#: tpl/site.jinja:50
+#: tpl/site.jinja:40
+msgid "site.title_mobile"
+msgstr "Point d'observation"
+
+#: tpl/site.jinja:56
 msgid "obs_point.buttons.notice"
 msgstr "Notice technique pour le photographe"
 
-#: tpl/site.jinja:55
+#: tpl/site.jinja:61
 msgid "obs_point.buttons.obs"
 msgstr "Faire une observation"
 
-#: tpl/site.jinja:60
+#: tpl/site.jinja:66
 msgid "obs_point.description"
 msgstr "Présentation du site"
 
-#: tpl/site.jinja:67 tpl/site.jinja:84 tpl/site.jinja:97
+#: tpl/site.jinja:73 tpl/site.jinja:90 tpl/site.jinja:103
 msgid "obs_point.buttons.read_more"
 msgstr "Lire plus"
 
-#: tpl/site.jinja:68 tpl/site.jinja:85 tpl/site.jinja:98
+#: tpl/site.jinja:74 tpl/site.jinja:91 tpl/site.jinja:104
 msgid "obs_point.buttons.read_less"
 msgstr "Lire moins"
 
-#: tpl/site.jinja:90
+#: tpl/site.jinja:96
 msgid "obs_point.testimonials"
 msgstr "Témoignages"
 
@@ -199,12 +184,32 @@ msgstr "Témoignages"
 msgid "sites.meta_title"
 msgstr "Sites d'observation"
 
-#: tpl/sites.jinja:28
+#: tpl/sites.jinja:29
 msgid "sites.title"
 msgstr "Sites d'observation"
 
-#: tpl/sites.jinja:47
+#: tpl/sites.jinja:51
 msgid "sites.observation_points.title"
+msgstr "Sites d'observation"
+
+#: tpl/components/main-nav.jinja:3
+msgid "header.nav.home"
+msgstr "Accueil"
+
+#: tpl/components/main-nav.jinja:7
+msgid "header.nav.about"
+msgstr "À propos"
+
+#: tpl/components/main-nav.jinja:11
+msgid "header.nav.sites"
+msgstr "Sites d'observation"
+
+#: tpl/components/main-nav.jinja:14
+msgid "header.nav.gallery"
+msgstr "Galerie photo"
+
+#: tpl/components/sites-filter.jinja:22
+msgid "map.filters.title"
 msgstr "Sites d'observation"
 
 #~ msgid "map.filter.themes"
@@ -248,4 +253,7 @@ msgstr "Sites d'observation"
 
 #~ msgid "sites.filters.title"
 #~ msgstr "Filtrer par"
+
+#~ msgid "comparatorv2.mode.title"
+#~ msgstr "Disposition des photos"
 

@@ -13,20 +13,25 @@
 
 .page-site .app-comparator .photo-selector {
   position: absolute;
-  z-index: 1001;
   top: var(--tools-top);
 }
 
-.page-site .app-comparator .photo-selector.show {
-  z-index: 1002;
-}
-
 .page-site .app-comparator .photo-selector.left {
-  left: 8px;
+  left: 0;
 }
 
 .page-site .app-comparator .photo-selector.right {
-  right: 8px;
+  right: 0;
+}
+
+.page-site .app-comparator .photo-selector .date-selector,
+.page-site .app-comparator .photo-selector .date-stepper {
+  position: relative;
+  z-index: 1001;
+}
+
+.page-site .app-comparator .photo-selector .date-selector.show {
+  z-index: 1002;
 }
 
 .page-site .app-comparator .photo-selector .date-selector .dropdown-menu {

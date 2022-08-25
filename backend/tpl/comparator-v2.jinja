@@ -1,7 +1,7 @@
 <template id="tpl-app-comparator-v2">
   <div>
     <div class="app-comparator" v-bind:style="{height: 'calc(100vh - ' + (thumbsListH + 50) + 'px)'}">
-      <b-button-group class="mode-selector">
+      <b-button-group class="mode-selector mx-1 mx-sm-0 mb-1 mb-sm-0">
         <b-button 
           v-for="mode in modes"
           :key="mode.name"
@@ -12,15 +12,14 @@
       </b-button-group>
 
       <app-comparator-v2-selector 
-        class="left" 
+        class="left ml-1 ml-sm-2" 
         :items="photos" 
         :selected-item="comparedPhotos[0]"
         v-on:item-selected="onPhotoSelected(0, $event)"
-
       >
       </app-comparator-v2-selector>
       <app-comparator-v2-selector 
-        class="right text-right" 
+        class="right text-right mr-1 mr-sm-2" 
         :items="photos" :selected-item="comparedPhotos[1]" 
         :right="true"
         v-on:item-selected="onPhotoSelected(1, $event)"
@@ -59,7 +58,10 @@
         <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
       </b-modal>
     </div>
-    <div class="app-comparator-thumbs-wrapper w-100 d-flex overflow-auto mt-3" v-bind:style="{height: thumbsListH + 'px'}">
+    <div 
+      class="app-comparator-thumbs-wrapper w-100 d-flex overflow-auto mt-3 mx-1 mx-sm-0" 
+      v-bind:style="{height: thumbsListH + 'px'}"
+    >
       <recyclescroller
         direction="horizontal"
         :buffer="5"
@@ -128,7 +130,7 @@
         <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
       </div>
     </b-dropdown>
-    <div class="d-block d-lg-inline-block mt-1 mt-lg-0">
+    <div class="d-block d-lg-inline-block mt-1 mt-lg-0 date-stepper">
       <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
       <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
       {% if dbconf.comparator_date_step_button == 'False': %}

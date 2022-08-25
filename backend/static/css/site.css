@@ -6,6 +6,11 @@
   margin-bottom: 0;
 }
 
+.page-site .header-title {
+  display: block !important;
+  padding: 10px 0 !important;
+}
+
 .page-site:not(.with-testimonial) .text-collapse.text-collapsable.text-collapsed .target {
   max-height: 220px;
 }
@@ -15,9 +20,10 @@
   margin-bottom: 20px;
 }
 
-.page-site .info {
-  box-shadow: 0px 0px 7px 4px rgb(0 0 0 / 18%);
-  padding: 20px;
+@media (min-width: 576px) {
+  .page-site .info {
+    box-shadow: 0px 0px 7px 4px rgb(0 0 0 / 18%);
+  }
 }
 
 @media (min-width: 992px) {
@@ -26,7 +32,7 @@
   }
 }
 
-.page-site button>.current-image {
+.page-site button > .current-image {
   border-bottom: solid !important;
   font-weight: bold;
 }

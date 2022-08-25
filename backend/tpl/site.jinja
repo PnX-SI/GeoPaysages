@@ -28,7 +28,7 @@
 {% endblock %}
 
 {% block header_title %}
-<div class="mb-4">
+<div class="mb-4 mt-3 mt-md-0">
   <h3 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} 
   {% if site.ref_site: %}
     <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
@@ -37,17 +37,20 @@
 </div>
 {% endblock %}
 
+{% block title_mobile %}{{ _('site.title_mobile') }}{% endblock title_mobile %}
+
 {% block bodyClassNames %}page-site with-comparator-v{{ comparator_version }} {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
 
 {% block content %}
-<div class="page-content container-fluid" id="js-app-site">
-  <div class="text-center mb-sm-3"><i>{{ site.legend_site }}</i></div>
+
+<div class="page-content container-fluid px-0 px-sm-3" id="js-app-site">
+  <div class="text-center mb-1 mb-sm-3"><i>{{ site.legend_site }}</i></div>
   <div class="row">
-    <div class="col col-main">
+    <div class="col">
       <app-comparator-v{{ comparator_version }}></app-comparator-v{{ comparator_version }}>
       <div class="container-fluid">
-      <div class="row mt-3 info rounded">
-        <div class="col-lg-5 pl-0 pr-0 pr-lg-3 text-right">
+      <div class="row mt-3 info pt-3 pb-2 rounded">
+        <div class="col-lg-5 text-lg-right">
           <div class="map-wrapper" ref="map"></div>
           {% if site.path_file_guide_site: %}
           <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
@@ -60,7 +63,7 @@
           </a>
           {% endif %}
         </div>
-        <div class="col-lg-7 pr-0">
+        <div class="col-lg-7">
           <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
           <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
             <div class="target">
@@ -75,7 +78,8 @@
           </div>
         </div>
       </div>
-      <div class="row mt-3 info rounded flex-column">
+      <div class="row mt-3 info pt-3 pb-2 rounded flex-column">
+        <div class="col">
           <h5 class="text-uppercase">Mots clés</h5>
           <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
             <div class="target">
@@ -105,6 +109,7 @@
           </div>
           {% endif %}
         </div>
+      </div>
     </div>
     </div>
   </div>
