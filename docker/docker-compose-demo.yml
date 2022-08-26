@@ -40,7 +40,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.routers.thumbor.rule=PathPrefix(`/thumbor`)
-      - traefik.http.services.thumbor.loadbalancer.server.port=8083
+      - traefik.http.routers.thumbor.middlewares=thumbor-stripprefix
+      - traefik.http.middlewares.thumbor-stripprefix.stripprefix.prefixes=/thumbor
+      - traefik.http.services.thumbor.loadbalancer.server.port=8000
   
   backend:
     container_name: geopaysage_backend
@@ -64,7 +66,7 @@ services:
       - traefik.http.routers.backend.rule=PathPrefix(`/`)
       - traefik.http.services.backend.loadbalancer.server.port=80
     env_file:
-      - ./.env
+      - ./.env-demo
     environment:
       - FLASK_APP=app.py
       - FLASK_DEBUG=1
