@@ -320,11 +320,11 @@ geopsg.initSites = (options) => {
           }
           imgUrl = `${options.img_srv}/crop?file=${site.photo}&width=200&height=150`;
           marker.bindPopup(
-            '<div class="img" style="background-image: url(' +
+            '<a href="/sites/' + site.id_site + '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(' +
             imgUrl +
             ');"></div><div class="title">' +
             markerText +
-            '</div>',
+            '</div></a>',
             {
               closeButton: false,
             },
@@ -336,8 +336,11 @@ geopsg.initSites = (options) => {
             marker.closePopup();
           });
           marker.on('click', (e) => {
-            //TODO
-            window.location.href = site.link.replace('http://127.0.0.1:8000', '');
+            if (window.innerWidth >= 768) {
+              window.location.href = `/sites/${site.id_site}`;
+            } else {
+              this.onSiteMousover(site);
+            }
           });
           observatories
             .find((observatory) => {
@@ -382,13 +385,6 @@ geopsg.initSites = (options) => {
       },
       onSiteMouseout(site) {
         site.marker.closePopup();
-      },
-      onSiteClick(site) {
-        if (window.innerWidth >= 768) {
-          window.location.href = `/sites/${site.id_site}`;
-        } else {
-          this.onSiteMousover(site);
-        }
       },
       async onShareClick() {
         this.shareUrl = url.origin + url.pathname;
