@@ -23,7 +23,7 @@ geopsg.initSites = (options) => {
   } catch (error1) {
     try {
       selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
-    } catch (error2) {}
+    } catch (error2) { }
   }
 
   url.searchParams.delete('filters');
@@ -321,10 +321,10 @@ geopsg.initSites = (options) => {
           imgUrl = `${options.img_srv}/crop?file=${site.photo}&width=200&height=150`;
           marker.bindPopup(
             '<div class="img" style="background-image: url(' +
-              imgUrl +
-              ');"></div><div class="title">' +
-              markerText +
-              '</div>',
+            imgUrl +
+            ');"></div><div class="title">' +
+            markerText +
+            '</div>',
             {
               closeButton: false,
             },
@@ -406,7 +406,7 @@ geopsg.initSites = (options) => {
             };
           });
           this.shareUrl += `?filters=${JSON.stringify(sharedFilters)}`;
-        } catch (error) {}
+        } catch (error) { }
 
         try {
           await navigator.clipboard.writeText(this.shareUrl);
