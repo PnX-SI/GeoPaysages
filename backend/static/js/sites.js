@@ -318,7 +318,7 @@ geopsg.initSites = (options) => {
           if (site.ref_site) {
             markerText += '(réf : ' + site.ref_site + ')';
           }
-          imgUrl = `${options.img_srv}/crop?file=${site.photo}&width=200&height=150`;
+          imgUrl = `/api/thumbor/presets/200x150/${site.photo}`;
           marker.bindPopup(
             '<div class="img" style="background-image: url(' +
               imgUrl +

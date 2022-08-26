@@ -171,7 +171,7 @@ geopsg.comparator = (options) => {
           img.onload = function () {
             resolve(this);
           };
-          img.src = options.img_srv + '/convert?type=jpeg&file=' + filename;
+          img.src = '/api/thumbor/presets/noxl/' + filename;
         });
       },
       clearMaps() {
@@ -187,10 +187,6 @@ geopsg.comparator = (options) => {
             map.invalidateSize();
           });
         });
-      },
-      getThumbUrl(photo) {
-        const { width, height } = this.thumbProps;
-        return `${options.img_srv}/crop?file=${photo.filename}&width=${width}&height=${height}`;
       },
     },
   });

@@ -1,5 +1,6 @@
-from flask import Flask, request, Blueprint, Response, jsonify, abort
+from flask import Flask, request, Blueprint, Response, jsonify, abort, Response
 from werkzeug.exceptions import NotFound
+from werkzeug.wsgi import FileWrapper
 
 from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
@@ -8,6 +9,9 @@ import models
 import json
 import utils
 import os
+import requests
+from mimetypes import guess_type
+from io import BytesIO
 
 from env import db
 
@@ -22,6 +26,33 @@ subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+
+@api.route('/api/thumbor/presets/<name>/<filename>', methods=['GET'])
+def thumborPreset(name, filename):
+    presets = {
+        'home_thumb': '700x200',
+        'noxl': 'fit-in/2000x2000/filters:no_upscale()',
+        '50x50': '50x50',
+        '100x100': '100x100',
+        '150x150': '150x150',
+        '200x150': '200x150',
+        '200x200': '200x200',
+    }
+    preset = presets.get(name)
+    if not preset:
+        abort(404)
+    
+    url = f'{preset}/{filename}'
+    signature = utils.getThumborSignature(url)
+    response = requests.get(f'http://thumbor:8000/{signature}/{url}')
+
+    if response.status_code != 200:
+        abort(response.status_code)
+
+    type = guess_type(filename)
+    b = BytesIO(response.content)
+    w = FileWrapper(b)
+    return Response(w, mimetype=type[0])
 
 @api.route('/api/observatories', methods=['GET'])
 def returnAllObservatories():

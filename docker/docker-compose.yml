@@ -3,16 +3,18 @@ version: '3'
 # TODO: create global variables
 
 services:
-  imaginary:
-    image: h2non/imaginary:latest
-    # optionally mount a volume as local image source
-    volumes:
-      - ${VOLUME_PATH}/upload:/mnt/data
+  thumbor:
+    image: apsl/thumbor:latest
     environment:
-       PORT: 9000
-    command: -enable-placeholder -mount /mnt/data
+      - LOADER=thumbor.loaders.file_loader
+      - FILE_LOADER_ROOT_PATH=/data/loader
+      - RESULT_STORAGE=thumbor.result_storages.file_storage
+      - ALLOW_UNSAFE_URL=False
+      - SECURITY_KEY=${THUMBOR_SECURITY_KEY}
+    volumes:
+      - ${VOLUME_PATH}/upload:/data/loader
     ports:
-      - "9000:9000"
+      - "8083:8000"
 
   backend:
     container_name: geopaysage_backend # TODO: maybe to remove

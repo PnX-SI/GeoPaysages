@@ -42,7 +42,7 @@
 
     {% for block in blocks %}
     <div class="block block-{{ loop.index }}">
-      <div class="img" style="background-image: url('{{ img_srv }}/resize?file={{ block.get('photo') }}&width=800');"></div>
+      <div class="img" style="background-image: url('{{ getThumborUrl('/800x/'+block.get('photo')) }}');"></div>
       <div class="discover">
         {{ _('home.block.discover') }}
       </div>

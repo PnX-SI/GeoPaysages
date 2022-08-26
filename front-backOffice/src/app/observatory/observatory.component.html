@@ -61,7 +61,7 @@
               </div>
               <div>
                 <div *ngIf="observatory?.photo">
-                  <a [href]="photoBaseUrl + 'convert?file='+ observatory?.photo + '&type=jpeg'" target="_blank">
+                  <a [href]="photoBaseUrl + 'noxl/'+ observatory?.photo" target="_blank">
                     {{ observatory?.photo }} <i class="icon-eye"></i>
                   </a>
                 </div>
@@ -96,7 +96,7 @@
               </div>
               <div>
                 <div *ngIf="observatory?.logo">
-                  <a [href]="photoBaseUrl + 'blur?file='+ observatory?.logo + '&sigma=0.2'" target="_blank">
+                  <a [href]="photoBaseUrl + 'noxl/'+ observatory?.logo" target="_blank">
                     {{ observatory?.logo }} <i class="icon-eye"></i>
                   </a>
                 </div>

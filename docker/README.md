@@ -73,7 +73,7 @@
   ```js
   export const Conf = {
     apiUrl: "/api/",
-    img_srv: "/imaginary/",
+    img_srv: "/thumbor/",
     customFiles: "/static/custom/",
     id_application: 1,
     ign_Key: "ign key",

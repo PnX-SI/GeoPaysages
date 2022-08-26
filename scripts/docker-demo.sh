@@ -8,4 +8,4 @@ if [[ -n "$MSYSTEM" ]]; then
     exit 1
 fi
 
-docker compose -f ./docker/docker-compose-demo.yml --env-file ./docker/.env-demo  --project-name="geopaysages" --project-directory=./docker "$@"
+docker-compose -f ./docker/docker-compose-demo.yml --env-file ./docker/.env-demo  --project-name="geopaysages" --project-directory=./docker "$@"

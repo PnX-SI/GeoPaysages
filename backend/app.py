@@ -67,7 +67,7 @@ def inject_to_tpl():
         locale=get_locale(), 
         isMultiObservatories=utils.isMultiObservatories,
         isDbPagePublished=utils.isDbPagePublished,
-        img_srv=app.config['IMG_SRV']
+        getThumborUrl=utils.getThumborUrl,
     )
 
 if __name__ == "__main__":

@@ -100,18 +100,13 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
             '</div>' +
             '<div class=""> <img src=' +
             Conf.img_srv +
-            'crop?file=' +
+            '100x100/' +
             site.main_photo +
-            '&width=80&height=80&type=jpeg' +
             '> </div>';
           const customOptions = {
             className: 'custom-popup',
           };
-          site.main_photo =
-            Conf.img_srv +
-            'crop?file=' +
-            site.main_photo +
-            '&width=50&height=50&type=jpeg';
+          site.main_photo = Conf.img_srv + '50x50/' + site.main_photo;
           site.marker = newMarker.bindPopup(customPopup, customOptions);
           newMarker
             .bindPopup(customPopup, customOptions)
