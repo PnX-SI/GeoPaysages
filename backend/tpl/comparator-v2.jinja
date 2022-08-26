@@ -72,7 +72,7 @@
         v-slot="{ item }"
       >
         <div class="thumb position-relative">
-          <img :src="getThumbUrl(item)" :alt="item | dateDisplay" />
+          <img :src="'/api/thumbor/presets/150x150/' + item.filename" :alt="item | dateDisplay" />
           <div class="thumb-overlay">
             <div class="thumb-btns">
               <b-button @click="onPhotoSelected(0, item)">1</b-button>
@@ -152,7 +152,6 @@
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         photos: {{photos | tojson}},
-        img_srv: {{img_srv  | tojson}},
         translations: {
           'mode_sidebyside': "{{ _('comparatorv2.mode.sidebyside') }}",
           'mode_split': "{{ _('comparatorv2.mode.split') }}",

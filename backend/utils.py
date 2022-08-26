@@ -1,3 +1,4 @@
+from base64 import urlsafe_b64encode
 from flask import url_for
 from config import DATA_IMAGES_PATH, DEFAULT_SORT_SITES
 from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
@@ -9,6 +10,8 @@ from flask_babel import get_locale, gettext
 import random
 import string
 import models
+import hmac
+import hashlib
 
 db = SQLAlchemy()
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -19,6 +22,18 @@ photo_schema = models.TPhotoSchema(many=True)
 observatory_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+
+def getThumborSignature(url):
+    key = bytes(os.getenv("THUMBOR_SECURITY_KEY"), 'UTF-8')
+    msg = bytes(url, 'UTF-8')
+    h = hmac.new(key, msg, hashlib.sha1)
+    return urlsafe_b64encode(h.digest()).decode("ascii")
+
+def getThumborUrl(url):
+    if url.startswith('/'):
+        url = url[1:]
+    signature = getThumborSignature(url)
+    return f'{os.getenv("IMG_SRV")}/{signature}/{url}'
 
 def getRandStr(nb):
     chars = string.ascii_lowercase + string.digits

@@ -4,7 +4,7 @@ services:
     depends_on:
       - backend
       - admin
-      - imaginary
+      - thumbor
     image: traefik:v2.2
     ports:
       - "${PROXY_HTTP_PORT}:80"
@@ -23,23 +23,25 @@ services:
     labels:
       - traefik.enable=true
 
-  imaginary:
-    image: h2non/imaginary:latest
-    # optionally mount a volume as local image source
-    volumes:
-      - ${VOLUME_PATH}/upload:/mnt/data
+  thumbor:
+    image: apsl/thumbor:latest
     environment:
-      PORT: 9000
-    command: -enable-placeholder -mount /mnt/data -path-prefix /imaginary
+      - LOADER=thumbor.loaders.file_loader
+      - FILE_LOADER_ROOT_PATH=/data/loader
+      - RESULT_STORAGE=thumbor.result_storages.file_storage
+      - ALLOW_UNSAFE_URL=False
+      - SECURITY_KEY=${THUMBOR_SECURITY_KEY}
+    volumes:
+      - ${VOLUME_PATH}/upload:/data/loader
     ports:
-      - "9000:9000"
+      - "8083:8000"
     networks:
       - traefik
     labels:
       - traefik.enable=true
-      - traefik.http.routers.imaginary.rule=PathPrefix(`/imaginary`)
-      - traefik.http.services.imaginary.loadbalancer.server.port=9000
-
+      - traefik.http.routers.thumbor.rule=PathPrefix(`/thumbor`)
+      - traefik.http.services.thumbor.loadbalancer.server.port=8083
+  
   backend:
     container_name: geopaysage_backend
     depends_on:

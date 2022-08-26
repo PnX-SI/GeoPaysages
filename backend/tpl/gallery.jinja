@@ -50,7 +50,7 @@
           @mouseleave="onSiteMouseout(site)"
         >
           <a :href="'/sites/' + site.id_site">
-            <img v-lazy="'{{ img_srv }}/crop?file=' + site.photo + '&width=200&height=200'" :alt="site.name_site">
+            <img v-lazy="'/api/thumbor/presets/200x200/'+site.photo" :alt="site.name_site">
           </a>
           <div class="discover" :style="{
             'background-color': site.observatory.color + 'BB'

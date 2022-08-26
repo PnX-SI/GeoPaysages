@@ -70,7 +70,7 @@
                   variant="link"
                   class="rounded-0 text-left btn-observatory border-0 text-decoration-none d-flex align-items-center">
                   <div class="icon d-inline-block mr-2">
-                    <img :src="'{{img_srv}}/crop?file=' + observatory.data.logo + '&width=100&height=100'" />
+                    <img :src="'/api/thumbor/presets/100x100/' + observatory.data.logo" />
                   </div>
                   <div class="d-inline-block align-middle">
                     <span class="d-block text-capitalize" v-html="observatory.label"></span>
@@ -156,7 +156,6 @@
         filters: {{filters | tojson}},
         dbconf: {{dbconf | tojson}},
         ign_Key: {{ign_Key  | tojson}},
-        img_srv: {{img_srv  | tojson}},
       })
     }
   };
