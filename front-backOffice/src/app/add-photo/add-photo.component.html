@@ -1,7 +1,7 @@
 <ngx-spinner size="medium" type="ball-spin">
 </ngx-spinner>
 <button *ngIf="!inputImage" class="image-btn" type="button" (click)="openPhotoModal(content)"><i
-    class="icon-cross"></i></button>
+    class="icon-plus"></i></button>
 <button *ngIf="inputImage" class="gallery" [style.background-image]="'url(' + inputImage.sm + ')'" type="button"
   (click)="openPhotoModal(content)"></button>
 
