@@ -91,9 +91,6 @@
   {% set home_block_3 = dbconf.get('home_block_3_' + locale.__str__()) if dbconf.get('home_block_3_' + locale.__str__()) else dbconf.get('home_block_3', '') %}
   {% autoescape false %}{{ home_block_3 }}{% endautoescape %}
 
-  {% if dbconf.home_intro_position == 'bottom': %}
-  {% autoescape false %}{{ intro }}{% endautoescape %}
-  {% endif %}
 </div>
 
 <script>
