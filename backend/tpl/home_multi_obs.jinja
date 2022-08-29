@@ -29,11 +29,8 @@
 
   {% include 'components/home-carousel.jinja' %}
 
-  {% set intro_locale = dbconf.get('home_intro_' + locale.__str__()) %}
-  {% set intro = intro_locale if intro_locale else dbconf.get('home_intro', '') %}
-  {% if dbconf.home_intro_position == 'top': %}
-  {% autoescape false %}{{ intro }}{% endautoescape %}
-  {% endif %}
+  {% set home_block_1 = dbconf.get('home_block_1_' + locale.__str__()) if dbconf.get('home_block_1_' + locale.__str__()) else dbconf.get('home_block_1', '') %}
+  {% autoescape false %}{{ home_block_1 }}{% endautoescape %}
 
   <div class="container-fluid px-0 my-4 my-md-5">
     {% set count = namespace(value=0) %}
@@ -81,12 +78,18 @@
     {% endfor %}  
   </div>
 
+  {% set home_block_2 = dbconf.get('home_block_2_' + locale.__str__()) if dbconf.get('home_block_2_' + locale.__str__()) else dbconf.get('home_block_2', '') %}
+  {% autoescape false %}{{ home_block_2 }}{% endautoescape %}
+
   <div class="container-xl">
     <div class="text-center">
       <a href="/sites">{{ _('home.block.explore_sites') }}</a>
     </div>
     <div class="js-map-wrapper" style="height:500px"></div>
   </div>
+
+  {% set home_block_3 = dbconf.get('home_block_3_' + locale.__str__()) if dbconf.get('home_block_3_' + locale.__str__()) else dbconf.get('home_block_3', '') %}
+  {% autoescape false %}{{ home_block_3 }}{% endautoescape %}
 
   {% if dbconf.home_intro_position == 'bottom': %}
   {% autoescape false %}{{ intro }}{% endautoescape %}
