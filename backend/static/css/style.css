@@ -548,7 +548,7 @@ footer div:first-child {
   justify-content: space-between;
 }
 
-footer img {
+footer .logo {
   align-self: center;
   height: 110px;
   width: auto;
