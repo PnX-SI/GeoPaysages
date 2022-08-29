@@ -20,16 +20,6 @@ geopsg.initHomeMulti = (options) => {
   tileLayer.addTo(map);
 
   const layers = options.sites.map((site) => L.marker(site.geom, { icon: utils.getMarkerIcon(site) }));
-  options.observatories.forEach((observatory) => {
-    if (observatory.geom) {
-      const layer = utils.getObservatoryLayer(observatory.geom, observatory.color);
-      layer.on('click', (e) => {
-        window.location.href = `/sites?filters=[{"name":"id_observatory","values":[${observatory.id}]}]`;
-      });
-      layers.push(layer);
-    }
-  });
-
   const group = L.featureGroup(layers);
   group.addTo(map);
   map.fitBounds(group.getBounds());
