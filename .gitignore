@@ -74,3 +74,4 @@ geopaysagesftpclient/output/
 geopaysagesftpclient/env/
 
 data
+.vscode/settings.json
