@@ -1,6 +1,7 @@
 <ngx-spinner size="medium" type="ball-spin">
 </ngx-spinner>
-<button *ngIf="!inputImage" class="image-btn" type="button" (click)="openPhotoModal(content)"><i class="icon-cross"></i></button>
+<button *ngIf="!inputImage" class="image-btn" type="button" (click)="openPhotoModal(content)"><i
+    class="icon-cross"></i></button>
 <button *ngIf="inputImage" class="gallery" [style.background-image]="'url(' + inputImage.sm + ')'" type="button"
   (click)="openPhotoModal(content)"></button>
 
@@ -10,7 +11,8 @@
   </div>
   <form *ngIf="loadForm" [formGroup]="photoForm" (submit)="submitPhoto(photoForm)">
     <div class="modal-body">
-      <button *ngIf="inputImage && currentUser.id_droit_max > 5" type="button" class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(photoModal)">
+      <button *ngIf="inputImage && currentUser.id_droit_max > 5" type="button" class="btn btn-outline-danger btn-delete"
+        (click)="openDeleteModal(photoModal)">
         <i class="icon-bin delete-photo"></i>Supprimer
         la photo</button>
       <div class="inner-checkbox form-group">
@@ -23,7 +25,8 @@
       <div class="row form-item">
         <div class="col ">
           <label class="label" for="datePhoto">Date approximative </label>
-          <input InputFeedBack type="text" formControlName="date_photo" id="datePhoto" class="form-control" placeholder="Date Photo">
+          <input InputFeedBack type="text" formControlName="date_photo" id="datePhoto" class="form-control"
+            placeholder="Date Photo">
           <app-form-error controlName="date_photo" errorKey="required"></app-form-error>
         </div>
         <div class="col ">
@@ -45,7 +48,8 @@
           <label class="label" for="licence">CRÉDIT PHOTOGRAPHIQUE</label>
           <select InputFeedBack id="licence" formControlName="id_licence_photo" class="form-control">
             <option class="select-placeholder" value="">---</option>
-            <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}</option>
+            <option *ngFor="let licence of licences" [ngValue]="licence.id_licence_photo">{{licence.name_licence_photo}}
+            </option>
           </select>
         </div>
       </div>
@@ -56,14 +60,15 @@
       </div> -->
       <input InputFeedBack style="display: none" formControlName="photo_file" accept="image/x-png,image/gif,image/jpeg"
         type="file" (change)=onFileSelected($event) #iamgeInput>
-      <button type="button" *ngIf="!imageLaoded" class="blue-btn" (click)="iamgeInput.click()"><i class="icon-download"></i>Importer
+      <button type="button" *ngIf="!imageLaoded" class="blue-btn" (click)="iamgeInput.click()"><i
+          class="icon-download"></i>Importer
         une photo</button>
       <app-form-error controlName="photo_file" errorKey="required"></app-form-error>
-      <div *ngIf="imageLaoded" style="color: #00188F;"><i class="icon-camera"></i>{{imageName}}<i *ngIf="currentUser.id_droit_max > 5" class="icon-bin remove-file "
-          (click)="removeImage()"></i></div>
+      <div *ngIf="imageLaoded" style="color: #00188F;"><i class="icon-camera"></i>{{imageName}}<i
+          *ngIf="currentUser.id_droit_max > 5" class="icon-bin remove-file " (click)="removeImage()"></i></div>
       <ngb-alert class='alert' *ngIf="alert" [dismissible]="false" type="danger">{{alert}}</ngb-alert>
       <div class="custom-control custom-checkbox">
-        <input type="checkbox"   formControlName='main_photo' class="custom-control-input" id="customCheck1">
+        <input type="checkbox" formControlName='main_photo' class="custom-control-input" id="customCheck1">
         <label class="custom-control-label" for="customCheck1">Définir comme vignette principale</label>
       </div>
     </div>
