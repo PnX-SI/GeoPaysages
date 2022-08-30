@@ -20,6 +20,12 @@ geopsg.initHomeMulti = (options) => {
   tileLayer.addTo(map);
 
   const layers = options.sites.map((site) => L.marker(site.geom, { icon: utils.getMarkerIcon(site) }));
+  options.observatories.forEach((observatory) => {
+    if (observatory.geom) {
+      const layer = utils.getObservatoryLayer(observatory.geom, observatory.color);
+      layers.push(layer);
+    }
+  });
   const group = L.featureGroup(layers);
   group.addTo(map);
   map.fitBounds(group.getBounds());
