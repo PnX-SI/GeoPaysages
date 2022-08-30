@@ -1,5 +1,6 @@
 var geopsg = geopsg || {};
 geopsg.site = (options) => {
+  const sitesUtils = geopsg.getSitesUtils();
   new Vue({
     el: '#js-app-site',
     data: () => {
@@ -106,7 +107,9 @@ geopsg.site = (options) => {
           L.control.layers(controlLayers).addTo(map);
         }
 
-        L.marker(options.site.geom).addTo(map)
+        L.marker(options.site.geom, { icon: sitesUtils.getMarkerIcon(options.site, {
+          showThemeIcon: false
+        }) }).addTo(map)
       }
     }
   })
