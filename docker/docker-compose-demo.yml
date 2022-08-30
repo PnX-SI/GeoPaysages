@@ -26,13 +26,11 @@ services:
   thumbor:
     image: apsl/thumbor:latest
     environment:
-      - LOADER=thumbor.loaders.file_loader
-      - FILE_LOADER_ROOT_PATH=/data/loader
+      - LOADER=thumbor.loaders.http_loader
+      - ALLOWED_SOURCES=['backend']
       - RESULT_STORAGE=thumbor.result_storages.file_storage
       - ALLOW_UNSAFE_URL=False
       - SECURITY_KEY=${THUMBOR_SECURITY_KEY}
-    volumes:
-      - ${VOLUME_PATH}/upload:/data/loader
     ports:
       - "8083:8000"
     networks:
@@ -56,7 +54,7 @@ services:
       dockerfile: ./docker/Dockerfile.backend
     volumes:
       - ../backend:/app
-      - ${VOLUME_PATH}/upload:/upload
+      - ${VOLUME_PATH}/upload:/app/static/upload
       - ${VOLUME_PATH}/custom:/app/static/custom
       - ${VOLUME_PATH}/i18n:/app/i18n
       - ${VOLUME_PATH}/custom_app.py:/app/custom_app.py
