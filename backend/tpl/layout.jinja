@@ -62,8 +62,9 @@
     </header>
     <div class="header-title d-none d-sm-block">{% block header_title %}{% endblock %}</div>
     {% block content %}{% endblock %}
-    {% if pathExists('tpl/custom/footer.jinja') %}
-    {% include 'custom/footer.jinja' %}
+    {% set footer = getCustomTpl('footer') %}
+    {% if footer: %}
+      {% include footer %}
     {% else %}
     <footer class="app-footer">
       {% block footer %}
@@ -117,13 +118,8 @@
 
       <hr class="mt-4" />
 
-      <div class="text-light d-flex">
-        {{ _('footer.copyright') }}
-        
-        {% if isDbPagePublished('disclaimer'): %}
-          <span class="mx-3">-</span>
-          <a href="/disclaimer">Mentions Légales</a>
-        {% endif %}
+      <div class="mt-4 d-flex">
+        {% include 'components/legal-footer.jinja' %}
       </div>
       {% endblock %}
     </footer>

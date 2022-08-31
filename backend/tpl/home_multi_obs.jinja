@@ -29,8 +29,10 @@
 
   {% include 'components/home-carousel.jinja' %}
 
-  {% set home_block_1 = dbconf.get('home_block_1_' + locale.__str__()) if dbconf.get('home_block_1_' + locale.__str__()) else dbconf.get('home_block_1', '') %}
-  {% autoescape false %}{{ home_block_1 }}{% endautoescape %}
+  {% set home_block_1 = getCustomTpl('home_block_1') %}
+  {% if home_block_1 %}
+    {% include home_block_1 %}
+  {% endif %}
 
   <div class="container-fluid px-0 my-4 my-md-5">
     {% set count = namespace(value=0) %}
@@ -78,8 +80,10 @@
     {% endfor %}  
   </div>
 
-  {% set home_block_2 = dbconf.get('home_block_2_' + locale.__str__()) if dbconf.get('home_block_2_' + locale.__str__()) else dbconf.get('home_block_2', '') %}
-  {% autoescape false %}{{ home_block_2 }}{% endautoescape %}
+  {% set home_block_2 = getCustomTpl('home_block_2') %}
+  {% if home_block_2 %}
+    {% include home_block_2 %}
+  {% endif %}
 
   <div class="container-xl">
     <div class="text-center">
@@ -93,8 +97,10 @@
     </a>
   </div>
 
-  {% set home_block_3 = dbconf.get('home_block_3_' + locale.__str__()) if dbconf.get('home_block_3_' + locale.__str__()) else dbconf.get('home_block_3', '') %}
-  {% autoescape false %}{{ home_block_3 }}{% endautoescape %}
+  {% set home_block_3 = getCustomTpl('home_block_3') %}
+  {% if home_block_3 %}
+    {% include home_block_3 %}
+  {% endif %}
 
 </div>
 

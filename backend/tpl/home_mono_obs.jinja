@@ -27,8 +27,10 @@
 
   {% include 'components/home-carousel.jinja' %}
 
-  {% set home_block_1 = dbconf.get('home_block_1_' + locale.__str__()) if dbconf.get('home_block_1_' + locale.__str__()) else dbconf.get('home_block_1', '') %}
-  {% autoescape false %}{{ home_block_1 }}{% endautoescape %}
+  {% set home_block_1 = getCustomTpl('home_block_1') %}
+  {% if home_block_1 %}
+    {% include home_block_1 %}
+  {% endif %}
 
   <div class="blocks mt-4">
 
@@ -54,8 +56,10 @@
     
   </div>
 
-  {% set home_block_2 = dbconf.get('home_block_2_' + locale.__str__()) if dbconf.get('home_block_2_' + locale.__str__()) else dbconf.get('home_block_2', '') %}
-  {% autoescape false %}{{ home_block_2 }}{% endautoescape %}
+  {% set home_block_2 = getCustomTpl('home_block_2') %}
+  {% if home_block_2 %}
+    {% include home_block_2 %}
+  {% endif %}
 </div>
 
 <script>
