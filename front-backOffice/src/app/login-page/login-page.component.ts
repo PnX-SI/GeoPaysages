@@ -25,7 +25,7 @@ export class LoginPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.logoUrl = `${Conf.customFiles}logo/logo_txt_blanc.png`;
+    this.logoUrl = `${Conf.customFiles}images/logo_txt_blanc.png`;
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
       password: ['', Validators.required],

@@ -284,7 +284,7 @@ def site_photos_last(id_site):
         date_obj = datetime.strptime(photo.get('filter_date'), '%Y-%m-%d')
         photo['date_display'] = date_obj.strftime('%d-%m-%Y')
 
-    return render_template('site-photo.jinja', site=site, photo=photo)
+    return render_template('site_photo.jinja', site=site, photo=photo)
 
 
 @main.route('/sites')
