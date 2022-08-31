@@ -47,7 +47,7 @@
             {% if observatories[count.value] is defined  %}
               <div class="patchwork-item">
                 <a class="d-block w-100 h-100 position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatories[count.value].id }}]}]'>  
-                  <img class="w-100 h-100" src="{{ getThumborUrl('/700x200/'+observatories[count.value].photo) }}">
+                  <img class="w-100 h-100" src="{{ getThumborUrl('700x200', observatories[count.value].photo) }}">
                   <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
                     <span class="text-uppercase text-shadow">{{ observatories[count.value].title }}</span>
                     <button type="button" class="btn btn-outline-light d-none">Voir</button>
@@ -83,9 +83,14 @@
 
   <div class="container-xl">
     <div class="text-center">
-      <a href="/sites">{{ _('home.block.explore_sites') }}</a>
+      <a href="/sites">{{ _('home.map_block_title') }}</a>
     </div>
-    <div class="js-map-wrapper" style="height:500px"></div>
+    <a class="d-block map-block position-relative" href="/sites">
+      <div class="map-overlay position-absolute h-100 w-100 d-flex justify-content-center align-items-center">
+        <button class="btn btn-primary">{{ _('home.block.explore_sites') }}</button>
+      </div>
+      <div class="js-map-wrapper h-100"></div>
+    </a>
   </div>
 
   {% set home_block_3 = dbconf.get('home_block_3_' + locale.__str__()) if dbconf.get('home_block_3_' + locale.__str__()) else dbconf.get('home_block_3', '') %}

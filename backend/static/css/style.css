@@ -276,15 +276,16 @@ h6 .light {
 }
 
 .app-footer {
-  background: #666;
+  background: #fff;
   padding: 40px 60px 10px 60px;
   margin-top: 20px;
   position: relative;
   height: 260px;
+  border-top: 1px solid #ccc;
 }
 
 .app-footer hr {
-  border-color: #fff;
+  border-color: #ccc;
 }
 
 .nav-link {
@@ -538,7 +539,7 @@ h6 .light {
 /* FOOTER */
 
 footer {
-  color: #fff;
+  color: #000;
 }
 
 footer div:first-child {
@@ -547,7 +548,7 @@ footer div:first-child {
   justify-content: space-between;
 }
 
-footer img {
+footer .logo {
   align-self: center;
   height: 110px;
   width: auto;

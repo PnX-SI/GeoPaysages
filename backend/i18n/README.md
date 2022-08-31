@@ -13,7 +13,7 @@
 
 - Rajouter la traduction dans le(s) fichier(s) où l'on veut la(es) traduction(s)
 - Entrer dans le container  
-  `docker-compose exec backend /bin/bash`
+  `./scripts/docker.sh exec backend /bin/bash`
 - Lancer l'extraction  
   `pybabel extract -F babel.cfg -o ./i18n/messages.pot .`
 - Lancer la mise à jour  
@@ -26,4 +26,4 @@
 - Compiler  
   `pybabel compile -d ./i18n && exit`
 - Redémarrer le container  
-  `docker-compose restart backend`
+  `./scripts/docker.sh restart backend`

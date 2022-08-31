@@ -29,3 +29,15 @@
 .page-home .patchwork-item:hover button {
   display: block !important;
 }
+
+.page-home .map-block {
+  height: 600px;
+}
+
+.page-home .map-block * {
+  pointer-events: none !important;
+}
+
+.page-home .map-overlay {
+  z-index: 1000;
+}

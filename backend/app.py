@@ -7,6 +7,8 @@ from flask_cors import CORS
 from api import api
 import config
 import utils
+import os
+import custom_app
 
 from env import db, migrate
 
@@ -61,14 +63,18 @@ migrate.init_app(app, db)
 
 @app.context_processor
 def inject_to_tpl():
-    return dict(
+    custom = custom_app.custom_inject_to_tpl()
+    data = dict(
         dbconf=utils.getDbConf(), 
         debug=app.debug, 
         locale=get_locale(), 
         isMultiObservatories=utils.isMultiObservatories,
         isDbPagePublished=utils.isDbPagePublished,
         getThumborUrl=utils.getThumborUrl,
+        pathExists=os.path.exists,
     )
+    data.update(custom)
+    return data
 
 if __name__ == "__main__":
     app.run(debug=True)

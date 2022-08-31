@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-25 08:19+0000\n"
+"POT-Creation-Date: 2022-08-29 14:55+0000\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -18,23 +18,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: utils.py:207
+#: utils.py:222
 msgid "sites.filter.themes"
 msgstr "Thèmes"
 
-#: utils.py:211
+#: utils.py:226
 msgid "sites.filter.subthemes"
 msgstr "Sous-thème(s)"
 
-#: utils.py:216
+#: utils.py:231
 msgid "sites.filter.township"
 msgstr "Commune(s)"
 
-#: utils.py:221
+#: utils.py:236
 msgid "sites.filter.years"
 msgstr "Année(s)"
 
-#: utils.py:338
+#: utils.py:353
 msgid "sites.filter.obervatories"
 msgstr "Observatoire(s)"
 
@@ -42,47 +42,47 @@ msgstr "Observatoire(s)"
 msgid "obs_point.buttons.download"
 msgstr "Télécharger"
 
-#: tpl/comparator-v2.jinja:58
+#: tpl/comparator-v2.jinja:57
 msgid "comparatorv2.loading"
 msgstr "Chargement"
 
-#: tpl/comparator-v2.jinja:93
+#: tpl/comparator-v2.jinja:95
 msgid "comparatorv2.date.filter.title"
 msgstr "Filtrer par date"
 
-#: tpl/comparator-v2.jinja:95
+#: tpl/comparator-v2.jinja:97
 msgid "comparatorv2.date.filter.start"
 msgstr "Début"
 
-#: tpl/comparator-v2.jinja:104
+#: tpl/comparator-v2.jinja:106
 msgid "comparatorv2.date.filter.end"
 msgstr "Fin"
 
-#: tpl/comparator-v2.jinja:155
+#: tpl/comparator-v2.jinja:156
 msgid "comparatorv2.mode.sidebyside"
 msgstr "Superposition"
 
-#: tpl/comparator-v2.jinja:156
+#: tpl/comparator-v2.jinja:157
 msgid "comparatorv2.mode.split"
 msgstr "Côte à côte"
 
-#: tpl/comparator-v2.jinja:157
+#: tpl/comparator-v2.jinja:158
 msgid "comparatorv2.date.steps.none"
 msgstr "0"
 
-#: tpl/comparator-v2.jinja:158
+#: tpl/comparator-v2.jinja:159
 msgid "comparatorv2.date.steps.1d"
 msgstr "1 jour"
 
-#: tpl/comparator-v2.jinja:159
+#: tpl/comparator-v2.jinja:160
 msgid "comparatorv2.date.steps.1w"
 msgstr "1 semaine"
 
-#: tpl/comparator-v2.jinja:160
+#: tpl/comparator-v2.jinja:161
 msgid "comparatorv2.date.steps.1m"
 msgstr "1 mois"
 
-#: tpl/comparator-v2.jinja:161
+#: tpl/comparator-v2.jinja:162
 msgid "comparatorv2.date.steps.1y"
 msgstr "1 an"
 
@@ -112,7 +112,7 @@ msgstr "L'Observatoire photographique des paysages de Vanoise"
 msgid "home.title_mobile"
 msgstr "Accueil"
 
-#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:86
+#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:90
 msgid "home.block.explore_sites"
 msgstr "Explorer les sites d'observation"
 
@@ -124,31 +124,35 @@ msgstr "Découvrir ce point d'observation"
 msgid "home.block.photography"
 msgstr "Photographie"
 
-#: tpl/layout.jinja:71
+#: tpl/home_multi_obs.jinja:86
+msgid "home.map_block_title"
+msgstr "Carte des observatoires"
+
+#: tpl/layout.jinja:74
 msgid "footer.internal_title"
 msgstr "Le site"
 
-#: tpl/layout.jinja:75
+#: tpl/layout.jinja:78
 msgid "footer.internal_links.home"
 msgstr "Accueil"
 
-#: tpl/layout.jinja:80
+#: tpl/layout.jinja:83
 msgid "footer.internal_links.sites"
 msgstr "Sites d'observation"
 
-#: tpl/layout.jinja:85
+#: tpl/layout.jinja:88
 msgid "footer.internal_links.gallery"
 msgstr "Galerie photo"
 
-#: tpl/layout.jinja:91
+#: tpl/layout.jinja:94
 msgid "footer.internal_links.contact"
 msgstr "Contactez-nous"
 
-#: tpl/layout.jinja:100
+#: tpl/layout.jinja:103
 msgid "footer.external_title"
 msgstr "Le Parc national de Vanoise"
 
-#: tpl/layout.jinja:117
+#: tpl/layout.jinja:120
 msgid "footer.copyright"
 msgstr "© 2018 Parc national de la Vanoise"
 
@@ -156,27 +160,27 @@ msgstr "© 2018 Parc national de la Vanoise"
 msgid "site.title_mobile"
 msgstr "Point d'observation"
 
-#: tpl/site.jinja:56
+#: tpl/site.jinja:57
 msgid "obs_point.buttons.notice"
 msgstr "Notice technique pour le photographe"
 
-#: tpl/site.jinja:61
+#: tpl/site.jinja:62
 msgid "obs_point.buttons.obs"
 msgstr "Faire une observation"
 
-#: tpl/site.jinja:66
+#: tpl/site.jinja:67
 msgid "obs_point.description"
 msgstr "Présentation du site"
 
-#: tpl/site.jinja:73 tpl/site.jinja:90 tpl/site.jinja:103
+#: tpl/site.jinja:74 tpl/site.jinja:92 tpl/site.jinja:105
 msgid "obs_point.buttons.read_more"
 msgstr "Lire plus"
 
-#: tpl/site.jinja:74 tpl/site.jinja:91 tpl/site.jinja:104
+#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
 msgid "obs_point.buttons.read_less"
 msgstr "Lire moins"
 
-#: tpl/site.jinja:96
+#: tpl/site.jinja:98
 msgid "obs_point.testimonials"
 msgstr "Témoignages"
 

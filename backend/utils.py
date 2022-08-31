@@ -12,6 +12,7 @@ import string
 import models
 import hmac
 import hashlib
+import urllib.parse
 
 db = SQLAlchemy()
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -29,9 +30,10 @@ def getThumborSignature(url):
     h = hmac.new(key, msg, hashlib.sha1)
     return urlsafe_b64encode(h.digest()).decode("ascii")
 
-def getThumborUrl(url):
-    if url.startswith('/'):
-        url = url[1:]
+def getThumborUrl(params, filename):
+    if params.startswith('/'):
+        params = params[1:]
+    url = params + '/' + urllib.parse.quote(f'http://backend/static/upload/{filename}', safe='')
     signature = getThumborSignature(url)
     return f'{os.getenv("IMG_SRV")}/{signature}/{url}'
 

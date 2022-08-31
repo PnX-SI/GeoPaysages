@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-25 08:19+0000\n"
+"POT-Creation-Date: 2022-08-29 14:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,23 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: utils.py:207
+#: utils.py:222
 msgid "sites.filter.themes"
 msgstr ""
 
-#: utils.py:211
+#: utils.py:226
 msgid "sites.filter.subthemes"
 msgstr ""
 
-#: utils.py:216
+#: utils.py:231
 msgid "sites.filter.township"
 msgstr ""
 
-#: utils.py:221
+#: utils.py:236
 msgid "sites.filter.years"
 msgstr ""
 
-#: utils.py:338
+#: utils.py:353
 msgid "sites.filter.obervatories"
 msgstr ""
 
@@ -41,47 +41,47 @@ msgstr ""
 msgid "obs_point.buttons.download"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:58
+#: tpl/comparator-v2.jinja:57
 msgid "comparatorv2.loading"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:93
+#: tpl/comparator-v2.jinja:95
 msgid "comparatorv2.date.filter.title"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:95
+#: tpl/comparator-v2.jinja:97
 msgid "comparatorv2.date.filter.start"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:104
+#: tpl/comparator-v2.jinja:106
 msgid "comparatorv2.date.filter.end"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:155
+#: tpl/comparator-v2.jinja:156
 msgid "comparatorv2.mode.sidebyside"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:156
+#: tpl/comparator-v2.jinja:157
 msgid "comparatorv2.mode.split"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:157
+#: tpl/comparator-v2.jinja:158
 msgid "comparatorv2.date.steps.none"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:158
+#: tpl/comparator-v2.jinja:159
 msgid "comparatorv2.date.steps.1d"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:159
+#: tpl/comparator-v2.jinja:160
 msgid "comparatorv2.date.steps.1w"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:160
+#: tpl/comparator-v2.jinja:161
 msgid "comparatorv2.date.steps.1m"
 msgstr ""
 
-#: tpl/comparator-v2.jinja:161
+#: tpl/comparator-v2.jinja:162
 msgid "comparatorv2.date.steps.1y"
 msgstr ""
 
@@ -111,7 +111,7 @@ msgstr ""
 msgid "home.title_mobile"
 msgstr ""
 
-#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:86
+#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:90
 msgid "home.block.explore_sites"
 msgstr ""
 
@@ -123,31 +123,35 @@ msgstr ""
 msgid "home.block.photography"
 msgstr ""
 
-#: tpl/layout.jinja:71
+#: tpl/home_multi_obs.jinja:86
+msgid "home.map_block_title"
+msgstr ""
+
+#: tpl/layout.jinja:74
 msgid "footer.internal_title"
 msgstr ""
 
-#: tpl/layout.jinja:75
+#: tpl/layout.jinja:78
 msgid "footer.internal_links.home"
 msgstr ""
 
-#: tpl/layout.jinja:80
+#: tpl/layout.jinja:83
 msgid "footer.internal_links.sites"
 msgstr ""
 
-#: tpl/layout.jinja:85
+#: tpl/layout.jinja:88
 msgid "footer.internal_links.gallery"
 msgstr ""
 
-#: tpl/layout.jinja:91
+#: tpl/layout.jinja:94
 msgid "footer.internal_links.contact"
 msgstr ""
 
-#: tpl/layout.jinja:100
+#: tpl/layout.jinja:103
 msgid "footer.external_title"
 msgstr ""
 
-#: tpl/layout.jinja:117
+#: tpl/layout.jinja:120
 msgid "footer.copyright"
 msgstr ""
 
@@ -155,27 +159,27 @@ msgstr ""
 msgid "site.title_mobile"
 msgstr ""
 
-#: tpl/site.jinja:56
+#: tpl/site.jinja:57
 msgid "obs_point.buttons.notice"
 msgstr ""
 
-#: tpl/site.jinja:61
+#: tpl/site.jinja:62
 msgid "obs_point.buttons.obs"
 msgstr ""
 
-#: tpl/site.jinja:66
+#: tpl/site.jinja:67
 msgid "obs_point.description"
 msgstr ""
 
-#: tpl/site.jinja:73 tpl/site.jinja:90 tpl/site.jinja:103
+#: tpl/site.jinja:74 tpl/site.jinja:92 tpl/site.jinja:105
 msgid "obs_point.buttons.read_more"
 msgstr ""
 
-#: tpl/site.jinja:74 tpl/site.jinja:91 tpl/site.jinja:104
+#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
 msgid "obs_point.buttons.read_less"
 msgstr ""
 
-#: tpl/site.jinja:96
+#: tpl/site.jinja:98
 msgid "obs_point.testimonials"
 msgstr ""
 
