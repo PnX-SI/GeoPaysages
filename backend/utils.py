@@ -24,6 +24,15 @@ observatory_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 
+def getCustomTpl(name):
+    tpl_local = f'custom/{name}_{get_locale().__str__()}.jinja'
+    tpl_common = f'custom/{name}.jinja'
+    if os.path.exists(f'tpl/{tpl_local}'):
+        return tpl_local
+    if os.path.exists(f'tpl/{tpl_common}'):
+        return tpl_common
+    return None
+
 def getThumborSignature(url):
     key = bytes(os.getenv("THUMBOR_SECURITY_KEY"), 'UTF-8')
     msg = bytes(url, 'UTF-8')
@@ -148,12 +157,6 @@ def getDbConf():
     
     return conf
 
-
-def isDbPagePublished(name):
-    dbconf = getDbConf()
-
-    return dbconf.get('page_' + name + '_published_' + get_locale().__str__(), dbconf.get('page_' + name + '_published')) is True
-
 def isMultiObservatories():
     # Pourrait passer par un count sql
     sql = text("SELECT id FROM geopaysages.t_observatory where is_published is true")
@@ -162,18 +165,6 @@ def isMultiObservatories():
     if len(rows) > 1 :
         return True
     return False
-
-def getDbPage(name):
-    dbconf = getDbConf()
-
-    locale = get_locale()
-    title_locale = dbconf.get('page_' + name + '_title_' + locale.__str__())
-    content_locale = dbconf.get('page_' + name + '_content_' + locale.__str__())
-
-    return {
-        'title': title_locale if title_locale else dbconf.get('page_' + name + '_title', ''),
-        'content': content_locale if content_locale else dbconf.get('page_' + name + '_content', '')
-    }
 
 def getFiltersData():
     sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(DEFAULT_SORT_SITES))

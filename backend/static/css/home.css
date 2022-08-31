@@ -3,7 +3,7 @@
   background-size: cover;
 }
 
-.page-home .app-home-carousel > h1 {
+.page-home .text-shadow{
   z-index: 2;
   text-shadow: 2px 2px 2px #00000099;
   right: 0;
