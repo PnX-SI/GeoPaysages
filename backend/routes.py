@@ -305,3 +305,10 @@ def about():
         return abort(404)
 
     return render_template('db-page.jinja', name='about', page=utils.getDbPage('about'))
+
+@main.route('/disclaimer')
+def disclaimer():
+    if (not utils.isDbPagePublished('disclaimer')):
+        return abort(404)
+
+    return render_template('db-page.jinja', name='disclaimer', page=utils.getDbPage('disclaimer'))
