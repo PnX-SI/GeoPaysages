@@ -31,10 +31,20 @@
 }
 
 .page-home .map-block {
+  min-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .page-home .map-block {
+    min-width: 800px;
+  }
+}
+
+.page-home .map-outer {
   height: 600px;
 }
 
-.page-home .map-block * {
+.page-home .map-outer * {
   pointer-events: none !important;
 }
 

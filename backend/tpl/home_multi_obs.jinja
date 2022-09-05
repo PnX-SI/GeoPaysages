@@ -85,11 +85,11 @@
     {% include home_block_2 %}
   {% endif %}
 
-  <div class="container-xl">
+  <div class="container-fluid map-block px-0" style="width: {{200*patchwork_options.nb_cols}}px;">
     <div class="text-center">
       <a href="/sites?nofilters">{{ _('home.map_block_title') }}</a>
     </div>
-    <a class="d-block map-block position-relative" href="/sites?nofilters">
+    <a class="d-block map-outer position-relative" href="/sites?nofilters">
       <div class="map-overlay position-absolute h-100 w-100 d-flex justify-content-center align-items-center">
         <button class="btn btn-primary">{{ _('home.block.explore_sites') }}</button>
       </div>
