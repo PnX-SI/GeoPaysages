@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="shortcut icon" href="{{ url_for('static', filename='custom/logo/favicon.ico') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
 
 
   <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
@@ -40,7 +40,7 @@
 
     <header class="container-fluid" id="header">
       <a href="/" class="d-none d-md-inline">
-        <img class="header-logo" src="{{ url_for('static', filename='custom/logo/logo_txt_color.png') }}" />
+        <img class="header-logo" src="{{ url_for('static', filename='custom/images/logo_txt_color.png') }}" />
       </a>
       <div class="row nav-bar pt-2 pt-md-3 pr-0 pr-md-4">
         <nav class="navbar navbar-expand-md navbar-light bg-light w-100 w-md-auto">
@@ -62,13 +62,14 @@
     </header>
     <div class="header-title d-none d-sm-block">{% block header_title %}{% endblock %}</div>
     {% block content %}{% endblock %}
-    {% if pathExists('tpl/custom/footer.jinja') %}
-    {% include 'custom/footer.jinja' %}
+    {% set footer = getCustomTpl('footer') %}
+    {% if footer: %}
+      {% include footer %}
     {% else %}
     <footer class="app-footer">
       {% block footer %}
       <div class="col-lg-11 col-xl-10">
-        <img class="logo mb-4" src="{{ url_for('static', filename='custom/logo/logo_txt_blanc.png') }}" />
+        <img class="logo mb-4" src="{{ url_for('static', filename='custom/images/logo_txt_blanc.png') }}" />
 
         <div class="footer-menu">
           <h6>{{ _('footer.internal_title') }}</h6>
@@ -117,7 +118,9 @@
 
       <hr class="mt-4" />
 
-      <div>{{ _('footer.copyright') }}</div>
+      <div class="mt-4 d-flex">
+        {% include 'components/legal-footer.jinja' %}
+      </div>
       {% endblock %}
     </footer>
     {% endif %}

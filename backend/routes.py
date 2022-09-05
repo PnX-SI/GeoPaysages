@@ -284,7 +284,7 @@ def site_photos_last(id_site):
         date_obj = datetime.strptime(photo.get('filter_date'), '%Y-%m-%d')
         photo['date_display'] = date_obj.strftime('%d-%m-%Y')
 
-    return render_template('site-photo.jinja', site=site, photo=photo)
+    return render_template('site_photo.jinja', site=site, photo=photo)
 
 
 @main.route('/sites')
@@ -301,7 +301,20 @@ def sample():
 
 @main.route('/about')
 def about():
-    if (not utils.isDbPagePublished('about')):
+
+    tpl = utils.getCustomTpl('about')
+
+    if not tpl:
         return abort(404)
 
-    return render_template('db-page.jinja', name='about', page=utils.getDbPage('about'))
+    return render_template(tpl)
+
+@main.route('/legal-notices')
+def legal_notices():
+
+    tpl = utils.getCustomTpl('legal_notices')
+
+    if not tpl:
+        return abort(404)
+
+    return render_template(tpl)

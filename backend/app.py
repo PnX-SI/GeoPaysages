@@ -69,9 +69,8 @@ def inject_to_tpl():
         debug=app.debug, 
         locale=get_locale(), 
         isMultiObservatories=utils.isMultiObservatories,
-        isDbPagePublished=utils.isDbPagePublished,
         getThumborUrl=utils.getThumborUrl,
-        pathExists=os.path.exists,
+        getCustomTpl=utils.getCustomTpl,
     )
     data.update(custom)
     return data

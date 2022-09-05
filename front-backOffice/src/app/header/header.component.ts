@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
     protected router: Router, ) { }
 
   ngOnInit() {
-    this.logoUrl = `${Conf.customFiles}logo/logo_txt_color.png`
+    this.logoUrl = `${Conf.customFiles}images/logo_txt_color.png`
   }
 
   logout() {
