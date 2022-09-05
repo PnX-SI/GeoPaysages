@@ -359,7 +359,7 @@ def upload_file():
 @api.route('/api/addNotices', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
 def upload_notice():
-    base_path = './static/' + DATA_NOTICES_PATH
+    base_path = './static/upload/notice-photo/'
     notice = request.files.get('notice')
     notice.save(os.path.join(base_path + notice.filename))
 
@@ -369,7 +369,7 @@ def upload_notice():
 @api.route('/api/deleteNotice/<notice>', methods=['DELETE'])
 @fnauth.check_auth(2, False, None, None)
 def delete_notice(notice):
-    base_path = './static/' + DATA_NOTICES_PATH
+    base_path = './static/upload/notice-photo/'
     for fileName in os.listdir(base_path):
         if (fileName == notice):
             os.remove(base_path + fileName)

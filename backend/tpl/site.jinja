@@ -54,7 +54,7 @@
         <div class="col-lg-5 text-lg-right">
           <div class="map-wrapper" ref="map"></div>
           {% if site.path_file_guide_site: %}
-          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='data/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
+          <a class="btn btn-sm btn-primary text-uppercase mb-2" href="{{ url_for('static', filename='upload/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
             {{ _('obs_point.buttons.notice') }} <i class="icon ion-md-download ml-2"></i>
           </a>
           {% endif %}
