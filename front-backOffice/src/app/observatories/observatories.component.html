@@ -32,13 +32,13 @@
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column prop="ref" name="Référence" width="100">
+          <ngx-datatable-column prop="observatory.ref" name="Référence" width="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row.observatory.ref }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column
-            prop="title"
+            prop="observatory.title"
             name="Nom de l'observatoire"
             width="320"
           >
@@ -46,7 +46,7 @@
               {{ row.observatory.title }}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column prop="is_published" name="Est publié">
+          <ngx-datatable-column prop="observatory.is_published" name="Est publié">
             <ng-template let-row="row" ngx-datatable-cell-template>
                 <div *ngIf="row.observatory.is_published; else elseBlock"><span class="icon-checkmark text-success"></span></div>
                 <ng-template #elseBlock><span class="icon-cross text-danger"></span></ng-template>
