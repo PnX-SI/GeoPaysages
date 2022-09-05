@@ -5,6 +5,7 @@
     :interval="5000"
     img-width="1500"
     img-height="500"
+    class="position-absolute w-100"
   >
     <b-carousel-slide 
       v-for="photo in photos" 
@@ -12,5 +13,8 @@
       img-blank
     ></b-carousel-slide>
   </b-carousel>
+
+  <img width="1500" height="500" class="img-fluid w-100 d-block" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAABCAQAAACx6dw/AAAADUlEQVR42mM8858BCAAJ0QHNsQDhCwAAAABJRU5ErkJggg==">
+
 </div>
 <h1 class="d-md-none text-center mb-0 px-3">{{ _('home.title') }}</h1>
