@@ -394,6 +394,11 @@ geopsg.initSites = (options) => {
       onSiteMouseout(site) {
         site.marker.closePopup();
       },
+      onSiteClick(site) {
+        if (window.innerWidth >= 768) {
+          window.location.href = `/sites/${site.id_site}`;
+        }
+      },
       async onShareClick() {
         this.shareUrl = url.origin + url.pathname;
         try {

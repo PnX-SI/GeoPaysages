@@ -349,6 +349,8 @@ def getFiltersData():
                 }
             })
 
+    observatories = sorted(observatories, key=lambda d: d['label']) 
+
     if len(observatories) > 1:
         filters.insert(0, {
             'name': 'id_observatory',
