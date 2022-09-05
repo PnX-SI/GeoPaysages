@@ -4,29 +4,35 @@ geopsg.initSites = (options) => {
 
   let selectedFilters = [];
   const url = new URL(window.location);
-  try {
-    selectedFilters = JSON.parse(url.searchParams.get('filters'));
-    if (!selectedFilters || !selectedFilters.length) {
-      selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
-    } else {
-      selectedFilters = selectedFilters.map((filter) => {
-        return {
-          name: filter.name,
-          items: filter.values.map((value) => {
-            return {
-              id: value,
-            };
-          }),
-        };
-      });
-    }
-  } catch (error1) {
+  const resetFilter = !_.isNil(url.searchParams.get('nofilters'));
+  if (resetFilter) {
+    localStorage.removeItem('geopsg.sites.selectedFilters')
+  } else {
     try {
-      selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
-    } catch (error2) { }
+      selectedFilters = JSON.parse(url.searchParams.get('filters'));
+      if (!selectedFilters || !selectedFilters.length) {
+        selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+      } else {
+        selectedFilters = selectedFilters.map((filter) => {
+          return {
+            name: filter.name,
+            items: filter.values.map((value) => {
+              return {
+                id: value,
+              };
+            }),
+          };
+        });
+      }
+    } catch (error1) {
+      try {
+        selectedFilters = JSON.parse(localStorage.getItem('geopsg.sites.selectedFilters'));
+      } catch (error2) {}
+    }
   }
 
   url.searchParams.delete('filters');
+  url.searchParams.delete('nofilters');
   window.history.replaceState({}, '', url);
 
   if (!Array.isArray(selectedFilters)) {
