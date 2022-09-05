@@ -326,11 +326,13 @@ geopsg.initSites = (options) => {
           }
           imgUrl = `/api/thumbor/presets/200x150/${site.photo}`;
           marker.bindPopup(
-            '<a href="/sites/' + site.id_site + '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(' +
-            imgUrl +
-            ');"></div><div class="title">' +
-            markerText +
-            '</div></a>',
+            '<a href="/sites/' +
+              site.id_site +
+              '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(' +
+              imgUrl +
+              ');"></div><div class="title">' +
+              markerText +
+              '</div></a>',
             {
               closeButton: false,
             },
@@ -408,7 +410,7 @@ geopsg.initSites = (options) => {
             };
           });
           this.shareUrl += `?filters=${JSON.stringify(sharedFilters)}`;
-        } catch (error) { }
+        } catch (error) {}
 
         try {
           await navigator.clipboard.writeText(this.shareUrl);
