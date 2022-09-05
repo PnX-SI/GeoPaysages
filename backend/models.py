@@ -270,6 +270,21 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
         model = Observatory
         include_relationships = True
 
+class ObservatorySchemaFull(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=True)
+    geom = fields.Method("geomSerialize")
+    
+    @staticmethod
+    def geomSerialize(obj):
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        return p.wkt
+
+    class Meta:
+        model = Observatory
+        include_relationships = True
+
 class ObservatorySchemaLite(ma.SQLAlchemyAutoSchema):
     comparator = EnumField(ComparatorEnum, by_value=False)
     geom = fields.Method("geomSerialize")

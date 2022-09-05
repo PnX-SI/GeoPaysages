@@ -19,7 +19,7 @@ from env import db
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)
-observatory_schema = models.ObservatorySchema(many=False)
+observatory_schema_full = models.ObservatorySchemaFull(many=False)
 observatories_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
@@ -76,7 +76,7 @@ def postObservatory():
         return str(exception), 400
     
     db.session.refresh(db_obj)
-    resp = observatory_schema.dump(db_obj)
+    resp = observatory_schema_full.dump(db_obj)
     return jsonify(resp)
 
 
@@ -85,7 +85,7 @@ def returnObservatoryById(id):
     row = models.Observatory.query.filter_by(id=id).first()
     if not row:
         abort(404)
-    dict = observatory_schema.dump(row)
+    dict = observatory_schema_full.dump(row)
     return jsonify(dict)
 
 
@@ -102,7 +102,7 @@ def patchObservatory(id):
     except Exception as exception:
         return str(exception), 400
     row = models.Observatory.query.filter_by(id=id).first()
-    dict = observatory_schema.dump(row)
+    dict = observatory_schema_full.dump(row)
     return jsonify(dict)
 
 
