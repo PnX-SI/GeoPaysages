@@ -21,7 +21,7 @@
 - Avant de pouvoir éditer le fichier de traduction, se mettre les droits  
   `chmod 777 /app/i18n/fr/LC_MESSAGES/messages.po`
 - Éditer le fichier de traduction
-- Supprimer la ligne fuzy  
+- Supprimer les "fuzzy" s'il y en a  
   `#, fuzzy`
 - Compiler  
   `pybabel compile -d ./i18n && exit`
