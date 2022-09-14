@@ -152,7 +152,8 @@ geopsg.initSites = (options) => {
                   map.fitBounds(mapBounds.bbox, mapBounds.options);
                 }
               },
-              icon: 'icon ion-md-locate',
+              title: 'Recentrer la carte',
+              icon: 'icon ion-md-contract',
             },
           ],
         }).addTo(map);

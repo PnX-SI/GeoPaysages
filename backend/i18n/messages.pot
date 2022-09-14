@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-08-29 14:55+0000\n"
+"POT-Creation-Date: 2022-09-14 10:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,72 +17,24 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: utils.py:222
+#: utils.py:215
 msgid "sites.filter.themes"
 msgstr ""
 
-#: utils.py:226
+#: utils.py:219
 msgid "sites.filter.subthemes"
 msgstr ""
 
-#: utils.py:231
+#: utils.py:224
 msgid "sites.filter.township"
 msgstr ""
 
-#: utils.py:236
+#: utils.py:229
 msgid "sites.filter.years"
 msgstr ""
 
-#: utils.py:353
+#: utils.py:348
 msgid "sites.filter.obervatories"
-msgstr ""
-
-#: tpl/comparator-v1.jinja:8
-msgid "obs_point.buttons.download"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:57
-msgid "comparatorv2.loading"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:95
-msgid "comparatorv2.date.filter.title"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:97
-msgid "comparatorv2.date.filter.start"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:106
-msgid "comparatorv2.date.filter.end"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:156
-msgid "comparatorv2.mode.sidebyside"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:157
-msgid "comparatorv2.mode.split"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:158
-msgid "comparatorv2.date.steps.none"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:159
-msgid "comparatorv2.date.steps.1d"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:160
-msgid "comparatorv2.date.steps.1w"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:161
-msgid "comparatorv2.date.steps.1m"
-msgstr ""
-
-#: tpl/comparator-v2.jinja:162
-msgid "comparatorv2.date.steps.1y"
 msgstr ""
 
 #: tpl/gallery.jinja:3
@@ -102,7 +54,7 @@ msgstr ""
 msgid "home.meta_title"
 msgstr ""
 
-#: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:16
+#: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:20
 #: tpl/home_mono_obs.jinja:19 tpl/home_multi_obs.jinja:21
 msgid "home.title"
 msgstr ""
@@ -111,75 +63,71 @@ msgstr ""
 msgid "home.title_mobile"
 msgstr ""
 
-#: tpl/home_mono_obs.jinja:40 tpl/home_multi_obs.jinja:90
+#: tpl/home_mono_obs.jinja:39 tpl/home_multi_obs.jinja:94
 msgid "home.block.explore_sites"
 msgstr ""
 
-#: tpl/home_mono_obs.jinja:47
+#: tpl/home_mono_obs.jinja:46
 msgid "home.block.discover"
 msgstr ""
 
-#: tpl/home_mono_obs.jinja:50
+#: tpl/home_mono_obs.jinja:49
 msgid "home.block.photography"
 msgstr ""
 
-#: tpl/home_multi_obs.jinja:86
+#: tpl/home_multi_obs.jinja:90
 msgid "home.map_block_title"
 msgstr ""
 
-#: tpl/layout.jinja:74
+#: tpl/layout.jinja:75
 msgid "footer.internal_title"
 msgstr ""
 
-#: tpl/layout.jinja:78
+#: tpl/layout.jinja:79
 msgid "footer.internal_links.home"
 msgstr ""
 
-#: tpl/layout.jinja:83
+#: tpl/layout.jinja:84
 msgid "footer.internal_links.sites"
 msgstr ""
 
-#: tpl/layout.jinja:88
+#: tpl/layout.jinja:89
 msgid "footer.internal_links.gallery"
 msgstr ""
 
-#: tpl/layout.jinja:94
+#: tpl/layout.jinja:95
 msgid "footer.internal_links.contact"
 msgstr ""
 
-#: tpl/layout.jinja:103
+#: tpl/layout.jinja:104
 msgid "footer.external_title"
 msgstr ""
 
-#: tpl/layout.jinja:120
-msgid "footer.copyright"
-msgstr ""
-
-#: tpl/site.jinja:40
+#: tpl/site.jinja:41
 msgid "site.title_mobile"
 msgstr ""
 
-#: tpl/site.jinja:57
+#: tpl/site.jinja:58
 msgid "obs_point.buttons.notice"
 msgstr ""
 
-#: tpl/site.jinja:62
+#: tpl/site.jinja:63
 msgid "obs_point.buttons.obs"
 msgstr ""
 
-#: tpl/site.jinja:67
+#: tpl/site.jinja:68
 msgid "obs_point.description"
 msgstr ""
 
-#: tpl/site.jinja:74 tpl/site.jinja:92 tpl/site.jinja:105
+#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
 msgid "obs_point.buttons.read_more"
 msgstr ""
 
-#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
+#: tpl/site.jinja:76 tpl/site.jinja:94 tpl/site.jinja:107
 msgid "obs_point.buttons.read_less"
 msgstr ""
 
-#: tpl/site.jinja:98
+#: tpl/site.jinja:99
 msgid "obs_point.testimonials"
 msgstr ""
 
@@ -193,6 +141,66 @@ msgstr ""
 
 #: tpl/sites.jinja:51
 msgid "sites.observation_points.title"
+msgstr ""
+
+#: tpl/sites.jinja:117
+msgid "map.legend.obervatories"
+msgstr ""
+
+#: tpl/sites.jinja:123
+msgid "map.legend.themes"
+msgstr ""
+
+#: tpl/components/comparator_v1.jinja:8
+msgid "obs_point.buttons.download"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:57
+msgid "comparatorv2.loading"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:95
+msgid "comparatorv2.date.filter.title"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:97
+msgid "comparatorv2.date.filter.start"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:106
+msgid "comparatorv2.date.filter.end"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:156
+msgid "comparatorv2.mode.sidebyside"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:157
+msgid "comparatorv2.mode.split"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:158
+msgid "comparatorv2.date.steps.none"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:159
+msgid "comparatorv2.date.steps.1d"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:160
+msgid "comparatorv2.date.steps.1w"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:161
+msgid "comparatorv2.date.steps.1m"
+msgstr ""
+
+#: tpl/components/comparator_v2.jinja:162
+msgid "comparatorv2.date.steps.1y"
+msgstr ""
+
+#: tpl/components/legal-footer.jinja:1
+msgid "footer.copyright"
 msgstr ""
 
 #: tpl/components/main-nav.jinja:3
