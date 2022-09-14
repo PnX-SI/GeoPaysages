@@ -7,6 +7,7 @@
           :key="mode.name"
           v-on:click="onBtnModeClick(mode)"
           :pressed="mode.name == curMode.name"
+          variant="primary"
           v-html="mode.label">
         </b-button>
       </b-button-group>
@@ -92,7 +93,7 @@
 
 <template id="tpl-app-comparator-v2-selector">
   <div class="photo-selector">
-    <b-dropdown :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
+    <b-dropdown variant="primary" :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
       {% if dbconf.comparator_date_filter == 'False': %}
       {% else %}
         <div class="mx-2">
@@ -131,15 +132,15 @@
       </b-dropdown-item-button>
       <b-dropdown-divider></b-dropdown-divider>
       <div class="mx-2">
-        <b-pagination v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
+        <b-pagination variant="primary" v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
       </div>
     </b-dropdown>
     <div class="d-block d-lg-inline-block mt-1 mt-lg-0 date-stepper">
-      <b-button v-on:click="onPrevBtnClick()">&lt;</b-button>
-      <b-button v-on:click="onNextBtnClick()">&gt;</b-button>
+      <b-button variant="primary" v-on:click="onPrevBtnClick()">&lt;</b-button>
+      <b-button variant="primary" v-on:click="onNextBtnClick()">&gt;</b-button>
       {% if dbconf.comparator_date_step_button == 'False': %}
       {% else %}
-      <b-dropdown :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
+      <b-dropdown variant="primary" :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
         <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
           <span :inner-html.prop="step.label"></span>
         </b-dropdown-item-button>

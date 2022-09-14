@@ -112,9 +112,9 @@ button {
 .btn-outline-primary:hover,
 .btn-outline-primary:active,
 .btn-outline-primary:focus,
-.btn-secondary:not(:disabled):not(.disabled).active,
-.btn-secondary:not(:disabled):not(.disabled):active,
-.show > .btn-secondary.dropdown-toggle {
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show > .btn-primary.dropdown-toggle {
   color: #fff;
   background-color: var(--color-primary-light);
   border-color: var(--color-primary-light);
@@ -211,6 +211,15 @@ button {
 
 .btn-big-icon .icon {
   font-size: 1.5em;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.pagination .page-link {
+  color: var(--color-primary);
 }
 
 .progress-bar {
