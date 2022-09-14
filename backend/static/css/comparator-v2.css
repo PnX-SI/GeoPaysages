@@ -91,19 +91,40 @@
   font-weight: bold;
 }
 
-.page-site .app-comparator-thumbs-wrapper .thumb .thumb-overlay {
-  display: none;
+.page-site .app-comparator-thumbs-wrapper .thumb:not(.selected) .thumb-overlay {
+  display: none !important;
 }
 
 .page-site .app-comparator-thumbs-wrapper .thumb:hover .thumb-overlay {
-  display: block;
+  display: flex !important;
 }
 
 .page-site .app-comparator-thumbs-wrapper .thumb-overlay {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.page-site .app-comparator-thumbs-wrapper .btn-side-selector {
+  width: 50px;
+  height: 50px;
+}
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .btn-side-selector,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-left.selected-right .btn-side-selector {
+  transform: scale(.9);
+  margin: 0 3px;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb.selected .btn-side-selector {
+  display: none;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .btn-side-selector,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-left .btn-side-selector.left,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-right .btn-side-selector.right {
+  display: inline-block !important;
 }

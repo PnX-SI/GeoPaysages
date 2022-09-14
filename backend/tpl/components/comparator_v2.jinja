@@ -71,12 +71,16 @@
         key-field="filename"
         v-slot="{ item }"
       >
-        <div class="thumb position-relative">
+        <div class="thumb position-relative" v-bind:class="[getThumbClasses(item)]">
           <img :src="'/api/thumbor/presets/150x150/' + item.filename" :alt="item | dateDisplay" />
-          <div class="thumb-overlay">
-            <div class="thumb-btns">
-              <b-button @click="onPhotoSelected(0, item)">1</b-button>
-              <b-button @click="onPhotoSelected(1, item)">2</b-button>
+          <div class="thumb-overlay d-flex flex-column justify-content-center">
+            <div>
+              <b-button variant="light" class="shadow rounded-circle btn-side-selector left" @click="onPhotoSelected(0, item)">
+                <span class="h3">1</span>
+              </b-button>
+              <b-button variant="light" class="shadow rounded-circle btn-side-selector right" @click="onPhotoSelected(1, item)">
+                <span class="h3">2</span>
+              </b-button>
             </div>
             <div class="mt-1 text-white text-shadow" :inner-html.prop="item.shot_on | dateFormat"></div>
           </div>

@@ -126,6 +126,22 @@ geopsg.comparator = (options) => {
         this.$set(this.comparedPhotos, index, photo);
         this.updateLayers();
       },
+      getThumbClasses(photo) {
+        const classNames = [];
+
+        if (this.comparedPhotos[0].id === photo.id) {
+          classNames.push('selected-left');
+        }
+        if (this.comparedPhotos[1].id === photo.id) {
+          classNames.push('selected-right');
+        }
+        if (!classNames.length) {
+          return '';
+        }
+        classNames.push('selected');
+
+        return classNames.join(' ')
+      },
       updateLayers() {
         this.$bvModal.show('comparatorLoading');
         this.clearMaps();
