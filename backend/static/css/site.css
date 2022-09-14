@@ -17,18 +17,11 @@
 
 .page-site .page-content .map-wrapper {
   height: 315px;
-  margin-bottom: 20px;
 }
 
 @media (min-width: 576px) {
   .page-site .info {
     box-shadow: 0px 0px 7px 4px rgb(0 0 0 / 18%);
-  }
-}
-
-@media (min-width: 992px) {
-  .page-site .info {
-    margin: 0 var(--padding-x);
   }
 }
 
