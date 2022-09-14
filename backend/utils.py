@@ -1,6 +1,6 @@
 from base64 import urlsafe_b64encode
 from flask import url_for
-from config import DATA_IMAGES_PATH, DEFAULT_SORT_SITES
+from config import DATA_IMAGES_PATH, DEFAULT_SORT_SITES, SHOW_SITE_REF
 from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -154,7 +154,8 @@ def getDbConf():
             conf[row.get('key')] = json.loads(row.get('value'))
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
-    
+    conf['showSiteRef'] = SHOW_SITE_REF
+
     return conf
 
 def isMultiObservatories():

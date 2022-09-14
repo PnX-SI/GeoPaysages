@@ -92,9 +92,11 @@
                       @click="onSiteClick(site)">
                       <span class="d-block font-weight-bold" v-html="site.name_site"></span>
                       <span class="d-block text-black-50" v-html="site.ville.label"></span>
+                      {% if dbconf.showSiteRef: %}
                       <span class="d-block text-black-50"
                             v-if="site.ref_site"
                             v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                      {% endif %}
                     </a>
                     <hr class="w-100 m-1"/>
                   </b-button-group>

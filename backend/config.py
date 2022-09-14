@@ -22,4 +22,5 @@ BABEL_TRANSLATION_DIRECTORIES = './i18n'  # From ./ dir
 COMPARATOR_VERSION = 2
 
 # Order to sort sites (choose a field from t_site table )
-DEFAULT_SORT_SITES = 'name_site'
+DEFAULT_SORT_SITES = f'{os.getenv("DEFAULT_SORT_SITES")}'
+SHOW_SITE_REF = f'{os.getenv("SHOW_SITE_REF")}' == "True"

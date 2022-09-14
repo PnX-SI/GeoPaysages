@@ -12,3 +12,6 @@ VOLUME_PATH=../data
 IMG_SRV=http://localhost:8083
 THUMBOR_SECURITY_KEY=secret
 PROJECT=geopaysages
+
+DEFAULT_SORT_SITES=name_site
+SHOW_SITE_REF=False

@@ -322,7 +322,7 @@ geopsg.initSites = (options) => {
             </div>
             ${site.ville.label}
           </div>`;
-          if (site.ref_site) {
+          if (site.ref_site && options.dbconf.showSiteRef) {
             markerText += '(réf : ' + site.ref_site + ')';
           }
           imgUrl = `/api/thumbor/presets/200x150/${site.photo}`;

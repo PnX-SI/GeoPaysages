@@ -10,7 +10,7 @@ export class FormService {
   initFormObservatory(): FormGroup {
     const formSite = this._fb.group({
       title: [null, Validators.required],
-      ref: [null, Validators.required],
+      ref: [null],
       color: [null],
       is_published: [false],
       geom: [null],
@@ -22,7 +22,7 @@ export class FormService {
     const formSite = this._fb.group({
       name_site: [null, Validators.required],
       desc_site: [null],
-      ref_site: [null, Validators.required],
+      ref_site: [null],
       id_observatory: [null, Validators.required],
       testim_site: [null],
       publish_site: [false],

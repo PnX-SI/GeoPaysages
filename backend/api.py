@@ -2,7 +2,7 @@ from flask import Flask, request, Blueprint, Response, jsonify, abort, Response
 from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import FileWrapper
 
-from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
+from config import DEFAULT_SORT_SITES
 from pypnusershub import routes as fnauth
 from pypnusershub.db.models import AppUser
 import models
@@ -57,7 +57,7 @@ def thumborPreset(name, filename):
 
 @api.route('/api/observatories', methods=['GET'])
 def returnAllObservatories():
-    get_all = models.Observatory.query.order_by('ref').all()
+    get_all = models.Observatory.query.order_by('title').all()
     items = observatories_schema.dump(get_all)
     
     return jsonify(items)
@@ -144,7 +144,7 @@ def patchObservatoryImage(id):
 
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
-    get_all_sites = models.TSite.query.order_by('ref_site').all()
+    get_all_sites = models.TSite.query.order_by(DEFAULT_SORT_SITES).all()
     sites = site_schema.dump(get_all_sites)
     for site in sites:
         if len(site.get("t_photos")) > 0:
