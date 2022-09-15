@@ -292,7 +292,6 @@ export class ObservatoryComponent implements OnInit {
         });
       }
     }
-    this.isEditing = true;
     this.edit_btn_text = 'Éditer';
     this.spinner.hide();
   }
