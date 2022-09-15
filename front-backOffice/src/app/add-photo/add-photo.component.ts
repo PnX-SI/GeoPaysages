@@ -218,21 +218,16 @@ export class AddPhotoComponent implements OnInit {
         photoForm.value.filter_date.day;
       photoForm.value.photo_file = this.selectedPhoto;
       photoForm.value.path_file_photo = this.imageName;
-      if (/\s/.test(this.imageName)) {
-        this.alert = 'Le nom de la photo ne doit pas contenir des espaces ';
-        this.disableButton = false;
+      if (this.inputImage) {
+        this.spinner.show();
+        this.updatePhoto(photoForm);
       } else {
-        if (this.inputImage) {
-          this.spinner.show();
-          this.updatePhoto(photoForm);
-        } else {
-          this.photoModal.emit(photoForm.value);
-          this.photoForm.reset();
-          this.removeImage();
-          this.photoForm.controls['display_gal_photo'].setValue(false);
-          this.modalRef.close();
-          this.disableButton = false;
-        }
+        this.photoModal.emit(photoForm.value);
+        this.photoForm.reset();
+        this.removeImage();
+        this.photoForm.controls['display_gal_photo'].setValue(false);
+        this.modalRef.close();
+        this.disableButton = false;
       }
     } else {
       console.log('invalid form');
