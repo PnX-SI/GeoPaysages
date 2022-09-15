@@ -10,7 +10,7 @@
       </button>
     </div>
     <div class="col-10 photos">
-      <div style=" position: relative" *ngFor="let photo of photos">
+      <div style="margin-bottom:10px; position: relative" *ngFor="let photo of photos">
           <div class ="photo-badges">
             <i *ngIf="photo.display_gal_photo" class='icon-eye' (click)='editPhoto(photo)'></i> 
             <i *ngIf="!photo.display_gal_photo" class='icon-eye-blocked' (click)='editPhoto(photo)'></i>   
