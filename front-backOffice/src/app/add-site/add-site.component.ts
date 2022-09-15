@@ -569,6 +569,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
 
   patchSite(siteJson, themes, sthemes) {
     siteJson.id_site = this.id_site;
+    siteJson.main_theme_id = siteJson.main_theme_id || null;
     _.forEach(this.photos, (photo) => {
       if (_.has(photo, 'filePhoto')) {
         this.new_photos.push(photo);
