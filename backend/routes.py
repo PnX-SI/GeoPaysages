@@ -1,11 +1,11 @@
-from flask import render_template, Blueprint, url_for, abort
+from flask import render_template, Blueprint, abort
 from sqlalchemy import text
 from sqlalchemy.sql.expression import desc
 import models
 import utils
-from config import DATA_IMAGES_PATH, IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
+from config import IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
 from datetime import datetime
-from flask_babel import format_datetime, gettext
+from flask_babel import format_datetime
 import math
 import os
 
@@ -74,27 +74,6 @@ def home():
             site['photo'] = photo.get('path_file_photo') #utils.getMedium(photo).get('output_url')
         site['commune'] = next(commune for commune in dump_communes if (commune.get('code_commune') == site.get('code_city_site')))
 
-
-    """ def get_photo_block(id_photo):
-        try:
-            photo = next(photo for photo in dump_pĥotos if photo.get(
-                'id_photo') == id_photo)
-            photo['url'] = url_for(
-                'static', filename=DATA_IMAGES_PATH + photo.get('path_file_photo'))
-            site = next(site for site in dump_sites if site.get(
-                'id_site') == photo.get('t_site'))
-            return {
-                'photo': photo,
-                'site': site
-            }
-        except Exception as exception:
-            pass
-
-    blocks = [
-        get_photo_block(id_photo)
-        for id_photo in id_photos
-    ] """
-
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
 
     carousel_photos = [fileName for fileName in os.listdir('/app/static/custom/home-carousel')]
@@ -110,8 +89,7 @@ def home():
 
 
         patchwork_options = {
-        "nb_cols" : nb_cols,
-        "nb_rows" : nb_rows
+        "nb_cols" : nb_cols
         }
         return render_template('home_multi_obs.jinja', carousel_photos=carousel_photos, observatories=dump_observatories, sites=all_sites, patchwork_options=patchwork_options)
 
