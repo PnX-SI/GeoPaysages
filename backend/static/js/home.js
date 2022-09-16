@@ -15,6 +15,14 @@ geopsg.initHome = (options) => {
             .sort(),
         };
       },
+      methods: {
+        onScrollClick() {
+          window.scrollTo({
+            top: this.$refs.btnScroll.getBoundingClientRect().bottom,
+            behavior: 'smooth'
+          });
+        }
+      }
     });
   }
 };

@@ -3,7 +3,7 @@
   background-size: cover;
 }
 
-.page-home .text-shadow{
+.page-home .text-shadow {
   z-index: 2;
   text-shadow: 2px 2px 2px #00000099;
   right: 0;
@@ -12,6 +12,21 @@
 .page-home .app-home-carousel .carousel-item {
   background-size: cover;
   background-position: center;
+}
+
+.page-home .app-home-carousel .btn-scroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  border-radius: 50%;
+  box-shadow: 0 0 5px 1px #00000066;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  color: #666;
 }
 
 .page-home .marker-site {
