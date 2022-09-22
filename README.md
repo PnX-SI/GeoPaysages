@@ -4,9 +4,9 @@ Application web permettant de publier un observatoire photographique des paysage
 
 ## Exemples 
 
-- [Geopaysage | Parc national de la Vanoise](http://paysages.vanoise-parcnational.fr)
-- [Geopaysage | Parc national des Ecrins](http://paysages.ecrins-parcnational.fr)
-- [Geopaysage | Parc naturel régional du Pilat](https://paysages.parc-naturel-pilat.fr)
+- [Geopaysages | Parc national de la Vanoise](http://paysages.vanoise-parcnational.fr)
+- [Geopaysages | Parc national des Ecrins](http://paysages.ecrins-parcnational.fr)
+- [Geopaysages | Parc naturel régional du Pilat](https://paysages.parc-naturel-pilat.fr)
 
 ## Documentation
 
