@@ -1,0 +1,67 @@
+<template id="tpl-app-comparator-v1">
+  <div class="app-comparator">
+    <b-modal id="modal_comparator_zoom" modal-class="modal-fs modal-no-footer modal-img" no-fade lazy>
+      <figure v-for="photo in zoomPhotos">
+        <img :src="photo.lg" />
+        <figcaption class="text-center">
+          <button class="btn btn-primary align-self-start"
+            v-on:click="onDownloadClick(photo)">{{ _('obs_point.buttons.download') }} <i
+              class="icon ion-md-download"></i></button>
+        </figcaption>
+      </figure>
+    </b-modal>
+    <div class="row compared pt-3">
+      {% for i in [0, 1] if photos[i] %}
+      <div class="d-flex align-items-end col-sm-6">
+        <div class="img-wrapper">
+          <span class="position-relative async" v-bind:class="{ 'async-resolved': comparedPhotos[{{ i }}].comparedLoaded }">
+            <div class="hidden-async-resolved progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <img src="{{ photos[i].md }}" :src="comparedPhotos[{{ i }}].md" v-on:load="onComparedLoaded({{ i }})"
+              v-on:click="onZoomClick({{ i }})" v-b-modal.modal_comparator_zoom />
+            <div class="d-flex justify-content-between py-1">
+              <div class="img-date align-self-center" v-html="comparedPhotos[{{ i }}].date_diplay.md">
+                {{ photos[i].date_diplay.md }}</div>
+              <b-button class="btn-sm btn-toggle btn-big-icon border-0" :pressed="isPinned({{ i }})"
+                v-on:click="onPinClick({{ i }})" variant="outline-primary">
+                <span v-html="isPinned({{ i }}) ? 'Épinglé' : 'Épingler'"></span> <i class="icon"
+                  v-bind:class="[isPinned({{ i }}) ? 'ion-md-lock' : 'ion-md-unlock']"></i>
+              </b-button>
+            </div>
+            <div class="img-tools">
+              <b-btn v-on:click="onZoomClick({{ i }})" :size="'lg'" :variant="'link'" class="btn-zoom"
+                v-b-modal.modal_comparator_zoom>
+                <i class="icon ion-ios-expand"></i>
+              </b-btn>
+            </div>
+          </span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="row mt-3">
+      <div class="thumbs">
+        <button class="btn btn-lg btn-link btn-big-icon btn-arrow btn-prev swiper-button-disabled" ref="swiperThumbsPrev">
+          <i class="icon ion-ios-arrow-back"></i>
+        </button>
+        <div class="swiper-container" ref="swiperThumbs">
+          <div class="swiper-wrapper">
+            {% for photo in photos %}
+            <div class="swiper-slide thumb" v-on:click="onThumbClick({{ loop.index0 }})"
+              v-bind:class="{'selected': isCompared({{ loop.index0 }})}">
+              <img src="{{ photo.sm }}" />
+              <div class="img-date">{{ photo.date_diplay.sm }}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <!-- .swiper-button-disabled prevent some blink, it will be removed by Swiper -->
+        <button class="btn btn-lg btn-link btn-big-icon btn-arrow btn-next swiper-button-disabled" ref="swiperThumbsNext">
+          <span class="icon ion-ios-arrow-forward"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</template>

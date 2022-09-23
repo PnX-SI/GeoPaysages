@@ -1,16 +1,9 @@
 # coding: utf-8
-from sqlalchemy import ARRAY, Boolean, CheckConstraint, Column, Date, Float, ForeignKey, Integer, String, Table, Text
 from geoalchemy2.types import Geometry
-from sqlalchemy.orm import relationship
-from sqlalchemy.schema import FetchedValue
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
 import geoalchemy2.functions as geo_funcs
 from marshmallow import fields
 
-db = SQLAlchemy()
-ma = Marshmallow()
-
+from env import db, ma
 
 class TSite(db.Model):
     __tablename__ = 't_site'
@@ -97,7 +90,7 @@ class DicoTheme(db.Model):
 
 class TRole(db.Model):
     __tablename__ = 't_roles'
-    __table_args__ = {'schema': 'utilisateurs'}
+    __table_args__ = {'schema': 'utilisateurs', 'extend_existing': True}
 
     groupe = db.Column(db.Boolean, nullable=False,
                        server_default=db.FetchedValue())
@@ -108,15 +101,11 @@ class TRole(db.Model):
     prenom_role = db.Column(db.String(50))
     desc_role = db.Column(db.Text)
     _pass = db.Column('pass', db.String(100))
+    _pass_plus = db.Column('pass_plus', db.String(100))
     email = db.Column(db.String(250))
     id_organisme = db.Column(db.ForeignKey(
         'utilisateurs.bib_organismes.id_organisme', onupdate='CASCADE'))
-    organisme = db.Column(db.String(32))
-    id_unite = db.Column(db.ForeignKey(
-        'utilisateurs.bib_unites.id_unite', onupdate='CASCADE'))
     remarques = db.Column(db.Text)
-    pn = db.Column(db.Boolean)
-    session_appli = db.Column(db.String(50))
     date_insert = db.Column(db.DateTime)
     date_update = db.Column(db.DateTime)
 
@@ -209,40 +198,42 @@ class GeographySerializationField(fields.String):
 #schemas#
 
 
-class DicoThemeSchema(ma.ModelSchema):
+class DicoThemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_theme', 'name_theme')
 
 
-class DicoSthemeSchema(ma.ModelSchema):
+class DicoSthemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = DicoStheme
+        include_relationships = True
 
 
-class CorThemeSthemeSchema(ma.ModelSchema):
+class CorThemeSthemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_stheme_theme',)
 
 
-class LicencePhotoSchema(ma.ModelSchema):
+class LicencePhotoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
 
-class RoleSchema(ma.ModelSchema):
+class RoleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-         fields = ('id_role', 'identifiant', 'nom_role',
+        fields = ('id_role', 'identifiant', 'nom_role',
                   'id_organisme')
 
 
-class TPhotoSchema(ma.ModelSchema):
+class TPhotoSchema(ma.SQLAlchemyAutoSchema):
     dico_licence_photo = ma.Nested(LicencePhotoSchema)
     t_role = ma.Nested(RoleSchema)
 
     class Meta:
         model = TPhoto
+        include_relationships = True
 
 
-class CorSthemeThemeSchema(ma.ModelSchema):
+class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
     dico_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme"])
     dico_stheme = ma.Nested(DicoSthemeSchema, only=["id_stheme", "name_stheme"])
 
@@ -251,18 +242,19 @@ class CorSthemeThemeSchema(ma.ModelSchema):
         #model = CorSthemeTheme
 
 
-class TSiteSchema(ma.ModelSchema):
+class TSiteSchema(ma.SQLAlchemyAutoSchema):
     geom = GeographySerializationField(attribute='geom')
 
     class Meta:
         model = TSite
+        include_relationships = True
 
 
-class VilleSchema(ma.ModelSchema):
+class VilleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
          fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
 
 
-class CommunesSchema(ma.ModelSchema):
+class CommunesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Communes

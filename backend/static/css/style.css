@@ -6,10 +6,10 @@
 
     --color-discover: rgba(153, 214, 234, 0.5);
 
-    --color-map-filter-txt-hover: #FFF;
-    --color-map-filter-bg-hover: #99d6ea61;
-    --color-map-filter-txt-active: #000;
-    --color-map-filter-bg-active: #99D6EA;
+    --color-sites-filter-txt-hover: #FFF;
+    --color-sites-filter-bg-hover: #99d6ea61;
+    --color-sites-filter-txt-active: #000;
+    --color-sites-filter-bg-active: #99D6EA;
 
     --page-container-min-height: calc(100vh - 415px);
 }
@@ -93,6 +93,17 @@ button{
     background-color: var(--color-secondary-light);
     border-color: var(--color-secondary-light);
 }
+.btn-secondary:focus {
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-secondary-light);
+}
+.btn-secondary:not(:disabled):not(.disabled).active,
+.btn-secondary:not(:disabled):not(.disabled):active,
+.show>.btn-secondary.dropdown-toggle {
+    color: #fff;
+    background-color: var(--color-secondary-light);
+    border-color: var(--color-secondary-light);
+}
 
 .btn-link {
     color: var(--color-primary);
@@ -138,6 +149,7 @@ button{
 
 .btn-clear-primary:hover {
     background-color: var(--color-primary);
+    color: #FFF;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
@@ -194,6 +206,11 @@ button{
 .leaflet-container .easy-button-container .icon {
     font-size: 1.5em;
     vertical-align: sub;
+}
+
+.leaflet-verticalcenter {
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 body, html {
@@ -274,6 +291,19 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
     margin-bottom: -8px;
     padding-left: 120px;
     padding-right: 120px;
+}
+@media (max-width: 991px) {
+    .header-title {
+        padding-right: 3px;
+    }
+    .header-title h3 {
+        font-size: 18px;
+    }
+}
+@media (max-width: 575px) {
+    .header-title h3 {
+        font-size: 12px;
+    }
 }
 
 .header-logo {
@@ -414,18 +444,24 @@ h1 .light, h2 .light, h3 .light, h4 .light, h5 .light, h6 .light {
 
 /* HEADER */
 
-header h1 {
+
+
+.header-title {
     text-transform: uppercase;
-    font-size: 1.5em;
     line-height: 20px;
+    text-align: center;
+  }
+  
+.header-title h1 {
+font-size: 1.75em;
 }
 
-header h3 {
+header-title h3 {
     line-height: 20px;
 }
 
 .navbar-collapse {
-    z-index: 1;
+    z-index: 1002;
     background: #FFF;
 }
 
@@ -475,4 +511,18 @@ footer a:hover{
 footer span{
     font-weight: normal;
     font-style: italic;
+}
+
+.modal-contained {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.modal-contained .modal,
+.modal-contained .modal-backdrop {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }

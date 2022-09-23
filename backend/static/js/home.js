@@ -1,5 +1,5 @@
-var oppv = oppv || {};
-oppv.initHome = (options) => {
+var geopsg = geopsg || {};
+geopsg.initHome = (options) => {
 
   let gutter = 20;
   let pageContainer = document.querySelector('.page-content');

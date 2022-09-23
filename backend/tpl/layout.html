@@ -8,20 +8,27 @@
   <link href="https://unpkg.com/ionicons@4.4.4/dist/css/ionicons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
 
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/dist/css/bootstrap.min.css') }}" />
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/custom-style.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='custom/logo/favicon.ico') }}">
+
 
   <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
+  {% if debug: %}
+  <script src="{{ url_for('static', filename='vendor/vue.js') }}"></script>
+  {% else %}
   <script src="{{ url_for('static', filename='vendor/vue.min.js') }}"></script>
+  {% endif %}
 
   <!-- Add this after vue.js -->
-  <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/dist/bootstrap-vue.js') }}"></script>
+  <!-- <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script> -->
+  <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.js') }}"></script>
 
   {% endblock %}
   <title>{% block title %}{% endblock %}</title>
@@ -43,8 +50,13 @@
               <li class="nav-item {% if active_page == 'home' %}active{% endif %}">
                 <a class="nav-link " href="/">{{ _('header.nav.home') }}</a>
               </li>
-              <li class="nav-item {% if active_page == 'map' %}active{% endif %}">
-                <a class="nav-link" href="/map" >{{ _('header.nav.map') }}</a>
+              {% if isDbPagePublished('about'): %}
+              <li class="nav-item {% if active_page == 'about' %}active{% endif %}">
+                <a class="nav-link" href="/about" >{{ _('header.nav.about') }}</a>
+              </li>
+              {% endif %}
+              <li class="nav-item {% if active_page == 'sites' %}active{% endif %}">
+                <a class="nav-link" href="/sites" >{{ _('header.nav.sites') }}</a>
               </li>
               <li class="nav-item {% if active_page == 'gallery' %}active{% endif %}">
                 <a class="nav-link" href="/gallery">{{ _('header.nav.gallery') }}</a>
@@ -53,11 +65,11 @@
           </b-collapse>
         </nav>
       </div>
-      <div class="row header-title">{% block header_title %}
-        {% endblock %}
-      </div>
-    </header>
 
+    </header>
+    <div class="header-title  ">{% block header_title %}
+      {% endblock %}
+    </div>
     {% block content %}{% endblock %}
     <footer class="app-footer">
       {% block footer %}
@@ -73,8 +85,8 @@
               </a>
             </li>
             <li>
-              <a href="/map">
-                {{ _('footer.internal_links.map') }}
+              <a href="/sites">
+                {{ _('footer.internal_links.sites') }}
               </a>
             </li>
             <li>

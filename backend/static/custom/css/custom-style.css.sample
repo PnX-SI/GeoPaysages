@@ -1,0 +1,27 @@
+/* css clors */ 
+:root {
+    --color-primary: #00188F;
+    --color-primary-light: #0069d9;
+    --color-secondary: #78BE20;
+    --color-secondary-light: #72d409;
+
+    --color-discover: rgba(153, 214, 234, 0.5);
+
+    --color-sites-filter-txt-hover: #FFF;
+    --color-sites-filter-bg-hover: #99d6ea61;
+    --color-sites-filter-txt-active: #000;
+    --color-sites-filter-bg-active: #99D6EA;
+
+    --page-container-min-height: calc(100vh - 415px);
+}
+
+/* css Footer */
+footer{
+    color: #fff;
+}
+.app-footer {
+    background: #666;
+}
+.app-footer hr {
+    border-color: #FFF;
+}
