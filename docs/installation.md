@@ -28,7 +28,7 @@ que `root`), `monuser` dans l'exemple :
 
 ```
 cd /home/<monuser>
-wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
+wget https://github.com/PnX-SI/GeoPaysages/archive/vX.Y.Z.zip
 ```
 
 > Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
@@ -36,7 +36,7 @@ wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 Dézipper l'archive :
 
 ```
-unzip X.Y.Z.zip
+unzip vX.Y.Z.zip
 ```
 
 Vous pouvez renommer le dossier qui contient l'application (dans un
