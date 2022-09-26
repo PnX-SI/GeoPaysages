@@ -91,13 +91,13 @@
   - Vérifier la branche `git branch`
   - Récupérer les nouveautés `git pull`
 - Si l'on ne met à jour que le front / pas la partie admin
-  - Se placer à la source du projet geopaysage
+  - Se placer à la source du projet geopaysages
   - Mettre à jour le front `./scripts/docker-demo.sh up -d`
 - Si l'on met aussi à jour la partie admin
-  - Se placer à la source du projet geopaysage
+  - Se placer à la source du projet geopaysages
   - Mettre à jour toute l'application `./scripts/docker-demo.sh up -d --build`
 - Si l'on ne met à jour les traductions
-  - Se placer à la source du projet geopaysage
+  - Se placer à la source du projet geopaysages
   - Stopper les containers `./scripts/docker-demo.sh down`
   - Démarrer les container `./scripts/docker-demo.sh up -d`
 - Vérifier que les changements sont appliqués

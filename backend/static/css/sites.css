@@ -45,7 +45,6 @@
 }
 
 .app-sites .block-legend .legend-item > :not(.icon) {
-  line-height: 2;
   display: inline-block;
   vertical-align: text-top;
 }
