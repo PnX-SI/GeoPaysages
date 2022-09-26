@@ -154,7 +154,7 @@ def getDbConf():
             conf[row.get('key')] = json.loads(row.get('value'))
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
-    conf['showSiteRef'] = SHOW_SITE_REF
+    conf['show_site_ref'] = SHOW_SITE_REF
 
     return conf
 

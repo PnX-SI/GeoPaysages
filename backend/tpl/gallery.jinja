@@ -61,7 +61,7 @@
               <span v-if="!isMultiObservatories" class="site-label" v-html="site.name_site"></span>
               <span class="township" v-html="site.ville.label"></span>
               <span v-if="isMultiObservatories" class="label" v-html="site.name_site"></span>
-              {% if dbconf.showSiteRef: %}
+              {% if dbconf.show_site_ref: %}
               <small class="ref" v-html="site.ref_site"></small>
               {% endif %}
             </a>

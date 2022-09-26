@@ -92,7 +92,7 @@
                       @click="onSiteClick(site)">
                       <span class="d-block font-weight-bold" v-html="site.name_site"></span>
                       <span class="d-block text-black-50" v-html="site.ville.label"></span>
-                      {% if dbconf.showSiteRef: %}
+                      {% if dbconf.show_site_ref: %}
                       <span class="d-block text-black-50"
                             v-if="site.ref_site"
                             v-html="'(réf. : ' + site.ref_site + ')'"></span>
