@@ -1,6 +1,6 @@
 .page-home .page-content {
-  background: url('../images/bg-home.jpg') no-repeat center;
-  background-size: cover;
+  background: url('../images/bg-home.jpg') repeat-y center;
+  background-size: contain;
 }
 
 .page-home .text-shadow {
