@@ -1,7 +1,25 @@
 <template id="tpl-app-comparator-v2">
   <div>
     <div class="app-comparator" v-bind:style="{height: 'calc(100vh - ' + (thumbsListH + 50) + 'px)'}">
-      <b-button-group class="mode-selector mx-1 mx-sm-0 mb-1 mb-sm-0">
+      <div class="d-flex justify-content-between d-sm-none mx-1 mb-1">
+        <b-button class="btn-square" variant="primary" v-on:click="onToggleSelectorClick(0)">
+          <i v-bind:class="['icon', (hiddenSelectors[0] ? 'ion-md-calendar':'ion-md-close')]"></i>
+        </b-button>
+        <b-dropdown :text="curMode.label" variant="primary">
+          <b-dropdown-item-button 
+            v-for="mode in modes"
+            :key="mode.name"
+            v-on:click="onBtnModeClick(mode)"
+            :active="mode.name == curMode.name"
+            variant="primary">
+            <span :inner-html.prop="mode.label"></span>
+          </b-dropdown-item-button>
+        </b-dropdown>
+        <b-button class="btn-square" variant="primary" v-on:click="onToggleSelectorClick(1)">
+          <i v-bind:class="['icon', (hiddenSelectors[1] ? 'ion-md-calendar':'ion-md-close')]"></i>
+        </b-button>
+      </div>
+      <b-button-group class="mode-selector d-none d-sm-block mx-0 mb-0">
         <b-button 
           v-for="mode in modes"
           :key="mode.name"
@@ -14,6 +32,7 @@
 
       <app-comparator-v2-selector 
         class="left ml-1 ml-sm-2" 
+        v-bind:class="{'d-none': hiddenSelectors[0], 'd-sm-block': true}"
         :items="photos" 
         :selected-item="comparedPhotos[0]"
         v-on:item-selected="onPhotoSelected(0, $event)"
@@ -21,6 +40,7 @@
       </app-comparator-v2-selector>
       <app-comparator-v2-selector 
         class="right text-right mr-1 mr-sm-2" 
+        v-bind:class="{'d-none': hiddenSelectors[1], 'd-sm-block': true}"
         :items="photos" :selected-item="comparedPhotos[1]" 
         :right="true"
         v-on:item-selected="onPhotoSelected(1, $event)"

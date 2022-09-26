@@ -38,7 +38,8 @@
   min-width: 320px;
 }
 
-.page-site .app-comparator .mode-selector {
+.page-site .app-comparator .mode-selector,
+.page-site .app-comparator .dropdown-menu  {
   z-index: 1003;
 }
 

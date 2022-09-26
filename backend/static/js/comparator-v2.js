@@ -65,6 +65,7 @@ geopsg.comparator = (options) => {
     height: 150,
   };
 
+  const hideSelectorsOnInit = window.innerWidth < 768;
   Vue.component('app-comparator-v2', {
     template: '#tpl-app-comparator-v2',
     data: () => {
@@ -75,6 +76,7 @@ geopsg.comparator = (options) => {
         comparedPhotos: [defaultItems[0], defaultItems[1]],
         thumbProps: thumbProps,
         thumbsListH: thumbProps.height + 30,
+        hiddenSelectors: [hideSelectorsOnInit, hideSelectorsOnInit]
       };
     },
     mounted() {
@@ -121,6 +123,9 @@ geopsg.comparator = (options) => {
       onBtnModeClick(selectedMode) {
         this.curMode = selectedMode;
         this.updateLayers();
+      },
+      onToggleSelectorClick(index) {
+        this.$set(this.hiddenSelectors, index, !this.hiddenSelectors[index]);
       },
       onPhotoSelected(index, photo) {
         this.$set(this.comparedPhotos, index, photo);
