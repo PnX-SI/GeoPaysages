@@ -20,7 +20,7 @@
 @media (min-width: 768px) {
   .app-sites {
     --maptool-bg: rgba(255, 255, 255, 0.8);
-    height: calc(100vh - 110px);
+    height: calc(100vh - var(--header-h));
   }
 }
 
@@ -76,7 +76,7 @@
 .app-sites .list-sites-collapse {
   background: var(--maptool-bg);
   /* This hardcoded calc avoid writing some JS */
-  max-height: calc(100vh - 110px - 72px - 56px);
+  max-height: calc(100vh - var(--header-h) - 72px - 56px);
   overflow-y: auto;
 }
 
