@@ -38,27 +38,35 @@
 
 <body class="{% block bodyClassNames %}{% endblock %}">
 
-    <header class="container-fluid" id="header">
-      <a href="/" class="d-none d-md-inline">
-        <img class="header-logo" src="{{ url_for('static', filename='custom/images/logo_txt_color.png') }}" />
-      </a>
-      <div class="row nav-bar pt-2 pt-md-3 pr-0 pr-md-4">
-        <nav class="navbar navbar-expand-md navbar-light bg-light w-100 w-md-auto">
-          <b-btn id="popover_nav_toggle" class="navbar-toggler w-100 text-left pr-0" variant="link">
-            <span class="navbar-toggler-icon"></span>
-            <span class="align-middle d-inline-block d-md-none navbar-brand p-0 pl-2 m-0 text-primary text-uppercase text-truncate">
-              {% block title_mobile %}{% endblock title_mobile %}
-            </span>
-          </b-btn>
-          <b-popover target="popover_nav_toggle" triggers="click blur" placement="right" custom-class="popover_nav">
-            {% include 'components/main-nav.jinja' %}
-          </b-popover>
-          <b-collapse class="collapse navbar-collapse flex-grow-0" id="collapse">
-            {% include 'components/main-nav.jinja' %}
-          </b-collapse>
-        </nav>
-      </div>
+    <header id="header">
+      <b-navbar class="p-2 p-md-0 h-100" toggleable="md" type="{{'dark' if dbconf.header_bg_primary else 'light' }}" variant="{{'primary' if dbconf.header_bg_primary else 'light' }}">
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-brand class="flex-grow-1 flex-md-grow-0 py-0 pl-2 pl-md-0 h-100">
+          <span class="text-uppercase text-truncate d-md-none">
+            {% block title_mobile %}{% endblock title_mobile %}
+          </span>
+          <a href="/" class="d-none d-md-flex align-items-center h-100 py-2 pl-2">
+            <img class="mh-100" src="{{ url_for('static', filename='custom/images/logo_txt_blanc.png') }}" />
+          </a>
+        </b-navbar-brand>
 
+        <b-collapse id="nav-collapse" is-nav class="p-3 py-md-0 pl-md-0 border">
+          <b-navbar-nav>
+            <b-nav-item class="text-uppercase" href="/" {% if active_page == 'home' %}active{% endif %}>
+            <span class="px-3">{{ _('header.nav.home') }}</span>
+          </b-nav-item>
+          <b-nav-item class="text-uppercase" href="/about" {% if active_page == 'about' %}active{% endif %}>
+            <span class="px-3">{{ _('header.nav.about') }}</span>
+          </b-nav-item>
+          <b-nav-item class="text-uppercase" href="/sites" {% if active_page == 'sites' %}active{% endif %}>
+            <span class="px-3">{{ _('header.nav.sites') }}</span>
+          </b-nav-item>
+          <b-nav-item class="text-uppercase" href="/gallery" {% if active_page == 'gallery' %}active{% endif %}>
+            <span class="px-3">{{ _('header.nav.gallery') }}</span>
+          </b-nav-item>
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
     </header>
     <div class="header-title d-none d-sm-block">{% block header_title %}{% endblock %}</div>
     {% block content %}{% endblock %}
