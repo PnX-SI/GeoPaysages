@@ -120,7 +120,7 @@
           </div>
 
           <div class="form-group">
-            <label class="label">Photos de site*</label>
+            <label class="label">Photos de site*</label> <small>Conseil : Utiliser des jpeg de même ratio, assez grand mais larg. &lt; 5000px, poids &lt; 5Mo</small>
             <div class="preview">
               <div class="inner-photo" *ngFor="let photo of photos">
                 <img *ngIf="photo.imgUrl" class="preview-img" width="120" height="120" [src]="photo.imgUrl" />

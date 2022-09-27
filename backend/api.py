@@ -31,7 +31,7 @@ themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 @api.route('/api/thumbor/presets/<name>/<filename>', methods=['GET'])
 def thumborPreset(name, filename):
     presets = {
-        'noxl': 'fit-in/3000x3000/filters:no_upscale()',
+        'noxl': 'fit-in/5000x5000/filters:no_upscale():quality(90)',
         '50x50': '50x50',
         '100x100': '100x100',
         '150x150': '150x150',
