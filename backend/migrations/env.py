@@ -16,28 +16,16 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger('alembic.env')
 
-""" def include_object(object, name, type_, reflected, compare_to):
-    if (type_ == "table" and
-        not reflected and
-        object.info.get("skip_autogenerate", False)):
-        return False
-    else:
-        return True """
 
 def include_name(name, type_, parent_names):
-    #print(type_, name, parent_names)
+    print(type_, name, parent_names)
     if type_ == "schema":
-        return name in ["geopaysages", "utilisateurs"]
+        return name in [None, "utilisateurs"]
     elif type_ == "table":
-        return parent_names['schema_name'] == "geopaysages" or name == "t_roles"
+        return parent_names['schema_name'] is None or name == "t_roles"
     elif type_ != "column":
         return parent_names['table_name'] != "t_roles"
     return ["column", "index", "unique_constraint", "foreign_key_constraint"]
-    """ elif type_ == "table":
-        return parent_names['schema_name'] == "geopaysages" or name == "t_roles"
-    elif type_ == 'column'
-    return type_ in ["column", "index", "unique_constraint", "foreign_key_constraint"] """
-
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
