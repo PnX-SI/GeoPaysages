@@ -20,23 +20,23 @@ msgstr ""
 
 #: utils.py:215
 msgid "sites.filter.themes"
-msgstr "Thèmes"
+msgstr "Thème"
 
 #: utils.py:219
 msgid "sites.filter.subthemes"
-msgstr "Sous-thème(s)"
+msgstr "Sous-thème"
 
 #: utils.py:224
 msgid "sites.filter.township"
-msgstr "Commune(s)"
+msgstr "Commune"
 
 #: utils.py:229
 msgid "sites.filter.years"
-msgstr "Année(s)"
+msgstr "Année"
 
 #: utils.py:348
 msgid "sites.filter.obervatories"
-msgstr "Observatoire(s)"
+msgstr "Observatoire"
 
 #: tpl/gallery.jinja:3
 msgid "gallery.meta_title"
@@ -146,11 +146,11 @@ msgstr "Sites d'observation"
 
 #: tpl/sites.jinja:117
 msgid "map.legend.obervatories"
-msgstr "Observatoires"
+msgstr "Observatoire(s)"
 
 #: tpl/sites.jinja:123
 msgid "map.legend.themes"
-msgstr "Thèmes"
+msgstr "Thème(s)"
 
 #: tpl/components/comparator_v1.jinja:8
 msgid "obs_point.buttons.download"
