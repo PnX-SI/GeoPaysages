@@ -38,7 +38,7 @@
     {% for observatory in observatories %}
     <div class="patchwork-item">
       <a class="d-block w-100 h-100 position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatory.id }}]}]'>  
-        <img class="w-100 h-100" src="{{ getThumborUrl('200x200', observatory.photo) }}">
+        <img class="w-100 h-100" src="{{ getThumborUrl('200x200', observatory.thumbnail) }}">
         <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
           <span class="text-uppercase text-shadow">{{ observatory.title }}</span>
           <button type="button" class="btn btn-outline-light d-none">Voir</button>

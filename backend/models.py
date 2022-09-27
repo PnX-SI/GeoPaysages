@@ -28,7 +28,7 @@ class Observatory(db.Model):
     title = db.Column(db.String)
     ref = db.Column(db.String)
     color = db.Column(db.String)
-    photo = db.Column(db.String)
+    thumbnail = db.Column(db.String)
     logo = db.Column(db.String)
     comparator = db.Column(db.Enum(ComparatorEnum, name="comparator_enum"))
     geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))

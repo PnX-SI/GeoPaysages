@@ -4,7 +4,7 @@ export type ObservatoryType = {
   ref: string;
   title: string;
   color: string;
-  photo: string;
+  thumbnail: string;
   logo: string;
   comparator: string;
   geom: any;

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ObservatoriesService } from '../services/observatories.service';
-import { HttpEventType } from '@angular/common/http';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { tileLayer, latLng, Map, Layer } from 'leaflet';
@@ -10,7 +9,6 @@ import { Conf } from './../config';
 import * as L from 'leaflet';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
-import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ObservatoryPatchType, ObservatoryType } from '../types';
@@ -22,15 +20,15 @@ import * as io from 'jsts/org/locationtech/jts/io';
   styleUrls: ['./observatory.component.scss'],
 })
 export class ObservatoryComponent implements OnInit {
-  @ViewChild('photoInput') photoInput;
+  @ViewChild('thumbnailInput') thumbnailInput;
   @ViewChild('logoInput') logoInput;
 
-  selectedPhoto: File;
+  selectedThumb: File;
   selectedLogo: File;
   selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
-  photos = [];
+  thumbs = [];
   noticeName: any;
   new_notice: any;
   observatoryForm: FormGroup;
@@ -78,9 +76,9 @@ export class ObservatoryComponent implements OnInit {
   isEditing = false;
   edit_btn_text = 'Éditer';
   submit_btn_text = 'Ajouter';
-  initPhotos: any[] = [];
-  deleted_photos = [];
-  new_photos = [];
+  initThumbs: any[] = [];
+  deleted_thumbs = [];
+  new_thumbs = [];
   marker: Layer[] = [];
   center: any;
   toast_msg: string;
@@ -204,15 +202,15 @@ export class ObservatoryComponent implements OnInit {
     }
   }
 
-  onPhotoChange(event) {
+  onThumbChange(event) {
     if (event.target && event.target.files.length > 0) {
-      this.selectedPhoto = event.target.files[0];
+      this.selectedThumb = event.target.files[0];
     }
   }
 
-  onPhotoCancel(input) {
+  onThumbCancel(input) {
     input.value = '';
-    this.selectedPhoto = null;
+    this.selectedThumb = null;
   }
 
   onLogoChange(event) {
@@ -296,19 +294,6 @@ export class ObservatoryComponent implements OnInit {
     this.spinner.hide();
   }
 
-  /* getPhoto(photo) {
-    this.alert = null;
-    const reader = new FileReader();
-    reader.readAsDataURL(photo.photo_file[0]);
-    reader.onload = () => {
-      this.previewImage = reader.result;
-      photo.imgUrl = this.previewImage;
-    };
-    photo.name = photo.path_file_photo;
-    photo.filePhoto = photo.photo_file[0];
-    this.photos.push(photo);
-  } */
-
   setAlert(message) {
     this.alert = {
       type: 'danger',
@@ -374,15 +359,15 @@ export class ObservatoryComponent implements OnInit {
   }
 
   async patchImages(id: number) {
-    if (this.selectedPhoto) {
+    if (this.selectedThumb) {
       const data: FormData = new FormData();
-      data.append('field', 'photo');
-      data.append('image', this.selectedPhoto);
+      data.append('field', 'thumbnail');
+      data.append('image', this.selectedThumb);
       const res = await this.observatoryService.patchImage(id, data);
       if (this.observatory) {
-        this.observatory.photo = res.filename;
+        this.observatory.thumbnail = res.filename;
       }
-      this.selectedPhoto = null;
+      this.selectedThumb = null;
     }
     if (this.selectedLogo) {
       const data: FormData = new FormData();
@@ -404,8 +389,8 @@ export class ObservatoryComponent implements OnInit {
       this.patchForm();
       this.alert = null;
       this.observatoryForm.disable();
-      this.selectedPhoto = null;
-      this.photoInput.nativeElement.value = '';
+      this.selectedThumb = null;
+      this.thumbnailInput.nativeElement.value = '';
       this.selectedLogo = null;
       this.logoInput.nativeElement.value = '';
       //this.initMarker(this.observatory.geom[0], this.observatory.geom[1]);
@@ -440,15 +425,15 @@ export class ObservatoryComponent implements OnInit {
     this.modalRef.close();
   }
 
-  deletePhoto(photo) {
-    _.remove(this.photos, (item) => {
-      return item === photo;
+  deleteThumbnail(thumbnail) {
+    _.remove(this.thumbs, (item) => {
+      return item === thumbnail;
     });
-    _.remove(this.new_photos, (item) => {
-      return item === photo;
+    _.remove(this.new_thumbs, (item) => {
+      return item === thumbnail;
     });
-    photo.imgUrl = photo.imgUrl.replace(Conf.img_srv, '');
-    this.deleted_photos.push(photo);
+    thumbnail.imgUrl = thumbnail.imgUrl.replace(Conf.img_srv, '');
+    this.deleted_thumbs.push(thumbnail);
   }
 
   deleteObservatory() {

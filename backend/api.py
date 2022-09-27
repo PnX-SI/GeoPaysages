@@ -109,7 +109,7 @@ def patchObservatory(id):
 @fnauth.check_auth(2, False, None, None)
 def patchObservatoryImage(id):
     field = request.form.get('field')
-    if field not in ['photo', 'logo']:
+    if field not in ['thumbnail', 'logo']:
         return "Invalid field value: " + str(field), 400
     image = request.files.get('image')
     if not image:

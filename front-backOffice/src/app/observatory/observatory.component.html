@@ -52,7 +52,7 @@
             <div class="col-6">
               <div class='row justify-content-between'>
                 <div class='col-6'>
-                  <label class="label" for="observatory-color">Photo</label>
+                  <label class="label" for="observatory-color">Vignette</label>
                 </div>
                 <div class='col-6 text-right'>
                   <span class="icon-info" placement="top"
@@ -60,29 +60,29 @@
                 </div>
               </div>
               <div>
-                <div *ngIf="observatory?.photo">
-                  <a [href]="photoBaseUrl + 'noxl/'+ observatory?.photo" target="_blank">
-                    {{ observatory?.photo }} <i class="icon-eye"></i>
+                <div *ngIf="observatory?.thumbnail">
+                  <a [href]="photoBaseUrl + 'noxl/'+ observatory?.thumbnail" target="_blank">
+                    {{ observatory?.thumbnail }} <i class="icon-eye"></i>
                   </a>
                 </div>
               </div>
-              <input style="display: none" accept="image/x-png,image/gif,image/jpeg" type="file"
-                (change)="onPhotoChange($event)" #photoInput />
-              <button type="button" *ngIf="!selectedPhoto" class="blue-btn w-100" (click)="photoInput.click()"
+              <input style="display: none" accept="image/jpeg" type="file"
+                (change)="onThumbChange($event)" #thumbnailInput />
+              <button type="button" *ngIf="!selectedThumbnail" class="blue-btn w-100" (click)="thumbnailInput.click()"
                 [disabled]="!isEditing">
                 {{
-                observatory?.photo ? 'Modifier la photo' : 'Importer une photo'
+                observatory?.thumbnail ? 'Modifier la vignette' : 'Importer une thumbnail'
                 }}
               </button>
-              <div *ngIf="selectedPhoto">
-                Photo sélectionnée :<br />
-                <button class="btn p-0" type="button" (click)="onPhotoCancel(photoInput)">
+              <div *ngIf="selectedThumbnail">
+                Vignette sélectionnée :<br />
+                <button class="btn p-0" type="button" (click)="onThumbCancel(thumbnailInput)">
                   <i class="icon-cancel-circle text-danger"></i>
                 </button>
-                {{ selectedPhoto.name }}
+                {{ selectedThumbnail.name }}
               </div>
               <br>
-              <small class="text-secondary">Formats JPG/PNG</small>
+              <small class="text-secondary">JPG, taille conseillée 200x200px</small>
             </div>
             <div class="col-6">
               <div class='row justify-content-between'>
@@ -101,7 +101,7 @@
                   </a>
                 </div>
               </div>
-              <input style="display: none" accept="image/x-png,image/gif,image/jpeg" type="file"
+              <input style="display: none" accept="image/x-png" type="file"
                 (change)="onLogoChange($event)" #logoInput />
               <button type="button" *ngIf="!selectedLogo" class="blue-btn w-100" (click)="logoInput.click()"
                 [disabled]="!isEditing">
@@ -115,7 +115,7 @@
                 {{ selectedLogo.name }}
               </div>
               <br>
-              <small class="text-secondary">Formats JPG/PNG/SVG</small>
+              <small class="text-secondary">PNG, hauteur conseillée 150px</small>
             </div>
           </div>
           <div class="row mb-3">
