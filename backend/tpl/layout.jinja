@@ -52,18 +52,26 @@
 
         <b-collapse id="nav-collapse" is-nav class="p-3 py-md-0 pl-md-0 border">
           <b-navbar-nav>
-            <b-nav-item class="text-uppercase" href="/" {% if active_page == 'home' %}active{% endif %}>
-            <span class="px-3">{{ _('header.nav.home') }}</span>
-          </b-nav-item>
-          <b-nav-item class="text-uppercase" href="/about" {% if active_page == 'about' %}active{% endif %}>
-            <span class="px-3">{{ _('header.nav.about') }}</span>
-          </b-nav-item>
-          <b-nav-item class="text-uppercase" href="/sites" {% if active_page == 'sites' %}active{% endif %}>
-            <span class="px-3">{{ _('header.nav.sites') }}</span>
-          </b-nav-item>
-          <b-nav-item class="text-uppercase" href="/gallery" {% if active_page == 'gallery' %}active{% endif %}>
-            <span class="px-3">{{ _('header.nav.gallery') }}</span>
-          </b-nav-item>
+            <li class="nav-item text-uppercase {% if active_page == 'home' %}active{% endif %}">
+              <a href="/" class="nav-link">
+                <span class="px-3">{{ _('header.nav.home') }}</span>
+              </a>
+            </li>
+            <li class="nav-item text-uppercase {% if active_page == 'about' %}active{% endif %}">
+              <a href="/about" class="nav-link">
+                <span class="px-3">{{ _('header.nav.about') }}</span>
+              </a>
+            </li>
+            <li class="nav-item text-uppercase {% if active_page == 'sites' %}active{% endif %}">
+              <a href="/sites" class="nav-link">
+                <span class="px-3">{{ _('header.nav.sites') }}</span>
+              </a>
+            </li>
+            <li class="nav-item text-uppercase {% if active_page == 'gallery' %}active{% endif %}">
+              <a href="/gallery" class="nav-link">
+                <span class="px-3">{{ _('header.nav.gallery') }}</span>
+              </a>
+            </li>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>

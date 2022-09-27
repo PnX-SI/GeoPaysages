@@ -512,7 +512,7 @@ h6 .light {
     display: flex;
     align-items: center;
   }
-  .navbar-collapse a.active {
+  .navbar-collapse .nav-item.active a {
     border-bottom: 2px solid;
   }
 }
