@@ -202,3 +202,8 @@ sudo service supervisor restart
 1. Compiler le fichier et sortir du container `pybabel compile -d ./i18n && exit`
 1. Redémarrer le container pour appliquer les modifications `./scripts/docker.sh restart backend`
 1. Actualiser la page web, les modifications devraient apparaitres
+
+# Carrousel de la page d'accueil
+
+1. Placer les photos dans le dossier `custom/home-carousel`
+1. Les photos doivent de préférence avoir une longueur 3x plus grande que la largeur. Ex : 1920 x 640
