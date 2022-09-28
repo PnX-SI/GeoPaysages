@@ -1,185 +1,76 @@
-# INSTALLATION
+# Installer Géopaysages
 
-## Prérequis
+- Créer un dossier "data" à coté du répertoire cloné
+- Atteindre la racine du répertoire cloné
+- Désampler le fichier de configuration puis l'éditer :
+  - `mv ./docker/.env.example ./docker/.env`
+  - Exemple :
+    ```
+    PROXY_HTTP_PORT=8080
+    PROXY_API_PORT=8081
+    HTTP_PORT=8082
 
-Application développée et installée sur un serveur Debian 10.
+    DB_USER=geopaysages
 
-Ce serveur doit aussi disposer de :
+    DB_NAME=geopaysages
+    DB_ADDRESS=db
+    DB_PORT=5432
+    DB_PASSWORD=password
+    VOLUME_PATH=../data
+    IMG_SRV=http://localhost:8083
+    THUMBOR_SECURITY_KEY=secret
+    PROJECT=geopaysages
 
-- sudo (apt-get install sudo)
-- un utilisateur (`monuser` dans cette documentation) appartenant au
-    groupe `sudo` (pour pouvoir bénéficier des droits d'administrateur)
+    DEFAULT_SORT_SITES=name_site
+    SHOW_SITE_REF=False
+    ```
+- Désampler le fichier de configuration puis l'éditer :
+  - `mv ./backend/config.py.tpl ./backend/config.py`
+  - Exemple :
+    ```python
+    import os
 
-> Si sudo n'est pas installé par défaut, voir [ici](https://www.privateinternetaccess.com/forum/discussion/18063/debian-8-1-0-jessie-sudo-fix-not-installed-by-default)
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{os.getenv("DB_USER")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_ADDRESS")}:5432/{os.getenv("DB_NAME")}'
+    SQLALCHEMY_POOL_SIZE = 10
+    SQLALCHEMY_MAX_OVERFLOW = 30
 
-## Installation de l'environnement logiciel
+    IGN_KEY = 'ign_key'
+    # Choose between 'hash' or 'md5'
+    PASS_METHOD = 'hash'
+    TRAP_ALL_EXCEPTIONS = False
+    COOKIE_EXPIRATION = 36000
+    COOKIE_AUTORENEW = True
+    SESSION_TYPE = 'filesystem'
+    SECRET_KEY = 'secret key'
 
-**1. Récupérer la dernière version de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
+    # Do not edit except in exceptional cases
+    IMG_SRV = f'{os.getenv("IMG_SRV")}'
+    DATA_IMAGES_PATH = 'data/images/'  # From ./static dir
+    DATA_NOTICES_PATH = 'data/notice-photo/'  # From ./static dir
+    BABEL_TRANSLATION_DIRECTORIES = './i18n'  # From ./ dir
 
-Ces opérations doivent être faites avec l'utilisateur courant (autre
-que `root`), `monuser` dans l'exemple :
+    COMPARATOR_VERSION = 2
 
-```
-cd /home/<monuser>
-wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
-```
-
-> Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
-
-Dézipper l'archive :
-
-```
-unzip X.Y.Z.zip
-```
-
-Vous pouvez renommer le dossier qui contient l'application (dans un
-dossier `/home/<monuser>/geopaysages/` par exemple) :
-```
-mv GeoPaysages-X.Y.Z geopaysages
-```
-
-**2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
-
-Le script `install_env.sh` va automatiquement installer les outils nécessaires à l'application s'ils ne sont pas déjà sur le serveur :
-
-- PostgreSQL
-- PostGIS
-- NGINX
-- Python 3
-
-Cela installera les logiciels nécessaires au fonctionnement de l'application
-
-```
-cd /home/<monuser>/geopaysages
-./install_env.sh
-```
-
-Installation de la base de données
-==================================
-
-**1. Configuration de la BDD :**
-
-Modifier le fichier de configuration de la BDD et de son installation automatique `install_configuration/settings.ini`.
-
-> Suivez bien les indications en commentaire dans ce fichier
-
-> Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
-
-> Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost (sur le même serveur que l'application) car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les éxecutant une par une.
-
-La gestion des utilisateurs est centralisée dans le schéma `utilisateurs` de la BDD, hérité de l'application de gestion des utilisateurs UsersHub (https://github.com/PnX-SI/UsersHub). Ce schéma est créé automatiquement lors de l'installation de la BDD de GeoPaysages, localement ou sous forme de foreign data wrapper connecté à une BDD de UsersHub existante.
-
-**2. Lancer le fichier fichier d'installation de la base de données :**
-
-```
-./install_db.sh
-``` 
-
-> Vous pouvez consulter le log de cette installation de la BDD dans `/var/log/install_db.log` et vérifier qu'aucune erreur n'est intervenue.
-
-> Le script `install_db.sh` supprime la BDD de GeoPaysages et la recréé entièrement.
-
-Installation de l'application
-=============================
-
-**1. Configuration de l'application :**
-
-Désampler le fichier de configuration puis l'éditer :
-
-```
-cp ./backend/config.py.tpl ./backend/config.py
-```
-
-- Vérifier que la variable `SQLALCHEMY_DATABASE_URI` contient les bonnes informations de connexion à la BDD
-- Ne pas modifier les path des fichiers static
-- Renseigner les autres paramètres selon votre contexte
-
-**2. Lancer l'installation automatique de l'application :**
-
-```
-./install_app.sh
-```
-
-Installation du back-office
-===========================
-
-**1. Configuration de l'application :**
-
-Désampler et éditer le fichier de configuration
-`cp ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`.
-
-> Pour utiliser l'utilisateur \"admin\" créé par défaut, il faut renseigner `id_application : 1`
-
-> Pour `apiUrl` et `img_srv`, bien mettre <http://xxx.xxx.xxx.xxx>, si utilisation d'une adresse IP
-
-**2. Lancer l'installation automatique de l'application :**
-```
-    ./install_backoffice.sh
-```
-
-Configuration de NGINX
-======================
-
-**1. Configuration de supervisor :**
-
-```
-sudo nano /etc/supervisor/conf.d/geopaysages.conf
-```
-
-Copiez/collez-y ces lignes en renseignant les bons chemins et le bon
-port :
-
-    [program:geopaysages]
-    directory=/home/<monuser>/geopaysages/backend
-    command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
-    autostart=true
-    autorestart=true
-    user=<monuser>
-
-    stderr_logfile=/var/log/geopaysages/geopaysages.err.log
-    stdout_logfile=/var/log/geopaysages/geopaysages.out.log
-
-**2. Configuration de NGINX :**
-
-    sudo nano /etc/nginx/conf.d/geopaysages.conf
-
-Copiez/collez-y ces lignes en renseignant les bons chemins et le bon
-port :
-
-    server {
-        listen       80;
-        server_name  localhost;
-        client_max_body_size 100M;
-        location / {
-            proxy_pass http://127.0.0.1:8000;
-        }
-
-        location /pictures {
-            alias  /home/<monuser>/data/images/;
-        }
-
-        location /app_admin {
-            alias /home/<monuser>/geopaysages/front-backOffice/dist/front-backOffice;
-            try_files $uri$args $uri$args/ /app_admin/index.html;
-        }
-    }
-
-
-> La limite de la taille des fichiers en upload est configurée à 100 Mo (`client_max_body_size`). Modifier `server_name` pour ajouter le nom domaine associé à votre GeoPaysages : `server_name mondomaine.fr`
-
-**3. Redémarrer supervisor et NGINX :**
-
-```
-    sudo supervisord -c /etc/supervisor/supervisord.conf
-    sudo supervisorctl reread
-    sudo service supervisor restart
-    sudo service nginx restart
-```
-
-**4. Connectez-vous au back-office :**
-
-- Allez sur l'URL: <mon_ip>/app_admin
-- Connectez-vous avec :
-    - Identifiant : admin
-    - Mot de passe: admin
-- Ajoutez vos données
+    # Order to sort sites (choose a field from t_site table )
+    DEFAULT_SORT_SITES = f'{os.getenv("DEFAULT_SORT_SITES")}'
+    SHOW_SITE_REF = f'{os.getenv("SHOW_SITE_REF")}' == "True"
+    ```
+- Désampler le fichier de configuration de l'admin Angular puis l'éditer
+  - `mv ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`
+  - Exemple :
+    ```js
+    export const Conf = {
+      apiUrl: "/api/",
+      img_srv: "/thumbor/",
+      customFiles: "/static/custom/",
+      id_application: 1,
+      ign_Key: "ign key",
+      map_lat_center: 45.372167,
+      map_lan_center: 6.819077,
+    };
+    ```
+- Mettre les droits d'exécution sur backend/prestart.sh
+  - `chmod +x backend/prestart.sh`
+- Construire le container
+  - `./scripts/docker.sh up -d --build`
+- Avant de continuer, s'assurer que la base de donnée est up avec un client de base de donnée - (dbeaver, pgadmin, etc...)
