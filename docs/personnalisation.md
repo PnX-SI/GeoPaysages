@@ -196,21 +196,9 @@ sudo service supervisor restart
 
 # Internationalisation de l'application
 
-- Pour modifier les textes, éditer le fichier `backend/i18n/fr/messages.po`
-- Activer l'environnement virtuel (depuis le répertoire source, par exemple `geopaysages`)
-
-```
-cd geopaysages/
-source ./venv/bin/activate (venv doit apparaitre en préfixe des commandes)
-```
-
-- lancer la commande de compilation en se plaçant au préalable dans le répertoire `backend` :
-
-```
-cd backend/
-pybabel compile -d i18n
-```
-
-> Pour plus d'informations, voir <https://pythonhosted.org/Flask-Babel/>
-
-> Pour sortir de l'environnement virtuel, taper `deactivate`
+1. Désampler le fichier `backend/i18n/fr/LC_MESSAGES/messages.po.sample` ( à ne faire que la première fois )
+1. Éditer le fichier désamplé `messages.po` à votre guise 
+1. Une fois édité, rentrer dans le container backend `./scripts/docker.sh exec backend /bin/bash`
+1. Compiler le fichier et sortir du container `pybabel compile -d ./i18n && exit`
+1. Redémarrer le container pour appliquer les modifications `./scripts/docker.sh restart backend`
+1. Actualiser la page web, les modifications devraient apparaitres
