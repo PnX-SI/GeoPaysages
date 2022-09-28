@@ -196,14 +196,15 @@ sudo service supervisor restart
 
 # Internationalisation de l'application
 
-1. Désampler le fichier `backend/i18n/fr/LC_MESSAGES/messages.po.sample` ( à ne faire que la première fois )
-1. Éditer le fichier désamplé `messages.po` à votre guise 
-1. Une fois édité, rentrer dans le container backend `./scripts/docker.sh exec backend /bin/bash`
-1. Compiler le fichier et sortir du container `pybabel compile -d ./i18n && exit`
-1. Redémarrer le container pour appliquer les modifications `./scripts/docker.sh restart backend`
+1. Éditer le fichier `custom/i18n/fr/LC_MESSAGES/messages.po` 
+1. Appliquer les changements `./scripts/docker.sh exec backend pybabel compile -d ./i18n && ./scripts/docker.sh restart backend`
 1. Actualiser la page web, les modifications devraient apparaitres
 
 # Carrousel de la page d'accueil
 
-1. Placer les photos dans le dossier `custom/home-carousel`
-1. Les photos doivent de préférence avoir une longueur 3x plus grande que la largeur. Ex : 1920 x 640
+1. Placer les photos dans le dossier `custom/static/home-carousel`
+1. Les photos doivent de préférence
+    - Avoir une largeur 3x plus grande que leur hauteur. Ex : 1920 x 640
+    - Avoir un format de type jpeg
+    - Éviter d'avoir une largeur qui dépasse 2000px
+    - Être compressées à 90 pour alléger le poids de l'image
