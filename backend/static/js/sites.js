@@ -210,6 +210,12 @@ geopsg.initSites = (options) => {
       getMultiselectLabel(option) {
         return option.label;
       },
+      onMultiselectOpen(filter) {
+        filter.isOpen = true;
+      },
+      onMultiselectClose(filter) {
+        filter.isOpen = false;
+      },
       onMultiselectInput(filter, selectedItems) {
         let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;
@@ -329,9 +335,9 @@ geopsg.initSites = (options) => {
           marker.bindPopup(
             '<a href="/sites/' +
               site.id_site +
-              '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(' +
+              '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(\'' +
               imgUrl +
-              ');"></div><div class="title">' +
+              '\');"></div><div class="title">' +
               markerText +
               '</div></a>',
             {

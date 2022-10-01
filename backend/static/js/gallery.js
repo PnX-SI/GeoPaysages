@@ -87,6 +87,12 @@ geopsg.initGallery = (options) => {
       getMultiselectLabel(option) {
         return option.label;
       },
+      onMultiselectOpen(filter) {
+        filter.isOpen = true;
+      },
+      onMultiselectClose(filter) {
+        filter.isOpen = false;
+      },
       onMultiselectInput(filter, selectedItems) {
         let selectedFilterExists = this.selectedFilters.find((selectedFilter) => {
           return selectedFilter.name == filter.name;

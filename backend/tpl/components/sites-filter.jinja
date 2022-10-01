@@ -23,7 +23,7 @@
   </div>
   <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-lg-2 px-1 mb-2 mb-lg-0">
       <small class="floating-filter-label d-block ml-2 px-1"
-            v-bind:class="{ active: filter.selectedItems.length }"
+            v-bind:class="{ active: filter.isOpen || filter.selectedItems.length }"
             v-html="filter.label"></small>
       <v-multiselect
       :multiple="true"
@@ -36,6 +36,8 @@
       placeholder=""
       :show-labels="false"
       @input="onMultiselectInput(filter, $event)"
+      @open="onMultiselectOpen(filter)"
+      @close="onMultiselectClose(filter)"
       >
       <template><span slot="noResult">Pas de résultats</span></template>
       <template slot="option" slot-scope="props">

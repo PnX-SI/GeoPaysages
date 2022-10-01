@@ -677,3 +677,8 @@ footer span {
   fill: #fff;
   color: #fff;
 }
+
+.marker-site .icon svg {
+  width: 100%;
+  height: 100%;
+}

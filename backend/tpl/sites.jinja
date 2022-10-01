@@ -114,15 +114,15 @@
       </div>
       <div class="maptools-bottom-right">
         <div class="block-legend d-none d-md-block">
-          <b-collapse id="app_map_legend_collapse" class="p-3 sans-serif">
-            <div v-if="isMultiObservatories">
+          <b-collapse id="app_map_legend_collapse" class="px-3 sans-serif">
+            <div class="pt-3" v-if="isMultiObservatories">
               <h6>{{_('map.legend.obervatories')}}</h6>
               <div v-for="observatory in observatories" class="legend-item legend-item-observatory">
                 <div class="icon d-inline-block align-middle mr-2" v-bind:style="{background: observatory.data.color}"></div>
                 <span v-html="observatory.label"></span>
               </div>
             </div>
-            <h6>{{_('map.legend.themes')}}</h6>
+            <h6 class="pt-3">{{_('map.legend.themes')}}</h6>
             <div v-for="theme in themes" class="legend-item">
               <div class="icon d-inline-block mr-2 text-dark" v-html="theme.icon"></div>
               <span class="" v-html="theme.label"></span>
