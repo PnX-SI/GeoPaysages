@@ -1,3 +1,4 @@
+authlib==1.0.1
 bcrypt==3.2.2
 blueprint==3.4.2
 click==8.1.3
