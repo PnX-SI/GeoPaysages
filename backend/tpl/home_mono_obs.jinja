@@ -14,16 +14,13 @@
 
 {% block bodyClassNames %}page-home{% endblock %}
 
-{% block header_title %}
-{% if carousel_photos|length <= 0 %}
-<h1>{{ _('home.title') }}</h1>
-{% endif %}
-{% endblock %}
+{% block header_title %}{% endblock %}
 
 {% block title_mobile %}{{ _('home.title_mobile') }}{% endblock title_mobile %}
 
 {% block content %}
-<div class="page-content">
+<div class="page-content py-4">
+  <h1 class="page-title text-center">{{ _('home.title') }}</h1>
 
   {% include 'components/home-carousel.jinja' %}
 

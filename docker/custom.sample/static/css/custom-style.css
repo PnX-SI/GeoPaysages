@@ -12,7 +12,8 @@
     --color-sites-filter-txt-active: #000;
     --color-sites-filter-bg-active: #99D6EA;
 
-    --page-container-min-height: calc(100vh - 415px);
+    --header-h: 110px;
+    --page-container-min-height: calc(100vh - var(--header-h) - 260px);
 }
 
 /* css Footer */

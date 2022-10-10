@@ -77,6 +77,7 @@ def home():
     all_sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True))
 
     carousel_photos = [fileName for fileName in os.listdir('/app/static/custom/home-carousel')]
+    carousel_photos = list(filter(lambda x: x != '.gitkeep', carousel_photos))
 
     if (utils.isMultiObservatories() == True ) : 
         observatories = models.Observatory.query.filter(models.Observatory.is_published == True).order_by(models.Observatory.title)
@@ -271,11 +272,6 @@ def sites():
     data = utils.getFiltersData()
 
     return render_template('sites.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'])
-
-
-@main.route('/sample')
-def sample():
-    return render_template('sample.jinja')
 
 
 @main.route('/about')

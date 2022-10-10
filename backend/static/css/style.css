@@ -50,6 +50,10 @@
 
 /**/
 
+.page-container-min-height {
+  min-height: var(--page-container-min-height);
+}
+
 .important {
   color: #336699;
 }
@@ -297,7 +301,6 @@ h6 .light {
 .app-footer {
   background: #fff;
   padding: 40px 60px 10px 60px;
-  margin-top: 20px;
   position: relative;
   height: 260px;
   border-top: 1px solid #ccc;
@@ -523,7 +526,8 @@ h6 .light {
   text-align: center;
 }
 
-.header-title h1 {
+.header-title h1,
+.page-title {
   font-size: 1.75em;
 }
 /* FOOTER */

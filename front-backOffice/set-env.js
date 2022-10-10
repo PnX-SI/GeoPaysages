@@ -2,7 +2,7 @@ const fs = require('fs');
 const dotenv = require('dotenv');
 dotenv.config({ path: __dirname + '/./../docker/.env' });
 
-const SERVER_ROOT = process.env.ADMIN_ENV_DEV ? `http://localhost:${process.env.PROXY_HTTP_PORT}` : '';
+const SERVER_ROOT = Number(process.env.ADMIN_ENV_DEV) ? `http://localhost:${process.env.PROXY_HTTP_PORT}` : '';
 const envConfigFile = `export const Conf = {
   apiUrl: '${SERVER_ROOT}/api/',
   img_srv: '${SERVER_ROOT}/api/thumbor/presets/',
@@ -12,7 +12,7 @@ const envConfigFile = `export const Conf = {
   map_lan_center: 6.819077,
 };`;
 console.log(
-  'The file `environment.ts` will be written with the following content:'
+  'The file `config.ts` will be written with the following content:'
 );
 console.log(envConfigFile);
 
@@ -22,7 +22,7 @@ fs.writeFile(targetPath, envConfigFile, function (err) {
     throw console.error(err);
   } else {
     console.log(
-      `Angular environment.ts file generated correctly at ${targetPath} \n`
+      `Angular config.ts file generated correctly at ${targetPath} \n`
     );
   }
 });

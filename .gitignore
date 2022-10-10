@@ -76,6 +76,6 @@ geopaysagesftpclient/geopaysagesftpclient.egg-info/
 geopaysagesftpclient/output/
 geopaysagesftpclient/env/
 
-data
+custom
 .vscode/settings.json
 docker/.env

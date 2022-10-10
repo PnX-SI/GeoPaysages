@@ -155,6 +155,8 @@ def getDbConf():
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
 
+    conf['default_sort_sites'] = conf.get('default_sort_sites', 'name_site')
+
     return conf
 
 def isMultiObservatories():
