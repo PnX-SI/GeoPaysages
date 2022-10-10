@@ -8,7 +8,6 @@ const envConfigFile = `export const Conf = {
   img_srv: '${SERVER_ROOT}/api/thumbor/presets/',
   customFiles: '${SERVER_ROOT}/static/custom/',
   id_application: 1,
-  ign_Key: 'ign key',
   map_lat_center: 45.372167,
   map_lan_center: 6.819077,
 };`;

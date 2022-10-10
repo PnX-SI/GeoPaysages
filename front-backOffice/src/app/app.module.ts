@@ -29,6 +29,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { ObservatoriesComponent } from './observatories/observatories.component';
 import { ObservatoriesService } from './services/observatories.service';
 import { ObservatoryComponent } from './observatory/observatory.component';
+import { DbConfService } from './services/dbconf.service';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { ObservatoryComponent } from './observatory/observatory.component';
   ],
   providers: [
     LoginService,
+    DbConfService,
     ObservatoriesService,
     SitesService,
     AuthService,

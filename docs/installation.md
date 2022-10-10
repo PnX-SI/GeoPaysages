@@ -18,9 +18,6 @@
     VOLUME_PATH=../data
     IMG_SRV=http://localhost:8083
     PROJECT=geopaysages
-
-    DEFAULT_SORT_SITES=name_site
-    SHOW_SITE_REF=False
     ```
 - Désampler le fichier de configuration de l'admin Angular puis l'éditer
   - `mv ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`
@@ -31,7 +28,6 @@
       img_srv: "/thumbor/",
       customFiles: "/static/custom/",
       id_application: 1,
-      ign_Key: "ign key",
       map_lat_center: 45.372167,
       map_lan_center: 6.819077,
     };

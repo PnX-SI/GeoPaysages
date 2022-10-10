@@ -1,6 +1,6 @@
 from base64 import urlsafe_b64encode
 from flask import url_for
-from config import DATA_IMAGES_PATH, DEFAULT_SORT_SITES, SHOW_SITE_REF
+from config import DATA_IMAGES_PATH
 from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
 import os
 from flask_sqlalchemy import SQLAlchemy
@@ -154,7 +154,6 @@ def getDbConf():
             conf[row.get('key')] = json.loads(row.get('value'))
         except Exception as exception:
             conf[row.get('key')] = row.get('value')
-    conf['show_site_ref'] = SHOW_SITE_REF
 
     return conf
 
@@ -168,7 +167,8 @@ def isMultiObservatories():
     return False
 
 def getFiltersData():
-    sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(DEFAULT_SORT_SITES))
+    dbconf = getDbConf()
+    sites=site_schema.dump(models.TSite.query.join(models.Observatory).filter(models.TSite.publish_site == True, models.Observatory.is_published == True).order_by(dbconf['default_sort_sites']))
     for site in sites:
         cor_sthemes_themes = site.get('cor_site_stheme_themes')
         cor_list = []

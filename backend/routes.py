@@ -3,7 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.sql.expression import desc
 import models
 import utils
-from config import IGN_KEY, COMPARATOR_VERSION, DEFAULT_SORT_SITES
+from config import COMPARATOR_VERSION
 from datetime import datetime
 from flask_babel import format_datetime
 import math
@@ -103,7 +103,8 @@ def gallery():
 
 
 def galleryOld():
-    get_sites = models.TSite.query.filter_by(publish_site = True).order_by(DEFAULT_SORT_SITES)
+    dbconf = utils.getDbConf()
+    get_sites = models.TSite.query.filter_by(publish_site = True).order_by(dbconf['default_sort_sites'])
     dump_sites = site_schema.dump(get_sites)
     
     #TODO get photos and cities by join on sites query
@@ -269,7 +270,7 @@ def site_photos_last(id_site):
 def sites():
     data = utils.getFiltersData()
 
-    return render_template('sites.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'], ign_Key=IGN_KEY)
+    return render_template('sites.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'])
 
 
 @main.route('/sample')

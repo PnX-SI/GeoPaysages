@@ -15,6 +15,7 @@ import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ObservatoriesService } from '../services/observatories.service';
 import { ObservatoryType } from '../types';
+import { DbConfService, IDBConf } from '../services/dbconf.service';
 
 @Component({
   selector: 'app-add-site',
@@ -92,7 +93,8 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private modalService: NgbModal,
     private authService: AuthService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private dbConfSrv: DbConfService
   ) {}
 
   ngOnInit() {
@@ -128,13 +130,32 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     const street = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
     );
-    const ignLayer = L.tileLayer(
-      this.layerUrl(Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS')
+    let layersConf: IDBConf['map_layers'] = _.get(
+      this.dbConfSrv.conf,
+      'map_layers',
+      []
     );
-    const baseLayers = {
-      'IGN ': ignLayer,
-      OSM: street,
-    };
+    if (!Array.isArray(layersConf)) {
+      layersConf = [];
+    }
+    if (!layersConf.length) {
+      layersConf.push({
+        label: 'OSM classic',
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: {
+          maxZoom: 18,
+          attribution:
+            '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        },
+      });
+    }
+    const baseLayers = {};
+    layersConf.forEach((layerConf) => {
+      baseLayers[layerConf.label] = L.tileLayer(
+        layerConf.url,
+        layerConf.options
+      );
+    });
     L.control.layers(baseLayers).addTo(map);
     const info = new L.Control();
     info.setPosition('topleft');

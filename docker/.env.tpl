@@ -12,8 +12,5 @@ IMG_SRV=/thumbor
 THUMBOR_SECURITY_KEY=secret
 PROJECT=geopaysages
 
-DEFAULT_SORT_SITES=name_site
-SHOW_SITE_REF=False
-
 DEBUG=1
 ADMIN_ENV_DEV=1
