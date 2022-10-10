@@ -6,6 +6,16 @@ Vous pouvez personnaliser l'interface de l'application en modifiant et ajoutant 
 
 Certains paramètres sont dans la table `conf` :
 
+- `header_bg_primary`
+  - `true` utilise la couleur principale comme arrière plan du header
+  - `false` le header sera sur fond blanc
+
+- `default_sort_sites` nom de la colonne pour ordonner les sites
+    - Par nom : `name_site`
+    - Par référence : `ref_site`
+
+- `show_site_ref` affiche la référence du site
+
 - `map_cluster_disable` permet d'activer `FALSE` (par défaut) ou de désactiver `TRUE` les clusters de point.
 
 - `map_cluster_options` permet l'activation / désactivation / gestion du zoom des clusters de point. [Liste des paramètres disponibles (sauf fonctions)](https://github.com/Leaflet/Leaflet.markercluster#all-options)
