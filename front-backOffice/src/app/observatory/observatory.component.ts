@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ObservatoriesService } from '../services/observatories.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
-import { tileLayer, latLng, Map, Layer } from 'leaflet';
 import { FormService } from '../services/form.service';
 import { Conf } from './../config';
-import * as L from 'leaflet';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
@@ -36,40 +34,9 @@ export class ObservatoryComponent implements OnInit {
   themes: any;
   subthemes: any;
   loadForm = false;
-  map;
   mySubscription;
   id_observatory = null;
-  drawnItems = new L.FeatureGroup();
-  markerCoordinates = [];
-  icon = L.icon({
-    iconSize: [25, 41],
-    iconAnchor: [13, 41],
-    iconUrl: './assets/marker-icon.png',
-    shadowUrl: './assets/marker-shadow.png',
-  });
-  options = {
-    layers: [tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')],
-    zoom: 10,
-    center: latLng(Conf.map_lat_center, Conf.map_lan_center),
-  };
   photoBaseUrl = Conf.img_srv;
-  drawOptions = {
-    position: 'topleft',
-    draw: {
-      polygon: false,
-      circle: false,
-      rectangle: false,
-      polyline: false,
-      circlemarker: false,
-      marker: {
-        icon: this.icon,
-      },
-    },
-    edit: {
-      featureGroup: this.drawnItems,
-    },
-  };
-  drawControl = new L.Control.Draw();
   previewImage: string | ArrayBuffer;
   alert: { type: string; message: string };
   observatory: ObservatoryType;
@@ -79,12 +46,9 @@ export class ObservatoryComponent implements OnInit {
   initThumbs: any[] = [];
   deleted_thumbs = [];
   new_thumbs = [];
-  marker: Layer[] = [];
-  center: any;
   toast_msg: string;
   communes: undefined;
   currentUser: any;
-  zoom = 10;
   removed_notice: any = null;
   constructor(
     private observatoryService: ObservatoriesService,
@@ -107,98 +71,6 @@ export class ObservatoryComponent implements OnInit {
     } else {
       this.isEditing = true;
       this.loadForm = true;
-    }
-  }
-
-  onMapReady(map: Map) {
-    L.control.scale().addTo(map);
-    const street = L.tileLayer(
-      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    );
-    const ignLayer = L.tileLayer(
-      this.layerUrl(Conf.ign_Key, 'GEOGRAPHICALGRIDSYSTEMS.MAPS')
-    );
-    const baseLayers = {
-      'IGN ': ignLayer,
-      OSM: street,
-    };
-    L.control.layers(baseLayers).addTo(map);
-    const info = new L.Control();
-    info.setPosition('topleft');
-    info.onAdd = () => {
-      const container = L.DomUtil.create(
-        'button',
-        ' btn btn-sm btn-outline-shadow leaflet-bar leaflet-control '
-      );
-      container.innerHTML =
-        '<i style="line-height: unset" class="icon-full_screen"> </i>';
-      container.style.backgroundColor = 'white';
-      container.title = 'Recenter la catre';
-      container.onclick = () => {
-        this.center = latLng(this.observatory.geom);
-        this.zoom = 10;
-      };
-      return container;
-    };
-    info.addTo(map);
-    map.addLayer(this.drawnItems);
-    L.EditToolbar.Delete.include({
-      removeAllLayers: false,
-    });
-    this.map = map;
-    map.on(L.Draw.Event.CREATED, (event) => {
-      const layer = (event as any).layer;
-      this.markerCoordinates.push(layer._latlng);
-      this.observatoryForm.controls['lat'].setValue(
-        this.markerCoordinates[0].lat.toFixed(6)
-      );
-      this.observatoryForm.controls['lng'].setValue(
-        this.markerCoordinates[0].lng.toFixed(6)
-      );
-      this.drawControl.setDrawingOptions({
-        marker: false,
-      });
-      map.removeControl(this.drawControl);
-      map.addControl(this.drawControl);
-    });
-
-    map.on(L.Draw.Event.EDITED, (event) => {
-      let layer = (event as any).layers._layers;
-      layer = layer[Object.keys(layer)[0]];
-      this.markerCoordinates.push(layer._latlng);
-      this.observatoryForm.controls['lat'].setValue(
-        this.markerCoordinates[0].lat.toFixed(6)
-      );
-      this.observatoryForm.controls['lng'].setValue(
-        this.markerCoordinates[0].lng.toFixed(6)
-      );
-    });
-    map.on(L.Draw.Event.DELETED, (event) => {
-      const markers = [];
-      map.eachLayer((layer: any) => {
-        if (layer._latlng) {
-          markers.push(layer._latlng);
-        }
-      });
-      if (markers.length === 0) {
-        this.observatoryForm.controls['lat'].reset();
-        this.observatoryForm.controls['lng'].reset();
-        this.markerCoordinates = [];
-        map.removeControl(this.drawControl);
-        this.drawControl.setDrawingOptions({
-          marker: {
-            icon: this.icon,
-          },
-        });
-        map.addControl(this.drawControl);
-      }
-    });
-  }
-
-  onDrawReady(drawControl) {
-    this.drawControl = drawControl;
-    if (this.id_observatory) {
-      this.map.removeControl(this.drawControl);
     }
   }
 
@@ -313,10 +185,8 @@ export class ObservatoryComponent implements OnInit {
         });
       },
       () => {
-        //this.initMarker(this.observatory.geom[0], this.observatory.geom[1]);
         this.patchForm();
         this.loadForm = true;
-        //this.center = latLng(this.observatory.geom);
         this.observatoryForm.disable();
       }
     );
@@ -384,7 +254,6 @@ export class ObservatoryComponent implements OnInit {
   editForm() {
     this.isEditing = !this.isEditing;
     if (!this.isEditing) {
-      //this.map.removeControl(this.drawControl);
       this.edit_btn_text = 'Éditer';
       this.patchForm();
       this.alert = null;
@@ -393,24 +262,9 @@ export class ObservatoryComponent implements OnInit {
       this.thumbnailInput.nativeElement.value = '';
       this.selectedLogo = null;
       this.logoInput.nativeElement.value = '';
-      //this.initMarker(this.observatory.geom[0], this.observatory.geom[1]);
     } else {
-      //this.map.addControl(this.drawControl);
       this.edit_btn_text = 'Annuler';
       this.observatoryForm.enable();
-    }
-  }
-
-  initMarker(lat, lan) {
-    L.marker(latLng(lat, lan), { icon: this.icon }).addTo(this.drawnItems);
-    this.center = latLng(lat, lan);
-    this.map.removeControl(this.drawControl);
-    this.drawControl.setDrawingOptions({
-      marker: false,
-    });
-    this.map.addControl(this.drawControl);
-    if (this.id_observatory && !this.isEditing) {
-      this.map.removeControl(this.drawControl);
     }
   }
 
@@ -463,17 +317,6 @@ export class ObservatoryComponent implements OnInit {
 
   patchForm() {
     this.observatoryForm.patchValue(this.observatory);
-  }
-  layerUrl(key, layer) {
-    return (
-      'http://wxs.ign.fr/' +
-      key +
-      '/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&' +
-      'LAYER=' +
-      layer +
-      '&STYLE=normal&TILEMATRIXSET=PM&' +
-      'TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg'
-    );
   }
 
   ngOnDestroy() {
