@@ -119,12 +119,6 @@ Exemple de contenue du fichier `about.jinja`
 
 {% block bodyClassNames %}page-about{% endblock %}
 
-{% block header_title %}
-    <h1>
-        À PROPOS
-    </h1>
-{% endblock %}
-
 {% block content %}
     <div class="container">
         Contenu de la page

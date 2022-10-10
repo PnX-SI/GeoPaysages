@@ -280,6 +280,14 @@ html {
   font-family: Roboto;
 }
 
+h1, .h1 {
+  font-size: 1.75rem;
+}
+
+h3, .h3 {
+  font-size: 1.25rem;
+}
+
 h1,
 h2,
 h3,
@@ -308,39 +316,6 @@ h6 .light {
 
 .app-footer hr {
   border-color: #ccc;
-}
-
-.header-title {
-  justify-content: center;
-  margin-left: 0;
-  padding-left: 120px;
-  padding-right: 120px;
-}
-
-@media (max-width: 991px) {
-  .header-title {
-    padding-right: 3px;
-  }
-
-  .header-title h3 {
-    font-size: 18px;
-  }
-  .header-title h5 {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 575px) {
-  .header-title h3 {
-    font-size: 12px;
-  }
-  .header-title h5 {
-    font-size: 12px;
-  }
-}
-
-.header-title:empty {
-  display: none !important;
 }
 
 .async:not(.async-resolved) .visible-async-resolved {
@@ -520,16 +495,6 @@ h6 .light {
   }
 }
 
-.header-title {
-  text-transform: uppercase;
-  line-height: 20px;
-  text-align: center;
-}
-
-.header-title h1,
-.page-title {
-  font-size: 1.75em;
-}
 /* FOOTER */
 
 footer {

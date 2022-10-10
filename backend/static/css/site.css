@@ -6,11 +6,6 @@
   margin-bottom: 0;
 }
 
-.page-site .header-title {
-  display: block !important;
-  padding: 10px 0 !important;
-}
-
 .page-site:not(.with-testimonial) .text-collapse.text-collapsable.text-collapsed .target {
   max-height: 220px;
 }

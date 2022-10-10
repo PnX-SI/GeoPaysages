@@ -9,6 +9,10 @@
   right: 0;
 }
 
+.page-home .app-home-carousel h1 {
+  font-size: 2.5rem;
+}
+
 .page-home .app-home-carousel .carousel-item {
   background-size: cover;
   background-position: center;
