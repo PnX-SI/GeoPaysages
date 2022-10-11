@@ -6,8 +6,21 @@ import utils
 
 custom = Blueprint('custom', __name__)
 
+def getHomeBlock1Data():
+    """ You can import models and query the database
+    schema = models.TPhotoSchema(many=True)
+    photos = models.TPhoto.query.limit(1)
+    return {
+        'photos': schema.dump(photos)
+    } """
+    return {
+        'comment': 'This line is generated from Python !!!'
+    }
+
 def custom_inject_to_tpl():
-    return dict()
+    return dict(
+        getHomeBlock1Data = getHomeBlock1Data
+    )
 
 @custom.route('/about')
 def about():
