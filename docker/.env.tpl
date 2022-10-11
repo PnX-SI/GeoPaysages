@@ -1,16 +1,17 @@
-PROXY_HTTP_PORT=8080
+PROXY_HTTP_PORT=80
 PROXY_API_PORT=8081
 
-DB_USER=geopaysages
-
 DB_NAME=geopaysages
-DB_ADDRESS=db
-DB_PORT=5432
+DB_USER=geopaysages
 DB_PASSWORD=password
-VOLUME_PATH=../custom
+DB_PORT=5432
+
 THUMBOR_SECURITY_KEY=secret
-PROJECT=geopaysages
 FLASK_SECRET_KEY=secret
 
-DEBUG=1
-ADMIN_ENV_DEV=1
+# You probably don't need to change this values
+DEBUG=0
+ADMIN_ENV_DEV=0
+DB_ADDRESS=db
+PROJECT=geopaysages
+VOLUME_PATH=../custom
