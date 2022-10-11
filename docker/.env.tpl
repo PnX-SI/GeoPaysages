@@ -11,6 +11,7 @@ VOLUME_PATH=../custom
 IMG_SRV=/thumbor
 THUMBOR_SECURITY_KEY=secret
 PROJECT=geopaysages
+FLASK_SECRET_KEY=secret
 
 DEBUG=1
 ADMIN_ENV_DEV=1
