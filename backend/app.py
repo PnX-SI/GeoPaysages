@@ -54,6 +54,7 @@ CORS(app, supports_credentials=True)
 
 app.register_blueprint(main_blueprint)
 app.register_blueprint(api)
+app.register_blueprint(custom_app.custom)
 app.register_blueprint(routes.routes, url_prefix='/api/auth')
 
 app.config.from_pyfile('config.py')

@@ -4,10 +4,13 @@
 {% block title %}À PROPOS{% endblock %}
 {% block head %}
 {{ super() }}
+<!-- Here you can import all JS and CSS you need -->
 <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/about.css') }}">
 {% endblock %}
 
 {% block bodyClassNames %}page-about{% endblock %}
+
+{% block header_title %}{% endblock %}
 
 {% block content %}
   <div class="container py-4 page-container-min-height">

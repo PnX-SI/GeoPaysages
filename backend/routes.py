@@ -274,16 +274,6 @@ def sites():
     return render_template('sites.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'])
 
 
-@main.route('/about')
-def about():
-
-    tpl = utils.getCustomTpl('about')
-
-    if not tpl:
-        return abort(404)
-
-    return render_template(tpl)
-
 @main.route('/legal-notices')
 def legal_notices():
 
