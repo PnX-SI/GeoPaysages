@@ -125,7 +125,6 @@ def patchObservatoryImage(id):
         abort(404)
     
     dicts = observatories_schema.dump(rows)
-    #base_path = './static/' + DATA_IMAGES_PATH
     base_path = '/app/static/upload/'
     
     _, ext = os.path.splitext(image.filename)
@@ -264,7 +263,6 @@ def returnCurrentUser(id_role=None):
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
 def deleteSite(id_site):
-    #base_path = './static/' + DATA_IMAGES_PATH
     base_path = '/app/static/upload/'
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
@@ -326,7 +324,6 @@ def add_cor_site_theme_stheme():
 @api.route('/api/addPhotos', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
 def upload_file():
-    # base_path = './static/' + DATA_IMAGES_PATH
     base_path = '/app/static/upload/'
     data = request.form.getlist('data')
     new_site = request.form.getlist('new_site')
@@ -386,7 +383,6 @@ def delete_notice(notice):
 @api.route('/api/updatePhoto', methods=['PATCH'])
 @fnauth.check_auth(2, False, None, None)
 def update_photo():
-    #base_path = './static/' + DATA_IMAGES_PATH
     base_path = '/app/static/upload/'
     data = request.form.get('data')
     image = request.files.get('image')
@@ -420,7 +416,6 @@ def update_photo():
 @api.route('/api/deletePhotos', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def deletePhotos():
-    #base_path = './static/' + DATA_IMAGES_PATH
     base_path = '/app/static/upload/'
     photos = request.get_json()
     for photo in photos:

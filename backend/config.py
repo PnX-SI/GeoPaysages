@@ -13,9 +13,7 @@ SESSION_TYPE = 'filesystem'
 SECRET_KEY = os.getenv("FLASK_SECRET_KEY")
 
 # Do not edit except in exceptional cases
-IMG_SRV = f'{os.getenv("IMG_SRV")}'
-DATA_IMAGES_PATH = 'data/images/'  # From ./static dir
-DATA_NOTICES_PATH = 'data/notice-photo/'  # From ./static dir
 BABEL_TRANSLATION_DIRECTORIES = './i18n'  # From ./ dir
 
-COMPARATOR_VERSION = 2
+# !!! Do not change, this is the only supported value
+COMPARATOR_VERSION = 2 

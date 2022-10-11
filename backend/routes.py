@@ -103,56 +103,6 @@ def gallery():
     return render_template('gallery.jinja', filters=data['filters'], sites=data['sites'], observatories=data['observatories'])
 
 
-def galleryOld():
-    dbconf = utils.getDbConf()
-    get_sites = models.TSite.query.filter_by(publish_site = True).order_by(dbconf['default_sort_sites'])
-    dump_sites = site_schema.dump(get_sites)
-    
-    #TODO get photos and cities by join on sites query
-    photo_ids = []
-    sites_without_photo = []
-    ville_codes = []
-    for site in dump_sites:
-        photo_id = site.get('main_photo')
-        if photo_id:
-            photo_ids.append(site.get('main_photo'))
-        else:
-            sites_without_photo.append(str(site.get('id_site')))
-        ville_codes.append(site.get('code_city_site'))
-
-    query_photos = models.TPhoto.query.filter(
-        models.TPhoto.id_photo.in_(photo_ids)
-    )
-    dump_photos = photo_schema.dump(query_photos)
-
-    if len(sites_without_photo):
-        sql_missing_photos_str = "select distinct on (id_site) * from geopaysages.t_photo where id_site IN (" + ",".join(sites_without_photo) + ") order by id_site, filter_date desc"
-        sql_missing_photos = text(sql_missing_photos_str)
-        missing_photos_result = db.engine.execute(sql_missing_photos).fetchall()
-        missing_photos = [dict(row) for row in missing_photos_result]
-        for missing_photo in missing_photos:
-            missing_photo['t_site'] = missing_photo.get('id_site')
-            dump_photos.append(missing_photo)
-
-    query_villes = models.Communes.query.filter(
-        models.Communes.code_commune.in_(ville_codes)
-    )
-    dump_villes = communes_schema.dump(query_villes)
-
-    for site in dump_sites:
-        print('PHOTO')
-        id_site = site.get('id_site')
-        photo = None
-        try:
-            photo = next(photo for photo in dump_photos if (photo.get('t_site') == id_site))
-        except StopIteration:
-            pass 
-        if photo:
-            site['photo'] = utils.getThumbnail(photo).get('output_url')
-        site['ville'] = next(ville for ville in dump_villes if (ville.get('code_commune') == site.get('code_city_site')))
-
-    return render_template('gallery.jinja', sites=dump_sites)
-
 @main.route('/sites/<int:id_site>')
 def site(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site = id_site, publish_site = True)
@@ -184,52 +134,11 @@ def site(id_site):
     site['stheme'] = list(set(subthemes_list))
 
     def getPhoto(photo):
-        date_diplay = {}
-        date_approx = photo.get('date_photo')
-        filter_date = photo.get('filter_date')
-        if date_approx:
-            date_diplay = {
-                'md': date_approx,
-                'sm': date_approx
-            }
-        else:
-            date_obj = datetime.strptime(filter_date, '%Y-%m-%d')
-            date_diplay = {
-                'md': format_datetime(date_obj, 'yyyy (dd MMMM)'),
-                'sm': date_obj.strftime('%Y')
-            }
         captions = []
         licence_photo = photo.get('dico_licence_photo')
         if licence_photo:
             captions.append(licence_photo.get('name_licence_photo'))
-        """ author = photo.get('t_role')
-        if author:
-            captions.append('%s %s'  % (
-                photo.get('t_role').get('prenom_role'),
-                photo.get('t_role').get('nom_role')
-            )) """
         caption = ' | '.join(captions)
-        
-        dl_caption = "%s | %s | réf. : %s | %s" % (
-            site.get('name_site'),
-            site.get('ville').get('nom_commune'),
-            site.get('ref_site'),
-            date_diplay.get('md')
-        )
-
-        if caption:
-            dl_caption = '%s | %s' % (dl_caption, caption)
-
-        if COMPARATOR_VERSION == 1:    
-            return {
-                'id': photo.get('id_photo'),
-                'sm': utils.getThumbnail(photo).get('output_url'),
-                'md': utils.getMedium(photo).get('output_url'),
-                'lg': utils.getLarge(photo, caption).get('output_url'),
-                'dl': utils.getDownload(photo, dl_caption).get('output_url'),
-                'date': photo.get('filter_date'),
-                'date_diplay': date_diplay
-            }
 
         return {
             'id': photo.get('id_photo'),

@@ -8,7 +8,6 @@ DB_ADDRESS=db
 DB_PORT=5432
 DB_PASSWORD=password
 VOLUME_PATH=../custom
-IMG_SRV=/thumbor
 THUMBOR_SECURITY_KEY=secret
 PROJECT=geopaysages
 FLASK_SECRET_KEY=secret
