@@ -15,6 +15,11 @@ if ! test -f "$script_file"; then
     exit 1
 fi
 
+prestart_file="backend/prestart.sh"
+if ! [ -x "$prestart_file" ]; then 
+    chmod +x ${prestart_file}
+fi
+
 env_file="docker/.env"
 if ! test -f "$env_file"; then
     echo "$env_file file doesn't not exists. Create it from docker/.env.tpl. (customize if necessary)"
