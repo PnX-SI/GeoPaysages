@@ -1,11 +1,8 @@
 # Mettre à jour Géopaysages
 
-- Récupérer tous les changements
-  - Vérifier la branche `git branch`
-  - Récupérer les nouveautés `git pull`
-- Appliquer tous les changements
-  - Se placer à la source du projet geopaysages
-  - Reconstruire toute l'application `./scripts/docker.sh up -d --build`
+- Récupérer les dernières images
+  - `./docker/docker.sh pull`
+- Redémarrer les containers `./docker/docker.sh up -d`
 - Vérifier que les changements sont appliqués
   - Se rendre sur l'application / site web
   - Vider le cache (pour la partie admin)

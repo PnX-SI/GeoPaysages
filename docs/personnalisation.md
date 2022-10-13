@@ -1,6 +1,6 @@
 # Personnalisation de l'application
 
-Vous pouvez personnaliser l'interface de l'application en modifiant et ajoutant des fichiers dans le répertoire `backend/static/custom/` (css, logo).
+Vous pouvez personnaliser l'interface de l'application en modifiant et ajoutant des fichiers dans le répertoire `/custom/static` (css, logo).
 
 # Base de données
 
@@ -91,7 +91,7 @@ Il est préférable d'utiliser un svg carré. Exemple de bibliothèque de SVG : 
 
 Il est possible d'ajouter jusqu'à 3 blocs jinja dans la page d'accueil.
 
-Pour ce faire il faut créer un fichier dans le dossier `/tpl` avec comme nom `home_block_<numero>.jinja`
+Pour ce faire il faut créer un fichier dans le dossier `/custom/tpl` avec comme nom `home_block_<numero>.jinja`
 
 En cas de contenue multilingue, préférer `home_block_<numero>_<lang>.jinja` ex. `home_block_2_fr.jinja`  
 
@@ -101,85 +101,49 @@ En cas de contenue multilingue, préférer `home_block_<numero>_<lang>.jinja` ex
 - Le bloc **2** se placera entre la liste des sites et la carte.
 - Le bloc **3** se placera entre la carte et le footer.
 
-# Ajout et personnalisation d'une page "A propos" (/about)
+# Personnalisation de la page "À propos" (/about)
 
-Créer un fichier dans le dossier `/tpl` avec comme nom `about.jinja`
+Éditer le fichier `/custom/tpl/about.jinja`
 
-En cas de contenue multilingue, préférer `about_<lang>.jinja` ex. `about_fr.jinja`  
+En cas de contenue multilingue, renommer en `about_<lang>.jinja` ex. `about_fr.jinja`  
 
-Ceci permettra de faire apparaitre la section "A propos" dans la barre de navigation. 
+## Suppression de la page "À propos"
 
-Exemple de contenue du fichier `about.jinja`
+- Supprimer ou renommer le fichier `/custom/tpl/about.jinja`  
+- Supprimer le lien du menu
+  - Éditer le fichier `/custom.tpl/main_menu.jinja`
+  - Supprimer ou commenter le bloc `<li>` qui contient `<a href="/about" class="nav-link">`
 
-```jinja
-{% extends "layout.jinja" %}
-{% set active_page = 'about' %}
 
-{% block title %}À PROPOS{% endblock %}
 
-{% block bodyClassNames %}page-about{% endblock %}
+# Personnalisation de la page "Mentions légales" (/legal-notices)
 
-{% block content %}
-    <div class="container">
-        Contenu de la page
-    </div>
-{% endblock %}
-```
+Reprendre la même procédure que pour la page "À propos", c'est à dire :
 
-# Ajout et personnalisation d'une page "Mentions légales" (/legal-notices)
+Éditer le fichier `/custom/tpl/legal_notices.jinja`
 
-Reprendre la même procédure que pour la page d'accueil, c'est à dire :
-
-Créer un fichier dans le dossier `/tpl` avec comme nom `legal_notices.jinja`
-
-En cas de contenue multilingue, préférer `legal_notices_<lang>.jinja` ex. `legal_notices_fr.jinja`  
-
-Ceci permettra de faire apparaitre la section "Mentions légales" en bas de l'application web.
-
-Vous pouvez trouver un exemple du gouvernement [ici](https://www.economie.gouv.fr/entreprises/site-internet-mentions-obligatoires) qui vous précise les mentions obligatoires que vous devez faire apparaître sur votre site internet. 
-
-Exemple de contenue du fichier `legal_notices.jinja`
-
-```jinja
-{% extends "layout.jinja" %}
-{% set active_page = 'legal_notices' %}
-
-{% block title %}Mentions Légales{% endblock %}
-
-{% block bodyClassNames %}page-legal_notices{% endblock %}
-
-{% block header_title %}
-    <h1>
-        Mentions Légales
-    </h1>
-{% endblock %}
-
-{% block content %}
-    <div class="container">
-        Contenue de la page
-    </div>
-{% endblock %}
-
-```
+**Cette page ne peut pas être supprimée car sa présence est une obligation légale**
 
 # Ajout et personnalisation d'une nouvelle page HTML
 
 **1. Création de la page HTML**
 
-- La page d'exemple pour créer une nouvelle page html dans le site se
-    trouve dans `backend/tpl/sample.html`
-- Copier/coller `sample.html` et renommer la nouvelle page
+- La page d'exemple pour créer une nouvelle page html dans le site est la page "À propos"
+- Dupliquer le fichier `/custom/tpl/about.jinja` en lui donnant un nom approprié
+- Éditer le fichier `/custom/custom_app.py` 
+  - Dupliquer la route `@custom.route('/about')` le contenu de la fonction
+  - 
 
 **2. Créer la route vers la nouvelle page**
 
-- Ouvrir le fichier `backend/routes.py`
-- Copier/coller un bloc existant et effectuer les modifications
+- Ouvrir le fichier `/custom/custom_app.py` 
+- Copier/coller le bloc de la route `@custom.route('/about')` et effectuer les modifications
     nécessaires en lien avec la nouvelle page html
 
 **3. Ajout du lien vers la nouvelle page HTML**
 
-- Ouvrir le fichier `backend/tpl/layout.html`
-- Copier/coller un bloc 'li' existant et effectuer les modifications
+- Ouvrir le fichier `custom.tpl/main_menu.jinja`
+- Copier/coller un bloc `<li>` existant et effectuer les modifications
     nécessaires en lien avec la nouvelle page html
 
 **4. Création de l'intitulé du lien via l'internationalisation**
@@ -201,7 +165,7 @@ sudo service supervisor restart
 # Internationalisation de l'application
 
 1. Éditer le fichier `custom/i18n/fr/LC_MESSAGES/messages.po` 
-1. Appliquer les changements `./scripts/docker.sh exec backend pybabel compile -d ./i18n && ./scripts/docker.sh restart backend`
+1. Appliquer les changements `./docker/docker.sh exec backend pybabel compile -d ./i18n && ./docker/docker.sh restart backend`
 1. Actualiser la page web, les modifications devraient apparaitres
 
 # Carrousel de la page d'accueil
