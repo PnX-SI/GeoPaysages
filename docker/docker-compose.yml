@@ -42,8 +42,6 @@ services:
   
   backend:
     image: ghcr.io/naturalsolutions/geopaysages_backend:latest
-    build:
-      context: ../backend
     depends_on:
       db:
         condition: service_healthy
@@ -64,8 +62,6 @@ services:
 
   admin:
     image: ghcr.io/naturalsolutions/geopaysages_admin:latest
-    build: 
-      context: ../admin
     depends_on:
       - backend
     networks:
@@ -77,8 +73,6 @@ services:
 
   db:
     image: ghcr.io/naturalsolutions/geopaysages_db:latest
-    build: 
-      context: ../db
     ports:
       - "${DB_PORT}:5432"
     healthcheck:
@@ -103,4 +97,3 @@ volumes:
 
 networks:
   traefik:
-    external: true

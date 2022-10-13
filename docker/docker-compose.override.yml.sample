@@ -1,6 +1,16 @@
 version: '3'
 services:
+  db:
+    build: 
+      context: ../db
+      
+  admin:
+    build: 
+      context: ../admin
+
   backend:
+    build:
+      context: ../backend
     volumes:
       - ../backend:/app
     environment:

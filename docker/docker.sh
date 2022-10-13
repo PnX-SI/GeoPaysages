@@ -8,6 +8,13 @@ if [[ -n "$MSYSTEM" ]]; then
     exit 1
 fi
 
+script_file="docker/docker.sh"
+if ! test -f "$script_file"; then
+    echo "Please execute this script from the parent of the docker directory"
+    echo "The command should be ./docker/docker.sh"
+    exit 1
+fi
+
 env_file="docker/.env"
 if ! test -f "$env_file"; then
     echo "$env_file file doesn't not exists. Create it from docker/.env.tpl. (customize if necessary)"
