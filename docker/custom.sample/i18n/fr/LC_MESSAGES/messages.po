@@ -222,7 +222,7 @@ msgstr "Galerie photo"
 
 #: tpl/components/sites-filter.jinja:22
 msgid "map.filters.title"
-msgstr "Sites d'observation"
+msgstr "Filtrer par"
 
 #~ msgid "map.filter.themes"
 #~ msgstr "Thème"
