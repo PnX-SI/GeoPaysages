@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint
+from flask import abort, render_template, Blueprint
 import utils
 
 # This file is a docker volume in place of /backend/custom_app.py
@@ -24,4 +24,7 @@ def custom_inject_to_tpl():
 
 @custom.route('/about')
 def about():
-    return render_template(utils.getCustomTpl('about'))
+    tpl = utils.getCustomTpl('about')
+    if not tpl:
+        abort(404)
+    return render_template(tpl)
