@@ -19,19 +19,6 @@
     IMG_SRV=http://localhost:8083
     PROJECT=geopaysages
     ```
-- Désampler le fichier de configuration de l'admin Angular puis l'éditer
-  - `mv ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`
-  - Exemple :
-    ```js
-    export const Conf = {
-      apiUrl: "/api/",
-      img_srv: "/thumbor/",
-      customFiles: "/static/custom/",
-      id_application: 1,
-      map_lat_center: 45.372167,
-      map_lan_center: 6.819077,
-    };
-    ```
 - Mettre les droits d'exécution sur backend/prestart.sh
   - `chmod +x backend/prestart.sh`
 - Lancer le container

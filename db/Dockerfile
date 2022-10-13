@@ -11,5 +11,5 @@ FROM postgis/postgis
 WORKDIR /docker-entrypoint-initdb.d
 RUN echo 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"' > 11_ext_uuid_ossp.sql
 COPY --from=builder /docker-entrypoint-initdb.d/* ./
-COPY ./docker/resources/sql/usershub_adds.sql 15_usershub_adds.sql
-COPY ./docker/resources/sql/oppdb.sql 16_oppdb.sql
+COPY ./install_resources/sql/usershub_adds.sql 15_usershub_adds.sql
+COPY ./install_resources/sql/oppdb.sql 16_oppdb.sql

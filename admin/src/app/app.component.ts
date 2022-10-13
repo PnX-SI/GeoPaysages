@@ -8,6 +8,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  title = 'front-backOffice';
+  title = 'admin';
 
 }

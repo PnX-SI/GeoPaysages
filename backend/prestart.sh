@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-cp -r /initial-photos/* /app/static/upload
+cp -r /app/install_resources/images/* /app/static/upload
 flask db upgrade

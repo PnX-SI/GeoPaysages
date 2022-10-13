@@ -2,5 +2,11 @@ version: '3'
 services:
   backend:
     volumes:
-      - ${VOLUME_PATH}/custom:/app/static/custom
-      - ${VOLUME_PATH}/i18n:/app/i18n
+      - ../backend:/app
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_DEBUG=1
+      - 'RUN=flask run --host=0.0.0.0 --port=80'
+    #command: flask run --host=0.0.0.0 --port=80
+    # Infinite loop, to keep it alive, for debugging
+    command: bash -c "/app/prestart.sh && flask run --host=0.0.0.0 --port=80 && while true; do echo 'sleeping...' && sleep 10; done"

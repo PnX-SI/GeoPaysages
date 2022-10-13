@@ -20,4 +20,9 @@ if ! test -d "$custom_dir"; then
     echo "The custom dir was created on the project's root."
 fi
 
-docker-compose -f ./docker/docker-compose-prod.yml --project-name="geopaysages" --project-directory=./docker "$@"
+launch_compose="docker-compose"
+if ! command -v ${launch_compose} &> /dev/null
+then
+    launch_compose="docker compose"
+fi
+${launch_compose} --project-name="geopaysages" --project-directory=./docker "$@"
