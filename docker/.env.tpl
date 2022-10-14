@@ -13,5 +13,4 @@ FLASK_SECRET_KEY=secret
 DEBUG=0
 ADMIN_ENV_DEV=0
 DB_ADDRESS=db
-PROJECT=geopaysages
-VOLUME_PATH=../custom
+CUSTOM_PATH=../custom

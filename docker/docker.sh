@@ -2,6 +2,10 @@
 
 set -e
 
+if (( $# < 1 )); then
+    exit 0
+fi
+
 # Pre-pre-flight? 🤷
 if [[ -n "$MSYSTEM" ]]; then
     echo "Seems like you are using an MSYS2-based system (such as Git Bash) which is not supported. Please use WSL instead.";
@@ -26,15 +30,26 @@ if ! test -f "$env_file"; then
     exit 1
 fi
 
-custom_dir="custom"
-if ! test -d "$custom_dir"; then
-    cp -r docker/custom.sample custom
-    echo "The custom dir was created on the project's root."
+if [ $1 = "up" ]; then
+    source docker/.env;
+    cd docker
+    if ! test -d "$CUSTOM_PATH"; then
+        cp -r custom.sample "$CUSTOM_PATH"
+        echo "The custom dir was created on $CUSTOM_PATH"
+    fi
+    cd ../
 fi
 
 launch_compose="docker-compose"
 if ! command -v ${launch_compose} &> /dev/null
 then
     launch_compose="docker compose"
+    set +e
+    docker compose version &> /dev/null
+    if [ $? -ne 0 ]; then
+        echo "The 'docker compose' is not available. Please install or update docker."
+        exit 1
+    fi
+    set -e
 fi
 ${launch_compose} --project-name="geopaysages" --project-directory=./docker "$@"

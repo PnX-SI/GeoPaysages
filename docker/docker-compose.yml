@@ -8,14 +8,11 @@ services:
       - thumbor
     ports:
       - "${PROXY_HTTP_PORT}:80"
-      - "${PROXY_API_PORT}:8080"
     command:
       - --providers.docker
       - --providers.docker.exposedbydefault=false
       - --accesslog
       - --log
-      - --api
-      - --api.insecure=true
     networks:
       - traefik
     volumes:
@@ -48,11 +45,11 @@ services:
     networks:
       - traefik
     volumes:
-      - ${VOLUME_PATH}/upload:/app/static/upload
-      - ${VOLUME_PATH}/static:/app/static/custom
-      - ${VOLUME_PATH}/i18n:/app/i18n
-      - ${VOLUME_PATH}/custom_app.py:/app/custom_app.py
-      - ${VOLUME_PATH}/tpl:/app/tpl/custom
+      - ${CUSTOM_PATH}/upload:/app/static/upload
+      - ${CUSTOM_PATH}/static:/app/static/custom
+      - ${CUSTOM_PATH}/i18n:/app/i18n
+      - ${CUSTOM_PATH}/custom_app.py:/app/custom_app.py
+      - ${CUSTOM_PATH}/tpl:/app/tpl/custom
     labels:
       - traefik.enable=true
       - traefik.http.routers.backend.rule=PathPrefix(`/`)
