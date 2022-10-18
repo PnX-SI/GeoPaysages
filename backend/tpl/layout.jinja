@@ -46,7 +46,7 @@
             {% block title_mobile %}{% endblock title_mobile %}
           </span>
           <a href="/" class="d-none d-md-flex align-items-center h-100 py-2 pl-2">
-            <img class="mh-100" src="{{ url_for('static', filename='custom/images/logo_txt_blanc.png') }}" />
+            <img class="mh-100" src="{{ url_for('static', filename='custom/images/logo_txt_'+ ('blanc' if dbconf.header_bg_primary else 'color') +'.png') }}" />
           </a>
         </b-navbar-brand>
 
