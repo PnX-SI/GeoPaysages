@@ -41,7 +41,7 @@ def thumborPreset(name, filename):
     if not preset:
         abort(404)
     
-    url = preset + '/' + urllib.parse.quote(f'http://backend/static/upload/{filename}', safe='')
+    url = preset + '/' + urllib.parse.quote(f'http://backend/static/upload/images/{filename}', safe='')
     signature = utils.getThumborSignature(url)
     response = requests.get(f'http://thumbor:8000/{signature}/{url}')
 
@@ -125,7 +125,7 @@ def patchObservatoryImage(id):
         abort(404)
     
     dicts = observatories_schema.dump(rows)
-    base_path = '/app/static/upload/'
+    base_path = '/app/static/upload/images/'
     
     _, ext = os.path.splitext(image.filename)
     filename = 'observatory-' + str(id) + '-' + field + '-' + utils.getRandStr(4) + ext
@@ -263,7 +263,7 @@ def returnCurrentUser(id_role=None):
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
 @fnauth.check_auth(6, False, None, None)
 def deleteSite(id_site):
-    base_path = '/app/static/upload/'
+    base_path = '/app/static/upload/images/'
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
     photos = photo_schema.dump(photos)
@@ -324,7 +324,7 @@ def add_cor_site_theme_stheme():
 @api.route('/api/addPhotos', methods=['POST'])
 @fnauth.check_auth(2, False, None, None)
 def upload_file():
-    base_path = '/app/static/upload/'
+    base_path = '/app/static/upload/images/'
     data = request.form.getlist('data')
     new_site = request.form.getlist('new_site')
     uploaded_images = request.files.getlist('image')
@@ -383,7 +383,7 @@ def delete_notice(notice):
 @api.route('/api/updatePhoto', methods=['PATCH'])
 @fnauth.check_auth(2, False, None, None)
 def update_photo():
-    base_path = '/app/static/upload/'
+    base_path = '/app/static/upload/images/'
     data = request.form.get('data')
     image = request.files.get('image')
     data_serialized = json.loads(data)
@@ -416,7 +416,7 @@ def update_photo():
 @api.route('/api/deletePhotos', methods=['POST'])
 @fnauth.check_auth(6, False, None, None)
 def deletePhotos():
-    base_path = '/app/static/upload/'
+    base_path = '/app/static/upload/images/'
     photos = request.get_json()
     for photo in photos:
         photos_query = models.TPhoto.query.filter_by(

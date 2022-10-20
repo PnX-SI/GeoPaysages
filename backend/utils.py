@@ -41,7 +41,7 @@ def getThumborSignature(url):
 def getThumborUrl(params, filename):
     if params.startswith('/'):
         params = params[1:]
-    url = params + '/' + urllib.parse.quote(f'http://backend/static/upload/{filename}', safe='')
+    url = params + '/' + urllib.parse.quote(f'http://backend/static/upload/images/{filename}', safe='')
     signature = getThumborSignature(url)
     return f'/thumbor/{signature}/{url}'
 
