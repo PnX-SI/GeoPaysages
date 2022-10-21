@@ -2,6 +2,7 @@ version: "3"
 services:
   proxy:
     image: traefik:v2.2
+    restart: always
     depends_on:
       - backend
       - admin
@@ -22,6 +23,7 @@ services:
 
   thumbor:
     image: apsl/thumbor:latest
+    restart: always
     environment:
       - LOADER=thumbor.loaders.http_loader
       - ALLOWED_SOURCES=['backend']
@@ -39,6 +41,7 @@ services:
   
   backend:
     image: ghcr.io/naturalsolutions/geopaysages_backend:latest
+    restart: always
     depends_on:
       db:
         condition: service_healthy
@@ -59,6 +62,7 @@ services:
 
   admin:
     image: ghcr.io/naturalsolutions/geopaysages_admin:latest
+    restart: always
     depends_on:
       - backend
     networks:
@@ -70,6 +74,7 @@ services:
 
   db:
     image: ghcr.io/naturalsolutions/geopaysages_db:latest
+    restart: always
     ports:
       - "${DB_PORT}:5432"
     healthcheck:
