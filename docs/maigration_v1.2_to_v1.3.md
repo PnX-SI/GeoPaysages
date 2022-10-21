@@ -1,3 +1,11 @@
+## Modifications majeures
+> Il s'agit-là d'une simple information, les étapes à entreprendre ne commencent qu'au paragraphe **Migrer la DB**.
+- Infrastructure docker  
+[Voir l'intro de la doc d'installation](./installation.md)  
+- Tous les fichiers pouvant être personnalisés sont dans `/custom`  
+[Voir l'intro de la doc de personnalisation](./personnalisation.md)
+
+
 ## Migrer la DB
 L'idée est de remplacer la DB livrée avec la nouvelle version par l'ancienne DB.  
 Lorsqu'on redémarre les containers le schéma de la DB est mis à jour via Alembic.  
@@ -47,8 +55,29 @@ Vos données sont à jours.
 A ce stade, l'app doit avoir un aspect normal
 
 #
-## Migrer les traductions
+## Migrer les personnalisations
+### 1. Migrer les traductions
 Le plus simple est de refaire vos modifs dans le nouveau fichier de traduction :  
 custom/i18n/fr/LC_MESSAGES/messages.po  
-Suivre les instructions de la doc :  
-[personnalisation.md#internationalisation-de-lapplication](./personnalisation.md#internationalisation-de-lapplication)
+[Voir la doc de personnalisation](./personnalisation.md#internationalisation-de-lapplication)
+
+### 2. Le bloc d'intro
+Avant il était dans la table de conf via la clé `home_intro`  
+Maintenant il s'agit d'un template jinja  
+[Voir la doc de personnalisation](./personnalisation.md#ajout-et-personnalisation-de-blocs-dans-la-page-daccueil)
+
+### 3. La page présentation (/about)
+Avant elle était dans la table de conf via les clés  
+`page_about_title`, `page_about_content` et `page_about_published`  
+Maintenant il s'agit d'un template jinja  
+[Voir la doc de personnalisation](./personnalisation.md#personnalisation-de-la-page-à-propos-about)
+
+### 4. Les pages supplémentaires
+Il s'agissait de pages créées de façon standard :  
+- Un template jinja dans `/backend/tpl/`
+- Une route dans `backend/routes.py`
+- Sûrement un lien dans `backend/tpl/layout.html`
+- Peut-être des traductions dans `backend/i18n/fr/LC_MESSAGES/messages.po`
+
+Le procédé a peu changer, tout ce passe dans le dossier `custom`  
+[Voir la doc de personnalisation](./personnalisation.md#ajout-et-personnalisation-dune-nouvelle-page-html)

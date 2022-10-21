@@ -1,8 +1,14 @@
-# Personnalisation de l'application
+# Intro
+Tous les fichiers pouvant être personnalisés sont dans `/custom`
+>(ou autre destination renseignée dans .env CUSTOM_PATH)
+
+**Il est fortement recommandé d'initialiser un dépôt git dans ce dossier.**
+
+# Personnalisation de l'interface
 
 Vous pouvez personnaliser l'interface de l'application en modifiant et ajoutant des fichiers dans le répertoire `/custom/static` (css, logo).
 
-# Base de données
+# Configuration en base de données
 
 Certains paramètres sont dans la table `conf` :
 
@@ -87,6 +93,15 @@ Il faut se rendre dans la colonne `icon` de la table `dico_theme` et y coller le
 
 Il est préférable d'utiliser un svg carré. Exemple de bibliothèque de SVG : [ionicons](https://ionic.io/ionicons)
 
+# Carrousel de la page d'accueil
+
+1. Placer les photos dans le dossier `custom/static/home-carousel`
+1. Les photos doivent de préférence
+    - Avoir une largeur 3x plus grande que leur hauteur. Ex : 1920 x 640
+    - Avoir un format de type jpeg
+    - Éviter d'avoir une largeur qui dépasse 2000px
+    - Être compressées à 90 pour alléger le poids de l'image
+
 # Ajout et personnalisation de blocs dans la page d'accueil
 
 Il est possible d'ajouter jusqu'à 3 blocs jinja dans la page d'accueil.
@@ -148,31 +163,17 @@ Reprendre la même procédure que pour la page "À propos", c'est à dire :
 
 **4. Création de l'intitulé du lien via l'internationalisation**
 
-- Ouvrir le fichier `backend/i18n/fr/LC_MESSAGES/messages.po`
+- Ouvrir le fichier `custom/i18n/fr/LC_MESSAGES/messages.po`
 - Copier/coller un bloc existant et effectuer les modifications
     nécessaires en lien avec la nouvelle page html
 
-**5. Compilation pour la prise en compte des modifications**
+**5. Prise en compte des modifications**
 
 - Suivre les étapes du chapitre Internationalisation de l'application
-- Pour les modifications effectuées dans les fichiers python, relancer
-    la compilation python
 
-```
-sudo service supervisor restart
-``` 
 
 # Internationalisation de l'application
 
 1. Éditer le fichier `custom/i18n/fr/LC_MESSAGES/messages.po` 
 1. Appliquer les changements `./docker/docker.sh exec backend pybabel compile -d ./i18n && ./docker/docker.sh restart backend`
 1. Actualiser la page web, les modifications devraient apparaitres
-
-# Carrousel de la page d'accueil
-
-1. Placer les photos dans le dossier `custom/static/home-carousel`
-1. Les photos doivent de préférence
-    - Avoir une largeur 3x plus grande que leur hauteur. Ex : 1920 x 640
-    - Avoir un format de type jpeg
-    - Éviter d'avoir une largeur qui dépasse 2000px
-    - Être compressées à 90 pour alléger le poids de l'image
