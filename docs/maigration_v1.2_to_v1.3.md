@@ -47,14 +47,12 @@ Redémarrer le backend
 `./docker/docker.sh restart backend`  
 Vos données sont à jours.
 
-#
 ## Migrer les media
 - Copier le contenu de data/images dans custom/upload/images
 - Copier le contenu de data/notice-photo dans custom/upload/notice-photo  
   
 A ce stade, l'app doit avoir un aspect normal
 
-#
 ## Migrer les personnalisations
 ### 1. Migrer les traductions
 Le plus simple est de refaire vos modifs dans le nouveau fichier de traduction :  
