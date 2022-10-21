@@ -1,4 +1,4 @@
-## Introduction
+### Introduction
 L'infrastructure de l'app est constituée de 5 containers docker.  
 Elle est donc isolée du system qui l'héberge, ne pouvant ni subir ni causer de conflits avec les paquets déjà installés.  
 Seuls les ports configurés peuvent entrer en collision avec d'autres services utilisant les même ports.  
@@ -10,7 +10,7 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 - proxy : Le point d'entré de l'app, Go
 
 #
-## Les commandes les plus utilisées
+### Les commandes les plus utilisées
 - Démarrer les containers, donc l'app  
   `./docker/docker.sh up -d`
 - Stopper les containers  
@@ -19,7 +19,7 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
   `./docker/docker.sh restart backend`   
 
 #
-## Pré-requis
+### Pré-requis
 - `docker compose` ou `docker-compose`  
 > Si docker est déjà installé, une de ces commandes est sûrement disponible.  
 > Sinon le mieux est d'installer la dernière version de docker qui intègre par défaut la commande `compose`
@@ -28,7 +28,7 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 - Installation Windows **(non recommandée)** : https://docs.docker.com/desktop/install/windows-install/
 
 #
-## Installer GéoPaysages
+### Installer GéoPaysages
 - Atteindre la racine du répertoire cloné
 - Désampler le fichier de configuration puis l'éditer :
   - `mv ./docker/.env.example ./docker/.env`  
@@ -44,7 +44,7 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
   **Bien lire les sorties du script !**
 
 #
-## Éditer le .env
+### Éditer le .env
 Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste attention à :   
 - Ces variables `DB_NAME`, `DB_USER`, `DB_PASSWORD`  
   - Voir note si dessus
@@ -54,7 +54,7 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
   Rien de grave, il vous faudrait juste le supprimer, déplacer votre custom et redémarrer l'app
 
 #
-## Variables du .env
+### Variables du .env
 | Nom | Description | Valeur |
 | ------ | ------ | ------ |
 | PROXY_HTTP_PORT | Port vers lequel pointe votre serveur | integer |
