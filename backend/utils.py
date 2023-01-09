@@ -1,6 +1,5 @@
 from base64 import urlsafe_b64encode
 from flask import url_for
-from PIL import Image, ImageFont, ImageDraw, ImageOps, ImageFile
 import os
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
@@ -14,7 +13,6 @@ import hashlib
 import urllib.parse
 
 db = SQLAlchemy()
-ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 dicotheme_schema = models.DicoThemeSchema(many=True)
 dicostheme_schema = models.DicoSthemeSchema(many=True)
