@@ -18,11 +18,10 @@ logger = logging.getLogger('alembic.env')
 
 
 def include_name(name, type_, parent_names):
-    print(type_, name, parent_names)
     if type_ == "schema":
-        return name in [None, "utilisateurs"]
+        return name in ["geopaysages", "utilisateurs"]
     elif type_ == "table":
-        return parent_names['schema_name'] is None or name == "t_roles"
+        return parent_names['schema_name'] == "geopaysages" or name == "t_roles"
     elif type_ != "column":
         return parent_names['table_name'] != "t_roles"
     return ["column", "index", "unique_constraint", "foreign_key_constraint"]
@@ -56,7 +55,12 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url=url, target_metadata=target_metadata, literal_binds=True, include_schemas = True, include_name = include_name
+        url = url,
+        target_metadata = target_metadata,
+        literal_binds = True,
+        include_schemas = True,
+        include_name = include_name,
+        version_table_schema = 'geopaysages'
     )
 
     with context.begin_transaction():
@@ -82,6 +86,7 @@ def run_migrations_online():
                 logger.info('No changes in schema detected.')
 
     connectable = current_app.extensions['migrate'].db.get_engine()
+    current_tenant = context.get_x_argument(as_dictionary=True).get("tenant")
 
     with connectable.connect() as connection:
         context.configure(
@@ -90,9 +95,12 @@ def run_migrations_online():
             process_revision_directives=process_revision_directives,
             include_schemas = True,
             include_name = include_name,
+            version_table_schema = 'geopaysages',
             **current_app.extensions['migrate'].configure_args
         )
 
+        connection.execute('ALTER ROLE ALL SET search_path = public')
+        connection.dialect.default_schema_name = current_tenant
         with context.begin_transaction():
             context.run_migrations()
 

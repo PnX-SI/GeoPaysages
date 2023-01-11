@@ -13,6 +13,8 @@ from sqlalchemy.dialects import postgresql
 
 class Conf(db.Model):
     __tablename__ = 'conf'
+    __table_args__ = {'schema': 'geopaysages'}
+
     key = db.Column(db.String, primary_key=True)
     value = db.Column(db.String)
 
@@ -22,6 +24,7 @@ class ComparatorEnum(Enum):
 
 class Observatory(db.Model):
     __tablename__ = 't_observatory'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id = db.Column(db.Integer, primary_key=True,
                    server_default=db.FetchedValue())
@@ -38,11 +41,12 @@ class Observatory(db.Model):
 
 class TSite(db.Model):
     __tablename__ = 't_site'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_site = db.Column(db.Integer, primary_key=True,
                         server_default=db.FetchedValue())
     id_observatory = db.Column(db.ForeignKey(
-        't_observatory.id', name='t_site_fk_observatory'))
+        'geopaysages.t_observatory.id', name='t_site_fk_observatory'))
     observatory = db.relationship(
         'Observatory', primaryjoin='TSite.id_observatory == Observatory.id')
     name_site = db.Column(db.String)
@@ -56,20 +60,21 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
-    main_theme_id = db.Column(db.ForeignKey('dico_theme.id_theme'))
+    main_theme_id = db.Column(db.ForeignKey('geopaysages.dico_theme.id_theme'))
     main_theme = db.relationship(
         'DicoTheme', primaryjoin='TSite.main_theme_id == DicoTheme.id_theme')
 
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_site_stheme_theme = db.Column(
         db.Integer, nullable=False, server_default=db.FetchedValue())
     id_site = db.Column(db.ForeignKey(
-        't_site.id_site'), primary_key=True, nullable=False)
+        'geopaysages.t_site.id_site'), primary_key=True, nullable=False)
     id_stheme_theme = db.Column(db.ForeignKey(
-        'cor_stheme_theme.id_stheme_theme'), primary_key=True, nullable=False)
+        'geopaysages.cor_stheme_theme.id_stheme_theme'), primary_key=True, nullable=False)
 
     t_site = db.relationship(
         'TSite', primaryjoin='CorSiteSthemeTheme.id_site == TSite.id_site', backref='cor_site_stheme_themes')
@@ -79,13 +84,14 @@ class CorSiteSthemeTheme(db.Model):
 
 class CorSthemeTheme(db.Model):
     __tablename__ = 'cor_stheme_theme'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_stheme_theme = db.Column(
         db.Integer, nullable=False, unique=True, server_default=db.FetchedValue())
     id_stheme = db.Column(db.ForeignKey(
-        'dico_stheme.id_stheme'), primary_key=True, nullable=False)
+        'geopaysages.dico_stheme.id_stheme'), primary_key=True, nullable=False)
     id_theme = db.Column(db.ForeignKey(
-        'dico_theme.id_theme'), primary_key=True, nullable=False)
+        'geopaysages.dico_theme.id_theme'), primary_key=True, nullable=False)
 
     dico_stheme = db.relationship(
         'DicoStheme', primaryjoin='CorSthemeTheme.id_stheme == DicoStheme.id_stheme', backref='cor_stheme_themes')
@@ -95,6 +101,7 @@ class CorSthemeTheme(db.Model):
 
 class DicoLicencePhoto(db.Model):
     __tablename__ = 'dico_licence_photo'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_licence_photo = db.Column(
         db.Integer, primary_key=True, server_default=db.FetchedValue())
@@ -104,6 +111,7 @@ class DicoLicencePhoto(db.Model):
 
 class DicoStheme(db.Model):
     __tablename__ = 'dico_stheme'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_stheme = db.Column(db.Integer, primary_key=True,
                           server_default=db.FetchedValue())
@@ -112,6 +120,7 @@ class DicoStheme(db.Model):
 
 class DicoTheme(db.Model):
     __tablename__ = 'dico_theme'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_theme = db.Column(db.Integer, primary_key=True,
                          server_default=db.FetchedValue())
@@ -145,11 +154,12 @@ class TRole(db.Model):
 
 class TPhoto(db.Model):
     __tablename__ = 't_photo'
+    __table_args__ = {'schema': 'geopaysages'}
 
     id_photo = db.Column(db.Integer, primary_key=True,
                          server_default=db.FetchedValue())
-    id_site = db.Column(db.ForeignKey('t_site.id_site'))
-    id_observatory = db.Column(db.ForeignKey('t_observatory.id'))
+    id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
+    id_observatory = db.Column(db.ForeignKey('geopaysages.t_observatory.id'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
     date_photo = db.Column(db.String)
@@ -157,7 +167,7 @@ class TPhoto(db.Model):
     legende_photo = db.Column(db.String)
     display_gal_photo = db.Column(db.Boolean)
     id_licence_photo = db.Column(db.ForeignKey(
-        'dico_licence_photo.id_licence_photo'))
+        'geopaysages.dico_licence_photo.id_licence_photo'))
 
     dico_licence_photo = db.relationship(
         'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
@@ -169,6 +179,7 @@ class TPhoto(db.Model):
 
 class Communes(db.Model):
     __tablename__ = 'communes'
+    __table_args__ = {'schema': 'geopaysages'}
 
     code_commune = db.Column(db.String, primary_key=True,
                              server_default=db.FetchedValue())
