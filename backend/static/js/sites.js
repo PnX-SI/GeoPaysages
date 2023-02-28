@@ -174,6 +174,7 @@ geopsg.initSites = (options) => {
                 iconSize: new L.Point(40, 40),
               });
             },
+            ...options.dbconf.map_cluster_options,
           });
           map.addLayer(observatory.markers);
 
