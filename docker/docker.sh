@@ -36,6 +36,8 @@ if [ $1 = "up" ]; then
     if ! test -d "$CUSTOM_PATH"; then
         cp -r custom.sample "$CUSTOM_PATH"
         echo "The custom dir was created on $CUSTOM_PATH"
+    else
+        rsync -av --ignore-existing custom.sample/static/ "$CUSTOM_PATH/static/"
     fi
     cd ../
 fi
