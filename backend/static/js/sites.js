@@ -6,7 +6,7 @@ geopsg.initSites = (options) => {
   const url = new URL(window.location);
   const resetFilter = !_.isNil(url.searchParams.get('nofilters'));
   if (resetFilter) {
-    localStorage.removeItem('geopsg.sites.selectedFilters')
+    localStorage.removeItem('geopsg.sites.selectedFilters');
   } else {
     try {
       selectedFilters = JSON.parse(url.searchParams.get('filters'));
@@ -166,6 +166,7 @@ geopsg.initSites = (options) => {
             observatory.layer = layer;
           }
           observatory.markers = L.markerClusterGroup({
+            animate: !options.dbconf.map_cluster_disable,
             iconCreateFunction: (cluster) => {
               return new L.DivIcon({
                 html: `<div style="color:${color};border-color: ${color};"><span>${cluster.getChildCount()}</span></div>`,
@@ -175,6 +176,12 @@ geopsg.initSites = (options) => {
             },
           });
           map.addLayer(observatory.markers);
+
+          if (options.dbconf.map_cluster_disable) {
+            setTimeout(() => {
+              observatory.markers.disableClustering();
+            }, 0);
+          }
         });
 
         map.addControl(

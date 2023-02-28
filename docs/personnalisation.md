@@ -20,9 +20,9 @@ Certains paramètres sont dans la table `conf` :
     - Par nom : `name_site`
     - Par référence : `ref_site`
 
-- `show_site_ref` affiche la référence du site
+- `show_site_ref` affiche la référence du site si la valeur est `true`
 
-- `map_cluster_disable` permet d'activer `FALSE` (par défaut) ou de désactiver `TRUE` les clusters de point.
+- `map_cluster_disable` permet d'activer `false` (par défaut) ou de désactiver `true` les clusters de point.
 
 - `map_cluster_options` permet l'activation / désactivation / gestion du zoom des clusters de point. [Liste des paramètres disponibles (sauf fonctions)](https://github.com/Leaflet/Leaflet.markercluster#all-options)
 
