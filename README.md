@@ -7,6 +7,7 @@ Application web permettant de publier un observatoire photographique des paysage
 - http://paysages.vanoise-parcnational.fr
 - http://paysages.ecrins-parcnational.fr
 - https://paysages.parc-naturel-pilat.fr
+- http://paysages.pnrsud.fr/
 
 ## Installation
 
