@@ -68,3 +68,19 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 | ADMIN_ENV_DEV | L'admin est lancée via `npm start` ? | 0: non<br>1: oui |
 | DB_ADDRESS | Adresse de la DB<br>**Ne changer que si une autre DB est utilisé** | string |
 | CUSTOM_PATH | Chemin vers le dossier contenant les fichiers custom<br>**Le dossier ne doit pas exister pour que l'install puisse le créer** | **Si vous modifier la valeur par défaut :**<br>Utiliser un chemin absolu<br>ex. /home/nsdev/GeoPaysages-sit-paca |
+
+#
+### Configurer NGINX
+
+    sudo nano /etc/nginx/conf.d/geopaysages.conf
+
+Copiez/collez-y ces lignes et remplacer <PROXY_HTTP_PORT> par la valeur utilisée dans le fichier .env :
+
+    server {
+        listen       80;
+        server_name  localhost;
+        client_max_body_size 100M;
+        location / {
+            proxy_pass http://127.0.0.1:<PROXY_HTTP_PORT>;
+        }
+    }
