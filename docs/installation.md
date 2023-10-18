@@ -17,6 +17,14 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
   `./docker/docker.sh down`
 - Parfois, mais vraiment très rarement, il faudra juste redémarrer le backend    
   `./docker/docker.sh restart backend`   
+- **Voir les logs d'un container**  
+  `./docker/docker.sh logs -f <nom_du_container>`  
+  <nom_du_container> : db, backend, proxy, ...  
+  Exemples :  
+  Afficher les logs dans le terminal  
+  `./docker/docker.sh logs -f backend`  
+  Générer un fichier  
+  `./docker/docker.sh logs -f backend > /path/to/logfile.txt`
 
 #
 ### Pré-requis
