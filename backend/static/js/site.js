@@ -1,10 +1,11 @@
 var geopsg = geopsg || {};
 geopsg.site = (options) => {
+  const sitesUtils = geopsg.getSitesUtils();
   new Vue({
     el: '#js-app-site',
     data: () => {
       return {
-        textCollapses: ['description', 'testimonial'],
+        textCollapses: ['description', 'testimonial', 'stheme'],
         textCollapsables: [],
         textCollapseds: []
       }
@@ -24,6 +25,12 @@ geopsg.site = (options) => {
         return {
           'text-collapsable': this.textCollapsables.indexOf('testimonial') > -1,
           'text-collapsed': this.textCollapseds.indexOf('testimonial') > -1
+        }
+      },
+      textCollapseClsStheme() {
+        return {
+          'text-collapsable': this.textCollapsables.indexOf('stheme') > -1,
+          'text-collapsed': this.textCollapseds.indexOf('stheme') > -1
         }
       }
     },
@@ -100,7 +107,9 @@ geopsg.site = (options) => {
           L.control.layers(controlLayers).addTo(map);
         }
 
-        L.marker(options.site.geom).addTo(map)
+        L.marker(options.site.geom, { icon: sitesUtils.getMarkerIcon(options.site, {
+          showThemeIcon: false
+        }) }).addTo(map)
       }
     }
   })

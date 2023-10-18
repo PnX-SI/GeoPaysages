@@ -2,6 +2,8 @@
 
 Script that fetch site images from FTP Servers
 
+**If you want to use docker, jump to [Docker usage](#docker-usage)**
+
 ## Installation
 
 From this folder (and inside your virtual env)
@@ -29,6 +31,31 @@ Once the installation is completed, the script `fetchsiteimages` should be creat
 
 ```sh
 fetchsiteimages config.ini
+```
+
+## Docker usage
+
+Execute these commands from this folder
+
+```sh
+docker build . -t geopaysagesftpclient:latest
+```
+
+Edit config.ini (follow the **Configuration** section below)  
+**Warning: `sqlalchemy.url` must point to localhost**
+
+```sh
+docker run -it --network host -v <ABS_PATH_TO_CUSTOM_FOLDER>/upload/images:/media -v <ABS_PATH_TO_THIS_DIR>/config.ini:/geopaysagesftpclient/config.ini  geopaysagesftpclient:latest fetchsiteimages config.ini
+```
+
+`ABS_PATH_TO_CUSTOM_FOLDER` your /custom folder is probably in the parent of this folder, with /admin /backend etc.
+
+**There is a bug:** Each downloaded file is also copied with a ~ at the end.  
+Waiting for the fix, you can do something like this :
+
+```sh
+cd ../custom/upload/images
+sudo rm ./*~
 ```
 
 ## Configuration

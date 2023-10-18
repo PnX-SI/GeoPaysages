@@ -1,0 +1,90 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'home' %}
+{% block title %}{{ _('home.meta_title') }}{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home_multi_obs.css') }}">
+
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/wellknown.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sites-utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<script src="{{ url_for('static', filename='js/home_multi_obs.js') }}"></script>
+{% endblock %}
+
+{% block bodyClassNames %}page-home{% endblock %}
+
+{% block title_mobile %}{{ _('home.title_mobile') }}{% endblock title_mobile %}
+
+{% block content %}
+<div class="page-content pb-4">
+  {% if carousel_photos|length <= 0 %}
+  <h1 class="text-center pt-4">{{ _('home.title') }}</h1>
+  {% endif %}
+
+  {% include 'components/home-carousel.jinja' %}
+
+  {% set home_block_1 = getCustomTpl('home_block_1') %}
+  {% if home_block_1 %}
+    {% include home_block_1 %}
+  {% endif %}
+
+  <div class="container-fluid px-0 my-4 my-md-5 d-flex flex-wrap justify-content-center" style="max-width: {{200*patchwork_options.nb_cols}}px;">
+    {% for observatory in observatories %}
+    <div class="patchwork-item">
+      <a class="d-block w-100 h-100 position-relative" href='/sites?filters=[{"name":"id_observatory","values":[{{ observatory.id }}]}]'>  
+        <img class="w-100 h-100" src="{{ getThumborUrl('200x200', observatory.thumbnail) }}">
+        <span class="d-flex flex-column justify-content-center align-items-center text-center position-absolute w-100 h-100 info text-white">
+          <span class="text-uppercase text-shadow">{{ observatory.title }}</span>
+          <button type="button" class="btn btn-outline-light d-none">Voir</button>
+        </span>
+      </a>
+    </div>
+    {% endfor %} 
+    <div class="text-center text-white text-uppercase patchwork-item d-flex" style="background-color: #447e72;">
+      <a href='/sites' class="d-flex align-items-center justify-content-center w-100">
+        Découvrez nos observatoires
+      </a>
+    </div>
+  </div>
+
+  {% set home_block_2 = getCustomTpl('home_block_2') %}
+  {% if home_block_2 %}
+    {% include home_block_2 %}
+  {% endif %}
+
+  <div class="container-fluid map-block px-0" style="max-width: {{200*patchwork_options.nb_cols}}px;">
+    <a class="d-block map-outer position-relative" href="/sites?nofilters">
+      <div class="map-overlay position-absolute h-100 w-100 d-flex justify-content-center align-items-center">
+        <button class="btn btn-primary">{{ _('home.block.explore_sites') }}</button>
+      </div>
+      <div class="js-map-wrapper h-100"></div>
+    </a>
+  </div>
+
+  {% set home_block_3 = getCustomTpl('home_block_3') %}
+  {% if home_block_3 %}
+    {% include home_block_3 %}
+  {% endif %}
+
+</div>
+
+<script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      geopsg.initHome({
+        carousel: {
+          photos: {{carousel_photos | tojson}},
+        }
+      });
+      geopsg.initHomeMulti({
+        observatories: {{observatories | tojson}},
+        patchwork_options: {{patchwork_options | tojson}},
+        sites: {{sites | tojson}}
+      })
+    }
+  }
+</script>
+{% endblock %}

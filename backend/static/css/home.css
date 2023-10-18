@@ -1,147 +1,38 @@
-.page-home {
-    overflow-x: hidden;
-}
-
 .page-home .page-content {
-    background: url("../images/bg-home.jpg") no-repeat center;
-    background-size: cover;
+  background: url('../images/bg-home.jpg') repeat-y center;
+  background-size: contain;
 }
 
-.page-home .blocks {
-  position: relative;
-  height: calc(100vh - 160px);
-  width: 50%;
-  margin : 0 auto;
-  transform-origin: left;
+.page-home .text-shadow {
+  z-index: 2;
+  text-shadow: 2px 2px 2px #00000099;
+  right: 0;
 }
 
-.page-home .block {
-  background-color: #777;
-  overflow: hidden;
+.page-home .app-home-carousel h1 {
+  font-size: 2.5rem;
 }
 
-.page-home .block .img {
-    width: 100%;
-    height: 100%;
-    transition: filter .5s ease;
-    background: no-repeat center;
-    background-size: cover;
+.page-home .app-home-carousel .carousel-item {
+  background-size: cover;
+  background-position: center;
 }
 
-.page-home .block:hover .img {
-    filter: brightness(50%);
-    -webkit-filter: brightness(50%);
-    -moz-filter: brightness(50%);
-    -o-filter: brightness(50%);
-    -ms-filter: brightness(50%);
+.page-home .app-home-carousel .btn-scroll {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  border-radius: 50%;
+  box-shadow: 0 0 5px 1px #00000066;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  color: #666;
 }
 
-.page-home .block a{
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    position: absolute;
-    z-index: 2;
-}
-
-.page-home .legend{
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-    font-size: 14px;
-    font-style: italic;
-    line-height: 16px;
-    border-right: solid 1px rgba(255,255,255,.25);
-    border-bottom: solid 1px rgba(255,255,255,.25);
-    color: #fff;
-    opacity: 0;
-    transition: opacity .5s ease;
-    max-width: 160px;
-}
-
-.page-home .block:hover .legend{
-    opacity: 1;
-}
-
-.page-home .legend h6{
-    font-size: 12px;
-    font-weight: normal;
-    font-style: normal;
-    padding-left: 20px;
-    position: relative;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.page-home .legend h6:before{
-    content : ' ';
-    position: absolute;
-    left: 0;
-    height: 8px;
-    width: 8px;
-    background-color: var(--color-secondary);
-    transform: translateY(25%);
-}
-
-.page-home .legend h5{
-    font-size: 14px;
-    font-style: normal;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-family: 'Hind', sans-serif;
-}
-
-.page-home .discover {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0px;
-}
-
-.page-home .block:hover .discover{
-    transform: translateY(-100%);
-}
-
-.page-home .block-map a{
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-    width: 100%;
-    font-family: 'Hind', sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    background: rgba(0,0,0,.5);
-    transition: background .3s linear;
-}
-
-.page-home .block-map a:hover{
-    background: rgba(0,0,0,.8);
-}
-
-
-@media screen and (min-width: 800px){
-    .page-home .block{
-        position: absolute;
-    }
-}
-@media screen and (max-width: 800px){
-    .page-home .block{
-        height: 200px;
-        margin: 10px;
-    }
-
-    .page-home .legend{
-        display: none;
-    }
-
-    .page-home .discover{
-        display: none;
-    }
+.page-home .marker-site {
+  pointer-events: none;
 }

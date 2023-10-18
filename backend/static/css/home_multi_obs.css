@@ -1,0 +1,44 @@
+.page-home .patchwork-item .info {
+  z-index: 1;
+  top: 0;
+  left: 0;
+}
+
+.page-home .patchwork-item {
+  width: 50%;
+  max-width: 200px;
+  height: 200px;
+}
+.page-home .patchwork-item img {
+  object-fit: cover;
+}
+
+.page-home .patchwork-item .info {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.page-home .patchwork-item button {
+  width: fit-content;
+}
+
+.page-home .patchwork-item:hover button {
+  display: block !important;
+}
+
+@media (min-width: 992px) {
+  .page-home .map-block {
+    min-width: 800px;
+  }
+}
+
+.page-home .map-outer {
+  height: 600px;
+}
+
+.page-home .map-outer * {
+  pointer-events: none !important;
+}
+
+.page-home .map-overlay {
+  z-index: 1000;
+}

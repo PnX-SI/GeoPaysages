@@ -1,0 +1,75 @@
+.nav-link {
+  font-size: 16px;
+  font-weight: 400;
+  padding-bottom: 4px;
+  cursor: pointer;
+}
+
+.nav-item {
+  padding-bottom: 10px
+}
+
+.userName {
+  display: inline;
+  text-transform: lowercase;
+}
+
+.nav-link:hover {
+
+  color: black;
+
+  .icon-user {
+    color: black;
+  }
+}
+
+.nav-link.active {
+  margin-bottom: -2px;
+  border-bottom: 2px solid #00048d
+}
+
+li {
+  padding: 2px 10px;
+}
+
+.navbar-brand {
+  padding: 0px;
+  cursor: default;
+}
+
+.navbar {
+  border-bottom: 1px solid #9c9c9c;
+  padding: 0;
+}
+
+#collapse ul {
+  align-items: flex-end;
+}
+
+#collapse.show ul li {
+  padding: 5px 10px;
+}
+
+#collapse.show ul li:first-child {
+  padding-top: 15px;
+}
+
+#collapse.show ul li:last-child {
+  padding-right: 20px;
+  padding-bottom: 0
+}
+
+.active {
+  font-weight: 500
+}
+
+
+.logout{
+  padding-bottom: 3px;
+  padding-left: 0px;
+  padding-right: 20px;
+
+  .icon-exit{
+    font-size: 26px
+  }
+}

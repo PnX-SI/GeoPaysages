@@ -1,0 +1,88 @@
+.picture {
+  padding: 20px 10px 0px 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumb {
+  margin-bottom: 20px;
+  padding: 0 10px;
+}
+
+.photos {
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-top: 30px;
+  height: fit-content;
+}
+
+.site-title {
+  text-align: left;
+  width: 100%;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #dedede;
+  background-color: #2f2f2f;
+  border: 1px solid #7d7b7b;
+}
+
+.site-title:hover {
+  color: white;
+  background-color: #434343;
+}
+
+
+.site-title.active {
+  background-color: #434343;
+  border: 1px solid #7d7b7b;
+  border-left: 10px solid #00188F;
+  outline: 0;
+}
+
+.list-site {
+  height: calc(100vh - 98px);
+  overflow-y: scroll;
+  background: rgba(0, 0, 0, .8);
+  padding: 30px 15px;
+
+}
+
+.inner {
+  min-height: calc(100vh - 98px);
+}
+
+.photo-badges {
+  font-size: 18px;
+  position: absolute;
+  z-index: 999;
+  top: 5px;
+  right: 15px;
+  color: #00188F;
+
+  i {
+    padding-left: 5px
+  }
+}
+
+.photo-name {
+  font-size: 14px;
+  padding-left: 10px;
+  max-width: 160px;;
+}
+
+.icon-eye-blocked,
+.icon-eye {
+  cursor: pointer;
+}
+
+.selected-icon {
+  display: none;
+  line-height: unset;
+  float: right;
+}
+
+.icon-active {
+  display: inline;
+}

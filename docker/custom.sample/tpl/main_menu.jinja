@@ -1,0 +1,20 @@
+<li class="nav-item text-uppercase {% if active_page == 'home' %}active{% endif %}">
+  <a href="/" class="nav-link">
+    <span class="px-3">{{ _('header.nav.home') }}</span>
+  </a>
+</li>
+<li class="nav-item text-uppercase {% if active_page == 'about' %}active{% endif %}">
+  <a href="/about" class="nav-link">
+    <span class="px-3">{{ _('header.nav.about') }}</span>
+  </a>
+</li>
+<li class="nav-item text-uppercase {% if active_page == 'sites' %}active{% endif %}">
+  <a href="/sites" class="nav-link">
+    <span class="px-3">{{ _('header.nav.sites') }}</span>
+  </a>
+</li>
+<li class="nav-item text-uppercase {% if active_page == 'gallery' %}active{% endif %}">
+  <a href="/gallery" class="nav-link">
+    <span class="px-3">{{ _('header.nav.gallery') }}</span>
+  </a>
+</li>

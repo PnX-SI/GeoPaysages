@@ -1,0 +1,102 @@
+version: "3"
+services:
+  proxy:
+    image: traefik:v2.2
+    restart: always
+    depends_on:
+      - backend
+      - admin
+      - thumbor
+    ports:
+      - "${PROXY_HTTP_PORT}:80"
+    command:
+      - --providers.docker
+      - --providers.docker.exposedbydefault=false
+      - --accesslog
+      - --log
+    networks:
+      - traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - traefik.enable=true
+
+  thumbor:
+    image: apsl/thumbor:latest
+    restart: always
+    environment:
+      - LOADER=thumbor.loaders.http_loader
+      - ALLOWED_SOURCES=['backend']
+      - RESULT_STORAGE=thumbor.result_storages.file_storage
+      - ALLOW_UNSAFE_URL=False
+      - SECURITY_KEY=${THUMBOR_SECURITY_KEY}
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.thumbor.rule=PathPrefix(`/thumbor`)
+      - traefik.http.routers.thumbor.middlewares=thumbor-stripprefix
+      - traefik.http.middlewares.thumbor-stripprefix.stripprefix.prefixes=/thumbor
+      - traefik.http.services.thumbor.loadbalancer.server.port=8000
+  
+  backend:
+    image: ghcr.io/naturalsolutions/geopaysages_backend:latest
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - traefik
+    volumes:
+      - ${CUSTOM_PATH}/upload:/app/static/upload
+      - ${CUSTOM_PATH}/static:/app/static/custom
+      - ${CUSTOM_PATH}/i18n:/app/i18n
+      - ${CUSTOM_PATH}/custom_app.py:/app/custom_app.py
+      - ${CUSTOM_PATH}/tpl:/app/tpl/custom
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend.rule=PathPrefix(`/`)
+      - traefik.http.services.backend.loadbalancer.server.port=80
+    env_file:
+      - ./.env
+
+  admin:
+    image: ghcr.io/naturalsolutions/geopaysages_admin:latest
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.admin.rule=PathPrefix(`/admin`)
+      - traefik.http.services.admin.loadbalancer.server.port=80
+
+  db:
+    image: ghcr.io/naturalsolutions/geopaysages_db:latest
+    restart: always
+    ports:
+      - "${DB_PORT}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h 127.0.0.1"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    networks:
+      - traefik
+    volumes:
+      - ${CUSTOM_PATH}/postgresql.conf:/etc/postgresql/postgresql.conf
+      - geopaysages-db-data:/var/lib/postgresql/data/pgdata
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+
+volumes:
+  geopaysages-db-data:
+
+networks:
+  traefik:

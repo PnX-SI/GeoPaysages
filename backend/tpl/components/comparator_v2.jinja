@@ -1,0 +1,192 @@
+<template id="tpl-app-comparator-v2">
+  <div>
+    <div class="app-comparator" v-bind:style="{height: 'calc(100vh - ' + (thumbsListH + 50) + 'px)'}">
+      <div class="d-flex justify-content-between d-sm-none mx-1 mb-1">
+        <b-button class="btn-square" variant="primary" v-on:click="onToggleSelectorClick(0)">
+          <i v-bind:class="['icon', (hiddenSelectors[0] ? 'ion-md-calendar':'ion-md-close')]"></i>
+        </b-button>
+        <b-dropdown :text="curMode.label" variant="primary">
+          <b-dropdown-item-button 
+            v-for="mode in modes"
+            :key="mode.name"
+            v-on:click="onBtnModeClick(mode)"
+            :active="mode.name == curMode.name"
+            variant="primary">
+            <span :inner-html.prop="mode.label"></span>
+          </b-dropdown-item-button>
+        </b-dropdown>
+        <b-button class="btn-square" variant="primary" v-on:click="onToggleSelectorClick(1)">
+          <i v-bind:class="['icon', (hiddenSelectors[1] ? 'ion-md-calendar':'ion-md-close')]"></i>
+        </b-button>
+      </div>
+      <b-button-group class="mode-selector d-none d-sm-block mx-0 mb-0">
+        <b-button 
+          v-for="mode in modes"
+          :key="mode.name"
+          v-on:click="onBtnModeClick(mode)"
+          :pressed="mode.name == curMode.name"
+          variant="primary"
+          v-html="mode.label">
+        </b-button>
+      </b-button-group>
+
+      <app-comparator-v2-selector 
+        class="left ml-1 ml-sm-2" 
+        v-bind:class="{'d-none': hiddenSelectors[0], 'd-sm-block': true}"
+        :items="photos" 
+        :selected-item="comparedPhotos[0]"
+        v-on:item-selected="onPhotoSelected(0, $event)"
+      >
+      </app-comparator-v2-selector>
+      <app-comparator-v2-selector 
+        class="right text-right mr-1 mr-sm-2" 
+        v-bind:class="{'d-none': hiddenSelectors[1], 'd-sm-block': true}"
+        :items="photos" :selected-item="comparedPhotos[1]" 
+        :right="true"
+        v-on:item-selected="onPhotoSelected(1, $event)"
+      >
+      </app-comparator-v2-selector>
+      <div class="photo-caption left">
+        <b-badge 
+          pill 
+          variant="light" 
+          class="ml-3 mb-3 photo-caption-date" 
+          :inner-html.prop="this.comparedPhotos[0] | dateDisplay">
+        </b-badge>
+        <span class="photo-caption-cpr" v-html="this.comparedPhotos[0].caption"></span>
+      </div>
+      <div class="photo-caption right text-right">
+        <b-badge 
+          pill 
+          variant="light" 
+          class="mr-3 mb-3 photo-caption-date" 
+          :inner-html.prop="this.comparedPhotos[1] | dateDisplay">
+        </b-badge>
+        <span class="photo-caption-cpr" v-html="this.comparedPhotos[1].caption"></span>
+      </div>
+      <div class="row h-100">
+        <div class="col col-map" v-bind:class="{'pr-2': curMode.name != 'sidebyside'}">
+          <div class="h-100" ref="photo1"></div>
+        </div>
+        <div class="col col-map"
+          v-bind:class="{'d-none': curMode.name == 'sidebyside', 'pl-2': curMode.name != 'sidebyside'}">
+          <div class="h-100" ref="photo2"></div>
+        </div>
+      </div>
+      <b-modal id="comparatorLoading" class="modal-contained" size="sm" static lazy centered no-fade no-close-on-backdrop
+        no-close-on-esc hide-header hide-footer>
+        <p class="mb-0">{{ _('comparatorv2.loading') }}</p>
+        <b-progress :value="100" variant="info" animated class="mt-1"></b-progress>
+      </b-modal>
+    </div>
+    <div 
+      class="app-comparator-thumbs-wrapper w-100 d-flex overflow-auto mt-3 mx-1 mx-sm-0" 
+      v-bind:style="{height: thumbsListH + 'px'}"
+    >
+      <recyclescroller
+        direction="horizontal"
+        :buffer="5"
+        class="scroller"
+        :items="photos"
+        :item-size="thumbProps.width + 10"
+        key-field="filename"
+        v-slot="{ item }"
+      >
+        <div class="thumb position-relative" v-bind:class="[getThumbClasses(item)]">
+          <img :src="'/api/thumbor/presets/150x150/' + item.filename" :alt="item | dateDisplay" />
+          <div class="thumb-overlay d-flex flex-column justify-content-center">
+            <div>
+              <b-button variant="light" class="shadow rounded-circle btn-side-selector left" @click="onPhotoSelected(0, item)">
+                <span class="h1">1</span>
+              </b-button>
+              <b-button variant="light" class="shadow rounded-circle btn-side-selector right" @click="onPhotoSelected(1, item)">
+                <span class="h1">2</span>
+              </b-button>
+            </div>
+            <div class="mt-1 text-white text-shadow" :inner-html.prop="item.shot_on | dateFormat"></div>
+          </div>
+        </div>
+      </recyclescroller>
+    </div>
+  </div>
+</template>
+
+<template id="tpl-app-comparator-v2-selector">
+  <div class="photo-selector">
+    <b-dropdown variant="primary" :text="selectedItem?.shot_on | dateFormat" lazy no-flip :right="right" class="date-selector">
+      {% if dbconf.comparator_date_filter == 'False': %}
+      {% else %}
+        <div class="mx-2">
+          <span class="date_filter_title">{{ _('comparatorv2.date.filter.title') }}</span>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>{{ _('comparatorv2.date.filter.start') }}</span>
+            <div>
+              <input type="date" v-model="dateFrom" />
+              <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateFrom = null">
+                <span class="material-icons">clear</span>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <span>{{ _('comparatorv2.date.filter.end') }}</span>
+            <div>
+              <input type="date" v-model="dateTo" />
+              <button class="btn btn-link px-1 py-0" type="button" v-on:click="dateTo = null">
+                <span class="material-icons">clear</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <b-dropdown-divider></b-dropdown-divider>
+      {% endif %}
+      <b-dropdown-item-button 
+        v-for="(item, index) in pageItems" 
+        v-bind:key="item.id" 
+        v-on:click="onItemClick(item)"
+      >
+        <span 
+          v-bind:class="{'current-image': item.id ==  currentItem?.id }"
+          :inner-html.prop="item.shot_on | dateFormat"
+        >
+        </span>
+      </b-dropdown-item-button>
+      <b-dropdown-divider></b-dropdown-divider>
+      <div class="mx-2">
+        <b-pagination variant="primary" v-model="currentPage" :total-rows="nbFilteredItems" :per-page="perPage"></b-pagination>
+      </div>
+    </b-dropdown>
+    <div class="d-block d-lg-inline-block mt-1 mt-lg-0 date-stepper">
+      <b-button variant="primary" v-on:click="onPrevBtnClick()">&lt;</b-button>
+      <b-button variant="primary" v-on:click="onNextBtnClick()">&gt;</b-button>
+      {% if dbconf.comparator_date_step_button == 'False': %}
+      {% else %}
+      <b-dropdown variant="primary" :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
+        <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
+          <span :inner-html.prop="step.label"></span>
+        </b-dropdown-item-button>
+      </b-dropdown>
+    {% endif %}
+    </div>
+  </div>
+</template>
+
+<script>
+  document.addEventListener('readystatechange', (e) => {
+    if (document.readyState == 'complete') {
+      geopsg.comparator({
+        dbconf: {{dbconf | tojson}},
+        site: {{site | tojson}},
+        photos: {{photos | tojson}},
+        translations: {
+          'mode_sidebyside': "{{ _('comparatorv2.mode.sidebyside') }}",
+          'mode_split': "{{ _('comparatorv2.mode.split') }}",
+          'date_steps_none': "{{ _('comparatorv2.date.steps.none') }}",
+          'date_steps_1d': "{{ _('comparatorv2.date.steps.1d') }}",
+          'date_steps_1w': "{{ _('comparatorv2.date.steps.1w') }}",
+          'date_steps_1m': "{{ _('comparatorv2.date.steps.1m') }}",
+          'date_steps_1y': "{{ _('comparatorv2.date.steps.1y') }}"
+        }
+      });
+    }
+  });
+</script>

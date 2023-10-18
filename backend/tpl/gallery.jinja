@@ -1,0 +1,121 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'gallery' %}
+{% block title %}{{ _('gallery.meta_title') }}{% endblock %}
+{% block head %}
+{{ super() }}
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.css') }}"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+
+<script src="{{ url_for('static', filename='vendor/vue-lazyload.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/gallery.js') }}"></script>
+{% endblock %}
+
+
+{% block bodyClassNames %}page-gallery{% endblock %}
+
+{% block title_mobile %}{{ _('gallery.title') }}{% endblock title_mobile %}
+
+{% block content %}
+
+  {# <div class="container">
+    <div class="row justify-content-center">
+    {% for site in sites %}
+      <div class="picture col-lg-2 col-md-3 col-sm-4 col-6">
+        <a href="/sites/{{ site.id_site }}">
+          <img src="{{ site.photo }}" alt="{{ site.name_site }}">
+        </a>
+        <div class="discover">
+          <a href="/sites/{{ site.id_site }}" class="d-block">{{ site.name_site }}<br /><span class="text-uppercase township">{{ site.ville.nom_commune }}</span><small class="ref">{{ site.ref_site }}</small></a>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div> #}
+
+  <div id="js-app-gallery"
+        class="app-gallery container-fluid d-flex flex-column"
+        v-bind:class="{'sidebar-collapsed': isSidebarCollapsed}">
+    
+    {% include 'components/sites-filter.jinja' %}
+
+    <div class="container sans-serif mt-1 mt-lg-0">
+      <div class="photos-spacer d-none d-lg-block"></div>
+      <div class="photos row justify-content-center">
+        <div v-for="site in selectedSites"
+          class="picture col-lg-2 col-lg-3 col-sm-4 col-6"
+          @mouseenter="onSiteMousover(site)"
+          @mouseleave="onSiteMouseout(site)"
+        >
+          <a :href="'/sites/' + site.id_site">
+            <img v-lazy="'/api/thumbor/presets/200x200/'+site.photo" :alt="site.name_site">
+          </a>
+          <div class="discover" :style="{
+            'background-color': site.observatory.color + 'BB'
+            }"
+          >
+            <a :href="'/sites/' + site.id_site" class="d-flex flex-column justify-content-space-evenly">
+              <span v-if="isMultiObservatories" class="observatory-label text-uppercase font-weight-bold" v-html="site.observatory.title"></span>
+              <span v-if="!isMultiObservatories" class="site-label" v-html="site.name_site"></span>
+              <span class="township" v-html="site.ville.label"></span>
+              <span v-if="isMultiObservatories" class="label" v-html="site.name_site"></span>
+              {% if dbconf.show_site_ref: %}
+              <small class="ref" v-html="site.ref_site"></small>
+              {% endif %}
+            </a>
+          </div>
+        </div>
+
+
+
+      </div>
+      <div class="row d-none d-lg-block">
+        <div class="col d-flex justify-content-center">
+          <span class="center-filter px-3 py-2">
+          {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          >') }} {% endautoescape %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    document.onreadystatechange = () => {
+      if (document.readyState == 'complete') {
+        geopsg.initGallery({
+          observatories: {{observatories | tojson}},
+          sites: {{sites | tojson}},
+          filters: {{filters | tojson}},
+          dbconf: {{dbconf | tojson}}
+        })
+      }
+    };
+
+  </script>
+
+<!-- <script>
+    document.onreadystatechange = () => {
+      if (document.readyState == 'complete') {
+  
+        var picture = document.querySelector('.picture');
+        var container = document.querySelector('.container');
+        var width = container.clientWidth;
+        window.addEventListener('resize', () => {
+          onResize()
+
+        })
+        onResize()
+        function onResize() {
+          var calc = "calc(" + width + " / 6)";
+          picture.style.width = calc + 'px';
+          picture.style.height = picture.style.width;
+          console.log('width', picture.style.width)
+  
+        }
+      }
+    };
+  </script> -->
+
+{% endblock %}
