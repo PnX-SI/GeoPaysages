@@ -8,6 +8,11 @@ DB_PORT=5432
 THUMBOR_SECURITY_KEY=secret
 FLASK_SECRET_KEY=secret
 
+# Docker images
+DB_IMAGE=ghcr.io/naturalsolutions/geopaysages_db:latest
+ADMIN_IMAGE=ghcr.io/naturalsolutions/geopaysages_admin:latest
+BACKEND_IMAGE=ghcr.io/naturalsolutions/geopaysages_backend:latest
+
 # You probably don't need to change this values
 DEBUG=0
 ADMIN_ENV_DEV=0

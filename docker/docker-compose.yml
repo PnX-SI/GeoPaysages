@@ -40,7 +40,7 @@ services:
       - traefik.http.services.thumbor.loadbalancer.server.port=8000
   
   backend:
-    image: ghcr.io/naturalsolutions/geopaysages_backend:latest
+    image: ${BACKEND_IMAGE:-ghcr.io/naturalsolutions/geopaysages_backend:latest}
     restart: always
     depends_on:
       db:
@@ -61,7 +61,7 @@ services:
       - ./.env
 
   admin:
-    image: ghcr.io/naturalsolutions/geopaysages_admin:latest
+    image: ${ADMIN_IMAGE:-ghcr.io/naturalsolutions/geopaysages_admin:latest}
     restart: always
     depends_on:
       - backend
@@ -73,7 +73,7 @@ services:
       - traefik.http.services.admin.loadbalancer.server.port=80
 
   db:
-    image: ghcr.io/naturalsolutions/geopaysages_db:latest
+    image: ${DB_IMAGE:-ghcr.io/naturalsolutions/geopaysages_db:latest}
     restart: always
     ports:
       - "${DB_PORT}:5432"
