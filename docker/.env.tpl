@@ -9,9 +9,9 @@ THUMBOR_SECURITY_KEY=secret
 FLASK_SECRET_KEY=secret
 
 # Docker images
-DB_IMAGE=ghcr.io/naturalsolutions/geopaysages_db:latest
-ADMIN_IMAGE=ghcr.io/naturalsolutions/geopaysages_admin:latest
-BACKEND_IMAGE=ghcr.io/naturalsolutions/geopaysages_backend:latest
+DB_IMAGE=ghcr.io/pnx-si/geopaysages_db:latest
+ADMIN_IMAGE=ghcr.io/pnx-si/geopaysages_admin:latest
+BACKEND_IMAGE=ghcr.io/pnx-si/geopaysages_backend:latest
 
 # You probably don't need to change this values
 DEBUG=0
