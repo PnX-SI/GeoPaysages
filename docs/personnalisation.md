@@ -61,8 +61,8 @@ Certains paramètres sont dans la table `conf` :
         }
     },
     {
-        "label": "IGN",
-        "url": "http://wxs.ign.fr/[clé ign]/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
+        "label": "IGN Plan",
+        "url": "https://wxs.ign.fr/cartes/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
         "options": {
             "maxZoom": 18,
             "attribution": "&copy; <div>IgnMap</div>"
@@ -71,7 +71,7 @@ Certains paramètres sont dans la table `conf` :
 ]
 ```
 
-Si vous utiliser la version 2 du comparateur photos (paramètre `COMPARATOR_VERSION = 2` dans `config.py`), vous pouvez personnaliser celui-ci selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
+Vous pouvez personnaliser le comparateur photos selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
 
 - `comparator_date_filter` permet d'activer `TRUE` ou de désactiver `FALSE` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
 
@@ -174,6 +174,6 @@ Reprendre la même procédure que pour la page "À propos", c'est à dire :
 
 # Internationalisation de l'application
 
-1. Éditer le fichier `custom/i18n/fr/LC_MESSAGES/messages.po` 
-1. Appliquer les changements `./docker/docker.sh exec backend pybabel compile -d ./i18n && ./docker/docker.sh restart backend`
-1. Actualiser la page web, les modifications devraient apparaitres
+- Éditer le fichier `custom/i18n/fr/LC_MESSAGES/messages.po` 
+- Appliquer les changements `./docker/docker.sh exec backend pybabel compile -d ./i18n && ./docker/docker.sh restart backend`
+- Actualiser la page web, les modifications devraient apparaitres

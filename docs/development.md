@@ -8,6 +8,7 @@ Le développement de l'admin ne peut pas se faire confortablement sur une machin
 
 ### Pré-requis
 - Avoir suivi la doc d'installation et lancé une instance fonctionnelle.
+
 #### Seulement si vous souhaiter modifier l'admin.
 - Node 12  
 Conseil : On a souvent besoin de plusieurs versions de Node sur un même post.  
@@ -44,7 +45,9 @@ La page est rechargée à chaque changement de code.
 #
 ### Publication des images
 Pour que les modifications puissent bénéficier à tous, il faut publier les images des appli impactées. (admin ou backend)  
+
 #### 1. S'assurer que votre utilisateur Github ait le droit de publier un package dans l'organisation (PnX-SI)
+
 #### 2. Créer l'image
 - Ouvrir docker-compose.override.yml
 - Décommenter les lignes #build et #context du container  
@@ -62,6 +65,7 @@ Le tag est souvent un numéro de version
 `ghcr.io/pnx-si/geopaysages_<nom_du_container>:<tag>`
 - Créer l'image  
 `./docker/docker.sh build <nom_du_container>`
+
 #### 3. Obtenir un token
 - Se connecter à Github
 - Atteindre cette page https://github.com/settings/tokens
@@ -70,6 +74,7 @@ Le tag est souvent un numéro de version
 - Renseigner les autres valeurs à votre convenance
 - Valider
 - Copier le token généré dans un endroit sécurisé
+
 #### 4. Publier l'image
 - `export CR_PAT=<TOKEN>`  
 - `echo $CR_PAT | docker login ghcr.io -u <USERNAME> --password-stdin`

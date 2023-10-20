@@ -30,11 +30,11 @@ L'ancienne base est alors prête à être utilisée dans la nouvelle version.
 - Copier le dump dans le container de la DB
   - Version récente de Docker Compose :  
     `./docker/docker.sh cp <chemin_vers_geopaysages_1_2.dump> db:/geopaysages_1_2.dump`
-  - Version ancienne :  
+  - Version ancienne de Docker Compose :  
     Trouver le nom du container de la DB  
     `docker ps -f "name=geopaysages_db"`  
     Copier la valeur sous la colonne "NAMES", sera probablement "geopaysages_db_1"  
-    `docker cp <chemin_vers_geopaysages_1_2.dump> <nom_container_ci_dessus>:/geopaysages_1_2.bck`  
+    `docker cp <chemin_vers_geopaysages_1_2.dump> <nom_container_ci_dessus>:/geopaysages_1_2.backup`  
 
 - Entrer dans le container de la DB  
 `./docker/docker.sh exec db /bin/bash`  
@@ -46,7 +46,7 @@ L'ancienne base est alors prête à être utilisée dans la nouvelle version.
 `SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE pid <> pg_backend_pid()  AND datname = 'geopaysages';`  
 
 - Supprimer la DB existante  
-`DROP DATABASE geopaysages`  
+`DROP DATABASE geopaysages;`  
 
 - Quitter psql  
 `exit`  
@@ -55,7 +55,7 @@ L'ancienne base est alors prête à être utilisée dans la nouvelle version.
 `createdb -U geopaysages geopaysages`  
 
 - **Et enfin restaurer votre ancienne DB**  
-`pg_restore -U geopaysages --no-owner --dbname geopaysages geopaysages_1_2.bck`  
+`pg_restore -U geopaysages --no-owner --dbname geopaysages geopaysages_1_2.backup`  
 
 - Quitter le container de la DB  
 `exit`  
@@ -67,8 +67,8 @@ Vos données sont à jour.
 
 ## Migrer les medias
 
-- Copier le contenu de `data/images` dans `custom/upload/images`
-- Copier le contenu de `data/notice-photo` dans `custom/upload/notice-photo`  
+- Copier le contenu de `data/images` dans `custom/upload/images`: `mv images/* ../geopaysages/custom/upload/images/`
+- Copier le contenu de `data/notice-photo` dans `custom/upload/notice-photo` : `mv notice-photo/* ../geopaysages/custom/upload/notice-photo/`
   
 A ce stade, l'application doit avoir un aspect normal.
 

@@ -1,13 +1,14 @@
 ### Introduction
 L'infrastructure de l'app est constituée de 5 containers docker.  
 Elle est donc isolée du system qui l'héberge, ne pouvant ni subir ni causer de conflits avec les paquets déjà installés.  
-Seuls les ports configurés peuvent entrer en collision avec d'autres services utilisant les même ports.  
+Seuls les ports configurés peuvent entrer en collision avec d'autres services utilisant les même ports. 
+
 **Détail des containers**  
 - db : Le serveur de base de données, Postgres/Postgis
 - backend : L'application serveur, Python/Flask
 - admin : L'espace d'administration, Angular
 - thumbor : Un service de transformation d'image, Python
-- proxy : Le point d'entré de l'app, Go
+- proxy : Le point d'entré de l'app, Traefik
 
 #
 ### Les commandes les plus utilisées
@@ -16,7 +17,16 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 - Stopper les containers  
   `./docker/docker.sh down`
 - Parfois, mais vraiment très rarement, il faudra juste redémarrer le backend    
-  `./docker/docker.sh restart backend`   
+  `./docker/docker.sh restart backend`    
+- Il peut-être parfois utile de redémarrer le container postgresql    
+  `./docker/docker.sh restart db`  
+- Lister les containers du système :
+  `docker ps -a`
+- Supprimer les containers arrêtés : 
+  ``docker container prune``
+- Supprimer les image sans container associé : 
+  ``docker image prune -a``
+
 - **Voir les logs d'un container**  
   `./docker/docker.sh logs -f <nom_du_container>`  
   <nom_du_container> : db, backend, proxy, ...  
@@ -28,18 +38,94 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 
 #
 ### Pré-requis
+
+Application développée, installée et testée sur un serveur Debian 11.
+
+Le serveur doit être à jour :
+```sh
+sudo apt update && sudo apt upgrade
+```
+Et doit disposer de :
+
+- sudo ``(apt install sudo``)
+
+- un utilisateur système autre que ``root`` (variable système `'whoami'` dans cette documentation) appartenant au groupe `sudo` (afin de bénéficier des droits d'administrateur) - à crèer avec ``root`` :
+  ```sh
+  useradd <nom_utilisateur>
+  usermod -aG sudo <nom_utilisateur>
+  ```
+
+- rsync ``(apt-get install rsync``)
+
 - `docker compose` ou `docker-compose`  
 > Si docker est déjà installé, une de ces commandes est sûrement disponible.  
 > Sinon le mieux est d'installer la dernière version de docker qui intègre par défaut la commande `compose`
 - Installation sur Debian : https://docs.docker.com/engine/install/debian/
 - Autres distributions Linux : https://docs.docker.com/engine/install/#server
 - Installation Windows **(non recommandée)** : https://docs.docker.com/desktop/install/windows-install/
+- Post-installation de Docker pour Linux : https://docs.docker.com/engine/install/linux-postinstall/
+
 
 #
-### Installer GéoPaysages
-- Atteindre la racine du répertoire cloné
-- Désampler le fichier de configuration puis l'éditer :
-  - `mv ./docker/.env.example ./docker/.env`  
+### Installer GeoPaysages
+#
+### Avec une archive :
+**1. Récupérer la dernière version de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
+
+Ces opérations doivent être faites avec l'utilisateur courant (autre
+que `root`); Remplacer X.Y.Z par la version que vous souhaitez installer :
+
+```sh
+cd /home/`whoami`
+# pour les tests :
+wget https://github.com/NaturalSolutions/GeoPaysages/archive/refs/heads/multi_observatories.zip
+
+wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
+```
+
+> Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
+ézipper l'archive :
+
+```
+unzip X.Y.Z.zip
+```
+
+Vous pouvez renommer le dossier qui contient l'application (dans un
+dossier `/home/<monuser>/geopaysages/` par exemple) :
+```
+mv ~/GeoPaysages-X.Y.Z ~/geopaysages
+```
+#
+### Avec Git :
+Si Git n'est pas installé sur le système :
+```sh
+sudo apt update
+sudo apt install git
+```
+Se placer dans le répertoire de l'utilisateur courant (`whoami`) et clôner le dépôt depuis la release souhaitée (remplacer X.Y.Z par la version souhaitée) :
+```sh
+cd /home/`whoami`
+# pour les tests :
+git clone --branch multi_observatories https://github.com/NaturalSolutions/GeoPaysages.git
+git clone --branch X.Y.Z https://github.com/PnX-SI/GeoPaysages.git
+```
+Renommer le répertoire clôné de l'application :
+```sh
+mv GeoPaysages-X.Y.Z geopaysages
+```
+#
+**2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
+
+- Désampler le fichier de configuration :
+  ```sh
+  cd /home/`whoami`/geopaysages
+  mv ./docker/.env.tpl ./docker/.env
+  ```
+  Editez-le et adapter les valeurs des variables à votre contexte :
+  ```sh
+  nano ./docker/.env
+  ```
+
   >**Important**  
   >Les variables `DB_NAME`, `DB_USER`, `DB_PASSWORD` sont utilisées pour :
   >  - initialiser la DB.
@@ -47,7 +133,8 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
   >
   >**Attention !!!** Une fois la DB initialisée la modification d'une de ces variables modifiera la chaîne de connexion **mais pas les valeurs dans la DB.**  
   >Vous pourrez le faire à main, mais en attendant l'app sera HS.
-- Démarer les containers  
+  
+- Démarrer les containers  
   `./docker/docker.sh up -d`  
   **Bien lire les sorties du script !**
 
@@ -65,7 +152,10 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 ### Variables du .env
 | Nom | Description | Valeur |
 | ------ | ------ | ------ |
-| PROXY_HTTP_PORT | Port vers lequel pointe votre serveur | integer |
+| PROXY_HTTP_PORT | Port vers lequel pointe votre serveur en HTTP | integer |
+| PROXY_HTTPS_PORT | Port vers lequel pointe votre serveur en HTTPS | integer |
+| ACME_EMAIL | Email utilisé pour la générération automatique des certificats HTTPS LetsEncrypt | string |
+| SERVERNAME_URL | Nom de domaine de l'application | string |
 | DB_NAME | Nom de la DB | string |
 | DB_USER | User de la DB | string |
 | DB_PASSWORD | Password de la DB | string |
@@ -77,8 +167,28 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 | DB_ADDRESS | Adresse de la DB<br>**Ne changer que si une autre DB est utilisé** | string |
 | CUSTOM_PATH | Chemin vers le dossier contenant les fichiers custom<br>**Le dossier ne doit pas exister pour que l'install puisse le créer** | **Si vous modifier la valeur par défaut :**<br>Utiliser un chemin absolu<br>ex. /home/nsdev/GeoPaysages-sit-paca |
 
+## Configuration de PostgreSQL
 #
-### Configurer NGINX
+
+L'installation de PostgreSQL est dans un container Docker.
+Pour permettre la personnalisation de la configuration globale de PostgreSQL, le répertoire de configuration de PostgreSQL est extrait du container Docker afin de faciliter l'édition des fichiers de configuration. 
+
+Il est ainsi possible de modifier les hôtes autorisés, le port ou encore la sécurisation dans les fichiers ``postgresql.conf`` et ``pg_hba.conf`` permettant la sécurisation des accès clients au serveur PostgreSQL.
+
+#
+### Alternative à Traefik : NGINX
+
+Le container Docker inclus l'installation du reverse-proxy [Traefik](https://doc.traefik.io/traefik/).
+Traefik permet également de géré les certificats LetsEncrypt pour le HTTPS.
+Il suffit donc de renseingner le fichier .env et en particulier les paramètres suivants pour associer GeoPaysages à votre nom de domaine accessible en HTTPS.
+
+Il reste cependant possible de préférer l'utilisation de NGINX en plus de Traefik (packagé dans l'install Docker).
+
+Installer NGINX :
+
+    sudo apt install nginx
+
+Créer un fichier de configuration NGINX :**
 
     sudo nano /etc/nginx/conf.d/geopaysages.conf
 
@@ -92,3 +202,14 @@ Copiez/collez-y ces lignes et remplacer <PROXY_HTTP_PORT> par la valeur utilisé
             proxy_pass http://127.0.0.1:<PROXY_HTTP_PORT>;
         }
     }
+
+Il est recommandé de certifié votre nom de domaine pour que celui-ci soit accessible en HTTPS. Vous pouvez utiliser certbot pour ce faire :
+
+    sudo apt install python3-certbot-nginx
+
+Lancer certbot pour certifier les domaines de vos configurations NGINX :
+
+    sudo certbot --nginx
+
+    
+
