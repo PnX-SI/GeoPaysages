@@ -1,12 +1,16 @@
 PROXY_HTTP_PORT=80
+# HTTPS with Traefik and LetsEncrypt :
+PROXY_HTTPS_PORT=443
+ACME_EMAIL=me@mydomain.fr # replace email for LetsEncrypt/ACME notifications
+SERVERNAME_URL=geopaysages.fr # your GeoPaysages server name (required for https certificates)
 
 DB_NAME=geopaysages
 DB_USER=geopaysages
 DB_PASSWORD=password
 DB_PORT=5432
 
-THUMBOR_SECURITY_KEY=secret
-FLASK_SECRET_KEY=secret
+THUMBOR_SECURITY_KEY=secret # replace with a secret key
+FLASK_SECRET_KEY=secret # replace with a secret key
 
 # Docker images
 DB_IMAGE=ghcr.io/pnx-si/geopaysages_db:latest
