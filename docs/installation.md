@@ -170,10 +170,8 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 ## Configuration de PostgreSQL
 #
 
-L'installation de PostgreSQL est dans un container Docker.
-Pour permettre la personnalisation de la configuration globale de PostgreSQL, le répertoire de configuration de PostgreSQL est extrait du container Docker afin de faciliter l'édition des fichiers de configuration. 
-
-Il est ainsi possible de modifier les hôtes autorisés, le port ou encore la sécurisation dans les fichiers ``postgresql.conf`` et ``pg_hba.conf`` permettant la sécurisation des accès clients au serveur PostgreSQL.
+L'installation de PostgreSQL est gérée dans un container Docker.
+Pour permettre la personnalisation de la configuration globale de PostgreSQL, les fichiers ``postgresql.conf`` et ``pg_hba.conf`` sont rendus accessibles hors du container afin d'en faciliter l'édition dans le répertoire de personnalisation : ``custom/postgresql/``.
 
 #
 ### Alternative à Traefik : NGINX
