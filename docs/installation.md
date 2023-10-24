@@ -177,10 +177,10 @@ Pour permettre la personnalisation de la configuration globale de PostgreSQL, le
 ### Alternative à Traefik : NGINX
 
 Le container Docker inclus l'installation du reverse-proxy [Traefik](https://doc.traefik.io/traefik/).
-Traefik permet également de géré les certificats LetsEncrypt pour le HTTPS.
-Il suffit donc de renseingner le fichier .env et en particulier les paramètres suivants pour associer GeoPaysages à votre nom de domaine accessible en HTTPS.
+Traefik permet également de gérer les certificats LetsEncrypt pour le HTTPS.
+Il suffit donc de renseigner le fichier `.env` et en particulier les variables `PROXY_HTTPS_PORT`, `ACME_EMAIL` et `SERVERNAME_URL` pour associer automatiquement GeoPaysages à votre nom de domaine accessible en HTTPS.
 
-Il reste cependant possible de préférer l'utilisation de NGINX en plus de Traefik (packagé dans l'install Docker).
+Il reste cependant possible de préférer l'utilisation de NGINX en plus de Traefik.
 
 Installer NGINX :
 
