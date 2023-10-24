@@ -8,7 +8,7 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 - backend : L'application serveur, Python/Flask
 - admin : L'espace d'administration, Angular
 - thumbor : Un service de transformation d'image, Python
-- proxy : Le point d'entré de l'app, Traefik
+- proxy : Le point d'entrée de l'app, Traefik
 
 #
 ### Les commandes les plus utilisées
