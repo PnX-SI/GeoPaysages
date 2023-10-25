@@ -35,6 +35,12 @@
   min-width: 300px;
 }
 
+/* scroll and max-height on legend panel */
+.app-sites .block-legend #app_map_legend_collapse {
+  overflow-y: scroll;
+  max-height: calc(100vh - var(--header-h) - 140px);
+}
+
 .app-sites .block-legend .legend-item-observatory .icon {
   width: 20px;
   height: 20px;
