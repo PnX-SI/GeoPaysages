@@ -7,8 +7,42 @@ CHANGELOG
 
 **🚀 Nouveautés**
 
+!! Mise à jour majeure !!
+
+  **Multi-observatoires :** 
+* Ajout de la notion d'observatoire permettant de structurer des sites d'observation dans différents observatoires (territoires, thématiques...)
+  De nombreux changements et refonte de l'application
+
+  **CARTE DES SITES**
+* Amélioration du fonctionnement et de l'ergonomie des filtres de la carte des sites d'observations (filtrage en cascade et liens entre les filtres)
+* Les paramètres des filtres actifs peuvent être traduits en URL. Exemple: ``sites?filters=[{"name":"id_observatory","values":[6]},{"name":"themes","values":[3]}]``
+* Ajout d'un bouton "partager" permettant de copier dans le pesse-passier l'URL de la carte filtrées avec les filtres actifs
+* Amélioration globale de la carte des sites et ajout de symbologies pour les observatoires territoriaux et les sites
+  Possibilité d'associer un pictogramme SVG à chaque thème. 
+  Si un thème principal est précisé au niveau du site le picto s'affichera sur le marqueur de localisation du site
+
+  **FICHE SITE**
+* Révision et amélioration du comparateur photos v2 et de sa configuration
+* réintégration d'une timeline de sélection des photos de la série plus intuitive
+
+  **GALERIE PHOTO**
+* intégration du composant de filtres dans la galerie photo
+
+  **Général**
+* Possibilité de personnaliser la page d'accueil avec un bloc d'introduction et un carrousel de photos
+* Amélioration globale des options de personnalisations de l'application : [voir la documentation de personnalisation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/personnalisation.md)
+* Adaptation de l'interface d'administration (backoffice) : gestion des observatoires et des sites associés
+* Révision des paramètres de configuration et des documentations 
+* Ajout d'une documentation développeur
+* Révision de la procédure d'installation et mise à jour avec Docker : [voir la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
+
 **⚠️ Notes de version**
 
+* Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
+* Pour une nouvelle installation suivre [la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
+
+Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer) et financés par les Parcs naturels régionaux de la région Sud. 
+Tests et contributions complémentaires par @xavyeah39 et @camillemonchicourt.
 
 1.2.1 (2022-03-24)
 ------------------
