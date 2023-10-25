@@ -68,12 +68,13 @@ Et doit disposer de :
 
 #
 ### Installer GeoPaysages
-#
-### Avec une archive :
+
 **1. Récupérer la dernière version de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
 
 Ces opérations doivent être faites avec l'utilisateur courant (autre
-que `root`); Remplacer X.Y.Z par la version que vous souhaitez installer :
+que `root`); Remplacer X.Y.Z par la version que vous souhaitez installer.
+
+#### Avec une archive :
 
 ```sh
 cd /home/`whoami`
@@ -81,7 +82,8 @@ wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 ```
 
 > Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
-ézipper l'archive :
+
+- Dézipper l'archive :
 
 ```
 unzip X.Y.Z.zip
@@ -92,8 +94,8 @@ dossier `/home/<monuser>/geopaysages/` par exemple) :
 ```
 mv ~/GeoPaysages-X.Y.Z ~/geopaysages
 ```
-#
-### Avec Git :
+
+#### Avec Git :
 Si Git n'est pas installé sur le système :
 ```sh
 sudo apt update
@@ -108,7 +110,7 @@ Renommer le répertoire clôné de l'application :
 ```sh
 mv GeoPaysages-X.Y.Z geopaysages
 ```
-#
+
 **2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
 
 - Désampler le fichier de configuration :
@@ -135,7 +137,7 @@ mv GeoPaysages-X.Y.Z geopaysages
   >
   >Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
   
-- Démarrer les containers  
+**3. Démarrer les containers :**
   `./docker/docker.sh up -d`  
   **Bien lire les sorties du script !**
 
