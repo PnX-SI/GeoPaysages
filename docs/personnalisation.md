@@ -73,9 +73,11 @@ Certains paramètres sont dans la table `conf` :
 
 Vous pouvez personnaliser le comparateur photos selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
 
-- `comparator_date_filter` permet d'activer `TRUE` ou de désactiver `FALSE` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+⚠️ Les valeurs `True` et `False` sont sensibles à la casse.
 
-- `comparator_date_step_button` permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à `FALSE` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
+- `comparator_date_filter` permet d'activer `True` ou de désactiver `False` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+
+- `comparator_date_step_button` permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à `False` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
 
 - `comparator_date_format` permet de personnaliser le format d'affichage des dates des photos dans le bouton sélecteur. Avec la valeur `year` on affiche la date au format `YYYY` ou avec `month`  au format `MM/YYYY`.
 Le comportement par défaut reste l'affichage de la date complète au format `day` --> `DD/MM/YYYY` (si non-renseigné).
