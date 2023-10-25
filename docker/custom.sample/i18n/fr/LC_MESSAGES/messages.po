@@ -53,12 +53,12 @@ msgstr "Filtre(s) : %(nb)s résultat(s)"
 
 #: tpl/home_mono_obs.jinja:3 tpl/home_multi_obs.jinja:3
 msgid "home.meta_title"
-msgstr "Observatoire photographique des paysages de Vanoise"
+msgstr "GeoPaysages : Observatoire photographique des paysages"
 
 #: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:20
 #: tpl/home_mono_obs.jinja:19 tpl/home_multi_obs.jinja:21
 msgid "home.title"
-msgstr "L'Observatoire photographique des paysages de Vanoise"
+msgstr "Observatoire photographique des paysages"
 
 #: tpl/home_mono_obs.jinja:23 tpl/home_multi_obs.jinja:25
 msgid "home.title_mobile"
@@ -102,7 +102,7 @@ msgstr "Contactez-nous"
 
 #: tpl/layout.jinja:104
 msgid "footer.external_title"
-msgstr "Le Parc national de Vanoise"
+msgstr "Notre territoire"
 
 #: tpl/site.jinja:41
 msgid "site.title_mobile"
@@ -202,7 +202,7 @@ msgstr "1 an"
 
 #: tpl/components/legal-footer.jinja:1
 msgid "footer.copyright"
-msgstr "© 2018 Parc national de la Vanoise"
+msgstr "GeoPaysages, logiciel open-source développé par NaturalSolutions et une communauté de structures"
 
 #: tpl/components/main-nav.jinja:3
 msgid "header.nav.home"
