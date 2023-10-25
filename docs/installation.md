@@ -77,9 +77,6 @@ que `root`); Remplacer X.Y.Z par la version que vous souhaitez installer :
 
 ```sh
 cd /home/`whoami`
-# pour les tests :
-wget https://github.com/NaturalSolutions/GeoPaysages/archive/refs/heads/multi_observatories.zip
-
 wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 ```
 
@@ -105,9 +102,7 @@ sudo apt install git
 Se placer dans le répertoire de l'utilisateur courant (`whoami`) et clôner le dépôt depuis la release souhaitée (remplacer X.Y.Z par la version souhaitée) :
 ```sh
 cd /home/`whoami`
-# pour les tests :
-git clone --branch multi_observatories https://github.com/NaturalSolutions/GeoPaysages.git
-git clone --branch X.Y.Z https://github.com/PnX-SI/GeoPaysages.git
+git clone -b X.Y.Z https://github.com/PnX-SI/GeoPaysages.git
 ```
 Renommer le répertoire clôné de l'application :
 ```sh
@@ -133,6 +128,12 @@ mv GeoPaysages-X.Y.Z geopaysages
   >
   >**Attention !!!** Une fois la DB initialisée la modification d'une de ces variables modifiera la chaîne de connexion **mais pas les valeurs dans la DB.**  
   >Vous pourrez le faire à main, mais en attendant l'app sera HS.
+  >
+  >Les variables `PROXY_HTTPS_PORT`, `ACME_EMAIL` et `SERVERNAME_URL` sont utilisées la certification HTTPS du nom de domaine de l'application avec Traefik et LetsEncrypt.
+  >
+  >Si vous préférez gérer la certification HTTPS différemment, vous pouvez ignorez ces variables dans le fichier `./docker/.env` et commenter/supprimer toutes les lignes avec le commentaire `# https cert` en fin de lignes dans le fichier `./docker/docker-compose.yml`
+  >
+  >Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
   
 - Démarrer les containers  
   `./docker/docker.sh up -d`  
