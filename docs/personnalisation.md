@@ -89,9 +89,11 @@ Ce paramètre permet aussi de filtrer en conséquence les pas de temps disponibl
 
 La configuration se fait dans la base de données.
 
-Il faut se rendre dans la colonne `icon` de la table `dico_theme` et y coller le code svg.
+Il faut se rendre dans la colonne `icon` de la table `dico_theme` et y coller le code SVG pour chacun des thèmes.
+Un site d'observation pouvant être rattachés à plusieurs thèmes, il est nécessaire de préciser le thème pincipal de chaque site afin qu'un seul picto puisse s'afficher en surimpression du marqueur de localisation sur la carte des sites.
 
-Il est préférable d'utiliser un svg carré. Exemple de bibliothèque de SVG : [ionicons](https://ionic.io/ionicons)
+Il est préférable d'utiliser un svg carré. 
+Exemple de bibliothèque de SVG : [ionicons](https://ionic.io/ionicons)
 
 # Carrousel de la page d'accueil
 
