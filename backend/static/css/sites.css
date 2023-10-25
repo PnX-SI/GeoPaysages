@@ -90,6 +90,11 @@
   display: none;
 }
 
+/* Remove capitalize text-transform on observatories list */
+.app-sites .list-observatories .card-header .text-capitalize {
+  text-transform: none !important;
+}
+
 .app-sites .list-observatories .btn-site:hover {
   background: var(--color-primary-50);
 }
