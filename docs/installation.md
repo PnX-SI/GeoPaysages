@@ -137,8 +137,11 @@ mv GeoPaysages-X.Y.Z geopaysages
   >
   >Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
   
+
 **3. Démarrer les containers :**
-  `./docker/docker.sh up -d`  
+  ```sh
+  ./docker/docker.sh up -d
+  ```  
   **Bien lire les sorties du script !**
 
 #
