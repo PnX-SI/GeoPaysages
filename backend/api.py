@@ -54,7 +54,7 @@ def thumborPreset(name, filename):
     return Response(w, mimetype=type[0])
 
 @api.route('/api/conf', methods=['GET'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def returnDdConf():
     dbconf = utils.getDbConf()
     
@@ -69,7 +69,7 @@ def returnAllObservatories():
 
 
 @api.route('/api/observatories', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def postObservatory():
     try:
         data = dict(request.get_json())
@@ -95,7 +95,7 @@ def returnObservatoryById(id):
 
 
 @api.route('/api/observatories/<int:id>', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def patchObservatory(id):
     try:
         rows = models.Observatory.query.filter_by(id=id)
@@ -112,7 +112,7 @@ def patchObservatory(id):
 
 
 @api.route('/api/observatories/<int:id>/image', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def patchObservatoryImage(id):
     field = request.form.get('field')
     if field not in ['thumbnail', 'logo']:
@@ -250,7 +250,7 @@ def returnAllUsers(id_app):
 # TODO : remove this view ! 
 # use in the front at each refresh ... but why ?
 @api.route('/api/me/', methods=['GET'])
-@fnauth.check_auth(2, True, None, None)
+@fnauth.check_auth(2)
 def returnCurrentUser(id_role=None):
     current_user = AppUser.query.filter_by(
         id_role=id_role
@@ -261,7 +261,7 @@ def returnCurrentUser(id_role=None):
 
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(6)
 def deleteSite(id_site):
     base_path = '/app/static/upload/images/'
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
@@ -283,7 +283,7 @@ def deleteSite(id_site):
 
 
 @api.route('/api/addSite', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def add_site():
     data = dict(request.get_json())
     site = models.TSite(**data)
@@ -294,7 +294,7 @@ def add_site():
 
 
 @api.route('/api/updateSite', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def update_site():
     site = request.get_json()
     models.CorSiteSthemeTheme.query.filter_by(
@@ -305,7 +305,7 @@ def update_site():
 
 
 @api.route('/api/addThemes', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def add_cor_site_theme_stheme():
     data = request.get_json().get('data')
     for d in data:
@@ -322,7 +322,7 @@ def add_cor_site_theme_stheme():
 
 
 @api.route('/api/addPhotos', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def upload_file():
     base_path = '/app/static/upload/images/'
     data = request.form.getlist('data')
@@ -360,7 +360,7 @@ def upload_file():
 
 
 @api.route('/api/addNotices', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def upload_notice():
     base_path = './static/upload/notice-photo/'
     notice = request.files.get('notice')
@@ -370,7 +370,7 @@ def upload_notice():
 
 
 @api.route('/api/deleteNotice/<notice>', methods=['DELETE'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def delete_notice(notice):
     base_path = './static/upload/notice-photo/'
     for fileName in os.listdir(base_path):
@@ -381,7 +381,7 @@ def delete_notice(notice):
 
 
 @api.route('/api/updatePhoto', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def update_photo():
     base_path = '/app/static/upload/images/'
     data = request.form.get('data')
@@ -414,7 +414,7 @@ def update_photo():
 
 
 @api.route('/api/deletePhotos', methods=['POST'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(6)
 def deletePhotos():
     base_path = '/app/static/upload/images/'
     photos = request.get_json()
