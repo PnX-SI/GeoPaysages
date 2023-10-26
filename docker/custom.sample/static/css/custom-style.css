@@ -1,16 +1,17 @@
 /* css clors */ 
 :root {
-    --color-primary: #00188F;
-    --color-primary-light: #0069d9;
-    --color-secondary: #78BE20;
-    --color-secondary-light: #72d409;
-
+    --color-primary: #046e67;
+    --color-primary-50: #046e6788;
+    --color-primary-light: #4bbdc9;
+    --color-secondary: #dda114;
+    --color-secondary-light: #e1bd6a;
+  
     --color-discover: rgba(153, 214, 234, 0.5);
-
-    --color-sites-filter-txt-hover: #FFF;
+  
+    --color-sites-filter-txt-hover: #fff;
     --color-sites-filter-bg-hover: #99d6ea61;
     --color-sites-filter-txt-active: #000;
-    --color-sites-filter-bg-active: #99D6EA;
+    --color-sites-filter-bg-active: #99d6ea;
 
     --header-h: 110px;
     --page-container-min-height: calc(100vh - var(--header-h) - 260px);
