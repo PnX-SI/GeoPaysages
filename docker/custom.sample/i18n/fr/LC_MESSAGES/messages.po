@@ -202,7 +202,7 @@ msgstr "1 an"
 
 #: tpl/components/legal-footer.jinja:1
 msgid "footer.copyright"
-msgstr "GeoPaysages, logiciel open-source développé par NaturalSolutions et une communauté de structures"
+msgstr "© 2023 - GeoPaysages, logiciel libre et open-source"
 
 #: tpl/components/main-nav.jinja:3
 msgid "header.nav.home"
