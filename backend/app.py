@@ -1,5 +1,6 @@
 # coding: utf-8
 from pypnusershub import routes
+from pypnusershub.login_manager import login_manager
 from routes import main as main_blueprint
 from flask import Flask
 from flask_babel import Babel, get_locale
@@ -59,6 +60,7 @@ app.register_blueprint(routes.routes, url_prefix='/api/auth')
 
 app.config.from_pyfile('config.py')
 db.init_app(app)
+login_manager.init_app(app)
 migrate.init_app(app, db)
 
 

@@ -1,9 +1,9 @@
-from flask import Flask, request, Blueprint, Response, jsonify, abort, Response
+from flask import Flask, request, Blueprint, Response, jsonify, abort, Response, current_app
 from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import FileWrapper
 
 from pypnusershub import routes as fnauth
-from pypnusershub.db.models import AppUser
+from pypnusershub.db.models import AppUser, Application
 import models
 import json
 import utils
@@ -242,10 +242,11 @@ def returnAllLicences():
 
 @api.route('/api/users/<int:id_app>', methods=['GET'])
 def returnAllUsers(id_app):
+    a = Application.query.filter_by(code_application=current_app.config["CODE_APPLICATION"]).one()
     all_users = AppUser.query.filter_by(
         id_application=id_app).all()
 
-    return jsonify([u.as_dict() for u in all_users])
+    return jsonify([u.as_dict() for u in all_users if u.id_application == a.id_application])
 
 # TODO : remove this view ! 
 # use in the front at each refresh ... but why ?

@@ -17,6 +17,9 @@ DB_IMAGE=ghcr.io/pnx-si/geopaysages_db:latest
 ADMIN_IMAGE=ghcr.io/pnx-si/geopaysages_admin:latest
 BACKEND_IMAGE=ghcr.io/pnx-si/geopaysages_backend:latest
 
+# Application code for UsersHub-Authentification-Module needs
+CODE_APPLICATION=GP
+
 # You probably don't need to change this values
 DEBUG=0
 ADMIN_ENV_DEV=0

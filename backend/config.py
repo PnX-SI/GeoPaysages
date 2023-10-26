@@ -17,3 +17,6 @@ BABEL_TRANSLATION_DIRECTORIES = './i18n'  # From ./ dir
 
 # !!! Do not change, this is the only supported value
 COMPARATOR_VERSION = 2 
+
+# Application code for UsersHub-Authentification-Module needs
+CODE_APPLICATION = os.getenv("CODE_APPLICATION")
