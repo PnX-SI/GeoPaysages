@@ -23,9 +23,9 @@ Seuls les ports configurés peuvent entrer en collision avec d'autres services u
 - Lister les containers du système :
   `docker ps -a`
 - Supprimer les containers arrêtés : 
-  ``docker container prune``
+  `docker container prune`
 - Supprimer les image sans container associé : 
-  ``docker image prune -a``
+  `docker image prune -a`
 
 - **Voir les logs d'un container**  
   `./docker/docker.sh logs -f <nom_du_container>`  

@@ -67,8 +67,16 @@ Vos données sont à jour.
 
 ## Migrer les medias
 
-- Copier le contenu de `data/images` dans `custom/upload/images`: `mv images/* ../geopaysages/custom/upload/images/`
-- Copier le contenu de `data/notice-photo` dans `custom/upload/notice-photo` : `mv notice-photo/* ../geopaysages/custom/upload/notice-photo/`
+- Copier le contenu de `data/images` dans `custom/upload/images`: 
+  ```sh
+  cd ~/data
+  mv images/* ../geopaysages/custom/upload/images/
+  ```
+- Copier le contenu de `data/notice-photo` dans `custom/upload/notice-photo` : 
+  ```sh
+  cd ~/data
+  mv notice-photo/* ../geopaysages/custom/upload/notice-photo/
+  ```
   
 A ce stade, l'application doit avoir un aspect normal.
 
