@@ -13,7 +13,7 @@
     --color-sites-filter-txt-active: #000;
     --color-sites-filter-bg-active: #99d6ea;
 
-    --header-h: 110px;
+    --header-h: 80px;
     --page-container-min-height: calc(100vh - var(--header-h) - 260px);
 }
 

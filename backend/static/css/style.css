@@ -15,7 +15,7 @@
   --color-sites-filter-bg-active: #99d6ea;
 
   --page-container-min-height: calc(100vh - 415px);
-  --header-h: 110px;
+  --header-h: 80px;
 }
 
 .swiper-pagination-bullet-active {
