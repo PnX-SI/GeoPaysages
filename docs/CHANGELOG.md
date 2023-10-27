@@ -30,7 +30,8 @@ CHANGELOG
 
 **Général**
 - Possibilité de personnaliser la page d'accueil avec un bloc d'introduction et un carrousel de photos
-- Amélioration globale des options de personnalisations de l'application : [voir la documentation de personnalisation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/personnalisation.md)
+- Ajout d'un template de page "mentions légales" par défaut avec lien depuis le footer
+- Amélioration globale des options de personnalisations de l'application et meilleures gesiotns des temlates des "blocs" qui composent la page d'accueil : [voir la documentation de personnalisation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/personnalisation.md)
 - Adaptation de l'interface d'administration (backoffice) : gestion des observatoires et des sites associés
 - Révision des paramètres de configuration et des documentations 
 - Ajout d'une documentation développeur
@@ -40,6 +41,7 @@ CHANGELOG
 
 - Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
 - Pour une nouvelle installation suivre [la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
+- **Bien relire l'ensemble des [documentations](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/) suite aux nombreuses évolutions de l'application**
 
 
 💻Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer).
