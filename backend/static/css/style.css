@@ -327,7 +327,7 @@ h6 .light {
 }
 
 .text-collapse.text-collapsable.text-collapsed .target {
-  max-height: 60px;
+  max-height: 140px;
   overflow: hidden;
 }
 
