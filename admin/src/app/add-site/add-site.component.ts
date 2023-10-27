@@ -167,7 +167,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       container.innerHTML =
         '<i style="line-height: unset" class="icon-full_screen"> </i>';
       container.style.backgroundColor = 'white';
-      container.title = 'Recenter la catre';
+      container.title = 'Recentrer la carte';
       container.onclick = () => {
         this.center = latLng(this.site.geom);
         this.zoom = 10;
