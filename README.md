@@ -28,6 +28,7 @@ Le site internet initial de l'OPPV a été mis hors service mi-2016 en raison du
 
 ## Présentation
 
+- [CCTP 2021 PNR PACA](http://geonature.fr/documents/autres/geopaysages/CCTP_OPP_26-10-2021.pdf)
 - [CCTP 2017](http://geonature.fr/documents/autres/geopaysages/2017-11-13-CDC-OPPV-PNV.pdf)
 - [Annexe CCTP 2017](http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip)
 - [Réflexion 2016](http://geonature.fr/documents/autres/geopaysages/2016-11-OPP-reflexion.pdf)
@@ -47,4 +48,4 @@ Le site internet initial de l'OPPV a été mis hors service mi-2016 en raison du
 - Parc national de la Vanoise
 - Parc national des Ecrins
 - Parc naturel régional du Pilat
-- Parcs naturels régionaux de la région Sud
+- Parcs naturels régionaux de la région PACA
