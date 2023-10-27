@@ -6,6 +6,8 @@ CHANGELOG
 
 📣 **Mise à jour majeure !**
 
+Pour plus de détails sur les développements réalisés pour cette version, vous pouvez consulter [le cahier des charges](http://geonature.fr/documents/autres/geopaysages/CCTP_OPP_26-10-2021.pdf) de la commande du PNR du Luberon pour le compte des Parcs naturels régionaux de la région PACA.
+
 **🚀 Nouveautés**
 
 **Multi-observatoires :**
@@ -37,16 +39,21 @@ CHANGELOG
 - Ajout d'une documentation développeur
 - Révision de la procédure d'installation et mise à jour avec Docker : [voir la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
 
+**🐛 Corrections**
+
+- Compatibilité avec la version 2.0 de la dépendance [usershub-authentification-module](https://github.com/PnX-SI/UsersHub-authentification-module/releases)
+- Figer la version de PostgreSQL/PostGIS dans le Dockerfile pour éviter les supprises lors de la mises à jour de l'image
+- CSS et corrections mineures
+
 **⚠️ Notes de version**
 
 - Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
 - Pour une nouvelle installation suivre [la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
 - **Bien relire l'ensemble des [documentations](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/) suite aux nombreuses évolutions de l'application**
 
-
 💻Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer).
 
-💵Financés par les Parcs naturels régionaux de la région Sud. 
+💵Financés par les Parcs naturels régionaux de la région Sud.
 
 ✨Tests et contributions complémentaires par @xavyeah39 et @camillemonchicourt.
 
