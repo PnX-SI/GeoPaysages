@@ -70,7 +70,7 @@ msgstr "Explorer les sites d'observation"
 
 #: tpl/home_mono_obs.jinja:46
 msgid "home.block.discover"
-msgstr "Découvrir ce point d'observation"
+msgstr "Découvrir ce site d'observation"
 
 #: tpl/home_mono_obs.jinja:49
 msgid "home.block.photography"
@@ -106,7 +106,7 @@ msgstr "Notre territoire"
 
 #: tpl/site.jinja:41
 msgid "site.title_mobile"
-msgstr "Point d'observation"
+msgstr "site d'observation"
 
 #: tpl/site.jinja:58
 msgid "obs_point.buttons.notice"
@@ -255,7 +255,7 @@ msgstr "Filtrer par"
 #~ msgstr "filtres : %(nb)s résultat(s)"
 
 #~ msgid "map.observation_points.title"
-#~ msgstr "Points d'observation"
+#~ msgstr "Sites d'observation"
 
 #~ msgid "gallery.title"
 #~ msgstr "Galerie photo"
