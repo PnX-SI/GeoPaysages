@@ -2,28 +2,19 @@ version: '3'
 services:
   proxy:
     restart: "no"
-    ports:
-      - "${PROXY_HTTP_PORT}:80"
+    # ports:
+    #   - "${PROXY_HTTP_PORT}:80"
     #   - "${PROXY_API_PORT}:8080"
-    command:
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entryPoints.web.address=:80"
-      - --accesslog
-      - --log
+    # command:
+    #   - --providers.docker
+    #   - --providers.docker.exposedbydefault=false
+    #   - --accesslog
+    #   - --log
     #   - --api
     #   - --api.insecure=true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   thumbor:
     restart: "no"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.thumbor.rule=PathPrefix(`/thumbor`)"
-      - "traefik.http.routers.thumbor.middlewares=thumbor-stripprefix"
-      - "traefik.http.middlewares.thumbor-stripprefix.stripprefix.prefixes=/thumbor"
-      - "traefik.http.services.thumbor.loadbalancer.server.port=8000"
 
   db:
     restart: "no"
@@ -34,10 +25,6 @@ services:
     restart: "no"
     # build: 
     #   context: ../admin
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.admin.rule=PathPrefix(`/admin`)"
-      - "traefik.http.services.admin.loadbalancer.server.port=80"
 
   backend:
     restart: "no"
@@ -52,7 +39,3 @@ services:
     #command: flask run --host=0.0.0.0 --port=80
     # Infinite loop, to keep it alive, for debugging
     command: bash -c "/app/prestart.sh && flask run --host=0.0.0.0 --port=80 && while true; do echo 'sleeping...' && sleep 10; done"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=PathPrefix(`/`)"
-      - "traefik.http.services.backend.loadbalancer.server.port=80"

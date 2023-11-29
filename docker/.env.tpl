@@ -3,6 +3,7 @@ PROXY_HTTP_PORT=80
 PROXY_HTTPS_PORT=443
 ACME_EMAIL=me@mydomain.fr # replace email for LetsEncrypt/ACME notifications
 SERVERNAME_URL=geopaysages.fr # your GeoPaysages server name (required for https certificates)
+HTTPS_IN_PROXY=1
 
 DB_NAME=geopaysages
 DB_USER=geopaysages

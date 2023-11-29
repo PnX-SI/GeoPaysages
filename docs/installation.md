@@ -133,14 +133,12 @@ mv GeoPaysages-X.Y.Z geopaysages
   >
   >Les variables `PROXY_HTTPS_PORT`, `ACME_EMAIL` et `SERVERNAME_URL` sont utilisées la certification HTTPS du nom de domaine de l'application avec Traefik et LetsEncrypt.
   >
-  >Si vous préférez gérer la certification HTTPS différemment, vous pouvez ignorez ces variables dans le fichier `./docker/.env` et commenter/supprimer toutes les lignes avec le commentaire `# https cert` en fin de lignes dans le fichier `./docker/docker-compose.yml`
+  >Si vous préférez gérer la certification HTTPS différemment, vous pouvez ignorez ces variables dans le fichier `./docker/.env` et passer la variable `HTTPS_IN_PROXY` à 0.
   >
   >Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
 
   >**!!! Attention développeur, très important pour les instances locales !!!**  
-  >SSL est activé par défaut, pour le désactiver il suffit de désampler le fichier docker-compose.override.yml.sample  
-  >`mv ./docker/docker-compose.override.yml.sample ./docker/docker-compose.override.yml`  
-  >Ne pas hésiter pas à le modifier selon les besoins, il est là pour ça.
+  >SSL est activé par défaut, pour le désactiver il suffit de passer la variable `HTTPS_IN_PROXY` à 0 dans le fichier `./docker/.env`.
   
 
 **3. Démarrer les containers :**
@@ -167,6 +165,7 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 | PROXY_HTTPS_PORT | Port vers lequel pointe votre serveur en HTTPS | integer |
 | ACME_EMAIL | Email utilisé pour la générération automatique des certificats HTTPS LetsEncrypt | string |
 | SERVERNAME_URL | Nom de domaine de l'application | string |
+| HTTPS_IN_PROXY | Est-ce-que le certificat HTTPS est géré par l'application ? | 1: oui<br>0: non |
 | DB_NAME | Nom de la DB | string |
 | DB_USER | User de la DB | string |
 | DB_PASSWORD | Password de la DB | string |

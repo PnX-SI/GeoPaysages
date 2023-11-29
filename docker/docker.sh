@@ -30,8 +30,8 @@ if ! test -f "$env_file"; then
     exit 1
 fi
 
+source docker/.env;
 if [ $1 = "up" ]; then
-    source docker/.env;
     cd docker
     if ! test -d "$CUSTOM_PATH"; then
         cp -r custom.sample "$CUSTOM_PATH"
@@ -54,4 +54,9 @@ then
     fi
     set -e
 fi
-${launch_compose} --project-name="geopaysages" --project-directory=./docker "$@"
+
+if [ "$HTTPS_IN_PROXY" == "1" ]; then
+    ${launch_compose} --project-name="geopaysages" -f ./docker/docker-compose.yml -f ./docker/docker-compose.https.yml "$@"
+else
+    ${launch_compose} --project-name="geopaysages" --project-directory=./docker "$@"
+fi
