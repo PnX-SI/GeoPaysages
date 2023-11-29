@@ -20,7 +20,7 @@ https://learn.microsoft.com/fr-fr/windows/dev-environment/javascript/nodejs-on-w
 ### Activer l'env de dev
 - Arrêter l'instance en cours  
   `./docker/docker.sh down`
-- Désampler le fichier docker-compose.override.yml.sample  
+- Désampler le fichier docker-compose.override.yml.sample (peut-être déjà fait au cours de l'installation).  
 `mv ./docker/docker-compose.override.yml.sample ./docker/docker-compose.override.yml`  
 (Aucun changement ne sera nécessaire dans ce fichier jusqu'à la phase de publication)
 - Éditer le .env pour activer le mode debug :  

@@ -136,6 +136,11 @@ mv GeoPaysages-X.Y.Z geopaysages
   >Si vous préférez gérer la certification HTTPS différemment, vous pouvez ignorez ces variables dans le fichier `./docker/.env` et commenter/supprimer toutes les lignes avec le commentaire `# https cert` en fin de lignes dans le fichier `./docker/docker-compose.yml`
   >
   >Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
+
+  >**!!! Attention développeur, très important pour les instances locales !!!**  
+  >SSL est activé par défaut, pour le désactiver il suffit de désampler le fichier docker-compose.override.yml.sample  
+  >`mv ./docker/docker-compose.override.yml.sample ./docker/docker-compose.override.yml`  
+  >Ne pas hésiter pas à le modifier selon les besoins, il est là pour ça.
   
 
 **3. Démarrer les containers :**
