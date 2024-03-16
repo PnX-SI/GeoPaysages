@@ -1,7 +1,9 @@
 ### Avant-propos
 Geopaysages s'articule autour de 2 applications :  
+
 **1. L'application principale**, celle que le publique peut consulter. Le code source est dans le dossier /backend et son container est nommé backend.  
 La partie personnalisable est dans le dossier /custom (ou autre endroit défini lors de l'installation). Les modifications faites dans ce dossier ne sont pas versionnées dans ce dépôt.  
+
 **2. L'admin**, est une application Angular dont l'accès est restreint au utilisateurs authentifiés. Elle permet de modifier le contenu de l'application principale.  
 Le code source est dans /admin, son container est nommé admin.  
 Le développement de l'admin ne peut pas se faire confortablement sur une machine distante, mais le backend oui.  
@@ -23,11 +25,15 @@ https://learn.microsoft.com/fr-fr/windows/dev-environment/javascript/nodejs-on-w
 - Désampler le fichier docker-compose.override.yml.sample.  
 `mv ./docker/docker-compose.override.yml.sample ./docker/docker-compose.override.yml`  
 (Aucun changement ne sera nécessaire dans ce fichier jusqu'à la phase de publication)
-- Éditer le .env pour activer le mode debug :  
+- Éditer le .env pour activer le mode debug :
+```bash
 DEBUG=1 #pour activer le mode debug du backend  
-ADMIN_ENV_DEV=1 #pour activer le mode debug de l'admin  
+ADMIN_ENV_DEV=1 #pour activer le mode debug de l'admin
+```
 Vous n'êtes pas obligé d'activer les 2  
 Conseil : Attribuer une autre valeur que 80 à PROXY_HTTP_PORT ex. 8080
+
+- ⚠️ le paramètre `HTTPS_IN_PROXY` doit être `= 0` dans le fichier `.env` pour permettre l'utilisation du fichier docker-compose.override.yml.sample
 
 - Redémarrer les containers  
 `./docker/docker.sh up -d`  
@@ -44,7 +50,7 @@ La page est rechargée à chaque changement de code.
 
 #
 ### Publication des images
-Pour que les modifications puissent bénéficier à tous, il faut publier les images des appli impactées. (admin ou backend)  
+Pour que les modifications puissent bénéficier à tous, il faut publier les images des appli impactées. (`backend`, `admin` ou `db`)  
 
 #### 1. S'assurer que votre utilisateur Github ait le droit de publier un package dans l'organisation (PnX-SI)
 
