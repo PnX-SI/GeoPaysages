@@ -16,7 +16,7 @@ Pour plus de détails sur les développements réalisés pour cette version, vou
 
 **Carte des sites**
 - Amélioration du fonctionnement et de l'ergonomie des filtres de la carte des sites d'observations (filtrage en cascade et liens entre les filtres)
-- Les paramètres des filtres actifs peuvent être traduits en URL. Exemple: ``sites?filters=[{"name":"id_observatory","values":[6]},{"name":"themes","values":[3]}]``
+- Les paramètres des filtres actifs peuvent être traduits en URL. Exemple: ``/sites?filters=[{"name":"id_observatory","values":[6]},{"name":"themes","values":[3]}]``
 - Ajout d'un bouton "partager" permettant de copier dans le pesse-papier l'URL de la carte avec les filtres actifs
 - Amélioration globale de la carte des sites et ajout de symbologies pour les observatoires territoriaux et les sites
   
@@ -33,29 +33,31 @@ Pour plus de détails sur les développements réalisés pour cette version, vou
 **Général**
 - Possibilité de personnaliser la page d'accueil avec un bloc d'introduction et un carrousel de photos
 - Ajout d'un template de page "mentions légales" par défaut avec lien depuis le footer
-- Amélioration globale des options de personnalisations de l'application et meilleures gesiotns des temlates des "blocs" qui composent la page d'accueil : [voir la documentation de personnalisation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/personnalisation.md)
+- Amélioration globale des options de personnalisation de l'application et meilleures gestions des templates des "blocs" qui composent la page d'accueil : [voir la documentation de personnalisation](/docs/personnalisation.md)
 - Adaptation de l'interface d'administration (backoffice) : gestion des observatoires et des sites associés
 - Révision des paramètres de configuration et des documentations 
 - Ajout d'une documentation développeur
-- Révision de la procédure d'installation et mise à jour avec Docker : [voir la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
+- Révision de la procédure d'installation et mise à jour avec Docker : [voir la documentation d'installation](/docs/installation.md)
 
 **🐛 Corrections**
 
-- Compatibilité avec la version 2.0 de la dépendance [usershub-authentification-module](https://github.com/PnX-SI/UsersHub-authentification-module/releases)
+- Compatibilité avec la version 2.0.0 de la dépendance [usershub-authentification-module](https://github.com/PnX-SI/UsersHub-authentification-module/releases/tag/2.0.0)
+- Figer la version 2.0.0 de usershub-authentification-module dans requirements.txt
 - Figer la version de PostgreSQL/PostGIS dans le Dockerfile pour éviter les supprises lors de la mises à jour de l'image
 - CSS et corrections mineures
 
 **⚠️ Notes de version**
 
-- Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
-- Pour une nouvelle installation suivre [la documentation d'installation](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/installation.md)
-- **Bien relire l'ensemble des [documentations](https://github.com/PnX-SI/GeoPaysages/tree/master/docs/) suite aux nombreuses évolutions de l'application**
+🪄 L'application s'installe désormais avec Docker 🐳 !
+- Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
+- Pour une nouvelle installation suivre [la documentation d'installation](/docs/installation.md)
+- **Bien relire l'ensemble des [documentations](/docs/) suite aux nombreuses évolutions de l'application**
 
-💻Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer).
+💻 Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer).
 
-💵Financés par les Parcs naturels régionaux de la région Sud.
+💵 Financés par les Parc naturel régional du Luberon et les PNR de la région PACA.
 
-✨Tests et contributions complémentaires par @xavyeah39 et @camillemonchicourt.
+✨ Contributions complémentaires, tests et documentations par le PNR du Pilat (@xavyeah39) et le PN des Écrins (@theolechemia et @camillemonchicourt).
 
 1.2.1 (2022-03-24)
 ------------------
