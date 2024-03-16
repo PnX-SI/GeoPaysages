@@ -19,7 +19,7 @@ marshmallow-sqlalchemy==0.28.0
 marshmallow-enum==1.5.1
 Shapely==1.8.2
 pycparser==2.19
-git+https://github.com/PnX-SI/UsersHub-authentification-module
+git+https://github.com/PnX-SI/UsersHub-authentification-module@2.0.0
 six==1.15.0
 SQLAlchemy==1.4.39
 Werkzeug==2.2.2
