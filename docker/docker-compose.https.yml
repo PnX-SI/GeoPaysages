@@ -4,6 +4,9 @@ services:
     ports:
       - "${PROXY_HTTPS_PORT:-443}:443"
     command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
       - "--entryPoints.web.http.redirections.entrypoint.to=:${PROXY_HTTPS_PORT}"
       - "--entryPoints.web.http.redirections.entrypoint.scheme=https"
       - "--entryPoints.websecure.address=:443"
