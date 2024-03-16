@@ -33,7 +33,7 @@ ADMIN_ENV_DEV=1 #pour activer le mode debug de l'admin
 Vous n'êtes pas obligé d'activer les 2  
 Conseil : Attribuer une autre valeur que 80 à PROXY_HTTP_PORT ex. 8080
 
-- ⚠️ le paramètre `HTTPS_IN_PROXY` doit être `= 0` dans le fichier `.env` pour permettre l'utilisation du fichier docker-compose.override.yml.sample
+⚠️ le paramètre `HTTPS_IN_PROXY` doit être `= 0` dans le fichier `.env` pour permettre l'utilisation du fichier docker-compose.override.yml.sample
 
 - Redémarrer les containers  
 `./docker/docker.sh up -d`  
