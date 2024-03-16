@@ -1,4 +1,5 @@
 from flask import Flask, request, Blueprint, Response, jsonify, abort, Response, current_app
+from flask_login import login_required
 from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import FileWrapper
 
@@ -241,6 +242,7 @@ def returnAllLicences():
     return jsonify(licences), 200
 
 @api.route('/api/users/<int:id_app>', methods=['GET'])
+@login_required
 def returnAllUsers(id_app):
     a = Application.query.filter_by(code_application=current_app.config["CODE_APPLICATION"]).one()
     all_users = AppUser.query.filter_by(
