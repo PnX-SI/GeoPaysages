@@ -87,8 +87,8 @@ services:
     networks:
       - traefik
     volumes:
-      - ${CUSTOM_PATH}/postgresql/postgresql.conf:/var/lib/postgresql/data/pgdata/postgresql.conf
-      - ${CUSTOM_PATH}/postgresql/pg_hba.conf:/var/lib/postgresql/data/pgdata/pg_hba.conf
+      - ${CUSTOM_PATH}/postgresql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+      - ${CUSTOM_PATH}/postgresql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
