@@ -277,3 +277,38 @@ Il est recommandé de certifié votre nom de domaine pour que celui-ci soit acce
 Lancer certbot pour certifier les domaines de vos configurations NGINX :
 
     sudo certbot --nginx
+
+### Compatibilité avec UsersHub
+
+[UsersHub](https://github.com/PnX-SI/usershub/#usershub) est une application web de gestion centralisée des utilisateurs développée dans la constellation [GeoNature](https://github.com/PNX-SI/GeoNature) par les Parcs nationaux français.
+
+GeoPaysages intègre la dépendance [UsersHub-authentification-module](https://github.com/PnX-SI/UsersHub-authentification-module) qui permet que le référentiel d'utilisateurs soit compatible et connectable à une instance UsersHub prééxistante.
+
+Pour ce faire, une fois l'application GeoPaysages installée et fonctionnelle :
+
+* Créer un Foreign Data Wrapper dans la base de données PostGreSQL de GeoPaysages vers celle de l'instance UsersHub,
+
+* Remplacer le schéma utilisateurs de la bases de données de GeoPaysages en important celui de UsersHub.
+
+Se connecter à la base de données de GeoPaysages via son client PostGreSQL préféré et executer le script prévu à cet effet : [usershub_fdw.sql](./scripts/usershub_fdw.sql)
+
+**⚠️ Bien lire les commentaires dans le scripts SQL et adapter son contenu en remplaçant les variables suivantes et en les adaptant à votre contexte :**
+
+`$owner_geopaysages` : l'utilisateur propriétaire de la BDD de GeoPaysages (`DB_USER` dans le fichier [.env](../docker/.env.tpl))
+
+`$usershub_host` : le serveur hôte de la base de données UsersHub ciblée 
+
+`$usershub_db` : le nom de la base de données UsersHub ciblée
+
+`$usershub_port` : le port utilisé par PostGreSQL sur le serveur de la base de données UsersHub ciblée
+
+`$usershub_user` : le nom d'utilisateur à faire correspondre dans la base de données UsersHub ciblée (vous pouvez y ajouter un utilisateur spécifique dédié au FDW en prenant soin de lui donner les droits `USAGE` sur le schéma `utilisateurs` et `SELECT` sur l'ensemble des tables qu'il contient)
+
+`$usershub_pass` : le mot de passe de `$usershub_user` ci-dessus 
+
+
+
+> **Important**  
+> Veillez à adapter au préalable la sécurisation des instances PostGreSQL de GeoPaysages et UsersHub afin de permettre la création du FDW entre les serveurs (`pg_hba.conf` et `postgresql.conf`)
+
+
