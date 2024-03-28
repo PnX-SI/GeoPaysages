@@ -77,9 +77,9 @@ services:
     image: ${DB_IMAGE:-ghcr.io/pnx-si/geopaysages_db:latest}
     restart: always
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT}:${DB_PORT}"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -h 127.0.0.1"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -p ${DB_PORT} -h 127.0.0.1"]
       interval: 5s
       timeout: 5s
       retries: 3
@@ -87,11 +87,10 @@ services:
     networks:
       - traefik
     volumes:
-      - ${CUSTOM_PATH}/postgresql/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
-      - ${CUSTOM_PATH}/postgresql/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PORT=${DB_PORT}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}

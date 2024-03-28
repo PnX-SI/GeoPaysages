@@ -232,14 +232,24 @@ Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste a
 | DB_ADDRESS           | Adresse de la DB<br>**Ne changer que si une autre DB est utilisé**                                                            | string                                                                                                           |
 | CUSTOM_PATH          | Chemin vers le dossier contenant les fichiers custom<br>**Le dossier ne doit pas exister pour que l'install puisse le créer** | **Si vous modifier la valeur par défaut :**<br>Utiliser un chemin absolu<br>ex. /home/nsdev/GeoPaysages-sit-paca |
 
-## Configuration de PostgreSQL
-
 # 
 
-L'installation de PostgreSQL est gérée dans un container Docker.
-Pour permettre la personnalisation de la configuration globale de PostgreSQL, les fichiers `postgresql.conf` et `pg_hba.conf` sont rendus accessibles hors du container afin d'en faciliter l'édition dans le répertoire de personnalisation : ``custom/postgresql/``.
+## Configuration de PostgreSQL
 
-Il est conseillé d'adapter la sécurisation des connexions à PostgrSQL dans le fichier `pg_hba.conf` en limitant les accès par utilisateur et/ou par IP.
+PostgreSQL étant déployé dans le conteneur Docker `db` avec docker compose (`./docker/docker-compose.yml`), Les données et les fichiers de configuration sont montés dans le volume Docker `geopaysages-db-data` sur le serveur hôte.
+
+Par défaut, le chemin des volumes Docker sur le serveur hôte est `/var/lib/docker/volumes/`
+
+Il est est donc possible (et conseillé) d'adapter la configuration de l'instance PostGreSQL et sa sécurisation (fichiers `postgresql.conf `et `pg_hba.conf`)
+
+```bash
+sudo su - # with root !
+cd /var/lib/docker/volumes/geopaysages_geopaysages-db-data/_data
+sudo nano postgresql.conf
+sudo nano pg_hba.conf.conf
+```
+
+> ⚠️ Si vous souhaitez modifier le port par défaut de PostgreSQL, il vous vous faudra adapter le fichier `postgresql.conf` en conséquence (voir ci-dessus) après avoir adapté la variable `DB_PORT` dans le fichier `./docker/docker-compose.yml` et démarrer les conteneurs de l'application.
 
 # 
 
