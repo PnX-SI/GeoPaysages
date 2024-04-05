@@ -296,11 +296,14 @@ GeoPaysages intègre la dépendance [UsersHub-authentification-module](https://g
 
 Pour ce faire, une fois l'application GeoPaysages installée et fonctionnelle :
 
+* Créer un utilisateur dédié dans la base de données du serveur UsersHub cible qui sera utilisé ensuite via Foreign Data Wrapper par la BDD de GeoPaysages,
+
 * Créer un Foreign Data Wrapper dans la base de données PostGreSQL de GeoPaysages vers celle de l'instance UsersHub,
 
 * Remplacer le schéma utilisateurs de la bases de données de GeoPaysages en important celui de UsersHub.
+1. Se connecter à la base de données du serveur UsersHub ciblé avec un client PostGreSQL puis adapter et exécuter le script prévu à cet effet : [usershub_gp_role.sql](./scripts/usershub_gp_role.sql)
 
-Se connecter à la base de données de GeoPaysages via son client PostGreSQL préféré et executer le script prévu à cet effet : [usershub_fdw.sql](./scripts/usershub_fdw.sql)
+2. Se connecter à la base de données de GeoPaysages avec un client PostGreSQL puis adapter et exécuter le script prévu à cet effet : [usershub_fdw.sql](./scripts/usershub_fdw.sql)
 
 **⚠️ Bien lire les commentaires dans le scripts SQL et adapter son contenu en remplaçant les variables suivantes et en les adaptant à votre contexte :**
 
@@ -316,9 +319,5 @@ Se connecter à la base de données de GeoPaysages via son client PostGreSQL pr�
 
 `$usershub_pass` : le mot de passe de `$usershub_user` ci-dessus 
 
-
-
 > **Important**  
 > Veillez à adapter au préalable la sécurisation des instances PostGreSQL de GeoPaysages et UsersHub afin de permettre la création du FDW entre les serveurs (`pg_hba.conf` et `postgresql.conf`)
-
-
