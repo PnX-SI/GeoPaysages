@@ -3,5 +3,5 @@ export interface User {
     id_application: number ;
     id_organisme: number;
     identifiant: string ;
-    id_droit_max: number ;
+    max_level_profil: number ;
 }
