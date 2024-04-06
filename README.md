@@ -2,7 +2,7 @@
 
 Application web permettant de publier un observatoire photographique des paysages.
 
-## Exemples 
+## Exemples
 
 - [Geopaysages | Parc national de la Vanoise](http://paysages.vanoise-parcnational.fr)
 - [Geopaysages | Parc national des Ecrins](http://paysages.ecrins-parcnational.fr)
@@ -33,14 +33,13 @@ Le site internet initial de l'OPPV a été mis hors service mi-2016 en raison du
 - [Annexe CCTP 2017](http://geonature.fr/documents/autres/geopaysages/2017-11-24-OPPV-PNV-ANNEXES-CDC.zip)
 - [Réflexion 2016](http://geonature.fr/documents/autres/geopaysages/2016-11-OPP-reflexion.pdf)
 
-
 ## Exemples d'utilisation de GeoPaysages :
 
 - [paysages.vanoise-parcnational.fr](http://paysages.vanoise-parcnational.fr)
 - [paysages.parc-naturel-pilat.fr](https://paysages.parc-naturel-pilat.fr)
 - [opp-paysage.pnr-millevaches.fr](https://opp-paysage.pnr-millevaches.fr/)
 - [paysages.pnrsud.fr](https://paysages.pnrsud.fr)
-
+- [paysages.parc-golfe-morbihan.bzh](https://paysages.parc-golfe-morbihan.bzh/)
 
 ## Contributeurs :
 
@@ -49,3 +48,4 @@ Le site internet initial de l'OPPV a été mis hors service mi-2016 en raison du
 - Parc national des Ecrins
 - Parc naturel régional du Pilat
 - Parcs naturels régionaux de la région PACA
+- ZebraGéo
