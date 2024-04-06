@@ -11,33 +11,45 @@ Pour plus de détails sur les développements réalisés pour cette version, vou
 **🚀 Nouveautés**
 
 **Multi-observatoires :**
+
 - Ajout de la notion d'observatoire permettant de structurer des sites d'observation dans différents observatoires (territoires, thématiques...)
   De nombreux changements et refonte de l'application
 
 **Carte des sites**
+
 - Amélioration du fonctionnement et de l'ergonomie des filtres de la carte des sites d'observations (filtrage en cascade et liens entre les filtres)
+
 - Les paramètres des filtres actifs peuvent être traduits en URL. Exemple: ``/sites?filters=[{"name":"id_observatory","values":[6]},{"name":"themes","values":[3]}]``
+
 - Ajout d'un bouton "partager" permettant de copier dans le pesse-papier l'URL de la carte avec les filtres actifs
+
 - Amélioration globale de la carte des sites et ajout de symbologies pour les observatoires territoriaux et les sites
   
   Possibilité d'associer un pictogramme SVG à chaque thème. 
   Si un thème principal est précisé au niveau du site le picto s'affichera sur le marqueur de localisation du site
 
 **Fiche site**
+
 - Révision et amélioration du comparateur photos v2 et de sa configuration
 - réintégration d'une timeline de sélection des photos de la série plus intuitive
 
 **Galerie photo**
+
 - intégration du composant de filtres dans la galerie photo
 
 **Général**
+
 - Possibilité de personnaliser la page d'accueil avec un bloc d'introduction et un carrousel de photos
 - Ajout d'un template de page "mentions légales" par défaut avec lien depuis le footer
 - Amélioration globale des options de personnalisation de l'application et meilleures gestions des templates des "blocs" qui composent la page d'accueil : [voir la documentation de personnalisation](/docs/personnalisation.md)
-- Adaptation de l'interface d'administration (backoffice) : gestion des observatoires et des sites associés
 - Révision des paramètres de configuration et des documentations 
 - Ajout d'une documentation développeur
 - Révision de la procédure d'installation et mise à jour avec Docker : [voir la documentation d'installation](/docs/installation.md)
+
+**Interface d'administration (backoffice)**
+
+- Adaptation de l'interface d'administration pour la gestion des observatoires et des sites associés
+- Ajout d'un éditeur de texte enrichi (WYSIWYG) pour les champs `description` et `temoignages` des sites d'observation.
 
 **🐛 Corrections**
 
@@ -49,15 +61,16 @@ Pour plus de détails sur les développements réalisés pour cette version, vou
 **⚠️ Notes de version**
 
 🪄 L'application s'installe désormais avec Docker 🐳 !
+
 - Suivre les notes de versions intermédiaires jusqu'à la version 1.2.1 puis suivre [la documentation de migration](/docs/migration_v1.2_to_v1.3.md) depuis la version 1.2
 - Pour une nouvelle installation suivre [la documentation d'installation](/docs/installation.md)
 - **Bien relire l'ensemble des [documentations](/docs/) suite aux nombreuses évolutions de l'application**
 
-💻 Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer).
+💻 Développements réalisés par Natural Solutions (@20cents, @Naomi-Fischer)
 
 💵 Financés par les Parc naturel régional du Luberon et les PNR de la région PACA.
 
-✨ Contributions complémentaires, tests et documentations par le PNR du Pilat (@xavyeah39) et le PN des Écrins (@theolechemia et @camillemonchicourt).
+✨ Développements et contributions complémentaires (tests et documentations) par ZebraGéo, le PNR du Pilat (@xavyeah39) et le PN des Écrins (@theolechemia et @camillemonchicourt).
 
 1.2.1 (2022-03-24)
 ------------------
@@ -160,9 +173,10 @@ Si vous réalisez une mise à jour vers cette version via le script ``update_app
 Avant de lancer l'installation ou la mise à jour :
 
 - Ajouter ces variables de conf au fichier ``/front-backOffice/src/app/config.ts`` : 
-
+  
   - ``map_lat_center: 45.372167``
   - ``map_lan_center: 6.819077``
+
 - Ne pas corriger la coquille sur ``map_lan_center``
 
 1.0.0-rc.4 (2019-07-25)
@@ -172,17 +186,18 @@ Avant de lancer l'installation ou la mise à jour :
 
 - Résout les issues suivantes : #58 #59 #60 #63 #66 #68
 - A propos de #68
-Le script de mise à jour ajoute les nouvelles clés de traductions à celles existantes.
-L'utilisateur de l'instance devra les remplir et recompiler le catalogue de traduction.
+  Le script de mise à jour ajoute les nouvelles clés de traductions à celles existantes.
+  L'utilisateur de l'instance devra les remplir et recompiler le catalogue de traduction.
 
 **⚠️ Notes de version**
 
 Avant de lancer l'installation ou la mise à jour :
 
 - Ajouter ces variables de conf au fichier ``/front-backOffice/src/app/config.ts`` : 
-
+  
   - ``map_lat_center: 45.372167``
   - ``map_lan_center: 6.819077``
+
 - Ne pas corriger la coquille sur ``map_lan_center``
 
 1.0.0-rc.3.7 (2019-05-16)
@@ -191,11 +206,14 @@ Avant de lancer l'installation ou la mise à jour :
 **🚀 Nouveautés**
 
 - Pouvoir configurer les fonds sur les 2 cartes (carte interactive et carte point d'obs)
-
+  
   - Ajouter une ligne dans la table ``conf`` avec en key ``map_layers`` et en value le contenu du fichier joint.
   - Adapter le contenu du fichier au besoin (modifier/ajouter des fonds)
+
 - Dans le module "Modifier la Photo" (enlever la capitale au mot photo) : faute d’orthographe sur le mot galerie (il faut 1 seul L, dans "Photo affichée dans la galerie")
+
 - Ajout d'un script de suppression des images générées (``rm_photos.sh``). A exécuter en cas de modif des crédits directement en base de données, d'utilisation de photos générées antérieurement.
+
 - Le backoffice affiche une info lorsqu'il y a une erreur serveur
 
 1.0.0-rc.3.6 (2019-05-16)
@@ -204,11 +222,14 @@ Avant de lancer l'installation ou la mise à jour :
 **🚀 Nouveautés**
 
 - Pouvoir configurer les fonds sur les 2 cartes (carte interactive et carte point d'obs)
-
+  
   - Ajouter une ligne dans la table ``conf`` avec en key ``map_layers`` et en value le contenu du fichier joint.
   - Adapter le contenu du fichier au besoin (modifier/ajouter des fonds)
+
 - Dans le module "Modifier la Photo" (enlever la capitale au mot photo) : faute d’orthographe sur le mot galerie (il faut 1 seul L, dans "Photo affichée dans la galerie")
+
 - Ajout d'un script de suppression des images générées (``rm_photos.sh``). A exécuter en cas de modif des crédits directement en base de données, d'utilisation de photos générées antérieurement.
+
 - Le backoffice affiche une info lorsqu'il y a une erreur serveur
 
 1.0.0-rc.3.5 (2019-04-26)
@@ -319,19 +340,21 @@ Restructuration des données des sites
 **🚀 Nouveautés**
 
 - Général
-
+  
   - Ajout de la colonne legend_site dans t_site
   - Déplacement du contenu de testim_site vers desc_site
   - Ajout d'un contenu factice dans testim_site pour le site 003.Termignon
-- Comparateur
 
+- Comparateur
+  
   - Affichage de la legende
   - Affichage conditionnel de témoignage
   - Bouton de téléchargement d'une photo
   - Suppression du zoom sur le couple de photos
   - Sur tablette, les 2 photos comparées sont côte à côte
-- Galerie
 
+- Galerie
+  
   - Une seule photo par site (pour l'instant la 1ère)
 
 1.0.0-beta.3 (2018-12-03)
@@ -342,8 +365,9 @@ Arrivée du back
 **🚀 Nouveautés**
 
 - Une 1ère version du back est dispo à cette adresse temporaire : <URL>/static/app_admin/index.html
-- Les améliorations apportées au front : 
 
+- Les améliorations apportées au front : 
+  
   - Supprimer le bouton "Contact" dans les onglets de haut de page.
   - Footer : Logo du PNV déformé
   - Le formulaire contact du footer renvoi vers l'email de Patrick F. avec un objet pré-rempli faisant référence à l’OPPV.
@@ -365,11 +389,13 @@ Le front se concrétise
 Videz le cache !
 
 Liste des problèmes connus sur le front : 
+
 - Home
-
+  
   - Il y a une scrollbar horizontale si le ratio de la fenêtre s'approche trop d'un carré.
-- Comparateur
 
+- Comparateur
+  
   - Sur tablette, les 2 photos comparées sont empilées.
   - Sauf erreur, nous n'avons pas le document "Notice technique pour le photographe".
 
