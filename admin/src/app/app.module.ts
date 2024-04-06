@@ -30,6 +30,7 @@ import { ObservatoriesComponent } from './observatories/observatories.component'
 import { ObservatoriesService } from './services/observatories.service';
 import { ObservatoryComponent } from './observatory/observatory.component';
 import { DbConfService } from './services/dbconf.service';
+import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { DbConfService } from './services/dbconf.service';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NgxSpinnerModule,
+    RichTextEditorAllModule,
   ],
   providers: [
     LoginService,

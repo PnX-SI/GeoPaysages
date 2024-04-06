@@ -31,7 +31,16 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/leaflet-draw/dist/leaflet.draw.css",
               "node_modules/ngx-toastr/toastr.css" ,
-              "./node_modules/leaflet/dist/leaflet.css"
+              "./node_modules/leaflet/dist/leaflet.css",
+              "node_modules/@syncfusion/ej2-base/styles/material.css",
+              "node_modules/@syncfusion/ej2-icons/styles/material.css",
+              "node_modules/@syncfusion/ej2-buttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-splitbuttons/styles/material.css",
+              "node_modules/@syncfusion/ej2-inputs/styles/material.css",
+              "node_modules/@syncfusion/ej2-lists/styles/material.css",
+              "node_modules/@syncfusion/ej2-navigations/styles/material.css",
+              "node_modules/@syncfusion/ej2-popups/styles/material.css",
+              "node_modules/@syncfusion/ej2-richtexteditor/styles/material.css"
             ],
             "scripts": ["node_modules/leaflet/dist/leaflet.js"]
           },

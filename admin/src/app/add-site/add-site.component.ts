@@ -16,13 +16,28 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ObservatoriesService } from '../services/observatories.service';
 import { ObservatoryType } from '../types';
 import { DbConfService, IDBConf } from '../services/dbconf.service';
+import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
 
 @Component({
   selector: 'app-add-site',
   templateUrl: './add-site.component.html',
   styleUrls: ['./add-site.component.scss'],
+  providers: [ToolbarService, LinkService, ImageService, HtmlEditorService],
 })
 export class AddSiteComponent implements OnInit, OnDestroy {
+  /* RichTextEditor toolbar configuration --> Hide image upload tool */
+  public tools: object = {
+    type: 'Expand',
+    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
+      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
+      'LowerCase', 'UpperCase', '|',
+      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
+      'Outdent', 'Indent', '|',
+      'CreateLink',
+      /*'Image', */
+      '|', 'ClearFormat', 'Print',
+      'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+  };
   selectedFile: File[];
   modalRef: NgbModalRef;
   selectedSubthemes = [];
