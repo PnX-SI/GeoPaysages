@@ -1,8 +1,6 @@
 -------------------------------
 -->> Sur le serveur GeoPaysages
 -------------------------------
--- Suprimer la contrainte FK sur t_photo vers t_roles
-ALTER TABLE geopaysages.t_photo DROP CONSTRAINT t_photo_fk3;
 
 -- Renommer le schéma utilisateurs crée lors de l'installation
 ALTER SCHEMA utilisateurs RENAME TO utilisateurs_default;
@@ -34,17 +32,3 @@ CREATE USER MAPPING FOR $owner_geopaysages
 IMPORT FOREIGN SCHEMA utilisateurs
 FROM SERVER fdw_usershub
 INTO utilisateurs;
-
--- Recréer la contrainte supprimée sur t_photo après avoir vérifier les correspondances utilisateurs si nécéssaires dans la table t_photo (id_role >>> t_role)
--- /!\ il ne sera pas possible de recréer cette contrainte FK sur la foreign table t_roles
--- On crée donc une contrainte CHECK à la place basée sur une fonction vérifiant la correspondance d'id_role
-CREATE OR REPLACE FUNCTION geopaysages.role_exists(role_id INT)
-RETURNS BOOLEAN AS $$
-BEGIN
-    RETURN EXISTS(SELECT 1 FROM utilisateurs.t_roles WHERE id_role = role_id);
-END;
-$$ LANGUAGE plpgsql;
-
-ALTER TABLE geopaysages.t_photo
-ADD CONSTRAINT check_role_id_exists
-CHECK (geopaysages.role_exists(id_role));
