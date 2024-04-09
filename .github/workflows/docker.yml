@@ -3,10 +3,7 @@ name: Docker Build and Publish
 on:
   push:
     branches:
-      - master
-  pull_request:
-    branches: 
-      - master
+      - dev
   release:
     types: [published]
 
@@ -25,9 +22,18 @@ jobs:
     - name: Login to GitHub Packages
       uses: docker/login-action@v2
       with:
-        registry: docker.pkg.github.com
+        registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Generate metadata for backend image
+      id: meta-backend
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/${{ github.repository_owner }}/geopaysages_backend
+        tags: |
+          type=ref,event=branch
+          type=ref,event=tag
 
     - name: Build and push backend Docker image
       id: build-backend
@@ -35,10 +41,18 @@ jobs:
       with:
         context: ./backend
         file: ./backend/Dockerfile
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta-backend.outputs.tags }}
+        labels: ${{ steps.meta-backend.outputs.labels }}
+
+    - name: Generate metadata for admin image
+      id: meta-admin
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/${{ github.repository_owner }}/geopaysages_admin
         tags: |
-          docker.pkg.github.com/${{ github.repository_owner }}/GeoPaysages/backend:${{ github.ref_name }}
-          ${{ github.event_name == 'release' && github.ref == 'refs/tags/' + github.event.release.tag_name ? 'docker.pkg.github.com/' + github.repository_owner + '/GeoPaysages/backend:latest' : '' }}
+          type=ref,event=branch
+          type=ref,event=tag
 
     - name: Build and push admin Docker image
       id: build-admin
@@ -46,10 +60,18 @@ jobs:
       with:
         context: ./admin
         file: ./admin/Dockerfile
-        push: true
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta-admin.outputs.tags }}
+        labels: ${{ steps.meta-admin.outputs.labels }}
+
+    - name: Generate metadata for db image
+      id: meta-db
+      uses: docker/metadata-action@v4
+      with:
+        images: ghcr.io/${{ github.repository_owner }}/geopaysages_db
         tags: |
-          docker.pkg.github.com/${{ github.repository_owner }}/GeoPaysages/admin:${{ github.ref_name }}
-          ${{ github.event_name == 'release' && github.ref == 'refs/tags/' + github.event.release.tag_name ? 'docker.pkg.github.com/' + github.repository_owner + '/GeoPaysages/admin:latest' : '' }}
+          type=ref,event=branch
+          type=ref,event=tag
 
     - name: Build and push db Docker image
       id: build-db
@@ -57,7 +79,6 @@ jobs:
       with:
         context: ./db
         file: ./db/Dockerfile
-        push: true
-        tags: |
-          docker.pkg.github.com/${{ github.repository_owner }}/GeoPaysages/db:${{ github.ref_name }}
-          ${{ github.event_name == 'release' && github.ref == 'refs/tags/' + github.event.release.tag_name ? 'docker.pkg.github.com/' + github.repository_owner + '/GeoPaysages/db:latest' : '' }}
+        push: ${{ github.event_name != 'pull_request' }}
+        tags: ${{ steps.meta-db.outputs.tags }}
+        labels: ${{ steps.meta-db.outputs.labels }}
