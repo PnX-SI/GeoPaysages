@@ -1,369 +1,323 @@
-INSTALLATION
-===
+### Introduction
 
-[![image](https://www.vanoise-parcnational.fr/sites/vanoise-parcnational.fr/files/logo_pnv_0.jpg)](http://www.vanoise-parcnational.fr/fr)
+L'infrastructure de l'app est constituée de 5 containers docker.  
+Elle est donc isolée du system qui l'héberge, ne pouvant ni subir ni causer de conflits avec les paquets déjà installés.  
+Seuls les ports configurés peuvent entrer en collision avec d'autres services utilisant les même ports. 
 
-[![image](https://geonature.fr/img/logo-pne.jpg)](http://www.ecrins-parcnational.fr)
+**Détail des containers**  
 
-Prérequis
-===
+- db : Le serveur de base de données, Postgres/Postgis
+- backend : L'application serveur, Python/Flask
+- admin : L'espace d'administration, Angular
+- thumbor : Un service de transformation d'image, Python
+- proxy : Le point d'entrée de l'app, Traefik
 
-Application développée et installée sur un serveur Debian 10.
+# 
 
-Ce serveur doit aussi disposer de :
+### Les commandes les plus utilisées
 
-- sudo (apt-get install sudo)
-- un utilisateur (`monuser` dans cette documentation) appartenant au
-    groupe `sudo` (pour pouvoir bénéficier des droits d'administrateur)
+- Démarrer les containers, donc l'app  
+  `./docker/docker.sh up -d`
 
-> Si sudo n'est pas installé par défaut, voir [ici](https://www.privateinternetaccess.com/forum/discussion/18063/debian-8-1-0-jessie-sudo-fix-not-installed-by-default)
+- Stopper les containers  
+  `./docker/docker.sh down`
 
-Installation de l'environnement logiciel
-===
+- Parfois, mais vraiment très rarement, il faudra juste redémarrer le backend    
+  `./docker/docker.sh restart backend`    
+
+- Il peut-être parfois utile de redémarrer le container postgresql    
+  `./docker/docker.sh restart db`  
+
+- Lister les containers du système :
+  `docker ps -a`
+
+- Supprimer les containers arrêtés : 
+  `docker container prune`
+
+- Supprimer les image sans container associé : 
+  `docker image prune -a`
+
+- **Voir les logs d'un container**  
+  `./docker/docker.sh logs -f <nom_du_container>`  
+  <nom_du_container> : db, backend, proxy, ...  
+  Exemples :  
+  Afficher les logs dans le terminal  
+  `./docker/docker.sh logs -f backend`  
+  Générer un fichier  
+  `./docker/docker.sh logs -f backend > /path/to/logfile.txt`
+
+# 
+
+### Pré-requis
+
+**Application développée, installée et testée sur environnements serveurs Debian 11 et 12.**
+
+Se connecter d'abord en tant que super utilisateur `root` au serveur Linux hôte.
+
+Mettre à jour les paquets :
+
+```sh
+apt update && apt upgrade
+```
+
+Installer `sudo` et `rsync`:
+
+```shell
+apt install sudo rsync
+```
+
+Créer un utilisateur système autre que `root` (variable système `'whoami'` dans cette documentation) puis, l'ajouter au groupe `sudo` (afin de bénéficier des droits d'administrateur) :
+
+Remplacer `<nom_utilisateur>` dans les commandes suivantes :
+
+```sh
+useradd <nom_utilisateur>
+usermod -aG sudo <nom_utilisateur>
+```
+
+Installer Docker Engine et Compose en suivant la documentation d'installation officielle selon votre distribution (+ postinstall) :
+
+- Installation sur Debian : https://docs.docker.com/engine/install/debian/
+
+- Autres distributions Linux : https://docs.docker.com/engine/install/#server
+
+- Post-installation de Docker pour Linux : https://docs.docker.com/engine/install/linux-postinstall/
+
+Se connecter avec l'utilisateur créer précedemment  et arrêter de travailler avec `root` à partir d'ici :
+
+```shell
+su - <nom_utilisateur>
+```
+
+# 
+
+### Installer GeoPaysages
 
 **1. Récupérer la dernière version de GeoPaysages sur le dépôt (https://github.com/PnX-SI/GeoPaysages/releases)**
 
 Ces opérations doivent être faites avec l'utilisateur courant (autre
-que `root`), `monuser` dans l'exemple :
+que `root`); 
 
-```
-cd /home/<monuser>
+Remplacer `X.Y.Z` par la version que vous souhaitez installer.
+
+#### Avec une archive :
+
+```sh
+cd /home/`whoami`
 wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 ```
 
 > Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
 
-Dézipper l'archive :
+- Dézipper l'archive :
 
 ```
 unzip X.Y.Z.zip
 ```
 
-Vous pouvez renommer le dossier qui contient l'application (dans un
+Vous pouvez renommer le répertoire qui contient l'application (dans un
 dossier `/home/<monuser>/geopaysages/` par exemple) :
+
 ```
+mv ~/GeoPaysages-X.Y.Z ~/geopaysages
+```
+
+Modifier les permissions du répertoire :
+
+```shell
+chmod -R 755 ~/geopaysages
+```
+
+#### Avec Git :
+
+Si Git n'est pas installé sur le système :
+
+```sh
+sudo apt update
+sudo apt install git
+```
+
+Se placer dans le répertoire de l'utilisateur courant (`whoami`) et clôner le dépôt depuis la release souhaitée (remplacer `X.Y.Z` par la version souhaitée) :
+
+```sh
+cd /home/`whoami`
+git clone -b X.Y.Z https://github.com/PnX-SI/GeoPaysages.git
+```
+
+Renommer le répertoire clôné de l'application :
+
+```sh
 mv GeoPaysages-X.Y.Z geopaysages
+```
+
+Modifier les permissions du répertoire :
+
+```shell
+chmod -R 755 ~/geopaysages
 ```
 
 **2. Se placer dans le dossier qui contient l'application et lancer l'installation de l'environnement serveur :**
 
-Le script `install_env.sh` va automatiquement installer les outils nécessaires à l'application s'ils ne sont pas déjà sur le serveur :
+- Désampler le fichier de configuration :
+  
+  ```sh
+  cd /home/`whoami`/geopaysages
+  mv ./docker/.env.tpl ./docker/.env
+  ```
+  
+  Editez-le et adapter les valeurs des variables à votre contexte :
+  
+  ```sh
+  nano ./docker/.env
+  ```
+  
+  > **Important**  
+  > Les variables `DB_NAME`, `DB_USER`, `DB_PASSWORD` sont utilisées pour :
+  > 
+  > - initialiser la DB.
+  > - créer la chaîne de connexion à la DB  
+  > 
+  > **Attention !!!** Une fois la DB initialisée la modification d'une de ces variables modifiera la chaîne de connexion **mais pas les valeurs dans la DB.**  
+  > Vous pourrez le faire à main, mais en attendant l'app sera HS.
+  > 
+  > Les variables `PROXY_HTTPS_PORT`, `ACME_EMAIL` et `SERVERNAME_URL` sont utilisées la certification HTTPS du nom de domaine de l'application avec Traefik et LetsEncrypt.
+  > 
+  > Si vous préférez gérer la certification HTTPS différemment, vous pouvez ignorez ces variables dans le fichier `./docker/.env` et passer la variable `HTTPS_IN_PROXY` à 0.
+  > 
+  > Exemple de configuration avec NGinx + Certbot [ci-dessous](# Alternative à Traefik : NGINX).
+  
+  > **!!! Attention développeur, très important pour les instances locales !!!**  
+  > SSL est activé par défaut, pour le désactiver il suffit de passer la variable `HTTPS_IN_PROXY` à 0 dans le fichier `./docker/.env`.
 
-- PostgreSQL
-- PostGIS
-- NGINX
-- Python 3
+**3. Démarrer les containers :**
 
-Cela installera les logiciels nécessaires au fonctionnement de l'application
-
-```
-cd /home/<monuser>/geopaysages
-./install_env.sh
-```
-
-Installation de la base de données
-==================================
-
-**1. Configuration de la BDD :**
-
-Modifier le fichier de configuration de la BDD et de son installation automatique `install_configuration/settings.ini`.
-
-> Suivez bien les indications en commentaire dans ce fichier
-
-> Attention à ne pas mettre de 'quote' dans les valeurs, même pour les chaines de caractères.
-
-> Le script d'installation automatique de la BDD ne fonctionne que pour une installation de celle-ci en localhost (sur le même serveur que l'application) car la création d'une BDD recquiert des droits non disponibles depuis un autre serveur. Dans le cas d'une BDD distante, adapter les commandes du fichier `install_db.sh` en les éxecutant une par une.
-
-La gestion des utilisateurs est centralisée dans le schéma `utilisateurs` de la BDD, hérité de l'application de gestion des utilisateurs UsersHub (https://github.com/PnX-SI/UsersHub). Ce schéma est créé automatiquement lors de l'installation de la BDD de GeoPaysages, localement ou sous forme de foreign data wrapper connecté à une BDD de UsersHub existante.
-
-**2. Lancer le fichier fichier d'installation de la base de données :**
-
-```
-./install_db.sh
-``` 
-
-> Vous pouvez consulter le log de cette installation de la BDD dans `/var/log/install_db.log` et vérifier qu'aucune erreur n'est intervenue.
-
-> Le script `install_db.sh` supprime la BDD de GeoPaysages et la recréé entièrement.
-
-Installation de l'application
-=============================
-
-**1. Configuration de l'application :**
-
-Désampler le fichier de configuration puis l'éditer :
-
-```
-cp ./backend/config.py.tpl ./backend/config.py
+```sh
+./docker/docker.sh up -d
 ```
 
-- Vérifier que la variable `SQLALCHEMY_DATABASE_URI` contient les bonnes informations de connexion à la BDD
-- Ne pas modifier les path des fichiers static
-- Renseigner les autres paramètres selon votre contexte
+  **Bien lire les sorties du script !**
 
-**2. Lancer l'installation automatique de l'application :**
+# 
 
-```
-./install_app.sh
-```
+### Éditer le .env
 
-Internationalisation de l'application
-=====================================
+Vous pouvez à tout moment éditer le .env et redémarrer l'app, faîtes juste attention à :   
 
-- Pour modifier les textes, éditer le fichier `backend/i18n/fr/messages.po`
-- Activer l'environnement virtuel (depuis le répertoire source, par exemple `geopaysages`)
+- Ces variables `DB_NAME`, `DB_USER`, `DB_PASSWORD`  
+  - Voir note si dessus
+- Si vous voulez déplacer le dossier custom :  
+  - modifier `CUSTOM_PATH` tel qu'indiqué dans le tableau ci-dessous.
+  - déplacer le dossier **avant** de redémarrer l'app sinon un nouveau custom sera créer à partir du template initial.  
+    Rien de grave, il vous faudrait juste le supprimer, déplacer votre custom et redémarrer l'app
 
-```
-cd geopaysages/
-source ./venv/bin/activate (venv doit apparaitre en préfixe des commandes)
-```
+# 
 
-- lancer la commande de compilation en se plaçant au préalable dans le répertoire `backend` :
+### Variables du .env
 
-```
-cd backend/
-pybabel compile -d i18n
-```
+| Nom                  | Description                                                                                                                   | Valeur                                                                                                           |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| PROXY_HTTP_PORT      | Port vers lequel pointe votre serveur en HTTP                                                                                 | integer                                                                                                          |
+| PROXY_HTTPS_PORT     | Port vers lequel pointe votre serveur en HTTPS                                                                                | integer                                                                                                          |
+| ACME_EMAIL           | Email utilisé pour la générération automatique des certificats HTTPS LetsEncrypt                                              | string                                                                                                           |
+| SERVERNAME_URL       | Nom de domaine de l'application                                                                                               | string                                                                                                           |
+| HTTPS_IN_PROXY       | Est-ce-que le certificat HTTPS est géré par l'application ?                                                                   | 1: oui<br>0: non                                                                                                 |
+| DB_NAME              | Nom de la DB                                                                                                                  | string                                                                                                           |
+| DB_USER              | User de la DB                                                                                                                 | string                                                                                                           |
+| DB_PASSWORD          | Password de la DB                                                                                                             | string                                                                                                           |
+| DB_PORT              | Port de la DB                                                                                                                 | integer                                                                                                          |
+| THUMBOR_SECURITY_KEY | Utilisé pour signer l'url de transformation d'image                                                                           | string                                                                                                           |
+| FLASK_SECRET_KEY     | Utilisé par Flask pour crypter les infos de session                                                                           | string                                                                                                           |
+| DEBUG                | Affichage des informations de debug                                                                                           | 0: masquer<br>1: afficher                                                                                        |
+| ADMIN_ENV_DEV        | L'admin est lancée via `npm start` ?                                                                                          | 0: non<br>1: oui                                                                                                 |
+| DB_ADDRESS           | Adresse de la DB<br>**Ne changer que si une autre DB est utilisé**                                                            | string                                                                                                           |
+| CUSTOM_PATH          | Chemin vers le dossier contenant les fichiers custom<br>**Le dossier ne doit pas exister pour que l'install puisse le créer** | **Si vous modifier la valeur par défaut :**<br>Utiliser un chemin absolu<br>ex. /home/nsdev/GeoPaysages-sit-paca |
 
-> Pour plus d'informations, voir <https://pythonhosted.org/Flask-Babel/>
+# 
 
-> Pour sortir de l'environnement virtuel, taper `deactivate`
+## Configuration de PostgreSQL
 
-Installation du back-office
-===========================
+PostgreSQL étant déployé dans le conteneur Docker `db` avec docker compose (`./docker/docker-compose.yml`), Les données et les fichiers de configuration sont montés dans le volume Docker `geopaysages-db-data` sur le serveur hôte.
 
-**1. Configuration de l'application :**
+Par défaut, le chemin des volumes Docker sur le serveur hôte est `/var/lib/docker/volumes/`
 
-Désampler et éditer le fichier de configuration
-`cp ./front-backOffice/src/app/config.ts.tpl ./front-backOffice/src/app/config.ts`.
+Il est est donc possible (et conseillé) d'adapter la configuration de l'instance PostGreSQL et sa sécurisation (fichiers `postgresql.conf `et `pg_hba.conf`)
 
-> Pour utiliser l'utilisateur \"admin\" créé par défaut, il faut renseigner `id_application : 1`
-
-> Pour `apiUrl` et `staticPicturesUrl`, bien mettre <http://xxx.xxx.xxx.xxx>, si utilisation d'une adresse IP
-
-**2. Lancer l'installation automatique de l'application :**
-```
-    ./install_backoffice.sh
-```
-
-Configuration de NGINX
-======================
-
-**1. Configuration de supervisor :**
-
-```
-sudo nano /etc/supervisor/conf.d/geopaysages.conf
+```bash
+sudo su - # with root !
+cd /var/lib/docker/volumes/geopaysages_geopaysages-db-data/_data
+sudo nano postgresql.conf
+sudo nano pg_hba.conf.conf
 ```
 
-Copiez/collez-y ces lignes en renseignant les bons chemins et le bon
-port :
+> ⚠️ Si vous souhaitez modifier le port par défaut de PostgreSQL, il vous vous faudra adapter le fichier `postgresql.conf` en conséquence (voir ci-dessus) après avoir adapté la variable `DB_PORT` dans le fichier `./docker/docker-compose.yml` et démarrer les conteneurs de l'application.
 
-    [program:geopaysages]
-    directory=/home/<monuser>/geopaysages/backend
-    command=/home/<monuser>/geopaysages/venv/bin/gunicorn app:app -b localhost:8000
-    autostart=true
-    autorestart=true
-    user=<monuser>
+# 
 
-    stderr_logfile=/var/log/geopaysages/geopaysages.err.log
-    stdout_logfile=/var/log/geopaysages/geopaysages.out.log
+### Alternative à Traefik : NGINX
 
-**2. Configuration de NGINX :**
+Le container Docker inclus l'installation du reverse-proxy [Traefik](https://doc.traefik.io/traefik/).
+Traefik permet également de gérer les certificats LetsEncrypt pour le HTTPS.
+Il suffit donc de renseigner le fichier `.env` et en particulier les variables `PROXY_HTTPS_PORT`, `ACME_EMAIL` et `SERVERNAME_URL` pour associer automatiquement GeoPaysages à votre nom de domaine accessible en HTTPS.
+
+Il reste cependant possible de préférer l'utilisation de NGINX en plus de Traefik.
+
+Installer NGINX :
+
+    sudo apt install nginx
+
+Créer un fichier de configuration NGINX :**
 
     sudo nano /etc/nginx/conf.d/geopaysages.conf
 
-Copiez/collez-y ces lignes en renseignant les bons chemins et le bon
-port :
+Copiez/collez-y ces lignes et remplacer <PROXY_HTTP_PORT> par la valeur utilisée dans le fichier .env :
 
     server {
         listen       80;
         server_name  localhost;
         client_max_body_size 100M;
         location / {
-            proxy_pass http://127.0.0.1:8000;
-        }
-
-        location /pictures {
-            alias  /home/<monuser>/data/images/;
-        }
-
-        location /app_admin {
-            alias /home/<monuser>/geopaysages/front-backOffice/dist/front-backOffice;
-            try_files $uri$args $uri$args/ /app_admin/index.html;
+            proxy_pass http://127.0.0.1:<PROXY_HTTP_PORT>;
         }
     }
 
+Il est recommandé de certifié votre nom de domaine pour que celui-ci soit accessible en HTTPS. Vous pouvez utiliser certbot pour ce faire :
 
-> La limite de la taille des fichiers en upload est configurée à 100 Mo (`client_max_body_size`). Modifier `server_name` pour ajouter le nom domaine associé à votre GeoPaysages : `server_name mondomaine.fr`
+    sudo apt install python3-certbot-nginx
 
-**3. Redémarrer supervisor et NGINX :**
+Lancer certbot pour certifier les domaines de vos configurations NGINX :
 
-```
-    sudo supervisord -c /etc/supervisor/supervisord.conf
-    sudo supervisorctl reread
-    sudo service supervisor restart
-    sudo service nginx restart
-```
+    sudo certbot --nginx
 
-**4. Connectez-vous au back-office :**
+### Compatibilité avec UsersHub
 
-- Allez sur l'URL: <mon_ip>/app_admin
-- Connectez-vous avec :
-    - Identifiant : admin
-    - Mot de passe: admin
-- Ajoutez vos données
+[UsersHub](https://github.com/PnX-SI/usershub/#usershub) est une application web de gestion centralisée des utilisateurs développée dans la constellation [GeoNature](https://github.com/PNX-SI/GeoNature) par les Parcs nationaux français.
 
+GeoPaysages intègre la dépendance [UsersHub-authentification-module](https://github.com/PnX-SI/UsersHub-authentification-module) qui permet que le référentiel d'utilisateurs soit compatible et connectable à une instance UsersHub prééxistante.
 
-Personnalisation de l'application
-=================================
+Pour ce faire, une fois l'application GeoPaysages installée et fonctionnelle :
 
-Vous pouvez personnaliser l'application en modifiant et ajoutant des
-fichiers dans le répertoire `backend/static/custom/` (css, logo).
+* Créer un utilisateur dédié dans la base de données du serveur UsersHub cible qui sera utilisé ensuite via Foreign Data Wrapper par la BDD de GeoPaysages,
 
-Certains paramètres sont dans la table `conf` :
+* Créer un Foreign Data Wrapper dans la base de données PostGreSQL de GeoPaysages vers celle de l'instance UsersHub,
 
-- `external_links`, les liens en bas à droite dans le footer, est un
-    tableeu d'objets devant contenir un label et une url, ex.
+* Remplacer le schéma utilisateurs de la bases de données de GeoPaysages en important celui de UsersHub.
+1. Se connecter à la base de données du serveur UsersHub ciblé avec un client PostGreSQL puis adapter et exécuter le script prévu à cet effet : [usershub_gp_role.sql](./scripts/usershub_gp_role.sql)
 
-```json
-[{
-    "label": "Site du Parc national de Vanoise",
-    "url": "http://www.vanoise-parcnational.fr"
-}, {
-    "label": "Rando Vanoise",
-    "url": "http://rando.vanoise.com"
-}]
-```
+2. Se connecter à la base de données de GeoPaysages avec un client PostGreSQL puis adapter et exécuter le script prévu à cet effet : [usershub_fdw.sql](./scripts/usershub_fdw.sql)
 
-- `zoom_map_comparator`, la valeur du zoom à l'initialisation de la
-    carte de page comparateur de photos
-- `zoom_max_fitbounds_map`, la valeur du zoom max lorsqu'on filtre
-    les points sur la carte interactive. Ce paramètre évite que le zoom
-    soit trop important lorsque les points restant sont très rapprochés.
-- Si vous voyez un paramètre nommé `zoom_map`, sachez qu'il est
-    déprécié, vous pouvez le supprimer de la table.
-- `map_layers`, les différentes couches disponibles sur la carte
-    interactive, voir ce lien pour connaitre toutes les options de
-    configuration
-    <https://leafletjs.com/reference-1.5.0.html#tilelayer>, ex :
+**⚠️ Bien lire les commentaires dans le scripts SQL et adapter son contenu en remplaçant les variables suivantes et en les adaptant à votre contexte :**
 
-```json
-[
-    {
-        "label": "OSM classic",
-        "url": "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        "options": {
-            "maxZoom": 18,
-            "attribution": "&copy; <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap</a>"
-        }
-    },
-    {
-        "label": "IGN",
-        "url": "http://wxs.ign.fr/[clé ign]/geoportail/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}&FORMAT=image%2Fjpeg",
-        "options": {
-            "maxZoom": 18,
-            "attribution": "&copy; <div>IgnMap</div>"
-        }
-    }
-]
-```
+`$owner_geopaysages` : l'utilisateur propriétaire de la BDD de GeoPaysages (`DB_USER` dans le fichier [.env](../docker/.env.tpl))
 
-Si vous utiliser la version 2 du comparateur photos (paramètre `COMPARATOR_VERSION = 2` dans `config.py`), vous pouvez personnaliser celui-ci selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
+`$usershub_host` : le serveur hôte de la base de données UsersHub ciblée 
 
-- `comparator_date_filter`, permet d'activer `True` ou de désactiver `False` l'outil de filtrage par plage de dates (actif par défaut si le paramètre n'est pas renseigné). Celui-ci étant peu utile dans le cas de petites séries de photos ou de reconductions annuelles par exemple.
+`$usershub_db` : le nom de la base de données UsersHub ciblée
 
-- `comparator_date_step_button`, permet de masquer le bouton sélecteur de pas de temps. Si il est renseigné à `False` le bouton ne sera pas affiché et les boutons précédent/suivant fonctionneront sans distinction de pas de temps. Utile dans le cas de petite séries de photos.
+`$usershub_port` : le port utilisé par PostGreSQL sur le serveur de la base de données UsersHub ciblée
 
-- `comparator_date_format`, permet de personnaliser le format d'affichage des dates des photos dans le bouton sélecteur. Avec la valeur `year` on affiche la date au format `YYYY`. Avec `month` --> `MM/YYYY`.
-Le comportement par défaut reste l'affichage de la date complète au format `day` --> `DD/MM/YYYY` (si non-renseigné).
-Ce paramètre permet aussi de filtrer en conséquence les pas de temps disponibles dans le bouton ad-hoc (exemple : si `month` est défini, les pas de temps disponibles seront `1 mois` et `1 an`). Utile dans le cas où les dates de photos sont parfois imprécises (photos ancienns, cartes postales...).
+`$usershub_user` : le nom d'utilisateur à faire correspondre dans la base de données UsersHub ciblée (vous pouvez y ajouter un utilisateur spécifique dédié au FDW en prenant soin de lui donner les droits `USAGE` sur le schéma `utilisateurs` et `SELECT` sur l'ensemble des tables qu'il contient)
 
-**Activation du bloc d'intro en page d'accueil**
+`$usershub_pass` : le mot de passe de `$usershub_user` ci-dessus 
 
-- Ajouter 1 ligne dans la table conf tel que `key` : `home_intro` et assigner à `value` le texte à afficher
-- En cas de contenue multilingue préférer `key` : `home_intro_<lang>` ex. `home_intro_fr`
-- Ajouter 1 ligne dans la table conf tel que `key` : `home_intro_position` et `value`: `top` ou `bottom`, toute autre valeur désactive le bloc
-
-**Activation de la page de présentation (/about)**
-
-- Ajouter 2 lignes dans la table conf tel que `key` : `page_about_title` et `key` : `page_about_content`
-- Activer le lien et la page en ajoutant une ligne dans la table `conf` tel que `key` : `page_about_published` et `value` : `true`, toute autre valeur vaut `false`
-- En cas de contenu multilingue, ajouter le suffixe `_<lang>` à `page_about_title`, `page_about_content` et `page_about_published`
-
-Ajout et personnalisation d'une nouvelle page HTML
-==================================================
-
-**1. Création de la page HTML**
-
-- La page d'exemple pour créer une nouvelle page html dans le site se
-    trouve dans `backend/tpl/sample.html`
-- Copier/coller `sample.html` et renommer la nouvelle page
-
-**2. Créer la route vers la nouvelle page**
-
-- Ouvrir le fichier `backend/routes.py`
-- Copier/coller un bloc existant et effectuer les modifications
-    nécessaires en lien avec la nouvelle page html
-
-**3. Ajout du lien vers la nouvelle page HTML**
-
-- Ouvrir le fichier `backend/tpl/layout.html`
-- Copier/coller un bloc 'li' existant et effectuer les modifications
-    nécessaires en lien avec la nouvelle page html
-
-**4. Création de l'intitulé du lien via l'internationalisation**
-
-- Ouvrir le fichier `backend/i18n/fr/LC_MESSAGES/messages.po`
-- Copier/coller un bloc existant et effectuer les modifications
-    nécessaires en lien avec la nouvelle page html
-
-**5. Compilation pour la prise en compte des modifications**
-
-- Suivre les étapes du chapitre Internationalisation de l'application
-- Pour les modifications effectuées dans les fichiers python, relancer
-    la compilation python
-
-```
-sudo service supervisor restart
-``` 
-
-Mise à jour de l'application (Front et back)
-============================================
-
-- Au préalable, s'assurer que le fichier de configuration
-    `/geopaysages/front-backOffice/src/app/config.ts` contienne la ligne
-    suivante :
-
-```
-customFiles: '<nom domaine ou url>/static/custom/',
-```
-
-- Se placer dans le répertoire `geopaysages`
-- Lancer l'update
-
-```
-./update_app.sh
-```
-
-- Renseigner la version de production (pas de version de développement) à installer (Ex : v1.0.0)
-- Un répertoire `<user>/geopaysages-[date mise à jour]` est créé ou mis à jour, contenant tout l'environnement de l'ancienne release permettant de pouvoir revenir en arrière ou de récupérer des éléments.
-
-> La mise à jour applicative ne prend pas en compte la récupération des pages personnalisées se basant sur le template `backend/tpl/sample.html`. Cela doit être récupérer manuellement après la mise à jour applicative.
-
-Récupération depuis geopaysages-[date mise à jour] :
-
-- le fichier `html` de la page dans `backend/tpl`
-- le fichier `layout.html` ou les modifs faites dedans dans
-    `backend/tpl`
-- le fichier `routes.py` ou les modifs faites dedans dans `backend`
-- le fichier d'internationalisation `messages.po` ou les modifs
-    dedans dans `backend/i18n/fr/LC_MESSAGES`
-- s'il y a des images, les récupérer dans
-    `backend/static/custom/images`
-- lancer les commandes nécessaires, notamment pour python pour
-    l'internationalisation (voir chapitre ci-dessous)
-- lancer
-
-```
-sudo service supervisor restart
-``` 
+> **Important**  
+> Veillez à adapter au préalable la sécurisation des instances PostGreSQL de GeoPaysages et UsersHub afin de permettre la création du FDW entre les serveurs (`pg_hba.conf` et `postgresql.conf`)

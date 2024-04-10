@@ -1,0 +1,36 @@
+version: "3"
+services:
+  proxy:
+    ports:
+      - "${PROXY_HTTPS_PORT:-443}:443"
+    command:
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web.http.redirections.entrypoint.to=:${PROXY_HTTPS_PORT}"
+      - "--entryPoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesResolvers.acme-resolver.acme.email=${ACME_EMAIL}"
+      - "--certificatesResolvers.acme-resolver.acme.storage=/etc/traefik/certs/acme.json"
+      - "--certificatesResolvers.acme-resolver.acme.tlsChallenge=true"
+    volumes:
+      - ${CUSTOM_PATH}/traefik:/etc/traefik/dynamic
+      - ${CUSTOM_PATH}/traefik/certs:/etc/traefik/certs
+
+  thumbor:
+    labels:
+      - "traefik.http.routers.thumbor.rule=Host(`${SERVERNAME_URL}`) && PathPrefix(`/thumbor`)"
+      - "traefik.http.routers.thumbor.entrypoints=websecure"
+      - "traefik.http.routers.thumbor.tls.certResolver=acme-resolver"
+  
+  backend:
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`${SERVERNAME_URL}`) && PathPrefix(`/`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certResolver=acme-resolver"
+
+  admin:
+    labels:
+      - "traefik.http.routers.admin.rule=Host(`${SERVERNAME_URL}`) && PathPrefix(`/admin`)"
+      - "traefik.http.routers.admin.entrypoints=websecure"
+      - "traefik.http.routers.admin.tls.certResolver=acme-resolver"

@@ -1,0 +1,138 @@
+{% extends "layout.jinja" %}
+{% block title %}{{ site.name_site }}{% endblock %}
+{% block head %}
+{% if comparator_version == 1: %}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.css') }}" />
+{% endif %}
+{% if comparator_version == 2: %}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/vue-virtual-scroller/vue-virtual-scroller.css') }}" />
+{% endif %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/site.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/comparator-v' + comparator_version|string + '.css') }}" />
+
+<script src="{{ url_for('static', filename='vendor/FileSaver.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+{% if comparator_version == 1: %}
+<script src="{{ url_for('static', filename='vendor/swiper/swiper-bundle.min.js') }}"></script>
+{% endif %}
+{% if comparator_version == 2: %}
+<script src="{{ url_for('static', filename='vendor/leaflet-side-by-side.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/L.Map.Sync.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.css') }}" type="text/css">
+<script src="{{ url_for('static', filename='vendor/leaflet-gesture-handling/leaflet-gesture-handling.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/vue-virtual-scroller/vue-virtual-scroller.min.js') }}"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='js/sites-utils.js') }}"></script>
+<script src="{{ url_for('static', filename='js/site.js') }}"></script>
+<script src="{{ url_for('static', filename='js/comparator-v' + comparator_version|string + '.js') }}"></script>
+{% endblock %}
+
+{% block title_mobile %}{{ _('site.title_mobile') }}{% endblock title_mobile %}
+
+{% block bodyClassNames %}page-site with-comparator-v{{ comparator_version }} {% if site.testim_site %}with-testimonial{% endif %}{% endblock %}
+
+{% block content %}
+
+<div class="mb-4 mt-3 mt-md-2 text-center">
+  <h1 class="text-uppercase">{{ site.name_site }} | {{ site.ville.nom_commune }} 
+  {% if site.ref_site and dbconf.show_site_ref: %}
+    <small class="text-lowercase">(réf. : {{ site.ref_site }})</small>
+  {% endif %}</h1>
+  {% if isMultiObservatories(): %}
+  <h3 class="text-secondary text-uppercase"><img class="mr-2" src="{{ getThumborUrl('fit-in/25x25', site.observatory.logo) }}">{{ site.observatory.title }}</h3>
+  {% endif %}
+</div>
+
+<div class="page-content container-fluid px-0 px-sm-3 pb-4" id="js-app-site">
+  <div class="text-center mb-1 mb-sm-3"><i>{{ site.legend_site }}</i></div>
+  <div class="row">
+    <div class="col">
+      <app-comparator-v{{ comparator_version }}></app-comparator-v{{ comparator_version }}>
+      <div class="container">
+        <div class="row mt-3 mx-0 info py-3 rounded">
+          <div class="col-lg-5 text-lg-right">
+            <div class="map-wrapper" ref="map"></div>
+            {% if site.path_file_guide_site: %}
+            <a class="btn btn-sm btn-primary text-uppercase mt-2" href="{{ url_for('static', filename='upload/notice-photo/' + site.path_file_guide_site) }}" target="_blank">
+              {{ _('obs_point.buttons.notice') }} <i class="icon ion-md-download ml-2"></i>
+            </a>
+            {% endif %}
+            {% if dbconf.mailto_observation: %}
+            <a class="btn btn-sm btn-primary text-uppercase mt-2" href="mailto:{{ dbconf.mailto_observation|replace('%ref_site%', site.ref_site) }}">
+              {{ _('obs_point.buttons.obs') }} <i class="icon ion-ios-eye ml-2"></i>
+            </a>
+            {% endif %}
+          </div>
+          <div class="col-lg-7 mt-3 mt-lg-0">
+            <h5 class="text-uppercase">{{ _('obs_point.description') }}</h5>
+            <div class="text-collapse" ref="text_collapse_description" v-bind:class="textCollapseClsDescription">
+              <div class="target">
+                {% autoescape false %}{{ site.desc_site }}{% endautoescape %}
+              </div>
+              <div class="gradient text-right visible-text-collapsable pt-3">
+                <button class="btn btn-sm btn-outline-primary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('description')">
+                  <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                  <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-lg-{{ '6' if site.testim_site else '12' }}">
+            <div class="info rounded p-3">
+              <h5 class="text-uppercase">Mots clés</h5>
+              <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
+                <div class="target">
+                {% for un_sous_theme in site.stheme %}
+                    <span>{{ un_sous_theme }}</span>{{ ", " if not loop.last else "" }}
+                {% endfor %}
+                </div>
+                <div class="gradient text-right visible-text-collapsable pt-3">
+                  <button class="btn btn-sm btn-outline-primary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('stheme')">
+                    <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                    <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if site.testim_site %}
+          <div class="col-lg-6 mt-4 mt-lg-0">
+            <div class="info rounded p-3">
+              <h5 class="text-uppercase">{{ _('obs_point.testimonials') }}</h5>
+              <div class="text-collapse" ref="text_collapse_testimonial" v-bind:class="textCollapseClsTestimonial">
+                <div class="target font-italic">
+                  {% autoescape false %}{{ site.testim_site }}{% endautoescape %}
+                </div>
+                <div class="gradient text-right visible-text-collapsable pt-3">
+                  <button class="btn btn-sm btn-outline-primary font-weight-bold visible-text-collapsable" @click="toggleTextCollapse('testimonial')">
+                    <span class="visible-text-collapsed">{{ _('obs_point.buttons.read_more') }}</span>
+                    <span class="hidden-text-collapsed">{{ _('obs_point.buttons.read_less') }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include '/components/comparator_v'+ comparator_version|string +'.jinja' %}
+
+<script>
+  document.addEventListener('readystatechange', (e) => {
+    if (document.readyState == 'complete') {
+      geopsg.site({
+        dbconf: {{dbconf | tojson}},
+        site: {{site | tojson}},
+      });
+    }
+  });
+</script>
+
+{% endblock %}

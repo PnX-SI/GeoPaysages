@@ -1,0 +1,136 @@
+.observatory-block {
+    padding: 25px 40px;
+    background: #FFF;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12)
+}
+
+.form-item {
+    margin-bottom: 30px;
+}
+
+.label {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 0;
+    padding-right: 12px;
+}
+
+.icon-download {
+    font-size: 12px;
+    padding-right: 6px
+}
+
+
+.remove-file {
+    color: #777777;
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.inner-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.submit-btn-group {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 15px;
+    margin-top: 20PX;
+    border-top: 1px solid #d0cdcd;
+    margin-left: -40px;
+    margin-right: -40px;
+}
+
+.btn-submit:disabled {
+    cursor: not-allowed;
+}
+
+.photo-ref {
+    width: 120px;
+    font-size: 12px;
+}
+
+.map {
+    min-height: calc(100vh - 98px);
+    width: 100%;
+    height: 100%;
+}
+
+.col-map {
+    padding: 0;
+    background-color: #e8e8e8;
+}
+
+.col-table {
+    padding: 15px;
+    background-color: #e8e8e8
+}
+
+.is-invalid {
+    border-radius: 4px;
+    border: 1px solid red;
+}
+
+.preview-img {
+    margin-top: 10px;
+    margin-right: 20px;
+    background: no-repeat center;
+    background-size: cover;
+}
+
+.preview {
+    display: flex;
+    align-items: flex-start;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.icon-pencil,
+.delete-site {
+    padding-right: 6px;
+}
+
+
+.btn-delete,
+.btn-edit,
+.btn-submit,
+.btn-cancel {
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: 15px
+}
+
+.btn-cancel {
+    margin-right: 15px
+}
+
+.inner-photo {
+    position: relative;
+    display: block;
+}
+
+.delete-photo {
+    position: absolute;
+    top: 2px;
+    color: #ff5252;
+    left: calc(100% - 28px);
+    cursor: pointer;
+}
+
+.active_edit {
+    color: #212529 !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+}
+
+.photo-required {
+    font-size: 80%;
+    color: #dc3545
+}
+
+.alert {
+    margin-top: 8px
+}

@@ -1,3 +1,0 @@
-.page-sample .container {
-    min-height: var(--page-container-min-height);
-}

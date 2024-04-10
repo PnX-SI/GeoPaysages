@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+
+<head>{% block head %}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="{{ url_for('static', filename='vendor/ionicons/css/ionicons.min.css') }}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600,600i,700,700i|Hind:300,400,500,600,700&amp;subset=latin-ext" rel="stylesheet">
+
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" />
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-fullscreen/leaflet.fullscreen.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='custom/images/favicon.ico') }}">
+
+
+  <script src="{{ url_for('static', filename='vendor/lodash.js') }}"></script>
+  {% if debug: %}
+  <script src="{{ url_for('static', filename='vendor/vue.js') }}"></script>
+  {% else %}
+  <script src="{{ url_for('static', filename='vendor/vue.min.js') }}"></script>
+  {% endif %}
+
+  <!-- Add this after vue.js -->
+  <!-- <script src="{{ url_for('static', filename='vendor/babel-polyfill/dist/polyfill.min.js') }}"></script> -->
+  <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CIntersectionObserver" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap-vue/bootstrap-vue.min.js') }}"></script>
+
+  {% endblock %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='custom/css/custom-style.css') }}">
+  <title>{% block title %}{% endblock %}</title>
+</head>
+
+{% set active_page = active_page|default('') -%}
+
+<body class="{% block bodyClassNames %}{% endblock %}">
+
+    <header id="header">
+      <b-navbar class="p-2 p-md-0 h-100" toggleable="md" type="{{'dark' if dbconf.header_bg_primary else 'light' }}" variant="{{'primary' if dbconf.header_bg_primary else 'light' }}">
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+        <b-navbar-brand class="flex-grow-1 flex-md-grow-0 py-0 pl-2 pl-md-0 h-100">
+          <span class="text-uppercase text-truncate d-md-none">
+            {% block title_mobile %}{% endblock title_mobile %}
+          </span>
+          <a href="/" class="d-none d-md-flex align-items-center h-100 py-2 pl-2">
+            <img class="mh-100" src="{{ url_for('static', filename='custom/images/logo_txt_'+ ('blanc' if dbconf.header_bg_primary else 'color') +'.png') }}" />
+          </a>
+        </b-navbar-brand>
+
+        <b-collapse id="nav-collapse" is-nav class="p-3 py-md-0 pl-md-0 border">
+          <b-navbar-nav>
+            {% include getCustomTpl('main_menu') %}
+          </b-navbar-nav>
+        </b-collapse>
+      </b-navbar>
+    </header>
+    
+    {% block content %}{% endblock %}
+    {% set footer = getCustomTpl('footer') %}
+    {% if footer: %}
+      {% include footer %}
+    {% else %}
+    <footer class="app-footer">
+      {% block footer %}
+      <div class="col-lg-11 col-xl-10">
+        <img class="logo mb-4" src="{{ url_for('static', filename='custom/images/logo_txt_blanc.png') }}" />
+
+        <div class="footer-menu">
+          <h6>{{ _('footer.internal_title') }}</h6>
+          <ul class="mb-4">
+            <li>
+              <a href="/">
+                {{ _('footer.internal_links.home') }}
+              </a>
+            </li>
+            <li>
+              <a href="/sites">
+                {{ _('footer.internal_links.sites') }}
+              </a>
+            </li>
+            <li>
+              <a href="/gallery">
+                {{ _('footer.internal_links.gallery') }}
+              </a>
+            </li>
+            {% if dbconf.mailto_contact: %}
+            <li>
+              <a href="mailto:{{ dbconf.mailto_contact }}">
+                {{ _('footer.internal_links.contact') }}
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+        {% if dbconf.external_links|length: %}
+          <h6>{{ _('footer.external_title') }}</h6>
+          <ul>
+          {% for external_link in dbconf.external_links %}
+            <li>
+              <a href="{{ external_link.url }}" target="_blank">
+                  {{ external_link.label }}
+              </a>
+            </li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+        </div>
+      </div>
+      
+
+      <hr class="mt-4" />
+
+      <div class="mt-4 d-flex">
+        {% include 'components/legal-footer.jinja' %}
+      </div>
+      {% endblock %}
+    </footer>
+    {% endif %}
+    
+  <script type="text/javascript">
+    window.onload =
+      new Vue({
+        el: '#header',
+      })
+  </script>
+</body>
+
+</html>

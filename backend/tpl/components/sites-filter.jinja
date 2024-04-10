@@ -1,0 +1,56 @@
+<button type="button" @click="onShowModalFiltersClick()" class="btn btn-block d-lg-none mt-2 mb-1" 
+      v-bind:class="[selectedFilters.length ? 'btn-primary':'btn-outline-primary']"
+    >
+      <span v-if="!selectedFilters.length">
+        Filtrer
+      </span>
+      <span v-if="selectedFilters.length">
+        {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
+      </span>
+    </button>
+
+<div class="row mx-ln-1 pt-3 pt-lg-4 pb-lg-2 d-lg-flex header-filters sans-serif" v-bind:class="{ 'd-none': !showModalFilters, 'd-block': showModalFilters }">
+  <div class="d-lg-none mb-3 col d-flex justify-content-between">
+    <h5>
+      {% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span>') }} {% endautoescape %}
+    </h5>
+    <button type="button" @click="onCloseModalFiltersClick()" class="btn btn-link px-1 py-0">
+      OK
+    </button>
+  </div>
+  <div class="d-none d-lg-block pl-1 text-right mt-2">
+    <b>{{ _('map.filters.title') }}</b>
+  </div>
+  <div v-for="(filter) in filters" v-bind:key="filter.name" class="col col-lg-2 px-1 mb-2 mb-lg-0">
+      <small class="floating-filter-label d-block ml-2 px-1"
+            v-bind:class="{ active: filter.isOpen || filter.selectedItems.length }"
+            v-html="filter.label"></small>
+      <v-multiselect
+      :multiple="true"
+      :limit="1"
+      :limit-text="filterLimitText"
+      v-model="filter.selectedItems"
+      :options="filter.items"
+      track-by="label"
+      :custom-label="getMultiselectLabel"
+      placeholder=""
+      :show-labels="false"
+      @input="onMultiselectInput(filter, $event)"
+      @open="onMultiselectOpen(filter)"
+      @close="onMultiselectClose(filter)"
+      >
+      <template><span slot="noResult">Pas de résultats</span></template>
+      <template slot="option" slot-scope="props">
+        <div v-html="props.option.label + ' (' + props.option.nbSites + ')'"></div>
+      </template>
+      </v-multiselect>
+  </div>
+  <div class="col mt-4 mt-lg-0 px-1">
+    <button type="button"
+            @click="onCancelClick()"
+            class="btn btn-outline-secondary">
+      <span class="d-none d-lg-inline d-xl-none icon ion-md-refresh h5"></span>
+      <span class="d-lg-none d-xl-inline">Réinitialiser</span>
+    </button>
+  </div>
+</div>

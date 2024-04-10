@@ -1,177 +1,220 @@
+.page-sites #header {
+  margin-bottom: 0;
+}
+
 .page-sites .app-footer {
-    display: none;
+  display: none;
 }
 
 .app-sites {
-    height: calc(100vh - 135px);
+  --maptool-bg: rgba(255, 255, 255, 0.95);
+  --maptool-zindex: 1001;
+  position: relative;
+  /* window height - header height */
+  height: calc(100vh - 50px);
+}
+@media (min-width: 768px) {
+  .app-sites {
+    --maptool-bg: rgba(255, 255, 255, 0.8);
+    height: calc(100vh - var(--header-h));
+  }
 }
 
-.app-sites .sidebar {
-    position: absolute;
-    z-index: 10000;
-    height: 100%;
-    color: #FFF;
-    width: 270px;
-    transition: transform .3s;
+.app-sites .header-spacer {
+  /* .header-filters height + some margin */
+  height: 78px;
 }
 
-.app-sites.sidebar-collapsed .sidebar {
-    transform: translateX(-100%);
+.app-sites .btn.collapsed .hidden-collapsed,
+.app-sites .btn:not(.collapsed) .visible-collapsed {
+  display: none;
 }
 
-.app-sites .sidebar .btn-toggle {
-    position: absolute;
-    top: 0;
-    left: 100%;
-    width: 30px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0, 0, 0, .9);
+.app-sites .block-legend {
+  background: var(--maptool-bg);
+  min-width: 300px;
 }
 
-.app-sites .sidebar-content {
-    background: rgba(0, 0, 0, .8);
-    overflow: auto;
-    overflow-x: hidden;
-    height: 100%;
+/* scroll and max-height on legend panel */
+.app-sites .block-legend #app_map_legend_collapse {
+  overflow-y: scroll;
+  max-height: calc(100vh - var(--header-h) - 140px);
 }
 
-.app-sites .sidebar .card-group-header-btn {
-    background: rgba(0,0,0,.3);
-    border: none;
-    font-weight: 700;
-    text-transform: uppercase;
+.app-sites .block-legend .legend-item-observatory .icon {
+  width: 20px;
+  height: 20px;
 }
 
-.app-sites .sidebar .card-header .btn.collapsed .hidden-collapsed,
-.app-sites .sidebar .card-header .btn:not(.collapsed) .visible-collapsed {
-    display: none;
+.app-sites .block-legend .legend-item > :not(.icon) {
+  display: inline-block;
+  vertical-align: text-top;
 }
 
-.app-sites .sidebar .card-header .btn .icon {
-    position: absolute;
-    right: 10px;
+.app-sites .block-legend .icon svg {
+  fill: #000;
+  width: 20px;
+  height: 20px;
 }
 
-.app-sites .sidebar .filters {
+.app-sites .block-list-sites {
+  position: absolute;
+  z-index: var(--maptool-zindex);
   width: 100%;
+  box-shadow: 0px 2px 2px #00000044;
+}
+@media (min-width: 768px) {
+  .app-sites .block-list-sites {
+    width: auto;
+    min-width: 450px;
+    box-shadow: none;
+  }
 }
 
-.app-sites .sidebar .text-right .align-text-top {
-    font-family: 'Hind', sans-serif;
+.app-sites .block-list-sites .btn-toggle {
+  background: var(--maptool-bg);
 }
 
-.app-sites .sidebar .text-right .mr-1 {
-    margin-right: 0 !important;
+.app-sites .list-sites-collapse {
+  background: var(--maptool-bg);
+  /* This hardcoded calc avoid writing some JS */
+  max-height: calc(100vh - var(--header-h) - 72px - 56px);
+  overflow-y: auto;
 }
 
-.app-sites .sidebar .filters .card-header .btn .icon {
-    right: auto;
-    left: -10px;
+.app-sites .list-observatories .card,
+.app-sites .list-observatories .card-header {
+  background: transparent;
+}
+.app-sites:not(.multi-observatories) .list-observatories .card-header {
+  display: none;
 }
 
-.app-sites .sidebar .filters .card {
-    border: none;
-    background: transparent;
+/* Remove capitalize text-transform on observatories list */
+.app-sites .list-observatories .card-header .text-capitalize {
+  text-transform: none !important;
 }
 
-.app-sites .sidebar .filters .card.has-selected header a::after {
-    content: "";
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: red;
-    margin-left: 5px;
+.app-sites .list-observatories .btn-site:hover {
+  background: var(--color-primary-50);
 }
 
-.app-sites .sidebar .filters .card-header .btn {
-    text-decoration: none;
-    color: #FFF;
-    font-weight: 600;
+.app-sites .list-observatories .btn-observatory {
+  line-height: 1.3;
+  color: #000;
 }
 
-.app-sites .sidebar .filters .card:not(:first-child) .card-header .btn {
-    border-top: none;
+.app-sites .list-observatories .btn-observatory .icon {
+  width: 40px;
+  height: 40px;
 }
 
-.app-sites .sidebar .filters .card-header .btn:not(.collapsed) {
-    color: #FFF;
+.app-sites .list-observatories .btn-observatory .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.app-sites .sidebar .filters .card-body {
-  color: var(--color-primary);
-  padding: 0;
-  border: none;
+.app-sites .maptools-top-right {
+  z-index: var(--maptool-zindex);
+  position: absolute;
+  top: 10px;
+  right: 50px;
 }
 
-.app-sites .sidebar .filters .card-body .btn,
-.app-sites .sidebar .btn-site {
-    text-transform: none;
-    white-space: normal;
-    font-size: 14px;
-    text-align: left;
-    background: transparent;
-    color: #FFF;
-    border-color: transparent;
-    margin-bottom: 1px;
-}
-.app-sites .sidebar .filters .card-body .btn:hover
-{
-    background: var(--color-sites-filter-bg-hover);
-    color: var(--color-sites-filter-txt-hover);
-}
-.app-sites .sidebar .filters .card-body .btn.active,
-.app-sites .sidebar .btn-site:hover {
-    background: var(--color-sites-filter-bg-active);
-    color: var(--color-sites-filter-txt-active);
+.app-sites .maptools-bottom-right {
+  z-index: var(--maptool-zindex);
+  position: absolute;
+  bottom: 16px;
+  right: 10px;
 }
 
-.app-sites .sidebar .filters .filter-years .btn-group-vertical {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+.app-sites .maptools-bottom {
+  z-index: var(--maptool-zindex);
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.app-sites .sidebar .filters .filter-years .card-body .btn {
-    display: inline-block;
-    width: 30%;
+.app-sites .marker-cluster {
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px #000000;
 }
 
-.app-sites .sidebar .card-group {
-    background: transparent;
+.app-sites .marker-cluster div {
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  border-radius: 20px;
+  border-width: 3px;
+  border-style: solid;
 }
 
-.app-sites .sidebar .card-header {
-    background-color: transparent;
-    border-bottom: 1px solid transparent;
+.marker-cluster span {
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 34px;
+}
+
+@media (max-width: 767px) {
+  .app-sites .leaflet-top {
+    top: 60px;
+  }
 }
 
 .app-sites .leaflet-popup-content {
-    text-align: center;
-    margin: 0;
+  text-align: center;
+  margin: 0;
 }
 
 .app-sites .leaflet-popup-content-wrapper {
-    border-radius: 0;
-    background: rgba(0, 0, 0, .8);
-    color: #FFF;
-    box-shadow: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #000;
+  overflow: hidden;
+  padding: 0px;
+  box-shadow: 0px 0px 5px 0px #00000033;
 }
 
 .app-sites .leaflet-popup-content .title {
-    width: 150px;
-    text-align: left;
-    padding: 3px;
-    padding-left: 5px;
-    font-size: 12px;
+  width: 200px;
+  text-align: left;
+  padding: 3px;
+  padding-left: 5px;
+  font-size: 12px;
+  background: #fff;
+}
+
+.app-sites .leaflet-popup-content .title .site-name {
+  font-size: 14px;
+  line-height: initial;
+}
+
+.app-sites .leaflet-popup-content .title .site-name * {
+  vertical-align: middle;
+}
+
+.app-sites .leaflet-popup-content .title .icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+.app-sites .leaflet-popup-content .title .icon svg {
+  width: 100%;
+  height: 100%;
 }
 
 .app-sites .leaflet-popup-content .img {
-    width: 150px;
-    height: 150px;
-    background: no-repeat center;
-    background-size: contain;
+  width: 200px;
+  height: 150px;
+  background-size: cover;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.modal-copy-url textarea {
+  border: 1px solid #999;
 }

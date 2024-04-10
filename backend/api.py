@@ -1,31 +1,156 @@
-from flask import Flask, request, Blueprint, Response, jsonify
+from flask import Flask, request, Blueprint, Response, jsonify, abort, Response, current_app
+from flask_login import login_required
 from werkzeug.exceptions import NotFound
+from werkzeug.wsgi import FileWrapper
 
-from config import DATA_IMAGES_PATH, DATA_NOTICES_PATH
 from pypnusershub import routes as fnauth
-from pypnusershub.db.models import AppUser
+from pypnusershub.db.models import AppUser, Application
 import models
 import json
 import utils
 import os
+import requests
+from mimetypes import guess_type
+from io import BytesIO
+import urllib.parse
 
 from env import db
 
 api = Blueprint('api', __name__)
 
 photo_schema = models.TPhotoSchema(many=True)
+observatory_schema_full = models.ObservatorySchemaFull(many=False)
+observatories_schema = models.ObservatorySchema(many=True)
 site_schema = models.TSiteSchema(many=True)
 themes_schema = models.DicoThemeSchema(many=True)
 subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
-ville_schema = models.VilleSchema(many=True)
+
+@api.route('/api/thumbor/presets/<name>/<filename>', methods=['GET'])
+def thumborPreset(name, filename):
+    presets = {
+        'noxl': 'fit-in/5000x5000/filters:no_upscale():quality(90)',
+        '50x50': '50x50',
+        '100x100': '100x100',
+        '150x150': '150x150',
+        '200x150': '200x150',
+        '200x200': '200x200',
+    }
+    preset = presets.get(name)
+    if not preset:
+        abort(404)
+    
+    url = preset + '/' + urllib.parse.quote(f'http://backend/static/upload/images/{filename}', safe='')
+    signature = utils.getThumborSignature(url)
+    response = requests.get(f'http://thumbor:8000/{signature}/{url}')
+
+    if response.status_code != 200:
+        abort(response.status_code)
+
+    type = guess_type(filename)
+    b = BytesIO(response.content)
+    w = FileWrapper(b)
+    return Response(w, mimetype=type[0])
+
+@api.route('/api/conf', methods=['GET'])
+@fnauth.check_auth(2)
+def returnDdConf():
+    dbconf = utils.getDbConf()
+    
+    return jsonify(dbconf)
+
+@api.route('/api/observatories', methods=['GET'])
+def returnAllObservatories():
+    get_all = models.Observatory.query.order_by('title').all()
+    items = observatories_schema.dump(get_all)
+    
+    return jsonify(items)
+
+
+@api.route('/api/observatories', methods=['POST'])
+@fnauth.check_auth(2)
+def postObservatory():
+    try:
+        data = dict(request.get_json())
+        db_obj = models.Observatory(**data)
+        db.session.add(db_obj)
+        db.session.commit()
+    except Exception as exception:
+        print(exception)
+        return str(exception), 400
+    
+    db.session.refresh(db_obj)
+    resp = observatory_schema_full.dump(db_obj)
+    return jsonify(resp)
+
+
+@api.route('/api/observatories/<int:id>', methods=['GET'])
+def returnObservatoryById(id):
+    row = models.Observatory.query.filter_by(id=id).first()
+    if not row:
+        abort(404)
+    dict = observatory_schema_full.dump(row)
+    return jsonify(dict)
+
+
+@api.route('/api/observatories/<int:id>', methods=['PATCH'])
+@fnauth.check_auth(2)
+def patchObservatory(id):
+    try:
+        rows = models.Observatory.query.filter_by(id=id)
+        if not rows.count():
+            abort(404)
+        data = request.get_json()
+        rows.update(data)
+        db.session.commit()
+    except Exception as exception:
+        return str(exception), 400
+    row = models.Observatory.query.filter_by(id=id).first()
+    dict = observatory_schema_full.dump(row)
+    return jsonify(dict)
+
+
+@api.route('/api/observatories/<int:id>/image', methods=['PATCH'])
+@fnauth.check_auth(2)
+def patchObservatoryImage(id):
+    field = request.form.get('field')
+    if field not in ['thumbnail', 'logo']:
+        return "Invalid field value: " + str(field), 400
+    image = request.files.get('image')
+    if not image:
+        return "Missing field: image", 400
+    rows = models.Observatory.query.filter_by(id=id)
+    if not rows.count():
+        abort(404)
+    
+    dicts = observatories_schema.dump(rows)
+    base_path = '/app/static/upload/images/'
+    
+    _, ext = os.path.splitext(image.filename)
+    filename = 'observatory-' + str(id) + '-' + field + '-' + utils.getRandStr(4) + ext
+    image.save(os.path.join(base_path + filename))
+    rows.update({
+        field: filename
+    })
+    db.session.commit()
+
+    if dicts[0][field]:
+        try:
+            os.remove(base_path + dicts[0][field])
+        except Exception as exception:
+            pass
+
+    return jsonify({
+        'filename': filename
+    }), 200
 
 
 @api.route('/api/sites', methods=['GET'])
 def returnAllSites():
-    get_all_sites = models.TSite.query.order_by('ref_site').all()
+    dbconf = utils.getDbConf()
+    get_all_sites = models.TSite.query.order_by(dbconf['default_sort_sites']).all()
     sites = site_schema.dump(get_all_sites)
     for site in sites:
         if len(site.get("t_photos")) > 0:
@@ -40,7 +165,7 @@ def returnAllSites():
             if main_photo:
                 photo_schema = models.TPhotoSchema()
                 main_photo = photo_schema.dump(main_photo)
-                site['main_photo'] = utils.getThumbnail(main_photo).get('output_name')
+                site['main_photo'] = main_photo.get("path_file_photo") #utils.getThumbnail(main_photo).get('output_name')
             else:
                 site["main_photo"] = "no_photo"
 
@@ -77,9 +202,6 @@ def returnSiteById(id_site):
     site[0]['themes'] = themes_list
     site[0]['subthemes'] = subthemes_list
 
-    for photo in dump_photos:
-        photo['sm'] = utils.getThumbnail(photo).get('output_name'),
-
     photos = dump_photos
     return jsonify(site=site, photos=photos), 200
 
@@ -88,8 +210,6 @@ def returnSiteById(id_site):
 def gallery():
     get_photos = models.TPhoto.query.order_by('id_site').all()
     dump_photos = photo_schema.dump(get_photos)
-    for photo in dump_photos:
-        photo['sm'] = utils.getThumbnail(photo).get('output_name')
 
     return jsonify(dump_photos), 200
 
@@ -122,16 +242,18 @@ def returnAllLicences():
     return jsonify(licences), 200
 
 @api.route('/api/users/<int:id_app>', methods=['GET'])
+@login_required
 def returnAllUsers(id_app):
+    a = Application.query.filter_by(code_application=current_app.config["CODE_APPLICATION"]).one()
     all_users = AppUser.query.filter_by(
         id_application=id_app).all()
 
-    return jsonify([u.as_dict() for u in all_users])
+    return jsonify([u.as_dict() for u in all_users if u.id_application == a.id_application])
 
 # TODO : remove this view ! 
 # use in the front at each refresh ... but why ?
 @api.route('/api/me/', methods=['GET'])
-@fnauth.check_auth(2, True, None, None)
+@fnauth.check_auth(2)
 def returnCurrentUser(id_role=None):
     current_user = AppUser.query.filter_by(
         id_role=id_role
@@ -142,9 +264,9 @@ def returnCurrentUser(id_role=None):
 
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(6)
 def deleteSite(id_site):
-    base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/app/static/upload/images/'
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
     photos = photo_schema.dump(photos)
@@ -164,7 +286,7 @@ def deleteSite(id_site):
 
 
 @api.route('/api/addSite', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def add_site():
     data = dict(request.get_json())
     site = models.TSite(**data)
@@ -175,26 +297,18 @@ def add_site():
 
 
 @api.route('/api/updateSite', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def update_site():
     site = request.get_json()
     models.CorSiteSthemeTheme.query.filter_by(
         id_site=site.get('id_site')).delete()
     models.TSite.query.filter_by(id_site=site.get('id_site')).update(site)
     db.session.commit()
-    photos = models.TPhoto.query.filter_by(id_site=site.get('id_site')).all()
-    photos = photo_schema.dump(photos)
-    base_path = './static/' + DATA_IMAGES_PATH
-    for photo in photos:
-        photo_name = photo.get('path_file_photo')
-        for fileName in os.listdir(base_path):
-            if fileName.endswith('_' + photo_name):
-                os.remove(base_path + fileName)
     return jsonify('site updated successfully'), 200
 
 
 @api.route('/api/addThemes', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def add_cor_site_theme_stheme():
     data = request.get_json().get('data')
     for d in data:
@@ -211,9 +325,9 @@ def add_cor_site_theme_stheme():
 
 
 @api.route('/api/addPhotos', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def upload_file():
-    base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/app/static/upload/images/'
     data = request.form.getlist('data')
     new_site = request.form.getlist('new_site')
     uploaded_images = request.files.getlist('image')
@@ -249,9 +363,9 @@ def upload_file():
 
 
 @api.route('/api/addNotices', methods=['POST'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def upload_notice():
-    base_path = './static/' + DATA_NOTICES_PATH
+    base_path = './static/upload/notice-photo/'
     notice = request.files.get('notice')
     notice.save(os.path.join(base_path + notice.filename))
 
@@ -259,9 +373,9 @@ def upload_notice():
 
 
 @api.route('/api/deleteNotice/<notice>', methods=['DELETE'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def delete_notice(notice):
-    base_path = './static/' + DATA_NOTICES_PATH
+    base_path = './static/upload/notice-photo/'
     for fileName in os.listdir(base_path):
         if (fileName == notice):
             os.remove(base_path + fileName)
@@ -270,9 +384,9 @@ def delete_notice(notice):
 
 
 @api.route('/api/updatePhoto', methods=['PATCH'])
-@fnauth.check_auth(2, False, None, None)
+@fnauth.check_auth(2)
 def update_photo():
-    base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/app/static/upload/images/'
     data = request.form.get('data')
     image = request.files.get('image')
     data_serialized = json.loads(data)
@@ -303,9 +417,9 @@ def update_photo():
 
 
 @api.route('/api/deletePhotos', methods=['POST'])
-@fnauth.check_auth(6, False, None, None)
+@fnauth.check_auth(6)
 def deletePhotos():
-    base_path = './static/' + DATA_IMAGES_PATH
+    base_path = '/app/static/upload/images/'
     photos = request.get_json()
     for photo in photos:
         photos_query = models.TPhoto.query.filter_by(

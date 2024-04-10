@@ -1,0 +1,31 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'about' %}
+
+{% block title %}À PROPOS{% endblock %}
+{% block head %}
+{{ super() }}
+<!-- Here you can import all JS and CSS you need -->
+<link rel="stylesheet" href="{{ url_for('static', filename='custom/css/about.css') }}">
+{% endblock %}
+
+{% block bodyClassNames %}page-about{% endblock %}
+
+{% block header_title %}{% endblock %}
+
+{% block content %}
+  <div class="container py-4 page-container-min-height">
+    <h1 class="page-title text-center">À PROPOS</h1>
+
+    <h4>Observatoire Photographique ...</h4>
+
+    <p>Ce site a pour vocation de partager les connaissances en matière de paysages produites par ...</p>
+
+    <p>... points de vues, photographiés chaque année depuis ... font ici l’objet d’une analyse pour comprendre la manière dont nos paysages évoluent, ou pas, sous l’influence de multiples facteurs naturels et humains.</p>
+
+    <p>L’objectif n’est pas de juger et encore moins de regretter un état passé. Il s’agit plutôt d’un suivi des paysages (une sorte de monitoring), à partir de points choisis à une certaine époque ...</p>
+
+    <p>Les choix des points de vue sont issus de discussions entre des acteurs locaux sur proposition d’un regard sensible et artistique ...</p>
+
+    <p>Certes chacun des points de vue montre, de manière parfois brutale, les transformations d’un lieu mais, plus que le cas particulier, ce qui est intéressant, c’est de comprendre les raisons de ces transformations et ce qu’elles nous enseignent, d’une manière générale ....</p>
+  </div>
+{% endblock %}

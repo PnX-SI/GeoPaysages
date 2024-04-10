@@ -1,0 +1,8 @@
+upload/*
+upload/images/*
+upload/notice-photo/*
+!upload/.gitkeep
+!upload/images
+!upload/images/.gitkeep
+!upload/notice-photo
+!upload/notice-photo/.gitkeep

@@ -1,13 +1,16 @@
 var geopsg = geopsg || {};
 geopsg.comparator = (options) => {
   const maps = [];
-  const modes = [{
-    name: 'sidebyside',
-    label: options.translations.mode_sidebyside
-  }, {
-    name: 'split',
-    label: options.translations.mode_split
-  }];
+  const modes = [
+    {
+      name: 'sidebyside',
+      label: options.translations.mode_sidebyside,
+    },
+    {
+      name: 'split',
+      label: options.translations.mode_split,
+    },
+  ];
   let sbsCtrl;
 
   function computeItem(item) {
@@ -16,41 +19,53 @@ geopsg.comparator = (options) => {
     }
     if (!(item.shot_on instanceof Date)) {
       if (item.shot_on.length <= 10) {
-        item.shot_on += 'T00:00:00'
+        item.shot_on += 'T00:00:00';
       }
       item.shot_on = new Date(item.shot_on);
     }
-  };
+  }
 
-  const defaultItems = [
-    options.photos[0],
-    options.photos[options.photos.length - 1]
-  ];
+  const defaultItems = [options.photos[0], options.photos[options.photos.length - 1]];
   computeItem(defaultItems[0]);
   computeItem(defaultItems[1]);
 
-  //TODO use format as an argument
-  Vue.filter('dateFormat', (value) => {
+  const getFormatedDate = (value) => {
     if (options.dbconf.comparator_date_format == 'year') {
-    return value.toLocaleString('fr-FR', {
-      year: 'numeric'
-    });
+      return value.toLocaleString('fr-FR', {
+        year: 'numeric',
+      });
     }
     if (options.dbconf.comparator_date_format == 'month') {
-    return value.toLocaleString('fr-FR', {
-      month: '2-digit',
-      year: 'numeric'
-    });
+      return value.toLocaleString('fr-FR', {
+        month: '2-digit',
+        year: 'numeric',
+      });
+    } else {
+      return value.toLocaleString('fr-FR', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric',
+      });
     }
-    else {
-    return value.toLocaleString('fr-FR', {
-      month: '2-digit',
-      day: '2-digit',
-      year: 'numeric'
-    });
-  }
+  };
+
+  //TODO use format as an argument
+  Vue.filter('dateFormat', (value) => {
+    return getFormatedDate(value);
   });
 
+  Vue.filter('dateDisplay', (photo) => {
+    return photo.date_approx || getFormatedDate(photo.shot_on);
+  });
+
+  Vue.component('recyclescroller', VueVirtualScroller.RecycleScroller);
+
+  const thumbProps = {
+    width: 150,
+    height: 150,
+  };
+
+  const hideSelectorsOnInit = window.innerWidth < 768;
   Vue.component('app-comparator-v2', {
     template: '#tpl-app-comparator-v2',
     data: () => {
@@ -58,11 +73,11 @@ geopsg.comparator = (options) => {
         curMode: modes[0],
         modes: modes,
         photos: options.photos,
-        comparedPhotos: [
-          defaultItems[0],
-          defaultItems[1]
-        ]
-      }
+        comparedPhotos: [defaultItems[0], defaultItems[1]],
+        thumbProps: thumbProps,
+        thumbsListH: thumbProps.height + 30,
+        hiddenSelectors: [hideSelectorsOnInit, hideSelectorsOnInit]
+      };
     },
     mounted() {
       this.initMaps();
@@ -82,7 +97,10 @@ geopsg.comparator = (options) => {
         this.updateLayers();
       },
       initMap(num) {
-        const hasZoom = options.dbconf.comparator_zoom_control === undefined ? true : options.dbconf.comparator_zoom_control;
+        const hasZoom =
+          num === 1 && options.dbconf.comparator_zoom_control === undefined
+            ? true
+            : options.dbconf.comparator_zoom_control;
         const map = L.map(this.$refs['photo' + num], {
           crs: L.CRS.Simple,
           center: [0, 0],
@@ -90,7 +108,7 @@ geopsg.comparator = (options) => {
           zoom: 2,
           zoomSnap: 0.25,
           minZoom: -5,
-          gestureHandling: true
+          gestureHandling: true,
         });
         const side = num == 1 ? 'left' : 'right';
         const className = `leaflet-top leaflet-verticalcenter leaflet-${side}`;
@@ -106,9 +124,28 @@ geopsg.comparator = (options) => {
         this.curMode = selectedMode;
         this.updateLayers();
       },
+      onToggleSelectorClick(index) {
+        this.$set(this.hiddenSelectors, index, !this.hiddenSelectors[index]);
+      },
       onPhotoSelected(index, photo) {
         this.$set(this.comparedPhotos, index, photo);
         this.updateLayers();
+      },
+      getThumbClasses(photo) {
+        const classNames = [];
+
+        if (this.comparedPhotos[0].id === photo.id) {
+          classNames.push('selected-left');
+        }
+        if (this.comparedPhotos[1].id === photo.id) {
+          classNames.push('selected-right');
+        }
+        if (!classNames.length) {
+          return '';
+        }
+        classNames.push('selected');
+
+        return classNames.join(' ')
       },
       updateLayers() {
         this.$bvModal.show('comparatorLoading');
@@ -120,57 +157,59 @@ geopsg.comparator = (options) => {
 
         Promise.all([
           this.loadImg(this.comparedPhotos[0].filename),
-          this.loadImg(this.comparedPhotos[1].filename)
-        ])
-          .then(imgs => {
-            const layers = [];
-            imgs.forEach((img, i) => {
-              const ratio = img.height / img.width;
-              const imgW = 256;
-              const imgH = imgW * ratio;
-              const overlay = L.imageOverlay(img.src, [[-imgH / 2, -imgW / 2], [imgH / 2, imgW / 2]]);
-              layers.push(overlay);
-            });
-
-            if (this.curMode.name == 'split') {
-              layers[0].addTo(maps[0]);
-              layers[1].addTo(maps[1]);
-            } else if (this.curMode.name == 'sidebyside') {
-              layers[0].options.pane = 'left';
-              layers[1].options.pane = 'right';
-              layers[0].addTo(maps[0]);
-              layers[1].addTo(maps[0]);
-              sbsCtrl = L.control.sideBySide(layers[0], layers[1]).addTo(maps[0]);
-            }
-            this.resizeMaps();
-            maps[0].fitBounds(maps[0].getBounds());
-            this.$bvModal.hide('comparatorLoading');
+          this.loadImg(this.comparedPhotos[1].filename),
+        ]).then((imgs) => {
+          const layers = [];
+          imgs.forEach((img, i) => {
+            const ratio = img.height / img.width;
+            const imgW = 256;
+            const imgH = imgW * ratio;
+            const overlay = L.imageOverlay(img.src, [
+              [-imgH / 2, -imgW / 2],
+              [imgH / 2, imgW / 2],
+            ]);
+            layers.push(overlay);
           });
+
+          if (this.curMode.name == 'split') {
+            layers[0].addTo(maps[0]);
+            layers[1].addTo(maps[1]);
+          } else if (this.curMode.name == 'sidebyside') {
+            layers[0].options.pane = 'left';
+            layers[1].options.pane = 'right';
+            layers[0].addTo(maps[0]);
+            layers[1].addTo(maps[0]);
+            sbsCtrl = L.control.sideBySide(layers[0], layers[1]).addTo(maps[0]);
+          }
+          this.resizeMaps();
+          maps[0].fitBounds(maps[0].getBounds());
+          this.$bvModal.hide('comparatorLoading');
+        });
       },
       loadImg(filename) {
         return new Promise((resolve, reject) => {
           const img = new Image();
-          img.onload = function() {
+          img.onload = function () {
             resolve(this);
           };
-          img.src = '/static/data/images/' + filename;
+          img.src = '/api/thumbor/presets/noxl/' + filename;
         });
       },
       clearMaps() {
-        maps.forEach(map => {
+        maps.forEach((map) => {
           map.eachLayer((layer) => {
             map.removeLayer(layer);
           });
         });
       },
       resizeMaps() {
-        maps.forEach(map => {
+        maps.forEach((map) => {
           map.eachLayer((layer) => {
             map.invalidateSize();
           });
         });
-      }
-    }
+      },
+    },
   });
 
   Vue.component('app-comparator-v2-selector', {
@@ -189,42 +228,52 @@ geopsg.comparator = (options) => {
         currentItem: {},
       };
       if (options.dbconf.comparator_date_format == 'year') {
-        sharedData.steps = [{
-          label: "1 an",
-          value: 3600 * 24 * 365
-        }];
-      }
-      else if (options.dbconf.comparator_date_format == 'month') {
-        sharedData.steps = [{
-          label: "1 mois",
-          value: 3600 * 24 * 30
-        }, {
-          label: "1 an",
-          value: 3600 * 24 * 365
-        }]
+        sharedData.steps = [
+          {
+            label: '1 an',
+            value: 3600 * 24 * 365,
+          },
+        ];
+      } else if (options.dbconf.comparator_date_format == 'month') {
+        sharedData.steps = [
+          {
+            label: '1 mois',
+            value: 3600 * 24 * 30,
+          },
+          {
+            label: '1 an',
+            value: 3600 * 24 * 365,
+          },
+        ];
       } else {
-        sharedData.steps = [{
-          label: "0",
-          value: 0
-        }, {
-          label: "1 jour",
-          value: 3600 * 24
-        }, {
-          label: "1 semaine",
-          value: 3600 * 24 * 7
-        }, {
-          label: "1 mois",
-          value: 3600 * 24 * 30
-        }, {
-          label: "1 an",
-          value: 3600 * 24 * 365
-        }];
+        sharedData.steps = [
+          {
+            label: '0',
+            value: 0,
+          },
+          {
+            label: '1 jour',
+            value: 3600 * 24,
+          },
+          {
+            label: '1 semaine',
+            value: 3600 * 24 * 7,
+          },
+          {
+            label: '1 mois',
+            value: 3600 * 24 * 30,
+          },
+          {
+            label: '1 an',
+            value: 3600 * 24 * 365,
+          },
+        ];
       }
       return sharedData;
     },
-    created(){
+    created() {
       // set current page at the end for right comparator
-      if(this.right) {
+      if (this.right) {
         this.currentPage = Math.ceil(this.items.length / 10);
         this.currentItem = this.items[this.items.length - 1];
       } else {
@@ -250,9 +299,9 @@ geopsg.comparator = (options) => {
       currentPage(val) {
         this.setPageItems();
       },
-      items: function(newV, oldV) {
-        console.log("items changes", newV);
-      }
+      items: function (newV, oldV) {
+        console.log('items changes', newV);
+      },
     },
     methods: {
       onStepClick(step) {
@@ -267,8 +316,7 @@ geopsg.comparator = (options) => {
         }
         this.currentItem = this.filteredItems[itemIndex];
         this.setSelectedItem(this.currentItem);
-        this.currentPage = Math.ceil((itemIndex +1) / 10);
-
+        this.currentPage = Math.ceil((itemIndex + 1) / 10);
       },
       onNextBtnClick() {
         const dateFrom = new Date(this.selectedItem.shot_on);
@@ -279,8 +327,7 @@ geopsg.comparator = (options) => {
         }
         this.currentItem = this.filteredItems[itemIndex];
         this.setSelectedItem(this.currentItem);
-        this.currentPage = Math.ceil((itemIndex +1) / 10);
-
+        this.currentPage = Math.ceil((itemIndex + 1) / 10);
       },
       onItemClick(item) {
         this.currentItem = item;
@@ -292,11 +339,10 @@ geopsg.comparator = (options) => {
       setPageItems() {
         const pageIndex = this.currentPage - 1;
         const startIndex = pageIndex * this.perPage;
-        this.pageItems = this.filteredItems.slice(startIndex, startIndex + this.perPage)
-          .map(item => {
-            computeItem(item);
-            return item;
-          });
+        this.pageItems = this.filteredItems.slice(startIndex, startIndex + this.perPage).map((item) => {
+          computeItem(item);
+          return item;
+        });
       },
       filterItems() {
         let dateFrom = !this.dateFrom ? null : new Date(this.dateFrom);
@@ -328,10 +374,12 @@ geopsg.comparator = (options) => {
           }
         }
 
-        this.setFilteredItems(this.items.slice(startIndex, endIndex + 1).map(item => {
-          computeItem(item);
-          return item;
-        }));
+        this.setFilteredItems(
+          this.items.slice(startIndex, endIndex + 1).map((item) => {
+            computeItem(item);
+            return item;
+          }),
+        );
       },
       setFilteredItems(items) {
         this.filteredItems = items;
@@ -372,7 +420,7 @@ geopsg.comparator = (options) => {
           return this.searchDateToIndex(items, dateTo, middleIndex + 1, endIndex);
         }
         return -1;
-      }
-    }
+      },
+    },
   });
-}
+};

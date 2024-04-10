@@ -1,0 +1,271 @@
+# French translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2022-09-14 10:23+0000\n"
+"PO-Revision-Date: 2018-12-21 11:34+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: utils.py:215
+msgid "sites.filter.themes"
+msgstr "Thème"
+
+#: utils.py:219
+msgid "sites.filter.subthemes"
+msgstr "Sous-thème"
+
+#: utils.py:224
+msgid "sites.filter.township"
+msgstr "Commune"
+
+#: utils.py:229
+msgid "sites.filter.years"
+msgstr "Année"
+
+#: utils.py:348
+msgid "sites.filter.obervatories"
+msgstr "Observatoire"
+
+#: tpl/gallery.jinja:3
+msgid "gallery.meta_title"
+msgstr "Galerie photo"
+
+#: tpl/gallery.jinja:19
+msgid "gallery.title"
+msgstr "Galerie photo"
+
+#: tpl/components/sites-filter.jinja:8 tpl/components/sites-filter.jinja:15
+#: tpl/gallery.jinja:75 tpl/sites.jinja:52
+msgid "sites.filters.nb_result"
+msgstr "Filtre(s) : %(nb)s résultat(s)"
+
+#: tpl/home_mono_obs.jinja:3 tpl/home_multi_obs.jinja:3
+msgid "home.meta_title"
+msgstr "GeoPaysages : Observatoire photographique des paysages"
+
+#: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:20
+#: tpl/home_mono_obs.jinja:19 tpl/home_multi_obs.jinja:21
+msgid "home.title"
+msgstr "Observatoire photographique des paysages"
+
+#: tpl/home_mono_obs.jinja:23 tpl/home_multi_obs.jinja:25
+msgid "home.title_mobile"
+msgstr "Accueil"
+
+#: tpl/home_mono_obs.jinja:39 tpl/home_multi_obs.jinja:94
+msgid "home.block.explore_sites"
+msgstr "Explorer les sites d'observation"
+
+#: tpl/home_mono_obs.jinja:46
+msgid "home.block.discover"
+msgstr "Découvrir ce site d'observation"
+
+#: tpl/home_mono_obs.jinja:49
+msgid "home.block.photography"
+msgstr "Photographie"
+
+#: tpl/home_multi_obs.jinja:90
+msgid "home.map_block_title"
+msgstr "Carte des observatoires"
+
+#: tpl/layout.jinja:75
+msgid "footer.internal_title"
+msgstr "Le site"
+
+#: tpl/layout.jinja:79
+msgid "footer.internal_links.home"
+msgstr "Accueil"
+
+#: tpl/layout.jinja:84
+msgid "footer.internal_links.sites"
+msgstr "Sites d'observation"
+
+#: tpl/layout.jinja:89
+msgid "footer.internal_links.gallery"
+msgstr "Galerie photo"
+
+#: tpl/layout.jinja:95
+msgid "footer.internal_links.contact"
+msgstr "Contactez-nous"
+
+#: tpl/layout.jinja:104
+msgid "footer.external_title"
+msgstr "Notre territoire"
+
+#: tpl/site.jinja:41
+msgid "site.title_mobile"
+msgstr "site d'observation"
+
+#: tpl/site.jinja:58
+msgid "obs_point.buttons.notice"
+msgstr "Notice technique pour le photographe"
+
+#: tpl/site.jinja:63
+msgid "obs_point.buttons.obs"
+msgstr "Faire une observation"
+
+#: tpl/site.jinja:68
+msgid "obs_point.description"
+msgstr "Présentation du site"
+
+#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
+msgid "obs_point.buttons.read_more"
+msgstr "Lire plus"
+
+#: tpl/site.jinja:76 tpl/site.jinja:94 tpl/site.jinja:107
+msgid "obs_point.buttons.read_less"
+msgstr "Lire moins"
+
+#: tpl/site.jinja:99
+msgid "obs_point.testimonials"
+msgstr "Témoignages"
+
+#: tpl/sites.jinja:4
+msgid "sites.meta_title"
+msgstr "Sites d'observation"
+
+#: tpl/sites.jinja:29
+msgid "sites.title"
+msgstr "Sites d'observation"
+
+#: tpl/sites.jinja:51
+msgid "sites.observation_points.title"
+msgstr "Sites d'observation"
+
+#: tpl/sites.jinja:117
+msgid "map.legend.obervatories"
+msgstr "Observatoire(s)"
+
+#: tpl/sites.jinja:123
+msgid "map.legend.themes"
+msgstr "Thème(s)"
+
+#: tpl/components/comparator_v1.jinja:8
+msgid "obs_point.buttons.download"
+msgstr "Télécharger"
+
+#: tpl/components/comparator_v2.jinja:57
+msgid "comparatorv2.loading"
+msgstr "Chargement"
+
+#: tpl/components/comparator_v2.jinja:95
+msgid "comparatorv2.date.filter.title"
+msgstr "Filtrer par date"
+
+#: tpl/components/comparator_v2.jinja:97
+msgid "comparatorv2.date.filter.start"
+msgstr "Début"
+
+#: tpl/components/comparator_v2.jinja:106
+msgid "comparatorv2.date.filter.end"
+msgstr "Fin"
+
+#: tpl/components/comparator_v2.jinja:156
+msgid "comparatorv2.mode.sidebyside"
+msgstr "Superposition"
+
+#: tpl/components/comparator_v2.jinja:157
+msgid "comparatorv2.mode.split"
+msgstr "Côte à côte"
+
+#: tpl/components/comparator_v2.jinja:158
+msgid "comparatorv2.date.steps.none"
+msgstr "0"
+
+#: tpl/components/comparator_v2.jinja:159
+msgid "comparatorv2.date.steps.1d"
+msgstr "1 jour"
+
+#: tpl/components/comparator_v2.jinja:160
+msgid "comparatorv2.date.steps.1w"
+msgstr "1 semaine"
+
+#: tpl/components/comparator_v2.jinja:161
+msgid "comparatorv2.date.steps.1m"
+msgstr "1 mois"
+
+#: tpl/components/comparator_v2.jinja:162
+msgid "comparatorv2.date.steps.1y"
+msgstr "1 an"
+
+#: tpl/components/legal-footer.jinja:1
+msgid "footer.copyright"
+msgstr "© 2023 - GeoPaysages, logiciel libre et open-source"
+
+#: tpl/components/main-nav.jinja:3
+msgid "header.nav.home"
+msgstr "Accueil"
+
+#: tpl/components/main-nav.jinja:7
+msgid "header.nav.about"
+msgstr "À propos"
+
+#: tpl/components/main-nav.jinja:11
+msgid "header.nav.sites"
+msgstr "Sites d'observation"
+
+#: tpl/components/main-nav.jinja:14
+msgid "header.nav.gallery"
+msgstr "Galerie photo"
+
+#: tpl/components/sites-filter.jinja:22
+msgid "map.filters.title"
+msgstr "Filtrer par"
+
+#~ msgid "map.filter.themes"
+#~ msgstr "Thème"
+
+#~ msgid "map.filter.subthemes"
+#~ msgstr "Sous-thème"
+
+#~ msgid "map.filter.township"
+#~ msgstr "Commune"
+
+#~ msgid "map.filter.years"
+#~ msgstr "Année"
+
+#~ msgid "header.nav.map"
+#~ msgstr "Carte interactive"
+
+#~ msgid "footer.internal_links.map"
+#~ msgstr "Carte interactive"
+
+#~ msgid "map.meta_title"
+#~ msgstr "Carte interactive"
+
+#~ msgid "map.title"
+#~ msgstr "Carte interactive"
+
+#~ msgid "map.filters.title"
+#~ msgstr "Filtrer par"
+
+#~ msgid "map.filters.nb_result"
+#~ msgstr "filtres : %(nb)s résultat(s)"
+
+#~ msgid "map.observation_points.title"
+#~ msgstr "Sites d'observation"
+
+#~ msgid "gallery.title"
+#~ msgstr "Galerie photo"
+
+#~ msgid "sites.title"
+#~ msgstr "Les sites d'observation"
+
+#~ msgid "sites.filters.title"
+#~ msgstr "Filtrer par"
+
+#~ msgid "comparatorv2.mode.title"
+#~ msgstr "Disposition des photos"
+

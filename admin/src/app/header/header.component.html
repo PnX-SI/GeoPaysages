@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light justify-content-between">
+  <a class="navbar-brand">
+    <img [src]="logoUrl" height="97px" />
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    (click)="isCollapsed = !isCollapsed"
+    [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapse"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div
+    class="collapse navbar-collapse"
+    id="collapse"
+    [ngbCollapse]="isCollapsed"
+  >
+    <ul class="navbar-nav ml-auto text-uppercase">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          routerLink="/observatories"
+          routerLinkActive="active"
+          >Gestion des observatoires</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/sites" routerLinkActive="active"
+          >Gestion des sites d'observation</a
+        >
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/gallery" routerLinkActive="active"
+          >Gestion de la galerie photos</a
+        >
+      </li>
+      <li class="nav-item logout" (click)="logout()">
+        <a class="nav-link">
+          <span class="icon-exit"></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

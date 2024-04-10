@@ -1,0 +1,169 @@
+{% extends "layout.jinja" %}
+{% set active_page = 'sites' %}
+{% block title %}
+  {{ _('sites.meta_title') }}
+{% endblock title %}
+{% block head %}
+  {{ super() }}
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.css') }}"/>
+
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/leaflet-markercluster/MarkerCluster.css') }}"/>
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='vendor/leaflet-markercluster/MarkerCluster.Default.css') }}"/>
+
+  <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/sites.css') }}"/>
+  <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/wellknown.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/leaflet-easybutton/easy-button.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/leaflet-fullscreen/Leaflet.fullscreen.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/leaflet-markercluster/leaflet.markercluster.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/leaflet-markercluster/leaflet.markercluster.freezable.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/vue-multiselect/vue-multiselect.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sites-utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sites.js') }}"></script>
+{% endblock head %}
+
+{% block title_mobile %}{{ _('sites.title') }}{% endblock title_mobile %}
+{% block bodyClassNames %}
+  page-sites
+{% endblock bodyClassNames %}
+{% block content %}
+  
+  <div id="js-app-sites"
+       class="app-sites container-fluid d-flex flex-column"
+       v-bind:class="{'multi-observatories': isMultiObservatories}"
+  >
+    
+    {% include 'components/sites-filter.jinja' %}
+
+    <div class="header-spacer d-none d-lg-block"></div>
+    <div class="row h-100 position-relative">
+      <div class="block-list-sites">
+        <a
+          block
+          href="#"
+          class="btn d-flex justify-content-between p-3 btn-toggle"
+          v-b-toggle="'app_map_list_sites_collapse'"
+        >
+          <span>{{ _('sites.observation_points.title') }}</span>
+          <span class="text-lowercase d-none d-md-inline-block">{% autoescape false %} {{ _('sites.filters.nb_result', nb='<span v-html="selectedSites.length"></span
+          >') }} {% endautoescape %}</span>
+          <i class="icon ion-ios-arrow-down visible-collapsed"></i>
+          <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
+        </a>
+        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse" :visible="isSitesListOpen">
+          <div v-if="observatories.length" class="list-observatories">
+            <b-card
+              no-body
+              class="m-0 rounded-0 border-0 p-2"
+              v-for="(observatory) in observatories"
+              v-bind:key="observatory.id">
+              <b-card-header header-tag="header" class="p-0 border-0">
+                <b-btn
+                  block
+                  href="#"
+                  @click="onBtnObservatoryClick(observatory)"
+                  v-b-toggle="'app_map_observatory_' + observatory.id"
+                  variant="link"
+                  class="rounded-0 text-left btn-observatory border-0 text-decoration-none d-flex align-items-center">
+                  <div class="icon d-inline-block mr-2">
+                    <img :src="'/api/thumbor/presets/100x100/' + observatory.data.logo" />
+                  </div>
+                  <div class="d-inline-block align-middle">
+                    <span class="d-block text-capitalize" v-html="observatory.label"></span>
+                    <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' site(s) d\'observation(s)'"></small>
+                  </div>
+                  <i class="ion-ios-arrow-down visible-collapsed ml-auto justify-content-center align-items-center"></i>
+                  <i class="ion-ios-arrow-up hidden-collapsed ml-auto justify-content-center align-items-center"></i>
+                </b-btn>
+              </b-card-header>
+              <b-collapse
+                :id="'app_map_observatory_' + observatory.id"
+                v-model="observatory.isOpen">
+                <b-card-body class="p-0" v-bind:class="{'pl-5': isMultiObservatories}">
+                  <b-button-group v-if="observatory.selectedSites && observatory.selectedSites.length" vertical class="w-100">
+                    <a v-for="site in observatory.selectedSites"
+                      class="btn btn-sm btn-block text-left btn-site rounded-0 btn-no-uppercase"
+                      @mouseenter="onSiteMousover(site)"
+                      @mouseleave="onSiteMouseout(site)"
+                      @click="onSiteClick(site)">
+                      <span class="d-block font-weight-bold" v-html="site.name_site"></span>
+                      <span class="d-block text-black-50" v-html="site.ville.label"></span>
+                      {% if dbconf.show_site_ref: %}
+                      <span class="d-block text-black-50"
+                            v-if="site.ref_site"
+                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                      {% endif %}
+                    </a>
+                    <hr class="w-100 m-1"/>
+                  </b-button-group>
+                </b-card-body>
+              </b-collapse>
+            </b-card>
+          </div>
+        </b-collapse>
+      </div>
+      <div class="maptools-top-right">
+        <b-button class="d-none d-md-inline-block" @click="onShareClick()" variant="primary">Partager</b-button>
+      </div>
+      <div class="maptools-bottom">
+        <b-button class="d-md-none" @click="onShareClick()" variant="primary">Partager</b-button>
+      </div>
+      <div class="maptools-bottom-right">
+        <div class="block-legend d-none d-md-block">
+          <b-collapse id="app_map_legend_collapse" class="px-3 sans-serif">
+            <div class="pt-3" v-if="isMultiObservatories">
+              <h6>{{_('map.legend.obervatories')}}</h6>
+              <div v-for="observatory in observatories" class="legend-item legend-item-observatory">
+                <div class="icon d-inline-block align-middle mr-2" v-bind:style="{background: observatory.data.color}"></div>
+                <span v-html="observatory.label"></span>
+              </div>
+            </div>
+            <h6 class="pt-3">{{_('map.legend.themes')}}</h6>
+            <div v-for="theme in themes" class="legend-item">
+              <div class="icon d-inline-block mr-2 text-dark" v-html="theme.icon"></div>
+              <span class="" v-html="theme.label"></span>
+            </div>
+          </b-collapse>
+          <a
+            block
+            href="#"
+            class="btn d-flex justify-content-between p-3 btn-toggle"
+            v-b-toggle="'app_map_legend_collapse'"
+          >
+            <span class="mr-3">Légende</span>
+            <i class="icon ion-ios-arrow-up visible-collapsed"></i>
+            <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col p-0">
+        <div class="map-wrapper h-100" ref="map"></div>
+      </div>
+    </div>
+    <b-modal ref="modal-copy-url" title="Partager" modal-class="modal-copy-url" hide-footer centered>
+      <p>Copier et partager le lien ci-dessus</p>
+      <b-form-textarea
+        v-model="shareUrl"
+        rows="3"
+        no-resize
+      ></b-form-textarea>
+    </b-modal>
+  </div>
+  <script>
+  document.onreadystatechange = () => {
+    if (document.readyState == 'complete') {
+      geopsg.initSites({
+        observatories: {{observatories | tojson}},
+        sites: {{sites | tojson}},
+        filters: {{filters | tojson}},
+        dbconf: {{dbconf | tojson}},
+      })
+    }
+  };
+
+  </script>
+{% endblock content %}

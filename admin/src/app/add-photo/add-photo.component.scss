@@ -1,0 +1,128 @@
+
+.image-btn {
+  margin-top: 10px;
+  margin-right: 20px;
+  width: 120px;
+  height: 120px;
+  background-color: #ccc;
+  border: none;
+}
+
+.gallery {
+  width: 150px;
+  height: 150px;
+  background-color: #ccc;
+  border: none;
+}
+
+.gallery:hover {
+  filter: brightness(65%);
+  -webkit-filter: brightness(65%);
+  -moz-filter: brightness(65%);
+  -o-filter: brightness(65%);
+  -ms-filter: brightness(65%);
+}
+
+.icon-plus {
+  color: white;
+  font-size: 34px;
+  font-weight: 200
+}
+
+.icon-download {
+  font-size: 12px;
+  padding-right: 6px
+}
+
+.delete-photo {
+  padding-right: 6px;
+}
+
+.form-item {
+  margin-bottom: 30px;
+}
+
+.label {
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 12px;
+  margin: 0;
+  padding-right: 12px;
+}
+
+.inner-checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 34px
+}
+
+
+
+.ng-select.custom ::ng-deep .ng-select-container {
+  min-height: 0px;
+  border-radius: 0;
+
+}
+
+.is-invalid {
+  border-radius: 4px;
+  border: 1px solid red;
+}
+
+.icon-camera {
+  padding-right: 8px;
+  color: #00188F;
+  font-size: 18px;
+}
+
+.remove-file {
+  color: #777777;
+  padding-left: 10px;
+  cursor: pointer;
+}
+
+.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+  background-color: #00188F;
+  border: none
+}
+
+.custom-control-label::before,
+.custom-control-label::after {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.custom-control {
+  padding-top: 10px;
+
+}
+
+.custom-control-label {
+  cursor: pointer;
+  padding-top: 4px;
+  padding-left: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.custom-control-label:before {
+
+  background-color: white;
+  border: 2px solid #a9a7a7;
+}
+.custom-control-input:disabled~.custom-control-label {
+  color: #b3b3b39e;
+  cursor: default;
+}
+
+.custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
+  background-color:  #b3b3b39e;;
+}
+
+
+
+.alert{
+   margin: 10px 0
+}
+

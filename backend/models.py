@@ -1,9 +1,43 @@
 # coding: utf-8
 from geoalchemy2.types import Geometry
 import geoalchemy2.functions as geo_funcs
+from geoalchemy2.shape import to_shape
 from marshmallow import fields
+from marshmallow_enum import EnumField
+from shapely.geometry import mapping
 
+from enum import Enum
 from env import db, ma
+from sqlalchemy.dialects import postgresql
+
+
+class Conf(db.Model):
+    __tablename__ = 'conf'
+    __table_args__ = {'schema': 'geopaysages'}
+
+    key = db.Column(db.String, primary_key=True)
+    value = db.Column(db.String)
+
+class ComparatorEnum(Enum):
+    sidebyside = 'sidebyside'
+    split = 'split'
+
+class Observatory(db.Model):
+    __tablename__ = 't_observatory'
+    __table_args__ = {'schema': 'geopaysages'}
+
+    id = db.Column(db.Integer, primary_key=True,
+                   server_default=db.FetchedValue())
+    title = db.Column(db.String)
+    ref = db.Column(db.String)
+    color = db.Column(db.String)
+    thumbnail = db.Column(db.String)
+    logo = db.Column(db.String)
+    comparator = db.Column(db.Enum(ComparatorEnum, name="comparator_enum"))
+    geom = db.Column(Geometry(geometry_type='MULTIPOLYGON', srid=4326))
+    is_published = db.Column(db.Boolean)
+
+
 
 class TSite(db.Model):
     __tablename__ = 't_site'
@@ -11,6 +45,10 @@ class TSite(db.Model):
 
     id_site = db.Column(db.Integer, primary_key=True,
                         server_default=db.FetchedValue())
+    id_observatory = db.Column(db.ForeignKey(
+        'geopaysages.t_observatory.id', name='t_site_fk_observatory'))
+    observatory = db.relationship(
+        'Observatory', primaryjoin='TSite.id_observatory == Observatory.id')
     name_site = db.Column(db.String)
     ref_site = db.Column(db.String)
     desc_site = db.Column(db.String)
@@ -22,9 +60,10 @@ class TSite(db.Model):
     publish_site = db.Column(db.Boolean)
     geom = db.Column(Geometry(geometry_type='POINT', srid=4326))
     main_photo = db.Column(db.Integer)
-    
-    #TODO
-    #t_ville = db.relationship('Ville', primaryjoin='Ville.ville_code_commune == TSite.code_city_site')
+    main_theme_id = db.Column(db.ForeignKey('geopaysages.dico_theme.id_theme'))
+    main_theme = db.relationship(
+        'DicoTheme', primaryjoin='TSite.main_theme_id == DicoTheme.id_theme')
+
 
 class CorSiteSthemeTheme(db.Model):
     __tablename__ = 'cor_site_stheme_theme'
@@ -86,6 +125,7 @@ class DicoTheme(db.Model):
     id_theme = db.Column(db.Integer, primary_key=True,
                          server_default=db.FetchedValue())
     name_theme = db.Column(db.String)
+    icon = db.Column(db.String)
 
 
 class TRole(db.Model):
@@ -103,20 +143,23 @@ class TRole(db.Model):
     _pass = db.Column('pass', db.String(100))
     _pass_plus = db.Column('pass_plus', db.String(100))
     email = db.Column(db.String(250))
-    id_organisme = db.Column(db.ForeignKey(
-        'utilisateurs.bib_organismes.id_organisme', onupdate='CASCADE'))
+    id_organisme = db.Column('id_organisme', db.INTEGER(), autoincrement=False, nullable=True)
     remarques = db.Column(db.Text)
     date_insert = db.Column(db.DateTime)
     date_update = db.Column(db.DateTime)
-
+    uuid_role = db.Column('uuid_role', postgresql.UUID(), server_default=db.text('uuid_generate_v4()'), autoincrement=False, nullable=False)
+    active = db.Column('active', db.BOOLEAN(), server_default=db.text('true'), autoincrement=False, nullable=True)
+    champs_addi = db.Column('champs_addi', postgresql.JSONB(astext_type=db.Text()), autoincrement=False, nullable=True)
 
 
 class TPhoto(db.Model):
     __tablename__ = 't_photo'
     __table_args__ = {'schema': 'geopaysages'}
 
-    id_photo = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
+    id_photo = db.Column(db.Integer, primary_key=True,
+                         server_default=db.FetchedValue())
     id_site = db.Column(db.ForeignKey('geopaysages.t_site.id_site'))
+    id_observatory = db.Column(db.ForeignKey('geopaysages.t_observatory.id'))
     path_file_photo = db.Column(db.String)
     id_role = db.Column(db.ForeignKey('utilisateurs.t_roles.id_role'))
     date_photo = db.Column(db.String)
@@ -127,53 +170,20 @@ class TPhoto(db.Model):
         'geopaysages.dico_licence_photo.id_licence_photo'))
 
     dico_licence_photo = db.relationship(
-'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
+        'DicoLicencePhoto', primaryjoin='TPhoto.id_licence_photo == DicoLicencePhoto.id_licence_photo', backref='t_photos')
     t_role = db.relationship(
         'TRole', primaryjoin='TPhoto.id_role == TRole.id_role', backref='t_photos')
     t_site = db.relationship(
         'TSite', primaryjoin='TPhoto.id_site == TSite.id_site', backref='t_photos')
 
 
-
 class Communes(db.Model):
     __tablename__ = 'communes'
     __table_args__ = {'schema': 'geopaysages'}
-    
-    code_commune = db.Column(db.String,primary_key=True,server_default=db.FetchedValue())
+
+    code_commune = db.Column(db.String, primary_key=True,
+                             server_default=db.FetchedValue())
     nom_commune = db.Column(db.String)
-    
-
-
-class Ville(db.Model):
-    __tablename__ = 'villes_france'
-    __table_args__ = {'schema': 'geopaysages'}
-
-    ville_id = db.Column(db.Integer, primary_key=True,server_default=db.FetchedValue())
-    ville_departement = db.Column(db.String)
-    ville_slug = db.Column(db.String)
-    ville_nom = db.Column(db.String)
-    ville_nom_simple = db.Column(db.String)
-    ville_nom_reel = db.Column(db.String)
-    ville_nom_soundex = db.Column(db.String)
-    ville_nom_metaphone = db.Column(db.String)
-    ville_code_postal = db.Column(db.String)
-    ville_commune = db.Column(db.String)
-    ville_code_commune = db.Column(db.String)
-    ville_arrondissement = db.Column(db.Integer)
-    ville_canton = db.Column(db.String)
-    ville_amdi = db.Column(db.Integer)
-    ville_population_2010 = db.Column(db.Integer)
-    ville_population_1999 = db.Column(db.Integer)
-    ville_population_2012 = db.Column(db.Integer)
-    ville_densite_2010 = db.Column(db.Integer)
-    ville_surface = db.Column(db.Integer)
-    ville_longitude_deg = db.Column(db.Integer)
-    ville_latitude_deg = db.Column(db.Integer)
-    ville_longitude_grd = db.Column(db.String)
-    ville_latitude_grd = db.Column(db.String)
-    ville_latitude_dms = db.Column(db.String)
-    ville_zmin = db.Column(db.Integer)
-    ville_zmax = db.Column(db.Integer)
 
 
 class GeographySerializationField(fields.String):
@@ -200,7 +210,7 @@ class GeographySerializationField(fields.String):
 
 class DicoThemeSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        fields = ('id_theme', 'name_theme')
+        fields = ('id_theme', 'name_theme', 'icon')
 
 
 class DicoSthemeSchema(ma.SQLAlchemyAutoSchema):
@@ -216,7 +226,9 @@ class CorThemeSthemeSchema(ma.SQLAlchemyAutoSchema):
 
 class LicencePhotoSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        fields = ('id_licence_photo', 'name_licence_photo','description_licence_photo')
+        fields = ('id_licence_photo', 'name_licence_photo',
+                  'description_licence_photo')
+
 
 class RoleSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -235,24 +247,71 @@ class TPhotoSchema(ma.SQLAlchemyAutoSchema):
 
 class CorSthemeThemeSchema(ma.SQLAlchemyAutoSchema):
     dico_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme"])
-    dico_stheme = ma.Nested(DicoSthemeSchema, only=["id_stheme", "name_stheme"])
+    dico_stheme = ma.Nested(DicoSthemeSchema, only=[
+                            "id_stheme", "name_stheme"])
 
     class Meta:
         fields = ('dico_theme', 'dico_stheme')
         #model = CorSthemeTheme
 
 
-class TSiteSchema(ma.SQLAlchemyAutoSchema):
-    geom = GeographySerializationField(attribute='geom')
+class ObservatorySchema(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=True)
+    geom = fields.Method("geomSerialize")
+    
+    @staticmethod
+    def geomSerialize(obj):
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        s = p.simplify(.0001, preserve_topology=False)
+        return s.wkt
 
     class Meta:
-        model = TSite
+        model = Observatory
+        include_relationships = True
+
+class ObservatorySchemaFull(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=True)
+    geom = fields.Method("geomSerialize")
+    
+    @staticmethod
+    def geomSerialize(obj):
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        return p.wkt
+
+    class Meta:
+        model = Observatory
+        include_relationships = True
+
+class ObservatorySchemaLite(ma.SQLAlchemyAutoSchema):
+    comparator = EnumField(ComparatorEnum, by_value=False)
+    geom = fields.Method("geomSerialize")
+    
+    @staticmethod
+    def geomSerialize(obj):
+        if obj.geom is None:
+            return None
+        p = to_shape(obj.geom)
+        s = p.simplify(.001, preserve_topology=True)
+        return s.wkt
+
+    class Meta:
+        model = Observatory
         include_relationships = True
 
 
-class VilleSchema(ma.SQLAlchemyAutoSchema):
+class TSiteSchema(ma.SQLAlchemyAutoSchema):
+    geom = GeographySerializationField(attribute='geom')
+    observatory = ma.Nested(ObservatorySchema, only=["id", "title", "ref", "color", "logo"])
+    main_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "name_theme", "icon"])
+
     class Meta:
-         fields = ('ville_id','ville_code_commune','ville_nom', 'ville_nom_reel')
+        model = TSite
+        include_fk = True
+        include_relationships = True
 
 
 class CommunesSchema(ma.SQLAlchemyAutoSchema):

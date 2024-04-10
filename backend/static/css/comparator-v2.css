@@ -1,11 +1,10 @@
 .page-site .app-comparator {
-  height: calc(100vh - 190px);
   position: relative;
   display: flex;
   flex-direction: column;
   --tools-top: 50px;
-  font-family: 'Hind', sans-serif;
 }
+
 @media (min-width: 576px) {
   .page-site .app-comparator {
     --tools-top: 8px;
@@ -14,24 +13,33 @@
 
 .page-site .app-comparator .photo-selector {
   position: absolute;
-  z-index: 1001;
   top: var(--tools-top);
 }
-.page-site .app-comparator .photo-selector.show {
-  z-index: 1002;
-}
+
 .page-site .app-comparator .photo-selector.left {
-  left: 8px;
+  left: 0;
 }
+
 .page-site .app-comparator .photo-selector.right {
-  right: 8px;
+  right: 0;
+}
+
+.page-site .app-comparator .photo-selector .date-selector,
+.page-site .app-comparator .photo-selector .date-stepper {
+  position: relative;
+  z-index: 1001;
+}
+
+.page-site .app-comparator .photo-selector .date-selector.show {
+  z-index: 1002;
 }
 
 .page-site .app-comparator .photo-selector .date-selector .dropdown-menu {
   min-width: 320px;
 }
 
-.page-site .app-comparator .mode-selector {
+.page-site .app-comparator .mode-selector,
+.page-site .app-comparator .dropdown-menu  {
   z-index: 1003;
 }
 
@@ -39,8 +47,9 @@
   .page-site .app-comparator .mode-selector {
     position: absolute;
     z-index: 1000;
-    width: 100%;
     top: var(--tools-top);
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
@@ -58,17 +67,65 @@
   position: absolute;
   z-index: 1000;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
-  padding: 0 5px;
   max-width: calc(50% - 2px);
 }
+
 .page-site .app-comparator .photo-caption.left {
   left: 0;
 }
+
 .page-site .app-comparator .photo-caption.right {
   right: 0;
 }
 
+.page-site .app-comparator .photo-caption-date {
+  font-size: 100%;
+}
+
+.page-site .app-comparator .photo-caption-cpr {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0 5px;
+  display: block;
+}
+
 .page-site .app-comparator .date_filter_title {
   font-weight: bold;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb:not(.selected) .thumb-overlay {
+  display: none !important;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .thumb-overlay {
+  display: flex !important;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.page-site .app-comparator-thumbs-wrapper .btn-side-selector {
+  width: 50px;
+  height: 50px;
+}
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .btn-side-selector,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-left.selected-right .btn-side-selector {
+  transform: scale(.9);
+  margin: 0 3px;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb.selected .btn-side-selector {
+  display: none;
+}
+
+.page-site .app-comparator-thumbs-wrapper .thumb:hover .btn-side-selector,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-left .btn-side-selector.left,
+.page-site .app-comparator-thumbs-wrapper .thumb.selected-right .btn-side-selector.right {
+  display: inline-block !important;
 }

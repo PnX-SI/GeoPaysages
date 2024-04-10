@@ -1,0 +1,84 @@
+.login-page {
+  display: flex;
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  background: url('/assets/images/dark-material-bg.jpg') no-repeat;
+  background-size: cover;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  max-width: 30%;
+}
+
+.form-control {
+  color: #ced4da;
+  background-color: #1d21249e;
+  border: 1px solid #55585a;
+  position: relative;
+  padding-left: 32px !important;
+
+}
+
+.card {
+  color: #ced4da;
+  background-color: #1d21249e;
+}
+
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+
+.card-signin .card-title {
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 1.8rem;
+}
+
+.card-signin .card-body {
+  padding: 2rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+
+.form-signin .btn {
+  font-size: 90%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: 600;
+  padding: .8rem;
+  transition: all 0.2s;
+}
+
+
+
+.error-msg {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
+
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.addon {
+  color: #55585a;
+  position: absolute;
+  top: 7px;
+  left: 6px;
+  z-index: 1;
+  font-size: 25px;
+}
