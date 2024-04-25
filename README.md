@@ -7,9 +7,9 @@ Application web permettant de publier un observatoire photographique des paysage
 - [Geopaysages | Parc national de la Vanoise](http://paysages.vanoise-parcnational.fr)
 - [Geopaysages | Parc national des Ecrins](http://paysages.ecrins-parcnational.fr)
 - [Geopaysages | Parc naturel régional du Pilat](https://paysages.parc-naturel-pilat.fr)
-- [Geopaysages | Parc naturel régional des millevaches] (https://opp-paysage.pnr-millevaches.fr)
-- [Geopaysages | Parc naturel régional de la region sud] (https://paysages.pnrsud.fr)
-- [Geopaysages | Parc naturel régional du morbihan] (https://paysages.parc-golfe-morbihan.bzh)
+- [Geopaysages | Parc naturel régional des millevaches](https://opp-paysage.pnr-millevaches.fr)
+- [Geopaysages | Parc naturel régional de la region sud](https://paysages.pnrsud.fr)
+- [Geopaysages | Parc naturel régional du morbihan](https://paysages.parc-golfe-morbihan.bzh)
 
 ## Documentation
 
