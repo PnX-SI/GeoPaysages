@@ -7,9 +7,7 @@ Application web permettant de publier un observatoire photographique des paysage
 - [Geopaysages | Parc national de la Vanoise](http://paysages.vanoise-parcnational.fr)
 - [Geopaysages | Parc national des Ecrins](http://paysages.ecrins-parcnational.fr)
 - [Geopaysages | Parc naturel régional du Pilat](https://paysages.parc-naturel-pilat.fr)
-- [Geopaysages | Parc naturel régional des millevaches](https://opp-paysage.pnr-millevaches.fr)
 - [Geopaysages | Parc naturel régional de la region sud](https://paysages.pnrsud.fr)
-- [Geopaysages | Parc naturel régional du morbihan](https://paysages.parc-golfe-morbihan.bzh)
 
 ## Documentation
 
@@ -46,7 +44,7 @@ Le site internet initial de l'OPPV a été mis hors service mi-2016 en raison du
 
 ## Contributeurs :
 
-- Natural Solutions
+- [Natural Solutions](https://www.natural-solutions.eu/)
 - Parc national de la Vanoise
 - Parc national des Ecrins
 - Parc naturel régional du Pilat
