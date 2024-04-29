@@ -325,8 +325,8 @@ Après la vidange, les sédiments déposés au fond de la cuvette sont alors app
 ', NULL, 2060, 'oppv-005-notice.pdf', true, '0101000020E6100000662FDB4E5B431B402026E1421EB74640', '73071', 'Lac asséché de la Glière, avec de gauche à droite : l''Aiguille Noire et le Col de la Croix des Frettes ', '005', 1);
 
 
-INSERT INTO geopaysages.t_photo (id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo, id_observatory) VALUES ( 1, 'oppv-005-00-2006.jpg', 1,  NULL, '2006-09-28', NULL, true, 1, 1);
-INSERT INTO geopaysages.t_photo (id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo, id_observatory) VALUES ( 1, 'oppv-005-03-2014.jpg', 1, '29/09/2014', '2014-09-29', NULL, true, 1, 1);
+INSERT INTO geopaysages.t_photo (id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo) VALUES ( 1, 'oppv-005-00-2006.jpg', 1,  NULL, '2006-09-28', NULL, true, 1);
+INSERT INTO geopaysages.t_photo (id_site, path_file_photo, id_role, date_photo, filter_date, legende_photo, display_gal_photo, id_licence_photo) VALUES ( 1, 'oppv-005-03-2014.jpg', 1, '29/09/2014', '2014-09-29', NULL, true, 1);
 
 
 INSERT INTO geopaysages.cor_site_stheme_theme (id_site, id_stheme_theme) VALUES (1, 1);
