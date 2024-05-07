@@ -104,7 +104,7 @@ Remplacer `X.Y.Z` par la version que vous souhaitez installer.
 
 ```sh
 cd /home/`whoami`
-wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
+wget https://github.com/PnX-SI/GeoPaysages/archive/vX.Y.Z.zip
 ```
 
 > Si la commande `wget` renvoie une erreur liée au certificat, installer le paquet `ca-certificates` (`sudo apt-get install ca-certificates`) puis relancer la commande `wget` ci-dessus.
@@ -112,7 +112,7 @@ wget https://github.com/PnX-SI/GeoPaysages/archive/X.Y.Z.zip
 - Dézipper l'archive :
 
 ```
-unzip X.Y.Z.zip
+unzip vX.Y.Z.zip
 ```
 
 Vous pouvez renommer le répertoire qui contient l'application (dans un
@@ -141,7 +141,7 @@ Se placer dans le répertoire de l'utilisateur courant (`whoami`) et clôner le 
 
 ```sh
 cd /home/`whoami`
-git clone -b X.Y.Z https://github.com/PnX-SI/GeoPaysages.git
+git clone -b vX.Y.Z https://github.com/PnX-SI/GeoPaysages.git
 ```
 
 Renommer le répertoire clôné de l'application :
