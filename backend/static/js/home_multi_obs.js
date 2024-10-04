@@ -28,5 +28,5 @@ geopsg.initHomeMulti = (options) => {
   });
   const group = L.featureGroup(layers);
   group.addTo(map);
-  map.fitBounds(group.getBounds());
+  map.fitBounds(group.getBounds(), { paddingTopLeft: [40, 50], paddingBottomRight: [40, 30] });
 };
