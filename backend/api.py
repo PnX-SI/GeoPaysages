@@ -1,5 +1,5 @@
 from flask import Flask, request, Blueprint, Response, jsonify, abort, Response, current_app
-from flask_login import login_required
+from flask_login import login_required, current_user
 from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import FileWrapper
 
@@ -254,13 +254,14 @@ def returnAllUsers(id_app):
 # use in the front at each refresh ... but why ?
 @api.route('/api/me/', methods=['GET'])
 @fnauth.check_auth(2)
-def returnCurrentUser(id_role=None):
-    current_user = AppUser.query.filter_by(
+def returnCurrentUser():
+    id_role = current_user.id_role
+    user_data = AppUser.query.filter_by(
         id_role=id_role
     ).all()
-    if not current_user:
+    if not user_data:
         raise NotFound(f"No User with id {id_role}")
-    return jsonify([d.as_dict() for d in current_user])
+    return jsonify([d.as_dict() for d in user_data])
 
 
 @api.route('/api/site/<int:id_site>', methods=['DELETE'])
