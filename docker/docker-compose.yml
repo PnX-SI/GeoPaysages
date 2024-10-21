@@ -77,9 +77,9 @@ services:
     image: ${DB_IMAGE:-ghcr.io/pnx-si/geopaysages_db:latest}
     restart: always
     ports:
-      - "${DB_PORT}:${DB_PORT}"
+      - "${DB_PORT}:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -p ${DB_PORT} -h 127.0.0.1"]
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME} -p 5432 -h 127.0.0.1"]
       interval: 5s
       timeout: 5s
       retries: 3
