@@ -44,7 +44,7 @@ geopsg.initHomeMono = (options) => {
     map.fitBounds([
       [lats[0], lons[0]],
       [lats[lats.length - 1], lons[lons.length - 1]],
-    ]);
+    ], { paddingTopLeft: [40, 50], paddingBottomRight: [40, 30] });
   });
 
   function onResize() {
