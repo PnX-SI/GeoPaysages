@@ -143,7 +143,7 @@ def returnObservatoryById(id):
 
 
 @api.route("/api/observatories/<int:id>", methods=["PATCH"])
-# @fnauth.check_auth(2)
+@fnauth.check_auth(2)
 def patchObservatory(id):
     try:
         observatory = models.Observatory.query.filter_by(id=id).first()
