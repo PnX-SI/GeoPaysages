@@ -519,7 +519,8 @@ class TSiteSchema(ma.SQLAlchemyAutoSchema):
     translations = ma.Nested(TSiteTranslationSchema, many=True)
     geom = GeographySerializationField(attribute="geom")
     observatory = ma.Nested(
-        ObservatorySchema, only=["id", "title", "ref", "color", "logo"]
+        ObservatorySchema,
+        only=["id", "translations", "ref", "color", "logo"],
     )
     main_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "translations", "icon"])
 

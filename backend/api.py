@@ -1,5 +1,4 @@
 from flask import (
-    Flask,
     request,
     Blueprint,
     Response,
@@ -102,13 +101,9 @@ def postObservatory():
 
         translations = []
         for translate in translations_data:
-            if "lang_id" not in translate or "title" not in translate:
+            if "lang_id" not in translate:
                 return (
-                    jsonify(
-                        {
-                            "error": "Each translation must include 'lang_id' and 'title'."
-                        }
-                    ),
+                    jsonify({"error": "Each translation must include 'lang_id'."}),
                     400,
                 )
 
@@ -152,26 +147,24 @@ def patchObservatory(id):
         data = request.get_json()
         translations_data = data.pop("translations", [])
 
-        for key, value in data.items():
-            setattr(observatory, key, value)
+        models.Observatory.query.filter_by(id=id).update(data)
         db.session.commit()
 
-        existing_translations = {t.lang_id: t for t in observatory.translations}
         for translate in translations_data:
-            if "lang_id" not in translate or "title" not in translate:
+            if "lang_id" not in translate:
                 return (
-                    jsonify(
-                        {
-                            "error": "Each translation must include 'lang_id' and 'title'."
-                        }
-                    ),
+                    jsonify({"error": "Each translation must include 'lang_id'."}),
                     400,
                 )
-            if translate["lang_id"] in existing_translations:
-                translation_obj = existing_translations[translate["lang_id"]]
-                translation_obj.title = translate["title"]
-                translation_obj.is_published = translate["is_published"]
-            else:
+            result = models.ObservatoryTranslation.query.filter_by(
+                row_id=observatory.id, lang_id=translate["lang_id"]
+            ).update(
+                {
+                    "title": translate["title"],
+                    "is_published": translate["is_published"],
+                }
+            )
+            if result == 0:
                 new_translation = models.ObservatoryTranslation(
                     title=translate["title"],
                     is_published=translate["is_published"],
@@ -224,7 +217,11 @@ def patchObservatoryImage(id):
 @api.route("/api/sites", methods=["GET"])
 def returnAllSites():
     dbconf = utils.getDbConf()
-    get_all_sites = models.TSite.query.order_by(dbconf["default_sort_sites"]).all()
+    get_all_sites = (
+        models.TSite.query.join(models.TSiteTranslation)
+        .order_by(dbconf["default_sort_sites"])
+        .all()
+    )
     sites = site_schema.dump(get_all_sites)
     for site in sites:
         if len(site.get("t_photos")) > 0:
@@ -354,6 +351,7 @@ def deleteSite(id_site):
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
     photos = photo_schema.dump(photos)
     models.TPhoto.query.filter_by(id_site=id_site).delete()
+    models.TSiteTranslation.query.filter_by(row_id=id_site).delete()
     site = models.TSite.query.filter_by(id_site=id_site).delete()
     for photo in photos:
         photo_name = photo.get("path_file_photo")
@@ -410,10 +408,59 @@ def add_site():
 @api.route("/api/updateSite", methods=["PATCH"])
 @fnauth.check_auth(2)
 def update_site():
-    site = request.get_json()
-    models.CorSiteSthemeTheme.query.filter_by(id_site=site.get("id_site")).delete()
-    models.TSite.query.filter_by(id_site=site.get("id_site")).update(site)
-    db.session.commit()
+    try:
+        site_data = request.get_json()
+
+        site_id = site_data.get("id_site")
+        if not site_id:
+            return jsonify({"error": "Missing 'id_site'."}), 400
+
+        translations_data = site_data.pop("translations", [])
+
+        models.CorSiteSthemeTheme.query.filter_by(
+            id_site=site_data.get("id_site")
+        ).delete()
+        models.TSite.query.filter_by(id_site=site_id).update(site_data)
+        db.session.commit()
+
+        for translate in translations_data:
+            if "lang_id" not in translate:
+                return (
+                    jsonify({"error": "Each translation must include 'lang_id'."}),
+                    400,
+                )
+
+            result = models.TSiteTranslation.query.filter_by(
+                row_id=site_id, lang_id=translate["lang_id"]
+            ).update(
+                {
+                    "name_site": translate["name_site"],
+                    "desc_site": translate["desc_site"],
+                    "testim_site": translate.get("testim_site"),
+                    "legend_site": translate["legend_site"],
+                    "publish_site": translate["publish_site"],
+                }
+            )
+
+            if result == 0:
+                new_translation = models.TSiteTranslation(
+                    row_id=site_id,
+                    lang_id=translate["lang_id"],
+                    name_site=translate["name_site"],
+                    desc_site=translate["desc_site"],
+                    testim_site=translate.get("testim_site"),
+                    legend_site=translate["legend_site"],
+                    publish_site=translate["publish_site"],
+                )
+                db.session.add(new_translation)
+
+        db.session.commit()
+
+    except Exception as exception:
+        db.session.rollback()
+        print(exception)
+        return str(exception), 400
+
     return jsonify("site updated successfully"), 200
 
 
