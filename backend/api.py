@@ -369,7 +369,7 @@ def deleteSite(id_site):
 
 
 @api.route("/api/addSite", methods=["POST"])
-# @fnauth.check_auth(2)
+@fnauth.check_auth(2)
 def add_site():
     try:
         data = dict(request.get_json())
