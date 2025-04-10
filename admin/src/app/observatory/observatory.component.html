@@ -86,17 +86,17 @@
               </div>
               <input style="display: none" accept="image/jpeg" type="file"
                 (change)="onThumbChange($event)" #thumbnailInput />
-              <button type="button" *ngIf="!selectedThumbnail" class="blue-btn w-100" (click)="thumbnailInput.click()"
+              <button type="button" *ngIf="!selectedThumb" class="blue-btn w-100" (click)="thumbnailInput.click()"
                 [disabled]="!isEditing">
                 {{ observatory?.thumbnail ? ('ACTIONS.MODIFY' | translate: { article: ('ARTICLES.LA' | translate), varname: ('COMMONS.THUMBNAIL' | translate) })  : ('ACTIONS.IMPORT' | translate: { article: ('ARTICLES.UNE' | translate), varname: ('COMMONS.THUMBNAIL' | translate) }) }}
 
               </button>
-              <div *ngIf="selectedThumbnail">
+              <div *ngIf="selectedThumb">
                 {{ 'OBSERVATORIES_MNGMT.THUMBNAIL_SELECTED' | translate}}:<br />
                 <button class="btn p-0" type="button" (click)="onThumbCancel(thumbnailInput)">
                   <i class="icon-cancel-circle text-danger"></i>
                 </button>
-                {{ selectedThumbnail.name }}
+                {{ selectedThumb.name }}
               </div>
               <br>
               <small class="text-secondary">{{ 'OBSERVATORIES_MNGMT.ADVICE_THUMBNAIL' | translate }}</small>

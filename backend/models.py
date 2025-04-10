@@ -18,21 +18,23 @@ class Conf(db.Model):
     key = db.Column(db.String, primary_key=True)
     value = db.Column(db.String)
 
+
 class LibLocales(db.Model):
-    __tablename__ = 'lib_locales'
+    __tablename__ = "lib_locales"
     __table_args__ = {"schema": "geopaysages"}
 
     id = db.Column(db.String, primary_key=True)
     language = db.Column(db.String, nullable=True)
+
 
 class Lang(db.Model):
     __tablename__ = "lang"
     __table_args__ = {"schema": "geopaysages"}
 
     id = db.Column(
-        db.String, 
-        db.ForeignKey('geopaysages.lib_locales.id', ondelete="CASCADE"), 
-        primary_key=True
+        db.String,
+        db.ForeignKey("geopaysages.lib_locales.id", ondelete="CASCADE"),
+        primary_key=True,
     )
     label = db.Column(db.String)
     is_published = db.Column(db.Boolean)
@@ -411,10 +413,12 @@ def get_translated_data(self, data):
         data[field] = translation[field]
     return data
 
+
 class LibLocalesSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = LibLocales
         fields = ("id", "language")
+
 
 class LangSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
@@ -560,6 +564,11 @@ class ObservatorySchema(ma.SQLAlchemyAutoSchema):
 
 
 class ObservatorySchemaFull(ma.SQLAlchemyAutoSchema):
+    id = fields.Int()
+    logo = fields.String()
+    thumbnail = fields.String()
+    ref = fields.String()
+    color = fields.String()
     translations = ma.Nested(ObservatoryTranslationSchema, many=True)
     comparator = EnumField(ComparatorEnum, by_value=True)
     geom = fields.Method("geomSerialize")
@@ -614,7 +623,9 @@ class ObservatorySchemaLite(ma.SQLAlchemyAutoSchema):
 class TSiteSchema(ma.SQLAlchemyAutoSchema):
     translations = ma.Nested(TSiteTranslationSchema, many=True)
     geom = GeographySerializationField(attribute="geom")
-    observatory = ma.Nested(ObservatorySchema, only=["id", "ref", "color", "logo","translations"])
+    observatory = ma.Nested(
+        ObservatorySchema, only=["id", "ref", "color", "logo", "translations"]
+    )
     main_theme = ma.Nested(DicoThemeSchema, only=["id_theme", "translations", "icon"])
 
     translatable_fields = TSiteTranslationSchema.Meta.fields

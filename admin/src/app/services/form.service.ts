@@ -259,12 +259,9 @@ checkAllControlStatuses(formGroup: FormGroup, parentName: string = ''): boolean 
       return this.checkAllControlStatuses(control, fullControlName);
     } else {
       // Vérifiez le statut du contrôle
-      console.log(`Control: ${fullControlName}, Status: ${control.status}`);
       if (control.invalid) {
-        console.log(`${fullControlName} is invalid`);
         return false; // Retourne false si le contrôle est invalide
       } else {
-        console.log(`${fullControlName} is valid`);
         return true; // Retourne true si le contrôle est valide
       }
     }

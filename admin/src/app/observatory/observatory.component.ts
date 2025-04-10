@@ -129,15 +129,11 @@ export class ObservatoryComponent implements OnInit {
   async submitObservatory(observatoryForm) {
 
     observatoryForm.updateValueAndValidity();
-    console.log('SUBMIT observatoryForm', observatoryForm);
     this.alert = null;
-    console.log("observatoryForm.valid", observatoryForm.valid);
-    console.log("this.observatoryForm.valid", this.observatoryForm.valid);
     const isValidForm = this.formService.checkAllControlStatuses(observatoryForm);
     if (!isValidForm) {
       this.isInvalidForm = true;
       this.errorMessage =this.generateErrorMessage();
-      console.log("this.errorMessage", this.errorMessage);
       return;
     }
     if (observatoryForm.value.geom) {
@@ -172,11 +168,13 @@ export class ObservatoryComponent implements OnInit {
     try {
       if (!this.id_observatory) {
         const res = await this.postObservatory();
+        console.log("true", res)
         await this.patchImages(res.id);
 
         this.router.navigate(['observatories', 'details', res.id]);
         return;
       } else {
+        console.log("false", this.observatory.id)
         await this.patchObservatory();
         await this.patchImages(this.observatory.id);
       }
@@ -258,7 +256,6 @@ export class ObservatoryComponent implements OnInit {
         'translations'
       );
       patch.translations = this.formService.createTranslationsObject(this.observatoryForm.value,this.availableLang,FormConstants.mandatoryFieldsObservatory);
-      console.log("patch", patch)
       this.observatoryService.patch(this.id_observatory, patch).subscribe(
         (res) => {
           this.toastr.success('INFO_MESSAGE.SUCCESS_UPDATED_OBSERVATORY', '', {

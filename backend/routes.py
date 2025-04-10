@@ -15,6 +15,7 @@ from env import db
 
 photo_schema = models.TPhotoSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+sthemes_schema = models.DicoSthemeSchema(many=True)
 
 
 @main.route("/")
@@ -201,9 +202,14 @@ def site(id_site, locale=None):
     )
     themes_sthemes = themes_sthemes_schema.dump(query)
 
-    for item in themes_sthemes:
-        if item.get("dico_stheme").get("id_stheme") not in subthemes_list:
-            subthemes_list.append(item.get("dico_stheme").get("name_stheme"))
+    id_sthemes = [item.get("dico_stheme").get("id_stheme") for item in themes_sthemes]
+    translations_query = models.DicoSthemeTranslation.query.filter(
+        models.DicoSthemeTranslation.row_id.in_(id_sthemes),
+        models.DicoSthemeTranslation.lang_id == locale,
+    ).all()
+
+    for translation in translations_query:
+        subthemes_list.append(translation.name_stheme)
 
     site["stheme"] = list(set(subthemes_list))
 

@@ -31,19 +31,13 @@ def localeGuard(f):
         if isMultiLangs() and locale is not None and locale not in lang_ids:
             view_args = dict(**request.view_args)
             view_args.pop("locale", None)
-            return redirect(
-                getLocalizedRequestEndpoint(defaultLang.id)
-            )
+            return redirect(getLocalizedRequestEndpoint(defaultLang.id))
 
         if isMultiLangs() and locale is None:
             userLang = request.accept_languages[0][0].split("-")[0]
             if userLang in lang_ids:
-                return redirect(
-                    getLocalizedRequestEndpoint(userLang)
-                )
-            return redirect(
-                getLocalizedRequestEndpoint(defaultLang.id)
-            )
+                return redirect(getLocalizedRequestEndpoint(userLang))
+            return redirect(getLocalizedRequestEndpoint(defaultLang.id))
         return f(*args, **kwargs)
 
     return decorated_function
@@ -56,7 +50,9 @@ def getLocalizedRequestEndpoint(locale):
 
 
 def getLangs():
-    return models.Lang.query.filter_by(is_published=True).order_by(models.Lang.label).all()
+    return (
+        models.Lang.query.filter_by(is_published=True).order_by(models.Lang.label).all()
+    )
 
 
 def getDefaultLang():
@@ -282,15 +278,18 @@ def getFiltersData():
     filter_township = [
         filter for filter in filters if filter.get("name") == "township"
     ][0]
-    str_map_in = ["'" + township + "'" for township in filter_township.get("items")]
-    sql_map_str = f"""SELECT c.code_commune AS id, ct.nom_commune AS label 
-        FROM geopaysages.communes c
-        JOIN geopaysages.communes_translation ct on ct.row_id = c.code_commune
-        WHERE code_commune IN ({",".join(str_map_in)})
-        AND ct.lang_id = '{locale}'"""
-    sql_map = text(sql_map_str)
-    townships_result = db.engine.execute(sql_map).fetchall()
-    townships = [dict(row) for row in townships_result]
+    if not filter_township.get("items"):
+        townships = []
+    else:
+        str_map_in = ["'" + township + "'" for township in filter_township.get("items")]
+        sql_map_str = f"""SELECT c.code_commune AS id, ct.nom_commune AS label 
+            FROM geopaysages.communes c
+            JOIN geopaysages.communes_translation ct on ct.row_id = c.code_commune
+            WHERE code_commune IN ({",".join(str_map_in)})
+            AND ct.lang_id = '{locale}'"""
+        sql_map = text(sql_map_str)
+        townships_result = db.engine.execute(sql_map).fetchall()
+        townships = [dict(row) for row in townships_result]
 
     for site in sites:
         site["ville"] = next(
@@ -381,7 +380,9 @@ def getFiltersData():
 
     observatories = sorted(observatories, key=lambda d: d["label"])
     for observatory in observatories:
-        observatory["sites"] = [site for site in sites if site["id_observatory"] == observatory["id"]]
+        observatory["sites"] = [
+            site for site in sites if site["id_observatory"] == observatory["id"]
+        ]
 
     if len(observatories) > 1:
         filters.insert(
