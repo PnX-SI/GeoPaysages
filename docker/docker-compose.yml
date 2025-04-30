@@ -90,7 +90,7 @@ services:
       - geopaysages-db-data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
-      - POSTGRES_PORT=${DB_PORT}
+      - POSTGRES_PORT=5432
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_USER=${DB_USER}
