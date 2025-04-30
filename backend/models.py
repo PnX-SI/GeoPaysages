@@ -94,6 +94,20 @@ class ObservatoryTranslation(db.Model):
     )
 
 
+class CorRolesObservatory(db.Model):
+    __tablename__ = "cor_roles_observatory"
+    __table_args__ = {"schema": "geopaysages"}
+
+    id_role = db.Column(db.ForeignKey("utilisateurs.t_roles.id_role"), primary_key=True)
+    t_role = db.relationship(
+        "TRole", primaryjoin="CorRolesObservatory.id_role == TRole.id_role"
+    )
+    id_observatory = db.Column(
+        db.ForeignKey("geopaysages.t_observatory.id"), primary_key=True
+    )
+    group_name = db.Column(db.String, nullable=False)
+
+
 class TSite(db.Model):
     __tablename__ = "t_site"
     __table_args__ = {"schema": "geopaysages"}
@@ -440,6 +454,12 @@ class ObservatoryTranslationSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ObservatoryTranslation
         fields = ("title", "is_published", "lang_id")
+
+
+class CorRolesObservatorySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = CorRolesObservatory
+        fields = ("id_role", "id_observatory", "group_name")
 
 
 class TSiteTranslationSchema(ma.SQLAlchemyAutoSchema):

@@ -1,7 +1,8 @@
 from base64 import urlsafe_b64encode
-from flask import url_for, request, redirect
+from flask import abort, url_for, request, redirect, current_app
 from functools import wraps
 import os
+from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 import json
@@ -12,11 +13,56 @@ import models
 import hmac
 import hashlib
 import urllib.parse
+from pypnusershub.db.models import AppUser, Application
+import models
 
 db = SQLAlchemy()
 
 photo_schema = models.TPhotoSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+cor_roles_observatory_schema = models.CorRolesObservatorySchema(many=False)
+
+
+def getAppUser(id_role):
+    app = Application.query.filter_by(
+        code_application=current_app.config["CODE_APPLICATION"]
+    ).one()
+    app_user = AppUser.query.filter_by(
+        id_application=app.id_application, id_role=id_role
+    ).one()
+
+    return app_user
+
+
+def isUserAdmin(id_role):
+    app_user = getAppUser(id_role)
+    return True if app_user.id_droit_max == 6 else False
+
+
+def getUserRoleInObservatory(id_role, id_observatory):
+    if isUserAdmin(id_role):
+        return "admin"
+
+    cor = models.CorRolesObservatory.query.filter_by(
+        id_role=id_role, id_observatory=id_observatory
+    ).first()
+
+    return None if cor is None else cor.group_name
+
+
+def isUserInObservatory(user, observatory_id):
+    role = getUserRoleInObservatory(user, observatory_id)
+    return True if role is not None else False
+
+
+def userInObservatoryGuard(user, observatory_id):
+    if not isUserInObservatory(user, observatory_id):
+        abort(403)
+
+
+def isUserAdminInObservatory(user, observatory_id):
+    role = getUserRoleInObservatory(user, observatory_id)
+    return True if role == "admin" else False
 
 
 def localeGuard(f):
