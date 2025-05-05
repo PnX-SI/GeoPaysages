@@ -124,7 +124,7 @@
                 <label class="label" for="main-theme-id">{{'SITE_MNGMT.MAIN_THEME' | translate}}</label>
                 <select InputFeedBack formControlName="main_theme_id" id="main-theme-id" class="form-control">
                   <option class="select-placeholder" value="">---</option>
-                  <option *ngFor="let theme of themes" [ngValue]="theme | dynamicTranslate:defaultLang.id:'getTranslation':'id_theme'">
+                  <option *ngFor="let theme of themes" [ngValue]="theme.id_theme">
                     {{ theme | dynamicTranslate:defaultLang.id:'getTranslation':'name_theme' }}
                   </option>
                 </select>
