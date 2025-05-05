@@ -263,7 +263,7 @@ export class AddPhotoComponent implements OnInit {
   }
 
   deletePhoto() {
-    this.sitesService.deletePhotos([this.inputImage]).subscribe(
+    this.sitesService.deletePhotos([this.inputImage.id_photo]).subscribe(
       () => {
         this.photoModal.emit(this.inputImage.t_site);
         this.modalRef.close();
@@ -291,14 +291,12 @@ export class AddPhotoComponent implements OnInit {
     const photo: FormData = new FormData();
     let photoJson: any = {};
     photoJson = photoForm.value;
-    photoJson.id_site = Number(this.inputImage.t_site);
-    photoJson.id_photo = this.inputImage.id_photo;
     photoJson = _.omit(photoJson, ['photo_file']);
     if (this.selectedPhoto) {
       photo.append('image', this.selectedPhoto[0]);
     }
     photo.append('data', JSON.stringify(photoJson));
-    this.sitesService.updatePhoto(photo).subscribe(
+    this.sitesService.updatePhoto(this.inputImage.id_photo, photo).subscribe(
       () => {
         this.modalRef.close();
         this.disableButton = false;

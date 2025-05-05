@@ -102,7 +102,7 @@ export class GalleryComponent implements OnInit {
       id_photo: edit_photo.id_photo,
     };
     photo.append('data', JSON.stringify(photoJson));
-    this.sitesService.updatePhoto(photo).subscribe(
+    this.sitesService.updatePhoto(edit_photo.t_site, photo).subscribe(
       () => {
         this.getPhotosSite(edit_photo.t_site);
       },

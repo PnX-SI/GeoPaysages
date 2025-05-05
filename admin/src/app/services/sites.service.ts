@@ -4,41 +4,57 @@ import { Conf } from './../config';
 
 @Injectable()
 export class SitesService {
-
-  constructor(public http: HttpClient) {
-  }
+  constructor(public http: HttpClient) {}
 
   getAllSites() {
     return this.http.get<any>(Conf.apiUrl + 'sites');
   }
 
   getsiteById(id) {
-    return this.http.get<any>(Conf.apiUrl + 'site/' + id);
+    return this.http.get<any>(Conf.apiUrl + 'sites/' + id);
   }
 
   deleteSite(id) {
-    return this.http.delete<any>(Conf.apiUrl + 'site/' + id, { withCredentials: true });
+    return this.http.delete<any>(Conf.apiUrl + `sites/${id}/`, {
+      withCredentials: true,
+    });
   }
 
-  addPhotos(image) {
-    return this.http.post<any>(Conf.apiUrl + 'addPhotos', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  addPhotos(id_site, image) {
+    return this.http.post<any>(
+      Conf.apiUrl + `sites/${id_site}/photos/`,
+      image,
+      { withCredentials: true, reportProgress: true, observe: 'events' }
+    );
   }
 
   addNotices(notice) {
-    return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, { withCredentials: true, reportProgress: true, observe: 'events' });
+    return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   deleteNotices(removed_notice) {
-    return this.http.delete<any>(Conf.apiUrl + 'deleteNotice/' + removed_notice, { withCredentials: true });
+    return this.http.delete<any>(
+      Conf.apiUrl + 'deleteNotice/' + removed_notice,
+      { withCredentials: true }
+    );
   }
 
-
-  updatePhoto(image) {
-    return this.http.patch<any>(Conf.apiUrl + 'updatePhoto', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  updatePhoto(id, image) {
+    return this.http.patch<any>(Conf.apiUrl + `photos/${id}`, image, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
-  deletePhotos(images) {
-    return this.http.post<any>(Conf.apiUrl + 'deletePhotos', images, { withCredentials: true });
+  deletePhotos(ids) {
+    return this.http.delete<any>(
+      Conf.apiUrl + `photos?ids=${JSON.stringify(ids)}`
+    );
   }
 
   getThemes() {
@@ -62,21 +78,26 @@ export class SitesService {
   }
 
   addSite(site) {
-    return this.http.post<any>(Conf.apiUrl + 'addSite', site, { withCredentials: true });
+    return this.http.post<any>(Conf.apiUrl + 'sites', site, {
+      withCredentials: true,
+    });
   }
 
-  updateSite(site) {
-    return this.http.patch<any>(Conf.apiUrl + 'updateSite', site, { withCredentials: true });
+  updateSite(id, site) {
+    return this.http.patch<any>(Conf.apiUrl + `sites/${id}/`, site, {
+      withCredentials: true,
+    });
   }
 
-  addThemes(themes) {
-    return this.http.post<any>(Conf.apiUrl + 'addThemes', themes, { withCredentials: true });
+  addThemes(id_site, themes) {
+    return this.http.post<any>(
+      Conf.apiUrl + `sites/${id_site}/themes`,
+      themes,
+      { withCredentials: true }
+    );
   }
 
   getgallery() {
     return this.http.get<any>(Conf.apiUrl + 'gallery');
   }
 }
-
-
-

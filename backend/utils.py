@@ -50,19 +50,24 @@ def getUserRoleInObservatory(id_role, id_observatory):
     return None if cor is None else cor.group_name
 
 
-def isUserInObservatory(user, observatory_id):
-    role = getUserRoleInObservatory(user, observatory_id)
-    return True if role is not None else False
+def canUserContribObservatory(id_role, id_observatory):
+    role = getUserRoleInObservatory(id_role, id_observatory)
+    return True if role in ["contributor", "admin"] else False
 
 
-def userInObservatoryGuard(user, observatory_id):
-    if not isUserInObservatory(user, observatory_id):
+def userContribObservatoryGuard(id_observatory):
+    if not canUserContribObservatory(current_user.id_role, id_observatory):
         abort(403)
 
 
-def isUserAdminInObservatory(user, observatory_id):
-    role = getUserRoleInObservatory(user, observatory_id)
+def isUserAdminInObservatory(id_role, id_observatory):
+    role = getUserRoleInObservatory(id_role, id_observatory)
     return True if role == "admin" else False
+
+
+def userAdminInObservatoryGuard(id_observatory):
+    if not isUserAdminInObservatory(current_user.id_role, id_observatory):
+        abort(403)
 
 
 def localeGuard(f):

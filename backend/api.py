@@ -90,7 +90,7 @@ def returnAllObservatories():
 
 
 @api.route("/api/observatories", methods=["POST"])
-@fnauth.check_auth(2)
+@fnauth.check_auth(6)
 def postObservatory():
     try:
         data = dict(request.get_json())
@@ -141,6 +141,7 @@ def returnObservatoryById(id):
 @api.route("/api/observatories/<int:id>", methods=["PATCH"])
 @fnauth.check_auth(2)
 def patchObservatory(id):
+    utils.userAdminInObservatoryGuard(id)
     try:
         observatory = models.Observatory.query.filter_by(id=id).first()
         if not observatory:
@@ -187,6 +188,7 @@ def patchObservatory(id):
 @api.route("/api/observatories/<int:id>/image", methods=["PATCH"])
 @fnauth.check_auth(2)
 def patchObservatoryImage(id):
+    utils.userAdminInObservatoryGuard(id)
     field = request.form.get("field")
     if field not in ["thumbnail", "logo"]:
         return "Invalid field value: " + str(field), 400
@@ -250,7 +252,7 @@ def returnAllSites():
     return jsonify(sites)
 
 
-@api.route("/api/site/<int:id_site>", methods=["GET"])
+@api.route("/api/sites/<int:id_site>/", methods=["GET"])
 def returnSiteById(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
     site = site_schema.dump(get_site_by_id)
@@ -341,19 +343,25 @@ def returnCurrentUser():
     user_data = AppUser.query.filter_by(id_role=id_role).all()
     if not user_data:
         raise NotFound(f"No User with id {id_role}")
-    return jsonify([d.as_dict() for d in user_data])
+    return jsonify(
+        [{**d.as_dict(), "max_level_profil": d.id_droit_max} for d in user_data]
+    )
 
 
-@api.route("/api/site/<int:id_site>", methods=["DELETE"])
-@fnauth.check_auth(6)
+@api.route("/api/sites/<int:id_site>/", methods=["DELETE"])
+@fnauth.check_auth(2)
 def deleteSite(id_site):
+    site = models.TSite.query.filter_by(id_site=id_site).first()
+    if site is None:
+        abort(404)
+    utils.userAdminInObservatoryGuard(site.id_observatory)
     base_path = "/app/static/upload/images/"
     models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     photos = models.TPhoto.query.filter_by(id_site=id_site).all()
     photos = photo_schema.dump(photos)
     models.TPhoto.query.filter_by(id_site=id_site).delete()
     models.TSiteTranslation.query.filter_by(row_id=id_site).delete()
-    site = models.TSite.query.filter_by(id_site=id_site).delete()
+    db.session.delete(site)
     for photo in photos:
         photo_name = photo.get("path_file_photo")
         for fileName in os.listdir(base_path):
@@ -367,11 +375,12 @@ def deleteSite(id_site):
         return jsonify("error"), 400
 
 
-@api.route("/api/addSite", methods=["POST"])
+@api.route("/api/sites", methods=["POST"])
 @fnauth.check_auth(2)
 def add_site():
     try:
         data = dict(request.get_json())
+        utils.userAdminInObservatoryGuard(data.get("id_observatory"))
         transalations_data = data.pop("translations", [])
         site = models.TSite(**data)
         db.session.add(site)
@@ -406,22 +415,20 @@ def add_site():
     return jsonify(id_site=site.id_site), 200
 
 
-@api.route("/api/updateSite", methods=["PATCH"])
+@api.route("/api/sites/<int:id_site>/", methods=["PATCH"])
 @fnauth.check_auth(2)
-def update_site():
+def update_site(id_site):
     try:
         site_data = request.get_json()
 
-        site_id = site_data.get("id_site")
-        if not site_id:
-            return jsonify({"error": "Missing 'id_site'."}), 400
+        site = models.TSite.query.filter_by(id_site=id_site).first()
+        if site is None:
+            abort(404)
+        utils.userContribObservatoryGuard(site.id_observatory)
 
         translations_data = site_data.pop("translations", [])
 
-        models.CorSiteSthemeTheme.query.filter_by(
-            id_site=site_data.get("id_site")
-        ).delete()
-        models.TSite.query.filter_by(id_site=site_id).update(site_data)
+        models.TSite.query.filter_by(id_site=id_site).update(site_data)
         db.session.commit()
 
         for translate in translations_data:
@@ -432,7 +439,7 @@ def update_site():
                 )
 
             result = models.TSiteTranslation.query.filter_by(
-                row_id=site_id, lang_id=translate["lang_id"]
+                row_id=id_site, lang_id=translate["lang_id"]
             ).update(
                 {
                     "name_site": translate["name_site"],
@@ -445,7 +452,7 @@ def update_site():
 
             if result == 0:
                 new_translation = models.TSiteTranslation(
-                    row_id=site_id,
+                    row_id=id_site,
                     lang_id=translate["lang_id"],
                     name_site=translate["name_site"],
                     desc_site=translate["desc_site"],
@@ -465,16 +472,21 @@ def update_site():
     return jsonify("site updated successfully"), 200
 
 
-@api.route("/api/addThemes", methods=["POST"])
+@api.route("/api/sites/<int:id_site>/themes", methods=["POST"])
 @fnauth.check_auth(2)
-def add_cor_site_theme_stheme():
-    data = request.get_json().get("data")
+def add_cor_site_theme_stheme(id_site):
+    site = models.TSite.query.filter_by(id_site=id_site).first()
+    if site is None:
+        abort(404)
+    utils.userContribObservatoryGuard(site.id_observatory)
+    data = request.get_json()
+    models.CorSiteSthemeTheme.query.filter_by(id_site=id_site).delete()
     for d in data:
         get_id_stheme_theme = models.CorSthemeTheme.query.filter_by(
             id_theme=d.get("id_theme"), id_stheme=d.get("id_stheme")
         ).all()
         id_stheme_theme = corThemeStheme_Schema.dump(get_id_stheme_theme)
-        id_stheme_theme[0]["id_site"] = d.get("id_site")
+        id_stheme_theme[0]["id_site"] = id_site
         site_theme_stheme = models.CorSiteSthemeTheme(**id_stheme_theme[0])
         db.session.add(site_theme_stheme)
         db.session.commit()
@@ -482,12 +494,18 @@ def add_cor_site_theme_stheme():
     return jsonify("success"), 200
 
 
-@api.route("/api/addPhotos", methods=["POST"])
+@api.route("/api/sites/<int:id_site>/photos/", methods=["POST"])
 @fnauth.check_auth(2)
-def upload_file():
+def post_photos(id_site):
     base_path = "/app/static/upload/images/"
     data = request.form.getlist("data")
     uploaded_images = request.files.getlist("image")
+
+    site = models.TSite.query.filter_by(id_site=id_site).first()
+    if site is None:
+        abort(404)
+    utils.userContribObservatoryGuard(site.id_observatory)
+
     for d in data:
         d_serialized = json.loads(d)
         check_exist = models.TPhoto.query.filter_by(
@@ -504,6 +522,7 @@ def upload_file():
         main_photo = d_serialized.get("main_photo")
         del d_serialized["main_photo"]
         photo = models.TPhoto(**d_serialized)
+        photo.id_site = id_site
         db.session.add(photo)
         db.session.commit()
         if main_photo == True:
@@ -511,9 +530,7 @@ def upload_file():
                 path_file_photo=d_serialized.get("path_file_photo")
             ).all()
             photo_id = photo_schema.dump(photos_query)[0].get("id_photo")
-            models.TSite.query.filter_by(id_site=d_serialized.get("id_site")).update(
-                {models.TSite.main_photo: photo_id}
-            )
+            site.main_photo = photo_id
             db.session.commit()
     for image in uploaded_images:
         image.save(os.path.join(base_path + image.filename))
@@ -542,27 +559,29 @@ def delete_notice(notice):
     return jsonify("notice removed successfully"), 200
 
 
-@api.route("/api/updatePhoto", methods=["PATCH"])
+@api.route("/api/photos/<int:id_photo>", methods=["PATCH"])
 @fnauth.check_auth(2)
-def update_photo():
+def update_photo(id_photo):
     base_path = "/app/static/upload/images/"
     data = request.form.get("data")
     image = request.files.get("image")
     data_serialized = json.loads(data)
-    photos_query = models.TPhoto.query.filter_by(
-        id_photo=data_serialized.get("id_photo")
-    ).all()
-    photo_name = photo_schema.dump(photos_query)[0].get("path_file_photo")
+    photo = models.TPhoto.query.filter_by(id_photo=id_photo).first()
+    if photo is None:
+        abort(404)
+    id_site = photo.id_site
+    site = models.TSite.query.filter_by(id_site=id_site).one()
+    utils.userContribObservatoryGuard(site.id_observatory)
+
+    photo_name = photo.path_file_photo
     if data_serialized.get("main_photo") == True:
-        models.TSite.query.filter_by(id_site=data_serialized.get("id_site")).update(
-            {models.TSite.main_photo: data_serialized.get("id_photo")}
-        )
+        site.main_photo = id_photo
         db.session.commit()
     if data_serialized.get("main_photo"):
         del data_serialized["main_photo"]
-    models.TPhoto.query.filter_by(id_photo=data_serialized.get("id_photo")).update(
-        data_serialized
-    )
+    for key in data_serialized:
+        if hasattr(photo, key):
+            setattr(photo, key, data_serialized[key])
     db.session.commit()
     if image:
         for fileName in os.listdir(base_path):
@@ -574,33 +593,33 @@ def update_photo():
             if fileName != photo_name and fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
 
-    return jsonify("photo added successfully"), 200
+    return jsonify("photo updated successfully"), 200
 
 
-@api.route("/api/deletePhotos", methods=["POST"])
-@fnauth.check_auth(6)
+@api.route("/api/photos", methods=["DELETE"])
+@fnauth.check_auth(2)
 def deletePhotos():
     base_path = "/app/static/upload/images/"
-    photos = request.get_json()
+    ids = json.loads(request.args.get('ids'))
+    print(request.args.get('ids'), ids)
+    photos = models.TPhoto.query.filter(models.TPhoto.id_photo.in_(ids)).all()
+
     for photo in photos:
-        photos_query = models.TPhoto.query.filter_by(
-            id_photo=photo.get("id_photo")
-        ).all()
-        photo_dump = photo_schema.dump(photos_query)[0]
-        photo_name = photo_dump.get("path_file_photo")
-        models.TPhoto.query.filter_by(id_photo=photo.get("id_photo")).delete()
-        get_site_by_id = models.TSite.query.filter_by(id_site=photo_dump.get("t_site"))
-        site = site_schema.dump(get_site_by_id)[0]
-        if site.get("main_photo") == photo_dump.get("id_photo"):
-            models.TSite.query.filter_by(id_site=photo_dump.get("t_site")).update(
-                {models.TSite.main_photo: None}
-            )
+        site = models.TSite.query.filter_by(id_site=photo.id_site).first()
+        utils.userContribObservatoryGuard(site.id_observatory)
+
+    for photo in photos:
+        photo_name = photo.path_file_photo
+        db.session.delete(photo)
+        site = models.TSite.query.filter_by(id_site=photo.id_site).first()
+        if site.main_photo == photo.id_photo:
+            site.main_photo = None
         db.session.commit()
         for fileName in os.listdir(base_path):
             if fileName.endswith(photo_name):
                 os.remove(base_path + fileName)
 
-    return jsonify("site has been deleted"), 200
+    return jsonify("photos has been deleted"), 200
 
 
 @api.route("/api/communes", methods=["GET"])

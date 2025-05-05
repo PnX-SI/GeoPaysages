@@ -398,12 +398,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     }
     _.forEach(photos, (photo) => {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto', 'name']);
-      photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
       photosData.append('data', JSON.stringify(photoJson));
     });
     if (photos.length > 0) {
-      this.sitesService.addPhotos(photosData).subscribe(
+      this.sitesService.addPhotos(id_site, photosData).subscribe(
         (res) => {
           if (res.type === HttpEventType.UploadProgress) {
             // console.log('resUplod', res.loaded);
@@ -480,14 +479,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       _.forEach(stheme.themes, (item) => {
         if (_.includes(themes, item)) {
           stheme_theme.push({
-            id_site: id_site,
             id_theme: item,
             id_stheme: stheme.id_stheme,
           });
         }
       });
     });
-    this.sitesService.addThemes({ data: stheme_theme }).subscribe(
+    this.sitesService.addThemes(id_site, stheme_theme).subscribe(
       (response) => {
         this.addPhotos(id_site);
       },
@@ -649,14 +647,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   patchSite(siteJson, themes, sthemes) {
-    siteJson.id_site = this.id_site;
     siteJson.main_theme_id = siteJson.main_theme_id || null;
     _.forEach(this.photos, (photo) => {
       if (_.has(photo, 'filePhoto')) {
         this.new_photos.push(photo);
       }
     });
-    this.sitesService.updateSite(siteJson).pipe(
+    this.sitesService.updateSite(this.id_site, siteJson).pipe(
       switchMap((res) => {
         return this.translate.get(['INFO_MESSAGE.SUCCESS_UPDATED_SITE', 'BUTTONS.EDIT']).pipe(
           tap(translations => {
@@ -664,7 +661,9 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.edit_btn_text = translations['BUTTONS.EDIT'];
     
             if (this.deleted_photos.length > 0) {
-              this.sitesService.deletePhotos(this.deleted_photos).subscribe();
+              this.sitesService
+                .deletePhotos(this.deleted_photos.map((p) => p.id_photo))
+                .subscribe();
             }
             this.addThemes(Number(this.id_site), themes, sthemes);
           })
