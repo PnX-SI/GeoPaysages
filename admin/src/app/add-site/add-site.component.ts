@@ -341,7 +341,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
               Number(site.id_site),
               siteForm.value.id_theme,
               siteForm.value.id_stheme,
-              true
             );
           },
           (err) => {
@@ -388,7 +387,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.photos.push(photo);
   }
 
-  addPhotos(id_site, new_site) {
+  addPhotos(id_site) {
     const photosData: FormData = new FormData();
     let photoJson;
     let photos;
@@ -401,7 +400,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto', 'name']);
       photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
-      photosData.append('new_site', new_site);
       photosData.append('data', JSON.stringify(photoJson));
     });
     if (photos.length > 0) {
@@ -470,7 +468,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sites/details/', id_site]);
     }
   }
-  addThemes(id_site, themes, sthemes, new_site) {
+  addThemes(id_site, themes, sthemes) {
     // tslint:disable-next-line:prefer-const
     let tab_stheme = [];
     _.forEach(sthemes, (sub) => {
@@ -491,7 +489,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     });
     this.sitesService.addThemes({ data: stheme_theme }).subscribe(
       (response) => {
-        this.addPhotos(id_site, new_site);
+        this.addPhotos(id_site);
       },
       (err) => {
         this.spinner.hide();
@@ -668,7 +666,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             if (this.deleted_photos.length > 0) {
               this.sitesService.deletePhotos(this.deleted_photos).subscribe();
             }
-            this.addThemes(Number(this.id_site), themes, sthemes, false);
+            this.addThemes(Number(this.id_site), themes, sthemes);
           })
         );
       })

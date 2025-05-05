@@ -487,7 +487,6 @@ def add_cor_site_theme_stheme():
 def upload_file():
     base_path = "/app/static/upload/images/"
     data = request.form.getlist("data")
-    new_site = request.form.getlist("new_site")
     uploaded_images = request.files.getlist("image")
     for d in data:
         d_serialized = json.loads(d)
@@ -495,14 +494,6 @@ def upload_file():
             path_file_photo=d_serialized.get("path_file_photo")
         ).first()
         if check_exist:
-            if new_site == "true":
-                models.TSite.query.filter_by(
-                    id_site=d_serialized.get("id_site")
-                ).delete()
-                models.CorSiteSthemeTheme.query.filter_by(
-                    id_site=d_serialized.get("id_site")
-                ).delete()
-                db.session.commit()
             return (
                 jsonify(
                     error="image_already_exist",
