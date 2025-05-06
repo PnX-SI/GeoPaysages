@@ -50,7 +50,6 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
     this.observatoriesSrv.getAll().subscribe(
       (items) => {
         _.forEach(items, (observatory) => {
-          console.log('observatory', observatory);
           observatory.logo = Conf.img_srv + '50x50/' + observatory.logo;
           this.rows.push({ observatory });
         });

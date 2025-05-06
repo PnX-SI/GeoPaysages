@@ -7,7 +7,7 @@ export class SitesService {
   constructor(public http: HttpClient) {}
 
   getAllSites() {
-    return this.http.get<any>(Conf.apiUrl + 'sites');
+    return this.http.get<any>(Conf.apiUrl + 'me/sites');
   }
 
   getsiteById(id) {
@@ -95,9 +95,5 @@ export class SitesService {
       themes,
       { withCredentials: true }
     );
-  }
-
-  getgallery() {
-    return this.http.get<any>(Conf.apiUrl + 'gallery');
   }
 }

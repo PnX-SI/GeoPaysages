@@ -1,5 +1,5 @@
 from base64 import urlsafe_b64encode
-from flask import abort, url_for, request, redirect, current_app
+from flask import abort, url_for, request, redirect, current_app, jsonify
 from functools import wraps
 import os
 from flask_login import current_user
@@ -23,6 +23,10 @@ themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 cor_roles_observatory_schema = models.CorRolesObservatorySchema(many=False)
 
 
+def isRequestMe():
+    return True if request.path.startswith("/api/me/") else False
+
+
 def getAppUser(id_role):
     app = Application.query.filter_by(
         code_application=current_app.config["CODE_APPLICATION"]
@@ -37,6 +41,29 @@ def getAppUser(id_role):
 def isUserAdmin(id_role):
     app_user = getAppUser(id_role)
     return True if app_user.id_droit_max == 6 else False
+
+
+def getUserContribObservatoryIds(id_role):
+    return [
+        r.id_observatory
+        for r in models.CorRolesObservatory.query.filter_by(id_role=id_role).all()
+    ]
+
+
+def applyUserContribObservatoryFilter(query, column_to_filter):
+    if isUserAdmin(current_user.id_role):
+        return query
+    observatory_ids = getUserContribObservatoryIds(current_user.id_role)
+    if not observatory_ids:
+        abort(jsonify([]), 200)
+    return query.filter(column_to_filter.in_(observatory_ids))
+
+
+def getUserAdminObservatoryIds(id_role):
+    return [
+        r.id_observatory
+        for r in models.CorRolesObservatory.query.filter_by(id_role=id_role).all()
+    ]
 
 
 def getUserRoleInObservatory(id_role, id_observatory):

@@ -13,7 +13,7 @@ export class ObservatoriesService {
   constructor(public http: HttpClient) {}
 
   getAll() {
-    return this.http.get<ObservatoryType[]>(Conf.apiUrl + 'observatories');
+    return this.http.get<ObservatoryType[]>(Conf.apiUrl + 'me/observatories');
   }
 
   getById(id) {

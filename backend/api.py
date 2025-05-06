@@ -77,14 +77,16 @@ def returnDdConf():
     return jsonify(dbconf)
 
 
+@api.route("/api/me/observatories", methods=["GET"])
 @api.route("/api/observatories", methods=["GET"])
 def returnAllObservatories():
-    get_all = (
-        models.Observatory.query.join(models.ObservatoryTranslation)
-        .order_by(models.ObservatoryTranslation.title)
-        .all()
-    )
-    items = observatories_schema.dump(get_all)
+    query = models.Observatory.query.join(models.ObservatoryTranslation)
+    if utils.isRequestMe():
+        query = utils.applyUserContribObservatoryFilter(query, models.Observatory.id)
+
+    query = query.order_by(models.ObservatoryTranslation.title).all()
+
+    items = observatories_schema.dump(query)
 
     return jsonify(items)
 
@@ -217,14 +219,18 @@ def patchObservatoryImage(id):
     return jsonify({"filename": filename}), 200
 
 
+@api.route("/api/me/sites", methods=["GET"])
 @api.route("/api/sites", methods=["GET"])
 def returnAllSites():
+    query = models.TSite.query.join(models.TSiteTranslation)
+    if utils.isRequestMe():
+        query = utils.applyUserContribObservatoryFilter(
+            query, models.TSite.id_observatory
+        )
+
     dbconf = utils.getDbConf()
-    get_all_sites = (
-        models.TSite.query.join(models.TSiteTranslation)
-        .order_by(text(dbconf["default_sort_sites"]))
-        .all()
-    )
+    get_all_sites = query.order_by(text(dbconf["default_sort_sites"])).all()
+
     sites = site_schema.dump(get_all_sites)
     for site in sites:
         if len(site.get("t_photos")) > 0:
@@ -334,8 +340,6 @@ def returnAllUsers(id_app):
     )
 
 
-# TODO : remove this view !
-# use in the front at each refresh ... but why ?
 @api.route("/api/me/", methods=["GET"])
 @fnauth.check_auth(2)
 def returnCurrentUser():
@@ -599,8 +603,7 @@ def update_photo(id_photo):
 @fnauth.check_auth(2)
 def deletePhotos():
     base_path = "/app/static/upload/images/"
-    ids = json.loads(request.args.get('ids'))
-    print(request.args.get('ids'), ids)
+    ids = json.loads(request.args.get("ids"))
     photos = models.TPhoto.query.filter(models.TPhoto.id_photo.in_(ids)).all()
 
     for photo in photos:
@@ -708,7 +711,7 @@ def add_langs():
 
 
 @api.route("/api/langs/<string:lang_id>", methods=["PATCH"])
-@fnauth.check_auth(2)
+@fnauth.check_auth(6)
 def update_lang(lang_id):
     data = request.get_json()
     try:

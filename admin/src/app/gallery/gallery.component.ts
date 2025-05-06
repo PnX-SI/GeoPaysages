@@ -39,8 +39,10 @@ export class GalleryComponent implements OnInit {
     this.sitesService.getAllSites().subscribe(
       (sites) => {
         this.sites = sites;
-        this.selected_site = this.sites[0].id_site;
-        this.getPhotosSite(this.sites[0].id_site);
+        if (this.sites.length) {
+          this.selected_site = this.sites[0].id_site;
+          this.getPhotosSite(this.sites[0].id_site);
+        }
         this.spinner.hide();
       },
       (error) => {
