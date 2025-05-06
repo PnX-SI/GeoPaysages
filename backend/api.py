@@ -142,10 +142,10 @@ def returnObservatoryById(id):
 @fnauth.check_auth(2)
 def patchObservatory(id):
     utils.userAdminInObservatoryGuard(id)
+    observatory = models.Observatory.query.filter_by(id=id).first()
+    if not observatory:
+        abort(404)
     try:
-        observatory = models.Observatory.query.filter_by(id=id).first()
-        if not observatory:
-            abort(404)
         data = request.get_json()
         translations_data = data.pop("translations", [])
 
@@ -378,9 +378,9 @@ def deleteSite(id_site):
 @api.route("/api/sites", methods=["POST"])
 @fnauth.check_auth(2)
 def add_site():
+    data = dict(request.get_json())
+    utils.userAdminInObservatoryGuard(data.get("id_observatory"))
     try:
-        data = dict(request.get_json())
-        utils.userAdminInObservatoryGuard(data.get("id_observatory"))
         transalations_data = data.pop("translations", [])
         site = models.TSite(**data)
         db.session.add(site)
@@ -418,14 +418,13 @@ def add_site():
 @api.route("/api/sites/<int:id_site>/", methods=["PATCH"])
 @fnauth.check_auth(2)
 def update_site(id_site):
+    site_data = request.get_json()
+
+    site = models.TSite.query.filter_by(id_site=id_site).first()
+    if site is None:
+        abort(404)
+    utils.userContribObservatoryGuard(site.id_observatory)
     try:
-        site_data = request.get_json()
-
-        site = models.TSite.query.filter_by(id_site=id_site).first()
-        if site is None:
-            abort(404)
-        utils.userContribObservatoryGuard(site.id_observatory)
-
         translations_data = site_data.pop("translations", [])
 
         models.TSite.query.filter_by(id_site=id_site).update(site_data)
