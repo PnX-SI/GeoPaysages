@@ -11,7 +11,7 @@
               <ng-template ngbTabContent>
                 <div class="card custom-card">
                   <div class="tab-content">
-                    <div class="inner-checkbox form-group">
+                    <div *ngIf="canEditPublish()" class="inner-checkbox form-group">
                       <div class="label">{{ 'ACTIONS.PUBLISH_DEFAULT' | translate }}:</div>
                       <label class="switch">
                         <input formControlName="is_published" type="checkbox" class="success form-control" />
@@ -20,7 +20,7 @@
                           }" class="slider round"></span>
                       </label>
                     </div>
-                    <div class="row mb-3">
+                    <div class="row mt-3 mb-3">
                       <div class="col">
                         <label class="label" for="observatory-title">{{ 'FIELDS.NAME' | translate: {article:('ARTICLES.DE_L' | translate), varname: ('OBSERVATORIES_MNGMT.OBSERVATORY' | translate) }  }}*</label>
                         <input InputFeedBack type="text" formControlName="title" id="observatory-title" class="form-control"

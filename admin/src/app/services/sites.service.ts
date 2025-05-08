@@ -1,13 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { get } from 'lodash';
 import { Conf } from './../config';
 
 @Injectable()
 export class SitesService {
   constructor(public http: HttpClient) {}
 
-  getAllSites() {
-    return this.http.get<any>(Conf.apiUrl + 'me/sites');
+  getAllSites(options?: { filterPresets?: ('is_contributor' | 'is_admin')[] }) {
+    const filterPresets = get(options || {}, 'filterPresets', []);
+
+    return this.http.get<any[]>(
+      Conf.apiUrl +
+        `sites?filter_presets=${JSON.stringify(filterPresets)}`
+    );
   }
 
   getsiteById(id) {
@@ -95,5 +101,14 @@ export class SitesService {
       themes,
       { withCredentials: true }
     );
+  }
+
+  canUserAdd(currentUser) {
+    if (currentUser.max_level_profil > 5) {
+      return true;
+    }
+    const roles = (currentUser.gpays || {}).role_by_observatories || [];
+
+    return roles.some((r) => r.group_name == 'admin');
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { get } from 'lodash';
 import { Conf } from '../config';
 import {
   ObservatoryPatchImageType,
@@ -12,8 +13,13 @@ import {
 export class ObservatoriesService {
   constructor(public http: HttpClient) {}
 
-  getAll() {
-    return this.http.get<ObservatoryType[]>(Conf.apiUrl + 'me/observatories');
+  getAll(options?: { filterPresets?: ('is_contributor' | 'is_admin')[] }) {
+    const filterPresets = get(options || {}, 'filterPresets', []);
+
+    return this.http.get<ObservatoryType[]>(
+      Conf.apiUrl +
+        `observatories?filter_presets=${JSON.stringify(filterPresets)}`
+    );
   }
 
   getById(id) {
@@ -42,5 +48,14 @@ export class ObservatoriesService {
         formData
       )
       .toPromise();
+  }
+
+  isUserAdmin(id, currentUser) {
+    if (currentUser.max_level_profil > 5) {
+      return true;
+    }
+    const roles = (currentUser.gpays || {}).role_by_observatories || [];
+
+    return roles.some((r) => r.id_observatory == id && r.group_name == 'admin');
   }
 }

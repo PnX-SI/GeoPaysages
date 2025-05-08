@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { TranslationService } from '../services/translation.service';
 import { Language } from '../types';
 import { LanguageService } from '../services/language.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-manage-sites',
@@ -25,6 +26,7 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
   rows = [];
   sitesLoaded = false;
   defaultLangDB:Language;
+  currentUser: any;
 
   constructor(
     private siteService: SitesService,
@@ -34,17 +36,19 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private translate: TranslateService,
     private translationService: TranslationService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private authService: AuthService,
   ) {}
 
   async ngOnInit() {
     await this.initializeLangDB();
     this.getAllSites();
+    this.currentUser = this.authService.currentUser;
   }
 
   getAllSites() {
     this.spinner.show();
-    this.siteService.getAllSites().subscribe(
+    this.siteService.getAllSites({ filterPresets: ["is_contributor"] }).subscribe(
       (sites) => {
         _.forEach(sites, (site) => {
           console.log("site", site);
@@ -79,6 +83,10 @@ export class ManageSitesComponent implements OnInit, OnDestroy {
         console.log('get site error: ', err);
       }
     );
+  }
+
+  canAdd(): boolean {
+    return this.siteService.canUserAdd(this.currentUser)
   }
 
   onSelect({ selected }) {

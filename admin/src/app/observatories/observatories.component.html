@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-12 col-table">
       <div>
-        <button class="blue-btn btn-add" (click)="onAddClick()">
+        <button *ngIf="canAdd()" class="blue-btn btn-add" (click)="onAddClick()">
           {{ 'ACTIONS.ADD' | translate: {article:('ARTICLES.UN' | translate), varname: ('SITE_MNGMT.OBSERVATORY' | translate) }  }}
         </button>
         <ngx-datatable

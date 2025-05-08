@@ -36,6 +36,7 @@ subthemes_schema = models.DicoSthemeSchema(many=True)
 licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
+cor_roles_observatory_schema = models.CorRolesObservatorySchema(many=True)
 
 
 @api.route("/api/thumbor/presets/<name>/<filename>", methods=["GET"])
@@ -77,12 +78,19 @@ def returnDdConf():
     return jsonify(dbconf)
 
 
-@api.route("/api/me/observatories", methods=["GET"])
 @api.route("/api/observatories", methods=["GET"])
 def returnAllObservatories():
+    filter_presets = []
+    try:
+        filter_presets = json.loads(request.args.get("filter_presets"))
+    except:
+        pass
+
     query = models.Observatory.query.join(models.ObservatoryTranslation)
-    if utils.isRequestMe():
+    if "is_contributor" in filter_presets:
         query = utils.applyUserContribObservatoryFilter(query, models.Observatory.id)
+    elif "is_admin" in filter_presets:
+        query = utils.applyUserAdminObservatoryFilter(query, models.Observatory.id)
 
     query = query.order_by(models.ObservatoryTranslation.title).all()
 
@@ -160,14 +168,15 @@ def patchObservatory(id):
                     jsonify({"error": "Each translation must include 'lang_id'."}),
                     400,
                 )
+            update_data = {
+                "title": translate["title"],
+                "is_published": translate["is_published"],
+            }
+            if not utils.isUserAdmin(current_user.id_role):
+                update_data.pop("is_published")
             result = models.ObservatoryTranslation.query.filter_by(
                 row_id=observatory.id, lang_id=translate["lang_id"]
-            ).update(
-                {
-                    "title": translate["title"],
-                    "is_published": translate["is_published"],
-                }
-            )
+            ).update(update_data)
             if result == 0:
                 new_translation = models.ObservatoryTranslation(
                     title=translate["title"],
@@ -219,12 +228,21 @@ def patchObservatoryImage(id):
     return jsonify({"filename": filename}), 200
 
 
-@api.route("/api/me/sites", methods=["GET"])
 @api.route("/api/sites", methods=["GET"])
 def returnAllSites():
+    filter_presets = []
+    try:
+        filter_presets = json.loads(request.args.get("filter_presets"))
+    except:
+        pass
+
     query = models.TSite.query.join(models.TSiteTranslation)
-    if utils.isRequestMe():
+    if "is_contributor" in filter_presets:
         query = utils.applyUserContribObservatoryFilter(
+            query, models.TSite.id_observatory
+        )
+    elif "is_admin" in filter_presets:
+        query = utils.applyUserAdminObservatoryFilter(
             query, models.TSite.id_observatory
         )
 
@@ -347,8 +365,20 @@ def returnCurrentUser():
     user_data = AppUser.query.filter_by(id_role=id_role).all()
     if not user_data:
         raise NotFound(f"No User with id {id_role}")
+    get_role_by_observatories = models.CorRolesObservatory.query.filter_by(
+        id_role=id_role
+    ).all()
+    role_by_observatories = cor_roles_observatory_schema.dump(get_role_by_observatories)
+
     return jsonify(
-        [{**d.as_dict(), "max_level_profil": d.id_droit_max} for d in user_data]
+        [
+            {
+                **d.as_dict(),
+                "max_level_profil": d.id_droit_max,
+                "gpays": {"role_by_observatories": role_by_observatories},
+            }
+            for d in user_data
+        ]
     )
 
 
@@ -428,8 +458,15 @@ def update_site(id_site):
     if site is None:
         abort(404)
     utils.userContribObservatoryGuard(site.id_observatory)
+    is_admin = (
+        True
+        if utils.isUserAdminInObservatory(current_user.id_role, site.id_observatory)
+        else False
+    )
     try:
         translations_data = site_data.pop("translations", [])
+        if not is_admin:
+            site_data.pop("id_observatory")
 
         models.TSite.query.filter_by(id_site=id_site).update(site_data)
         db.session.commit()
@@ -441,17 +478,19 @@ def update_site(id_site):
                     400,
                 )
 
+            update_data = {
+                "name_site": translate["name_site"],
+                "desc_site": translate["desc_site"],
+                "testim_site": translate.get("testim_site"),
+                "legend_site": translate["legend_site"],
+                "publish_site": translate["publish_site"],
+            }
+            if not is_admin:
+                update_data.pop("publish_site")
+
             result = models.TSiteTranslation.query.filter_by(
                 row_id=id_site, lang_id=translate["lang_id"]
-            ).update(
-                {
-                    "name_site": translate["name_site"],
-                    "desc_site": translate["desc_site"],
-                    "testim_site": translate.get("testim_site"),
-                    "legend_site": translate["legend_site"],
-                    "publish_site": translate["publish_site"],
-                }
-            )
+            ).update(update_data)
 
             if result == 0:
                 new_translation = models.TSiteTranslation(
@@ -461,7 +500,7 @@ def update_site(id_site):
                     desc_site=translate["desc_site"],
                     testim_site=translate.get("testim_site"),
                     legend_site=translate["legend_site"],
-                    publish_site=translate["publish_site"],
+                    publish_site=None if not is_admin else translate["publish_site"],
                 )
                 db.session.add(new_translation)
 

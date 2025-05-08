@@ -141,7 +141,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.sitesService.getThemes(),
       this.sitesService.getSubthemes(),
       this.sitesService.getCommunes(),
-      this.observatoriesSrv.getAll(),
+      this.observatoriesSrv.getAll({ filterPresets: ['is_admin'] }),
     ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];
@@ -855,4 +855,33 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   
+  isObservatoryEditable(): boolean {
+    return (
+      !this.site ||
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    );
+  }
+
+  canEditPublish():boolean {
+    return (
+      !this.site ||
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    );
+  }
+
+  canDelete():boolean {
+    return (
+      this.site &&
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    ); 
+  }
 }

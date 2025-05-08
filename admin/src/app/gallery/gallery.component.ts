@@ -36,7 +36,7 @@ export class GalleryComponent implements OnInit {
   async ngOnInit() {
     await this.initializeLangDB();
     this.spinner.show();
-    this.sitesService.getAllSites().subscribe(
+    this.sitesService.getAllSites({ filterPresets: ["is_contributor"] }).subscribe(
       (sites) => {
         this.sites = sites;
         if (this.sites.length) {

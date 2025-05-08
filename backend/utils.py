@@ -4,7 +4,7 @@ from functools import wraps
 import os
 from flask_login import current_user
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
+from sqlalchemy import text, or_
 import json
 from flask_babel import gettext
 import random
@@ -46,7 +46,13 @@ def isUserAdmin(id_role):
 def getUserContribObservatoryIds(id_role):
     return [
         r.id_observatory
-        for r in models.CorRolesObservatory.query.filter_by(id_role=id_role).all()
+        for r in models.CorRolesObservatory.query.filter(
+            models.CorRolesObservatory.id_role == id_role,
+            or_(
+                models.CorRolesObservatory.group_name == "admin",
+                models.CorRolesObservatory.group_name == "contributor",
+            ),
+        ).all()
     ]
 
 
@@ -62,8 +68,19 @@ def applyUserContribObservatoryFilter(query, column_to_filter):
 def getUserAdminObservatoryIds(id_role):
     return [
         r.id_observatory
-        for r in models.CorRolesObservatory.query.filter_by(id_role=id_role).all()
+        for r in models.CorRolesObservatory.query.filter_by(
+            id_role=id_role, group_name="admin"
+        ).all()
     ]
+
+
+def applyUserAdminObservatoryFilter(query, column_to_filter):
+    if isUserAdmin(current_user.id_role):
+        return query
+    observatory_ids = getUserAdminObservatoryIds(current_user.id_role)
+    if not observatory_ids:
+        abort(jsonify([]), 200)
+    return query.filter(column_to_filter.in_(observatory_ids))
 
 
 def getUserRoleInObservatory(id_role, id_observatory):

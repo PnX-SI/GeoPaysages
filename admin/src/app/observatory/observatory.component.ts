@@ -90,6 +90,10 @@ export class ObservatoryComponent implements OnInit {
     }
   }
 
+  canEditPublish(): boolean {
+    return this.currentUser.max_level_profil > 5
+  }
+
   onThumbChange(event) {
     if (event.target && event.target.files.length > 0) {
       this.selectedThumb = event.target.files[0];

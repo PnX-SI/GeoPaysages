@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-12 col-table">
       <div>
-        <button class=" blue-btn btn-add" (click)="onAddSite()">  {{ 'ACTIONS.ADD' | translate: {article:('ARTICLES.UN' | translate), varname: ('SITE_MNGMT.OBSERVATION_POINT' | translate) }  }}</button>
+        <button *ngIf="canAdd()" class=" blue-btn btn-add" (click)="onAddSite()">  {{ 'ACTIONS.ADD' | translate: {article:('ARTICLES.UN' | translate), varname: ('SITE_MNGMT.OBSERVATION_POINT' | translate) }  }}</button>
         <ngx-datatable *ngIf="sitesLoaded" class="material" [rows]="rows" [headerHeight]="40" [footerHeight]="40"
           [limit]="7" [rowHeight]="'auto'" [scrollbarH]="true" [reorderable]="reorderable" [selectionType]="'single'"
           (select)='onSelect($event)'>

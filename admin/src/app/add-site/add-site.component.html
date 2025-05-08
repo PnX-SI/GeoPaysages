@@ -10,7 +10,7 @@
               <ng-template ngbTabContent>
                 <div class="card custom-card">
                   <div class="tab-content">
-                    <div class="inner-checkbox form-group">
+                    <div class="inner-checkbox form-group" *ngIf="canEditPublish()">
                       <div class="label">{{ 'ACTIONS.PUBLISH_DEFAULT' | translate }}:</div>
                       <label class="switch">
                         <input formControlName="publish_site" type="checkbox" class="success form-control" />
@@ -67,7 +67,10 @@
             <div class="row form-item">
               <div class="col">
                 <label class="label" for="id_observatory">{{'SITE_MNGMT.OBSERVATORY' | translate}}*</label>
-                <select InputFeedBack formControlName="id_observatory" id="id_observatory" class="form-control">
+                <p class="mt-1 ml-1" *ngIf="!isObservatoryEditable()">
+                  {{ this.site.observatory.ref }}
+                </p>
+                <select *ngIf="isObservatoryEditable()" InputFeedBack formControlName="id_observatory" id="id_observatory" class="form-control">
                   <option class="select-placeholder" value="">---</option>
                   <option *ngFor="let observatory of observatories" [ngValue]="observatory.id">
                     {{ observatory.ref }} 
@@ -183,7 +186,7 @@
             <button class="btn btn-outline-success btn-submit" type="submit" [disabled]="!edit_btn">
               {{ submit_btn_text | translate }}
             </button>
-            <button type="button" *ngIf="id_site && currentUser.max_level_profil > 5"
+            <button type="button" *ngIf="canDelete()"
               class="btn btn-outline-danger btn-delete" (click)="openDeleteModal(content)">
               <i class="icon-bin delete-site"></i>{{ 'ACTIONS.DELETE' | translate: {article:('ARTICLES.LE' | translate), varname: ('SITE_MNGMT.SITE' | translate) }  }}
             </button>
