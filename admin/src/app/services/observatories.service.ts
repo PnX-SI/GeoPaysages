@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { get } from 'lodash';
 import { Conf } from '../config';
 import {
+  CorRole,
+  GroupName,
   ObservatoryPatchImageType,
   ObservatoryPatchType,
   ObservatoryPostType,
@@ -54,8 +56,15 @@ export class ObservatoriesService {
     if (currentUser.max_level_profil > 5) {
       return true;
     }
-    const roles = (currentUser.gpays || {}).role_by_observatories || [];
+    const roles: CorRole[] =
+      (currentUser.gpays || {}).role_by_observatories || [];
 
-    return roles.some((r) => r.id_observatory == id && r.group_name == 'admin');
+    return roles.some(
+      (r) => r.id_observatory == id && r.group_name == GroupName.ADMIN
+    );
+  }
+
+  getUsers() {
+    return this.http.get<any>(Conf.apiUrl + 'users').toPromise();
   }
 }

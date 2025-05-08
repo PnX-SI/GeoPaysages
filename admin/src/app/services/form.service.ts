@@ -51,7 +51,10 @@ export class FormService {
    formSite.valueChanges.subscribe(() => {
      this.applyConditionalValidators(formSite, this.availableLangDB, 'is_published', ['title']);
   });
-  
+
+    const corRoles = this._fb.array([]); // On initialise un FormArray vide
+    formSite.addControl('cor_roles', corRoles);
+
     return formSite;
   }
 

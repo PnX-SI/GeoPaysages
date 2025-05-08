@@ -2,14 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ObservatoriesService } from '../services/observatories.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalRef, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { FormService } from '../services/form.service';
 import { Conf } from './../config';
 import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Language, ObservatoryPatchType, ObservatoryPostType, ObservatoryType } from '../types';
+import { GROUP_NAMES, Language, ObservatoryPatchType, ObservatoryPostType, ObservatoryType, User } from '../types';
 import * as io from 'jsts/org/locationtech/jts/io';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Observable } from 'rxjs';
@@ -60,6 +60,9 @@ export class ObservatoryComponent implements OnInit {
   errorMessage: string = 'test';
   isInvalidForm: boolean = false;
   defaultLangDB:Language;
+  newRole: FormGroup;
+  groupNames = GROUP_NAMES;
+  users: User[] = []
 
   constructor(
     private observatoryService: ObservatoriesService,
@@ -72,7 +75,8 @@ export class ObservatoryComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private translate: TranslateService,
     private translationService : TranslationService,
-    private languageService: LanguageService
+    private languageService: LanguageService,
+    private _fb: FormBuilder
   ) {}
 
   async ngOnInit() {
@@ -81,6 +85,12 @@ export class ObservatoryComponent implements OnInit {
     this.currentUser = this.authService.currentUser;
     this.id_observatory = this.route.snapshot.params['id'];
     this.observatoryForm = this.formService.initFormObservatory(this.availableLang);
+    this.newRole = this._fb.group({
+      id_role: [null],
+      group_name: [null]
+    });
+    this.newRole.disable()
+    this.users = await this.observatoryService.getUsers();
     if (this.id_observatory) {
       this.getObservatory(this.id_observatory);
       this.submit_btn_text = 'BUTTONS.SUBMIT';
@@ -172,13 +182,11 @@ export class ObservatoryComponent implements OnInit {
     try {
       if (!this.id_observatory) {
         const res = await this.postObservatory();
-        console.log("true", res)
         await this.patchImages(res.id);
 
         this.router.navigate(['observatories', 'details', res.id]);
         return;
       } else {
-        console.log("false", this.observatory.id)
         await this.patchObservatory();
         await this.patchImages(this.observatory.id);
       }
@@ -305,6 +313,7 @@ export class ObservatoryComponent implements OnInit {
       this.patchForm();
       this.alert = null;
       this.observatoryForm.disable();
+      this.newRole.disable();
       this.selectedThumb = null;
       this.thumbnailInput.nativeElement.value = '';
       this.selectedLogo = null;
@@ -312,6 +321,7 @@ export class ObservatoryComponent implements OnInit {
     } else {
       this.edit_btn_text = 'BUTTONS.CANCEL';
       this.observatoryForm.enable();
+      this.newRole.enable();
     }
   }
 
@@ -395,6 +405,35 @@ export class ObservatoryComponent implements OnInit {
     });
 }
 
+    const corRolesGp = this.corRoles;
+    while (corRolesGp.length !== 0) {
+      corRolesGp.removeAt(0);
+    }
+    this.observatory.cor_roles.forEach((role: any) => {
+      corRolesGp.push(this._fb.group({
+        id_role: [role.id_role],
+        group_name: [role.group_name]
+      }));
+    });
+  }
+
+  getRoleLabel(role): string {
+    return this.users.find( u => u.id_role == role.value.id_role ).identifiant
+  }
+
+  get corRoles(): FormArray {
+    return this.observatoryForm.get('cor_roles') as FormArray;
+  }
+
+  addRole() {
+    console.log(this.newRole.value);
+    
+    this.corRoles.push(this._fb.group(this.newRole.value));
+    this.newRole.reset();
+  }
+
+  removeRole(index: number) {
+    this.corRoles.removeAt(index);
   }
 
   ngOnDestroy() {

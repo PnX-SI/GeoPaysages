@@ -1,4 +1,9 @@
 {
+  "USER_ROLES": {
+    "TITLE": "Rôles des utilisateurs",
+    "USER_NAME": "Identifiant",
+    "ROLE": "Rôle"
+  },
     "SITE_MNGMT":{
         "OBSERVATION_POINT":"Point d'observation",
         "SITE": "Site",
@@ -34,10 +39,10 @@
     "TOOLTIP_THUMBNAIL":"S'applique sur la vignette en page d’accueil",
     "ADVICE_THUMBNAIL":"JPG, taille conseillée 200x200px",
     "ADVICE_LOGO":"PNG, taille conseillée 150x150px",
-     "PLACEHOLDER_ZONING":"Coller ici la géométrie de la zone de l’observatoire au format WKT de type MultiPolygon",
-  "TOOLTIP_LOGO":"S’applique sur les différentes listes des observatoires (page gestion des observatoires et sur la carte) ainsi que sur la fiche des sites",
-  "THUMBNAIL_SELECTED":"Vignette sélectionnée",
-  "LOGO_SELECTED":"Logo sélectionné"
+    "PLACEHOLDER_ZONING":"Coller ici la géométrie de la zone de l’observatoire au format WKT de type MultiPolygon",
+    "TOOLTIP_LOGO":"S’applique sur les différentes listes des observatoires (page gestion des observatoires et sur la carte) ainsi que sur la fiche des sites",
+    "THUMBNAIL_SELECTED":"Vignette sélectionnée",
+    "LOGO_SELECTED":"Logo sélectionné"
     },
     "GALLERY_MNGMT":{
       "GALLERY": "Gallerie",

@@ -158,6 +158,7 @@ def patchObservatory(id):
     try:
         data = request.get_json()
         translations_data = data.pop("translations", [])
+        cor_roles = data.pop("cor_roles", None)
 
         models.Observatory.query.filter_by(id=id).update(data)
         db.session.commit()
@@ -185,6 +186,20 @@ def patchObservatory(id):
                     row_id=observatory.id,
                 )
                 db.session.add(new_translation)
+        
+        if cor_roles is not None and utils.isUserAdminInObservatory(current_user.id_role, id):
+            models.CorRolesObservatory.query.filter_by(id_observatory=id).delete()
+            for cor_role in cor_roles:
+                id_role = cor_role.get("id_role", None)
+                group_name = cor_role.get("group_name", None)
+                if not id_role or not group_name:
+                    continue
+                new_cor_role = models.CorRolesObservatory(
+                    id_observatory=id,
+                    id_role=id_role,
+                    group_name=group_name
+                )
+                db.session.add(new_cor_role)
 
         db.session.commit()
 
@@ -345,17 +360,15 @@ def returnAllLicences():
     return jsonify(licences), 200
 
 
-@api.route("/api/users/<int:id_app>", methods=["GET"])
+@api.route("/api/users", methods=["GET"])
 @login_required
-def returnAllUsers(id_app):
+def returnAllUsers():
     a = Application.query.filter_by(
         code_application=current_app.config["CODE_APPLICATION"]
     ).one()
-    all_users = AppUser.query.filter_by(id_application=id_app).all()
+    all_users = AppUser.query.filter_by(id_application=a.id_application).all()
 
-    return jsonify(
-        [u.as_dict() for u in all_users if u.id_application == a.id_application]
-    )
+    return jsonify([u.as_dict() for u in all_users])
 
 
 @api.route("/api/me/", methods=["GET"])

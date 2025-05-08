@@ -73,6 +73,9 @@ class Observatory(db.Model):
     translations = db.relationship(
         "ObservatoryTranslation", back_populates="row", lazy=True
     )
+    cor_roles = db.relationship(
+        "CorRolesObservatory",  back_populates="observatory", lazy=True
+    )
 
 
 class ObservatoryTranslation(db.Model):
@@ -105,6 +108,7 @@ class CorRolesObservatory(db.Model):
     id_observatory = db.Column(
         db.ForeignKey("geopaysages.t_observatory.id"), primary_key=True
     )
+    observatory = db.relationship("Observatory", back_populates="cor_roles")
     group_name = db.Column(db.String, nullable=False)
 
 
@@ -590,6 +594,7 @@ class ObservatorySchemaFull(ma.SQLAlchemyAutoSchema):
     ref = fields.String()
     color = fields.String()
     translations = ma.Nested(ObservatoryTranslationSchema, many=True)
+    cor_roles = ma.Nested(CorRolesObservatorySchema, many=True)
     comparator = EnumField(ComparatorEnum, by_value=True)
     geom = fields.Method("geomSerialize")
 

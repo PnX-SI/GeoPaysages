@@ -1,4 +1,9 @@
 {
+  "USER_ROLES": {
+    "TITLE": "User roles",
+    "USER_NAME": "User Name",
+    "ROLE": "Role"
+  },
     "SITE_MNGMT":{
     "OBSERVATION_POINT":"Observation point",
     "SITE": "Site",

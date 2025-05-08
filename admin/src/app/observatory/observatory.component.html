@@ -143,6 +143,55 @@
               <app-form-error controlName="geom" errorKey="required"></app-form-error>
             </div>
           </div>
+          <div class="row mt-5 mb-3">
+            <div class="col-6">
+              <label class="label" for="observatory-geom">{{ 'USER_ROLES.TITLE' | translate }}</label>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>{{ 'USER_ROLES.USER_NAME' | translate }}</th>
+                    <th>{{ 'USER_ROLES.ROLE' | translate }}</th>
+                    <th>&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody formArrayName="cor_roles">
+                  <tr *ngFor="let role of corRoles.controls; let i = index" [formGroupName]="i">
+                    <td>
+                    {{ getRoleLabel(role) }}
+                      <input type="hidden" formControlName="id_role">
+                    </td>
+                    <td>
+                      <select InputFeedBack formControlName="group_name" class="form-control" [disabled]="!isEditing">
+                        <option *ngFor="let name of groupNames" [ngValue]="name">{{ name }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-danger px-3" (click)="removeRole(i)" [disabled]="!isEditing">🗙</button>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot [formGroup]="newRole">
+                  <tr>
+                    <td>
+                      <select InputFeedBack formControlName="id_role" class="form-control">
+                        <option *ngFor="let user of users" [ngValue]="user.id_role">
+                          {{ user.identifiant }} 
+                        </option>
+                      </select> 
+                    </td>
+                    <td>
+                      <select InputFeedBack formControlName="group_name" class="form-control">
+                        <option *ngFor="let name of groupNames" [ngValue]="name">{{ name }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-primary" (click)="addRole()" [disabled]="!isEditing">{{ 'BUTTONS.ADD' | translate }}</button>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
           <ngb-alert class="alert" *ngIf="alert" [dismissible]="false" [type]="alert.type">{{ alert.message }}
           </ngb-alert>
           <div class="submit-btn-group">
