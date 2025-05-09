@@ -2,7 +2,9 @@
   "USER_ROLES": {
     "TITLE": "Rôles des utilisateurs",
     "USER_NAME": "Identifiant",
-    "ROLE": "Rôle"
+    "ROLE": "Rôle",
+    "NO_MORE_SELECTABLES": "Rôles attribués à tous les utilisateurs.",
+    "DOWNGRADE_ME_CONFIRM": "Attention : Si vous enregistrez, vous ne serez plus admin de cet observatoire !"
   },
     "SITE_MNGMT":{
         "OBSERVATION_POINT":"Point d'observation",

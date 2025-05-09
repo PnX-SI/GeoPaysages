@@ -161,8 +161,8 @@
                       <input type="hidden" formControlName="id_role">
                     </td>
                     <td>
-                      <select InputFeedBack formControlName="group_name" class="form-control" [disabled]="!isEditing">
-                        <option *ngFor="let name of groupNames" [ngValue]="name">{{ name }}</option>
+                      <select formControlName="group_name" class="form-control" [disabled]="!isEditing">
+                        <option *ngFor="let name of groupNames" [value]="name">{{ name }}</option>
                       </select>
                     </td>
                     <td>
@@ -171,10 +171,19 @@
                   </tr>
                 </tbody>
                 <tfoot [formGroup]="newRole">
-                  <tr>
+                  <tr *ngIf="!selectableUsers.length">
+                    <td colspan="3">
+                      <div class="alert alert-primary">
+                        <div>
+                          {{ 'USER_ROLES.NO_MORE_SELECTABLES' | translate }}
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr *ngIf="selectableUsers.length">
                     <td>
                       <select InputFeedBack formControlName="id_role" class="form-control">
-                        <option *ngFor="let user of users" [ngValue]="user.id_role">
+                        <option *ngFor="let user of selectableUsers" [ngValue]="user.id_role">
                           {{ user.identifiant }} 
                         </option>
                       </select> 
@@ -214,3 +223,15 @@
     </div>
   </div>
 </div>
+
+<ng-template #downgradeMeConfirm>
+  <div class="modal-header">
+    <h5 class="modal-title"><i class="icon-warning"></i></h5>
+  </div>
+  <div class="modal-body" [innerHTML]="'USER_ROLES.DOWNGRADE_ME_CONFIRM' | translate">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" style="margin-right: 10px" (click)="downgradeMeConfirmPromise.resolve()">{{'BUTTONS.SUBMIT' | translate}}</button>
+    <button type="button" class="btn btn-success" style="margin-right: 10px" (click)="downgradeMeConfirmPromise.reject()">{{'BUTTONS.CANCEL' | translate}}</button>
+  </div>
+</ng-template>

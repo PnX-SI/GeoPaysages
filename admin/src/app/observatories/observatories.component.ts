@@ -51,7 +51,7 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
 
   getAll() {
     this.spinner.show();
-    this.observatoriesSrv.getAll({ filterPresets: ['is_contributor'] }).subscribe(
+    this.observatoriesSrv.getAll({ filterPresets: ['is_admin'] }).subscribe(
       (items) => {
         _.forEach(items, (observatory) => {
           observatory.logo = Conf.img_srv + '50x50/' + observatory.logo;

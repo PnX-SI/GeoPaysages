@@ -2,7 +2,9 @@
   "USER_ROLES": {
     "TITLE": "User roles",
     "USER_NAME": "User Name",
-    "ROLE": "Role"
+    "ROLE": "Role",
+    "NO_MORE_SELECTABLES": "Roles assigned to all users.",
+    "DOWNGRADE_ME_CONFIRM": "Warning: If you submit, you will no longer be an admin of this observatory!"
   },
     "SITE_MNGMT":{
     "OBSERVATION_POINT":"Observation point",
@@ -97,7 +99,8 @@
         "PASSWORD": "Password",
         "YES": "Yes",
         "NO": "No",
-        "LOADING": "Loading"
+        "LOADING": "Loading",
+        "UNDERSTOOD": "Got it!"
       },
       "FIELDS":{
         "NAME": "{{ varname }} name"

@@ -159,6 +159,26 @@ def patchObservatory(id):
         data = request.get_json()
         translations_data = data.pop("translations", [])
         cor_roles = data.pop("cor_roles", None)
+        if cor_roles is not None:
+            models.CorRolesObservatory.query.filter_by(id_observatory=id).delete()
+            for cor_role in cor_roles:
+                id_role = cor_role.get("id_role", None)
+                group_name = cor_role.get("group_name", None)
+                if not id_role or not group_name:
+                    continue
+                new_cor_role = models.CorRolesObservatory(
+                    id_observatory=id,
+                    id_role=id_role,
+                    group_name=group_name
+                )
+                db.session.add(new_cor_role)
+
+        db.session.commit()
+        # In case of current_user has removed itself his admin role from this observatory
+        if not utils.isUserAdminInObservatory(current_user.id_role, id):
+            row = models.Observatory.query.filter_by(id=id).first()
+            dict = observatory_schema_full.dump(row)
+            return jsonify(dict)
 
         models.Observatory.query.filter_by(id=id).update(data)
         db.session.commit()
@@ -186,20 +206,6 @@ def patchObservatory(id):
                     row_id=observatory.id,
                 )
                 db.session.add(new_translation)
-        
-        if cor_roles is not None and utils.isUserAdminInObservatory(current_user.id_role, id):
-            models.CorRolesObservatory.query.filter_by(id_observatory=id).delete()
-            for cor_role in cor_roles:
-                id_role = cor_role.get("id_role", None)
-                group_name = cor_role.get("group_name", None)
-                if not id_role or not group_name:
-                    continue
-                new_cor_role = models.CorRolesObservatory(
-                    id_observatory=id,
-                    id_role=id_role,
-                    group_name=group_name
-                )
-                db.session.add(new_cor_role)
 
         db.session.commit()
 

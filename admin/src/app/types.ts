@@ -4,8 +4,8 @@ export enum GroupName {
 }
 
 export const GROUP_NAMES: GroupName[] = [
-  GroupName.ADMIN,
   GroupName.CONTRIBUTOR,
+  GroupName.ADMIN,
 ];
 
 export type User = {

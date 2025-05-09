@@ -9,11 +9,11 @@ import * as _ from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { GROUP_NAMES, Language, ObservatoryPatchType, ObservatoryPostType, ObservatoryType, User } from '../types';
+import { GROUP_NAMES, GroupName, Language, ObservatoryPatchType, ObservatoryPostType, ObservatoryType, User } from '../types';
 import * as io from 'jsts/org/locationtech/jts/io';
 import { TranslateService } from '@ngx-translate/core';
 import { combineLatest, Observable } from 'rxjs';
-import { FormConstants, formLabels } from '../constants/app.constants';
+import { FormConstants } from '../constants/app.constants';
 import { TranslationService } from '../services/translation.service';
 import { LanguageService } from '../services/language.service';
 
@@ -25,11 +25,12 @@ import { LanguageService } from '../services/language.service';
 export class ObservatoryComponent implements OnInit {
   @ViewChild('thumbnailInput') thumbnailInput;
   @ViewChild('logoInput') logoInput;
+  @ViewChild('downgradeMeConfirm') downgradeMeConfirm;
 
   selectedThumb: File;
   selectedLogo: File;
   selectedFile: File[];
-  modalRef: NgbModalRef;
+  downgradeMeConfirmRef: NgbModalRef;
   selectedSubthemes = [];
   thumbs = [];
   noticeName: any;
@@ -63,6 +64,8 @@ export class ObservatoryComponent implements OnInit {
   newRole: FormGroup;
   groupNames = GROUP_NAMES;
   users: User[] = []
+  selectableUsers: User[] = []
+  downgradeMeConfirmPromise: { resolve: Function, reject: Function };
 
   constructor(
     private observatoryService: ObservatoriesService,
@@ -91,6 +94,7 @@ export class ObservatoryComponent implements OnInit {
     });
     this.newRole.disable()
     this.users = await this.observatoryService.getUsers();
+    this.setSelectableUsers();
     if (this.id_observatory) {
       this.getObservatory(this.id_observatory);
       this.submit_btn_text = 'BUTTONS.SUBMIT';
@@ -102,6 +106,14 @@ export class ObservatoryComponent implements OnInit {
 
   canEditPublish(): boolean {
     return this.currentUser.max_level_profil > 5
+  }
+
+  setSelectableUsers() {
+    const cor_roles = this.observatoryForm.value.cor_roles || [];
+    this.selectableUsers = (this.users || []).filter(
+      (u) =>
+        u.id_droit_max < 6 && !cor_roles.some((r) => u.id_role == r.id_role)
+    );
   }
 
   onThumbChange(event) {
@@ -140,8 +152,29 @@ export class ObservatoryComponent implements OnInit {
     this.selectedFile = null;
   }
 
-  async submitObservatory(observatoryForm) {
+  async confirmDowngradeMe() {
+    return new Promise((resolve, reject)=>{
+      this.downgradeMeConfirmPromise = { resolve, reject };
+      this.downgradeMeConfirmRef = this.modalService.open(this.downgradeMeConfirm, {
+        centered: true,
+      });
+    })
+  }
 
+  async submitObservatory(observatoryForm) {
+    if (this.id_observatory && this.currentUser.max_level_profil < 6) {
+      // Here we are sure that currentUser is admin of this observatory
+      const newRole = this.observatoryForm.value.cor_roles.find(r => r.id_role === this.currentUser.id_role);
+      if (!newRole || newRole.group_name != GroupName.ADMIN) {
+        try {
+          await this.confirmDowngradeMe();
+          this.downgradeMeConfirmRef.close();
+        } catch {
+          this.downgradeMeConfirmRef.close();
+          return;
+        }
+      }
+    }
     observatoryForm.updateValueAndValidity();
     this.alert = null;
     const isValidForm = this.formService.checkAllControlStatuses(observatoryForm);
@@ -187,8 +220,20 @@ export class ObservatoryComponent implements OnInit {
         this.router.navigate(['observatories', 'details', res.id]);
         return;
       } else {
-        await this.patchObservatory();
+        const res = await this.patchObservatory();
+        if (this.currentUser.max_level_profil < 6) {
+          const role = (res.cor_roles || []).find(
+            (r) => r.id_role == this.currentUser.id_role
+          );
+          if (!role || role.group_name != GroupName.ADMIN) {
+            this.router.navigate(['observatories']);
+            return;
+          }
+        }
         await this.patchImages(this.observatory.id);
+        this.toastr.success('INFO_MESSAGE.SUCCESS_UPDATED_OBSERVATORY', '', {
+          positionClass: 'toast-bottom-right',
+        });
       }
     } catch (err) {
       if (err.status === 403) {
@@ -260,7 +305,7 @@ export class ObservatoryComponent implements OnInit {
     });
   }
 
-  patchObservatory(): Promise<void> {
+  patchObservatory(): Promise<ObservatoryType> {
     return new Promise((resolve, reject) => {
       const patch: ObservatoryPatchType = _.omit(
         this.observatoryForm.value,
@@ -270,10 +315,7 @@ export class ObservatoryComponent implements OnInit {
       patch.translations = this.formService.createTranslationsObject(this.observatoryForm.value,this.availableLang,FormConstants.mandatoryFieldsObservatory);
       this.observatoryService.patch(this.id_observatory, patch).subscribe(
         (res) => {
-          this.toastr.success('INFO_MESSAGE.SUCCESS_UPDATED_OBSERVATORY', '', {
-            positionClass: 'toast-bottom-right',
-          });
-          resolve();
+          resolve(res);
         },
         (err) => {
           reject(err);
@@ -325,17 +367,6 @@ export class ObservatoryComponent implements OnInit {
     }
   }
 
-  openDeleteModal(content) {
-    this.modalRef = this.modalService.open(content, {
-      windowClass: 'delete-modal',
-      centered: true,
-    });
-  }
-
-  cancelDelete() {
-    this.modalRef.close();
-  }
-
   deleteThumbnail(thumbnail) {
     _.remove(this.thumbs, (item) => {
       return item === thumbnail;
@@ -345,26 +376,6 @@ export class ObservatoryComponent implements OnInit {
     });
     thumbnail.imgUrl = thumbnail.imgUrl.replace(Conf.img_srv, '');
     this.deleted_thumbs.push(thumbnail);
-  }
-
-  deleteObservatory() {
-    /* this.observatorysService.deleteObservatory(this.id_observatory).subscribe(
-      (res) => {
-        this.router.navigate(['observatorys']);
-      },
-      (err) => {
-        if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', {
-            positionClass: 'toast-bottom-right',
-          });
-        } else
-          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-            positionClass: 'toast-bottom-right',
-          });
-      }
-    );
-    this.modalRef.close(); */
   }
 
   onCancel() {
@@ -415,6 +426,7 @@ export class ObservatoryComponent implements OnInit {
         group_name: [role.group_name]
       }));
     });
+    this.setSelectableUsers();
   }
 
   getRoleLabel(role): string {
@@ -426,14 +438,14 @@ export class ObservatoryComponent implements OnInit {
   }
 
   addRole() {
-    console.log(this.newRole.value);
-    
     this.corRoles.push(this._fb.group(this.newRole.value));
     this.newRole.reset();
+    this.setSelectableUsers();
   }
 
   removeRole(index: number) {
     this.corRoles.removeAt(index);
+    this.setSelectableUsers();
   }
 
   ngOnDestroy() {
