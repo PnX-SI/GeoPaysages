@@ -28,10 +28,10 @@ def isRequestMe():
 
 
 def getAppUser(id_role):
-    app = Application.query.filter_by(
+    app = db.session.query(Application).filter_by(
         code_application=current_app.config["CODE_APPLICATION"]
     ).one()
-    app_user = AppUser.query.filter_by(
+    app_user = db.session.query(AppUser).filter_by(
         id_application=app.id_application, id_role=id_role
     ).one()
 

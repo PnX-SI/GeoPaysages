@@ -369,10 +369,10 @@ def returnAllLicences():
 @api.route("/api/users", methods=["GET"])
 @login_required
 def returnAllUsers():
-    a = Application.query.filter_by(
+    a = db.session.query(Application).filter_by(
         code_application=current_app.config["CODE_APPLICATION"]
     ).one()
-    all_users = AppUser.query.filter_by(id_application=a.id_application).all()
+    all_users = db.session.query(AppUser).filter_by(id_application=a.id_application).all()
 
     return jsonify([u.as_dict() for u in all_users])
 
@@ -381,7 +381,7 @@ def returnAllUsers():
 @fnauth.check_auth(2)
 def returnCurrentUser():
     id_role = current_user.id_role
-    user_data = AppUser.query.filter_by(id_role=id_role).all()
+    user_data = db.session.query(AppUser).filter_by(id_role=id_role).all()
     if not user_data:
         raise NotFound(f"No User with id {id_role}")
     get_role_by_observatories = models.CorRolesObservatory.query.filter_by(
