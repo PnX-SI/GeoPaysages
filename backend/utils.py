@@ -489,4 +489,4 @@ def getFiltersData():
             },
         )
 
-    return {"filters": filters, "observatories": observatories}
+    return {"filters": filters, "sites": sites, "observatories": observatories}
