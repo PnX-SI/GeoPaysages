@@ -78,14 +78,14 @@ deploy:
   #   - job: build_app
   #     optional: true
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test-deploy"'
+    - if: '$CI_COMMIT_BRANCH == "preprod"'
       changes:
-        - .gitlab-ci.yml
-        # - db/**
-        # - keycloak/**
-        # - hasura/**
-        # - python/**
-        # - app/**
+        # - .gitlab-ci.yml
+        - db/**
+        - keycloak/**
+        - hasura/**
+        - python/**
+        - app/**
   script:
     - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-geopaysages jwt=$NATURALIENS_ID_TOKEN)"
     - cd /home/ansible
