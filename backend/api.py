@@ -297,7 +297,7 @@ def returnAllSites():
     return jsonify(sites)
 
 
-@api.route("/api/sites/<int:id_site>/", methods=["GET"])
+@api.route("/api/sites/<int:id_site>", methods=["GET"])
 def returnSiteById(id_site):
     get_site_by_id = models.TSite.query.filter_by(id_site=id_site)
     site = site_schema.dump(get_site_by_id)
@@ -377,7 +377,7 @@ def returnAllUsers():
     return jsonify([u.as_dict() for u in all_users])
 
 
-@api.route("/api/me/", methods=["GET"])
+@api.route("/api/me", methods=["GET"])
 @fnauth.check_auth(2)
 def returnCurrentUser():
     id_role = current_user.id_role
@@ -401,7 +401,7 @@ def returnCurrentUser():
     )
 
 
-@api.route("/api/sites/<int:id_site>/", methods=["DELETE"])
+@api.route("/api/sites/<int:id_site>", methods=["DELETE"])
 @fnauth.check_auth(2)
 def deleteSite(id_site):
     site = models.TSite.query.filter_by(id_site=id_site).first()
@@ -468,7 +468,7 @@ def add_site():
     return jsonify(id_site=site.id_site), 200
 
 
-@api.route("/api/sites/<int:id_site>/", methods=["PATCH"])
+@api.route("/api/sites/<int:id_site>", methods=["PATCH"])
 @fnauth.check_auth(2)
 def update_site(id_site):
     site_data = request.get_json()
@@ -555,7 +555,7 @@ def add_cor_site_theme_stheme(id_site):
     return jsonify("success"), 200
 
 
-@api.route("/api/sites/<int:id_site>/photos/", methods=["POST"])
+@api.route("/api/sites/<int:id_site>/photos", methods=["POST"])
 @fnauth.check_auth(2)
 def post_photos(id_site):
     base_path = "/app/static/upload/images/"

@@ -22,14 +22,14 @@ export class SitesService {
   }
 
   deleteSite(id) {
-    return this.http.delete<any>(Conf.apiUrl + `sites/${id}/`, {
+    return this.http.delete<any>(Conf.apiUrl + `sites/${id}`, {
       withCredentials: true,
     });
   }
 
   addPhotos(id_site, image) {
     return this.http.post<any>(
-      Conf.apiUrl + `sites/${id_site}/photos/`,
+      Conf.apiUrl + `sites/${id_site}/photos`,
       image,
       { withCredentials: true, reportProgress: true, observe: 'events' }
     );
@@ -91,7 +91,7 @@ export class SitesService {
   }
 
   updateSite(id, site) {
-    return this.http.patch<any>(Conf.apiUrl + `sites/${id}/`, site, {
+    return this.http.patch<any>(Conf.apiUrl + `sites/${id}`, site, {
       withCredentials: true,
     });
   }
