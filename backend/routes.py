@@ -22,7 +22,6 @@ sthemes_schema = models.DicoSthemeSchema(many=True)
 @main.route("/<string:locale>/")
 @utils.localeGuard
 def home(locale=None):
-    locale = utils.getLocale()
     site_schema = models.TSiteSchema(many=True, locale=locale)
     communes_schema = models.CommunesSchema(many=True, locale=locale)
     sql = text(

@@ -118,11 +118,15 @@ def localeGuard(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         locale = request.view_args.get("locale")
-        if not isMultiLangs() and locale is not None:
-            return redirect(url_for(request.endpoint))
         langs = models.Lang.query.filter_by(is_published=True).all()
         lang_ids = [lang.id for lang in langs]
         defaultLang = next((lang for lang in langs if lang.is_default), None)
+        if not isMultiLangs():
+            if locale is not None:
+                return redirect(url_for(request.endpoint))
+            kwargs["locale"] = defaultLang.id
+            return f(*args, **kwargs)
+
         if isMultiLangs() and locale is not None and locale not in lang_ids:
             view_args = dict(**request.view_args)
             view_args.pop("locale", None)
