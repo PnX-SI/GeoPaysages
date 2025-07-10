@@ -20,7 +20,7 @@ export class LoginService {
   }
 
   getMe() {
-    return this.http.get<any>(Conf.apiUrl + 'me/' ,  { withCredentials: true });
+    return this.http.get<any>(Conf.apiUrl + 'me' ,  { withCredentials: true });
   }
 }
 

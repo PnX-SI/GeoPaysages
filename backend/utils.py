@@ -28,10 +28,10 @@ def isRequestMe():
 
 
 def getAppUser(id_role):
-    app = Application.query.filter_by(
+    app = db.session.query(Application).filter_by(
         code_application=current_app.config["CODE_APPLICATION"]
     ).one()
-    app_user = AppUser.query.filter_by(
+    app_user = db.session.query(AppUser).filter_by(
         id_application=app.id_application, id_role=id_role
     ).one()
 
@@ -118,11 +118,15 @@ def localeGuard(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         locale = request.view_args.get("locale")
-        if not isMultiLangs() and locale is not None:
-            return redirect(url_for(request.endpoint))
         langs = models.Lang.query.filter_by(is_published=True).all()
         lang_ids = [lang.id for lang in langs]
         defaultLang = next((lang for lang in langs if lang.is_default), None)
+        if not isMultiLangs():
+            if locale is not None:
+                return redirect(url_for(request.endpoint))
+            kwargs["locale"] = defaultLang.id
+            return f(*args, **kwargs)
+
         if isMultiLangs() and locale is not None and locale not in lang_ids:
             view_args = dict(**request.view_args)
             view_args.pop("locale", None)
@@ -489,4 +493,4 @@ def getFiltersData():
             },
         )
 
-    return {"filters": filters, "observatories": observatories}
+    return {"filters": filters, "sites": sites, "observatories": observatories}

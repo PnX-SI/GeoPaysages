@@ -427,6 +427,9 @@ def get_translated_data(self, data):
             None,
         )
 
+    if not translation and data["translations"]:
+        translation = data["translations"][0]
+
     for field in self.translatable_fields:
         data[field] = translation[field]
     return data
