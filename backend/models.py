@@ -1,4 +1,5 @@
 # coding: utf-8
+from flask import current_app
 from geoalchemy2.types import Geometry
 import geoalchemy2.functions as geo_funcs
 from geoalchemy2.shape import to_shape
@@ -608,8 +609,30 @@ class ObservatorySchemaFull(ma.SQLAlchemyAutoSchema):
         super().__init__(*args, **kwargs)
 
     @post_dump
-    def translate_fields(self, data, **kwargs):
-        return get_translated_data(self, data)
+    def set_fields(self, data, **kwargs):
+        data = get_translated_data(self, data)
+
+        code_app = current_app.config.get("CODE_APPLICATION")
+
+        # Filter invalid cor_roles entries due to missing FK (FDW case)
+        if "cor_roles" in data:
+            valid_ids = set(
+                r[0] for r in db.session.execute(
+                    """
+                    SELECT DISTINCT c.id_role
+                    FROM utilisateurs.cor_role_app_profil c
+                    JOIN utilisateurs.t_applications a ON c.id_application = a.id_application
+                    WHERE a.code_application = :code_app
+                    """,
+                    {"code_app": code_app}
+                )
+            )
+
+            data["cor_roles"] = [
+                cr for cr in data["cor_roles"] if cr["id_role"] in valid_ids
+            ]
+
+        return data
 
     @staticmethod
     def geomSerialize(obj):
