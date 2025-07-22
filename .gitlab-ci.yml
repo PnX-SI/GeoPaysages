@@ -43,7 +43,8 @@ build_admin:
   rules:
     - if: '$CI_COMMIT_BRANCH == "preprod"'
       changes:
-        - admin/**
+        - admin/**/*
+        - admin/*
         #- .gitlab-ci.yml
 
 build_backend:
