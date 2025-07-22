@@ -171,7 +171,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.sitesService.getThemes(),
       this.sitesService.getSubthemes(),
       this.sitesService.getCommunes(),
-      this.observatoriesSrv.getAll({ filterPresets: ['is_admin'] }),
+      this.observatoriesSrv.getAll({ filterPresets: ['is_contributor'] }),
     ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];

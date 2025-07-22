@@ -110,6 +110,8 @@ export class SitesService {
     const roles: CorRole[] =
       (currentUser.gpays || {}).role_by_observatories || [];
 
-    return roles.some((r) => r.group_name == GroupName.ADMIN);
+    return roles.some((r) =>
+      [GroupName.ADMIN, GroupName.CONTRIBUTOR].includes(r.group_name)
+    );
   }
 }

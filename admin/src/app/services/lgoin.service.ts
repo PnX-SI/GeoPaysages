@@ -3,15 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Conf } from './../config';
 import { User } from '../shared/user';
 import { AuthService } from './auth.service';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class LoginService {
   constructor(public http: HttpClient, private authService: AuthService) {}
 
   login(user: any) {
-    return this.http.post<UserResponse>(Conf.apiUrl + 'auth/login', user, {
-      withCredentials: true,
-    });
+    return this.http
+      .post<UserResponse>(Conf.apiUrl + 'auth/login', user, {
+        withCredentials: true,
+      })
+      .pipe(switchMap(() => this.getMe()));
   }
 
   logout() {

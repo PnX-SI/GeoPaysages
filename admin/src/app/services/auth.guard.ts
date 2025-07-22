@@ -6,7 +6,6 @@ import { DbConfService } from './dbconf.service';
 import { LanguageService } from './language.service';
 
 @Injectable()
-
 export class AuthGuard implements CanActivate {
   constructor(
     protected router: Router,
@@ -23,7 +22,7 @@ export class AuthGuard implements CanActivate {
       }
       this.loginService.getMe().subscribe(
         (user) => {
-          this.authService.currentUser = user[0];
+          this.authService.currentUser = user[0] || user;
           resolve(true);
         },
         (err) => {
