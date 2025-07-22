@@ -12,8 +12,7 @@ export class SitesService {
     const filterPresets = get(options || {}, 'filterPresets', []);
 
     return this.http.get<any[]>(
-      Conf.apiUrl +
-        `sites?filter_presets=${JSON.stringify(filterPresets)}`
+      Conf.apiUrl + `sites?filter_presets=${JSON.stringify(filterPresets)}`
     );
   }
 
@@ -28,11 +27,11 @@ export class SitesService {
   }
 
   addPhotos(id_site, image) {
-    return this.http.post<any>(
-      Conf.apiUrl + `sites/${id_site}/photos`,
-      image,
-      { withCredentials: true, reportProgress: true, observe: 'events' }
-    );
+    return this.http.post<any>(Conf.apiUrl + `sites/${id_site}/photos`, image, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   addNotices(notice) {
@@ -111,6 +110,8 @@ export class SitesService {
     const roles: CorRole[] =
       (currentUser.gpays || {}).role_by_observatories || [];
 
-    return roles.some((r) => r.group_name == GroupName.ADMIN);
+    return roles.some((r) =>
+      [GroupName.ADMIN, GroupName.CONTRIBUTOR].includes(r.group_name)
+    );
   }
 }

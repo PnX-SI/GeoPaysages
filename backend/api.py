@@ -167,9 +167,7 @@ def patchObservatory(id):
                 if not id_role or not group_name:
                     continue
                 new_cor_role = models.CorRolesObservatory(
-                    id_observatory=id,
-                    id_role=id_role,
-                    group_name=group_name
+                    id_observatory=id, id_role=id_role, group_name=group_name
                 )
                 db.session.add(new_cor_role)
 
@@ -369,10 +367,14 @@ def returnAllLicences():
 @api.route("/api/users", methods=["GET"])
 @login_required
 def returnAllUsers():
-    a = db.session.query(Application).filter_by(
-        code_application=current_app.config["CODE_APPLICATION"]
-    ).one()
-    all_users = db.session.query(AppUser).filter_by(id_application=a.id_application).all()
+    a = (
+        db.session.query(Application)
+        .filter_by(code_application=current_app.config["CODE_APPLICATION"])
+        .one()
+    )
+    all_users = (
+        db.session.query(AppUser).filter_by(id_application=a.id_application).all()
+    )
 
     return jsonify([u.as_dict() for u in all_users])
 
@@ -380,8 +382,18 @@ def returnAllUsers():
 @api.route("/api/me", methods=["GET"])
 @fnauth.check_auth(2)
 def returnCurrentUser():
+    a = (
+        db.session.query(Application)
+        .filter_by(code_application=current_app.config["CODE_APPLICATION"])
+        .one()
+    )
     id_role = current_user.id_role
-    user_data = db.session.query(AppUser).filter_by(id_role=id_role).all()
+    print(id_role, a.id_application)
+    user_data = (
+        db.session.query(AppUser)
+        .filter_by(id_role=id_role, id_application=a.id_application)
+        .first()
+    )
     if not user_data:
         raise NotFound(f"No User with id {id_role}")
     get_role_by_observatories = models.CorRolesObservatory.query.filter_by(
@@ -390,14 +402,11 @@ def returnCurrentUser():
     role_by_observatories = cor_roles_observatory_schema.dump(get_role_by_observatories)
 
     return jsonify(
-        [
-            {
-                **d.as_dict(),
-                "max_level_profil": d.id_droit_max,
-                "gpays": {"role_by_observatories": role_by_observatories},
-            }
-            for d in user_data
-        ]
+        {
+            **user_data.as_dict(),
+            "max_level_profil": user_data.id_droit_max,
+            "gpays": {"role_by_observatories": role_by_observatories},
+        }
     )
 
 
@@ -432,8 +441,10 @@ def deleteSite(id_site):
 @fnauth.check_auth(2)
 def add_site():
     data = dict(request.get_json())
-    utils.userAdminInObservatoryGuard(data.get("id_observatory"))
+    id_observatory = data.get("id_observatory")
+    utils.userContribObservatoryGuard(id_observatory)
     try:
+        is_admin = utils.isUserAdminInObservatory(current_user.id_role, id_observatory)
         transalations_data = data.pop("translations", [])
         site = models.TSite(**data)
         db.session.add(site)
@@ -451,7 +462,7 @@ def add_site():
                 desc_site=translate["desc_site"],
                 testim_site=translate["testim_site"],
                 legend_site=translate["legend_site"],
-                publish_site=translate["publish_site"],
+                publish_site=translate["publish_site"] if is_admin else False,
                 lang_id=translate["lang_id"],
                 row_id=site.id_site,
             )
@@ -477,19 +488,16 @@ def update_site(id_site):
     if site is None:
         abort(404)
     utils.userContribObservatoryGuard(site.id_observatory)
-    is_admin = (
-        True
-        if utils.isUserAdminInObservatory(current_user.id_role, site.id_observatory)
-        else False
-    )
     try:
         translations_data = site_data.pop("translations", [])
-        if not is_admin:
+        id_observatory = site_data.get("id_observatory", site.id_observatory)
+        if not utils.canUserContribObservatory(current_user.id_role, id_observatory):
             site_data.pop("id_observatory")
 
         models.TSite.query.filter_by(id_site=id_site).update(site_data)
         db.session.commit()
 
+        is_admin = utils.isUserAdminInObservatory(current_user.id_role, id_observatory)
         for translate in translations_data:
             if "lang_id" not in translate:
                 return (
@@ -866,5 +874,5 @@ def get_all_lib_locales():
 @api.route("/api/logout", methods=["GET"])
 def logout():
     resp = Response("", 200)
-    resp.delete_cookie("token")
+    resp.delete_cookie("session")
     return resp

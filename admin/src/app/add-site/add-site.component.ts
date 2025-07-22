@@ -2,7 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { NgbModal, NgbModalRef, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbTabChangeEvent,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { tileLayer, latLng, Map, Layer } from 'leaflet';
 import { FormService } from '../services/form.service';
@@ -16,7 +20,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ObservatoriesService } from '../services/observatories.service';
 import { Language, ObservatoryType } from '../types';
 import { DbConfService, IDBConf } from '../services/dbconf.service';
-import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import {
+  ToolbarService,
+  LinkService,
+  ImageService,
+  HtmlEditorService,
+} from '@syncfusion/ej2-angular-richtexteditor';
 import { TranslateService } from '@ngx-translate/core';
 import { switchMap, tap } from 'rxjs/operators';
 import { TranslationService } from '../services/translation.service';
@@ -33,15 +42,36 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   /* RichTextEditor toolbar configuration --> Hide image upload tool */
   public tools: object = {
     type: 'Expand',
-    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
-      'Outdent', 'Indent', '|',
+    items: [
+      'Bold',
+      'Italic',
+      'Underline',
+      'StrikeThrough',
+      'FontName',
+      'FontSize',
+      'FontColor',
+      'BackgroundColor',
+      'LowerCase',
+      'UpperCase',
+      '|',
+      'Formats',
+      'Alignments',
+      'OrderedList',
+      'UnorderedList',
+      'Outdent',
+      'Indent',
+      '|',
       'CreateLink',
       /*'Image', */
-      '|', 'ClearFormat', 'Print',
-      'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+      '|',
+      'ClearFormat',
+      'Print',
+      'SourceCode',
+      'FullScreen',
+      '|',
+      'Undo',
+      'Redo',
+    ],
   };
   selectedFile: File[];
   modalRef: NgbModalRef;
@@ -106,12 +136,12 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   removed_notice: any = null;
 
   currentLang: Language;
-  activeTab:string;
-  availableLang:Language[];
+  activeTab: string;
+  availableLang: Language[];
   currentTabLangId: string;
   errorMessage: string = '';
   defaultLang: Language;
-  
+
   constructor(
     private sitesService: SitesService,
     private observatoriesSrv: ObservatoriesService,
@@ -124,14 +154,14 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService,
     private dbConfSrv: DbConfService,
     private translate: TranslateService,
-    private translationService : TranslationService,
+    private translationService: TranslationService,
     private languageService: LanguageService
   ) {}
 
   ngOnInit() {
-    this.availableLang = this.languageService.getLanguagesDB()
+    this.availableLang = this.languageService.getLanguagesDB();
     this.defaultLang = this.languageService.getDefaultLanguageDB();
-    this.currentTabLangId =  this.availableLang[0].id;
+    this.currentTabLangId = this.availableLang[0].id;
     this.currentUser = this.authService.currentUser;
     this.id_site = this.route.snapshot.params['id'];
     this.siteForm = this.formService.initFormSite(this.availableLang);
@@ -141,7 +171,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.sitesService.getThemes(),
       this.sitesService.getSubthemes(),
       this.sitesService.getCommunes(),
-      this.observatoriesSrv.getAll({ filterPresets: ['is_admin'] }),
+      this.observatoriesSrv.getAll({ filterPresets: ['is_contributor'] }),
     ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];
@@ -203,9 +233,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       container.innerHTML =
         '<i style="line-height: unset" class="icon-full_screen"> </i>';
       container.style.backgroundColor = 'white';
-      this.translate.get('INFO_MESSAGE.RECENTER_MAP').subscribe((translatedMessage) => {
-        container.title = translatedMessage;
-      })
+      this.translate
+        .get('INFO_MESSAGE.RECENTER_MAP')
+        .subscribe((translatedMessage) => {
+          container.title = translatedMessage;
+        });
       container.onclick = () => {
         this.center = latLng(this.site.geom);
         this.zoom = 10;
@@ -316,7 +348,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         'lat',
         'lng',
         'id_stheme',
-        'translations'
+        'translations',
       ]);
       this.siteJson.geom =
         'SRID=4326;POINT(' +
@@ -327,20 +359,26 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.siteJson.path_file_guide_site = path_file_guide_site;
 
       // Créer l'objet de traductions
-      this.siteJson.translations = this.formService.createTranslationsObject(siteForm.value, this.availableLang,FormConstants.mandatoryFieldsSite);
+      this.siteJson.translations = this.formService.createTranslationsObject(
+        siteForm.value,
+        this.availableLang,
+        FormConstants.mandatoryFieldsSite
+      );
       this.uploadNotice();
       this.spinner.show();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
             // tslint:disable-next-line:quotemark
-            this.translate.get("INFO_MESSAGE.SUCESS_ADDED_SITE").subscribe((translatedMessage: string) => {
-            this.toast_msg = translatedMessage;
-            })
+            this.translate
+              .get('INFO_MESSAGE.SUCESS_ADDED_SITE')
+              .subscribe((translatedMessage: string) => {
+                this.toast_msg = translatedMessage;
+              });
             this.addThemes(
               Number(site.id_site),
               siteForm.value.id_theme,
-              siteForm.value.id_stheme,
+              siteForm.value.id_stheme
             );
           },
           (err) => {
@@ -348,17 +386,21 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.edit_btn = true;
             if (err.status === 403) {
               this.router.navigate(['']);
-          this.translate.get('ERRORS.EXPIRED_SESSION').subscribe((translatedMessage: string) => {
-            this.toastr.error(translatedMessage, '', {
-              positionClass: 'toast-bottom-right',
-            });
-          })
-        } else
-        this.translate.get('ERRORS.SERVER_ERROR').subscribe((translatedMessage: string) => {
-          this.toastr.error(translatedMessage, '', {
-            positionClass: 'toast-bottom-right',
-          });
-        })
+              this.translate
+                .get('ERRORS.EXPIRED_SESSION')
+                .subscribe((translatedMessage: string) => {
+                  this.toastr.error(translatedMessage, '', {
+                    positionClass: 'toast-bottom-right',
+                  });
+                });
+            } else
+              this.translate
+                .get('ERRORS.SERVER_ERROR')
+                .subscribe((translatedMessage: string) => {
+                  this.toastr.error(translatedMessage, '', {
+                    positionClass: 'toast-bottom-right',
+                  });
+                });
           }
         );
       } else {
@@ -370,7 +412,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       }
     } else {
       this.edit_btn = true;
-      this.errorMessage =this.generateErrorMessage();
+      this.errorMessage = this.generateErrorMessage();
     }
   }
 
@@ -416,18 +458,22 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.edit_btn = true;
             this.setAlert(err.error.image);
           } else if (err.status === 403) {
-            this.translate.get('ERRORS.SESSION_EXPIRED').subscribe((translatedMessage: string) => {
-              this.router.navigate(['']);
-              this.toastr.error(translatedMessage, '', {
-                positionClass: 'toast-bottom-right',
+            this.translate
+              .get('ERRORS.SESSION_EXPIRED')
+              .subscribe((translatedMessage: string) => {
+                this.router.navigate(['']);
+                this.toastr.error(translatedMessage, '', {
+                  positionClass: 'toast-bottom-right',
+                });
               });
-            });
           } else {
-            this.translate.get('ERRORS.SERVER_ERROR').subscribe((translatedMessage: string) => {
-              this.toastr.error(translatedMessage, '', {
-                positionClass: 'toast-bottom-right',
+            this.translate
+              .get('ERRORS.SERVER_ERROR')
+              .subscribe((translatedMessage: string) => {
+                this.toastr.error(translatedMessage, '', {
+                  positionClass: 'toast-bottom-right',
+                });
               });
-            });
           }
         },
         () => {
@@ -492,38 +538,43 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       (err) => {
         this.spinner.hide();
         if (err.status === 403) {
-          this.translate.get('ERRORS.SESSION_EXPIRED').subscribe((message: string) => {
-            this.router.navigate(['']);
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
+          this.translate
+            .get('ERRORS.SESSION_EXPIRED')
+            .subscribe((message: string) => {
+              this.router.navigate(['']);
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
             });
-          });
         } else {
-          this.translate.get('ERRORS.SERVER_ERROR').subscribe((message: string) => {
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
+          this.translate
+            .get('ERRORS.SERVER_ERROR')
+            .subscribe((message: string) => {
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
             });
-          });
         }
       }
     );
   }
 
   setAlert(message: string) {
-    this.translate.get('ALERTS.ITEM_EXISTS').subscribe((translatedMessage: string) => {
-      // Concaténer le message traduit avec la variable non traduite
-      this.alert = {
-        type: 'danger',
-        message: `${translatedMessage.replace('{{ item }}', message)}`,
-      };
-    });
+    this.translate
+      .get('ALERTS.ITEM_EXISTS')
+      .subscribe((translatedMessage: string) => {
+        // Concaténer le message traduit avec la variable non traduite
+        this.alert = {
+          type: 'danger',
+          message: `${translatedMessage.replace('{{ item }}', message)}`,
+        };
+      });
   }
 
   getSite(id_site) {
     this.sitesService.getsiteById(id_site).subscribe(
       (site) => {
-        console.log('site', site),
-        this.site = site.site[0];
+        console.log('site', site), (this.site = site.site[0]);
         _.forEach(site.photos, (photo) => {
           this.initPhotos.push({
             id_photo: photo.id_photo,
@@ -653,42 +704,52 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         this.new_photos.push(photo);
       }
     });
-    this.sitesService.updateSite(this.id_site, siteJson).pipe(
-      switchMap((res) => {
-        return this.translate.get(['INFO_MESSAGE.SUCCESS_UPDATED_SITE', 'BUTTONS.EDIT']).pipe(
-          tap(translations => {
-            this.toast_msg = translations['INFO_MESSAGE.SUCCESS_UPDATED_SITE'];
-            this.edit_btn_text = translations['BUTTONS.EDIT'];
-    
-            if (this.deleted_photos.length > 0) {
-              this.sitesService
-                .deletePhotos(this.deleted_photos.map((p) => p.id_photo))
-                .subscribe();
-            }
-            this.addThemes(Number(this.id_site), themes, sthemes);
-          })
-        );
-      })
-    ).subscribe(
-      () => {},  // Success handler (déjà géré dans `tap`)
-      (err) => {
-        this.spinner.hide();
-        if (err.status === 403) {
-          this.translate.get('ERRORS.SESSION_EXPIRED').subscribe((message: string) => {
-            this.router.navigate(['']);
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
-            });
-          });
-        } else {
-          this.translate.get('ERRORS.SERVER_ERROR').subscribe((message: string) => {
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
-            });
-          });
+    this.sitesService
+      .updateSite(this.id_site, siteJson)
+      .pipe(
+        switchMap((res) => {
+          return this.translate
+            .get(['INFO_MESSAGE.SUCCESS_UPDATED_SITE', 'BUTTONS.EDIT'])
+            .pipe(
+              tap((translations) => {
+                this.toast_msg =
+                  translations['INFO_MESSAGE.SUCCESS_UPDATED_SITE'];
+                this.edit_btn_text = translations['BUTTONS.EDIT'];
+
+                if (this.deleted_photos.length > 0) {
+                  this.sitesService
+                    .deletePhotos(this.deleted_photos.map((p) => p.id_photo))
+                    .subscribe();
+                }
+                this.addThemes(Number(this.id_site), themes, sthemes);
+              })
+            );
+        })
+      )
+      .subscribe(
+        () => {}, // Success handler (déjà géré dans `tap`)
+        (err) => {
+          this.spinner.hide();
+          if (err.status === 403) {
+            this.translate
+              .get('ERRORS.SESSION_EXPIRED')
+              .subscribe((message: string) => {
+                this.router.navigate(['']);
+                this.toastr.error(message, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
+          } else {
+            this.translate
+              .get('ERRORS.SERVER_ERROR')
+              .subscribe((message: string) => {
+                this.toastr.error(message, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
+          }
         }
-      }
-    );
+      );
   }
 
   editForm() {
@@ -752,18 +813,22 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       },
       (err) => {
         if (err.status === 403) {
-          this.translate.get('ERRORS.SESSION_EXPIRED').subscribe((message: string) => {
-            this.router.navigate(['']);
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
+          this.translate
+            .get('ERRORS.SESSION_EXPIRED')
+            .subscribe((message: string) => {
+              this.router.navigate(['']);
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
             });
-          });
         } else {
-          this.translate.get('ERRORS.SERVER_ERROR').subscribe((message: string) => {
-            this.toastr.error(message, '', {
-              positionClass: 'toast-bottom-right',
+          this.translate
+            .get('ERRORS.SERVER_ERROR')
+            .subscribe((message: string) => {
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
             });
-          });
         }
       }
     );
@@ -779,22 +844,44 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   patchForm() {
     // Initialisation d'un objet pour stocker les valeurs
     const translatedValues = {
-      translations: {} // Créer une structure pour stocker les traductions
-  };
-  // Parcours de toutes les langues disponibles
-  for (const lang of this.availableLang) {
+      translations: {}, // Créer une structure pour stocker les traductions
+    };
+    // Parcours de toutes les langues disponibles
+    for (const lang of this.availableLang) {
       const langId = lang.id; // Utilisation de langId directement depuis l'objet lang
       // Récupératio n des traductions pour chaque langue
       translatedValues.translations[langId] = {
-          name_site: this.translationService.getTranslation(langId, this.site, 'name_site'),
-          desc_site: this.translationService.getTranslation(langId, this.site, 'desc_site'),
-          legend_site: this.translationService.getTranslation(langId, this.site, 'legend_site'),
-          testim_site: this.translationService.getTranslation(langId, this.site, 'testim_site') || null,
-          publish_site: this.translationService.getTranslation(langId, this.site, 'publish_site') || false
+        name_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'name_site'
+        ),
+        desc_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'desc_site'
+        ),
+        legend_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'legend_site'
+        ),
+        testim_site:
+          this.translationService.getTranslation(
+            langId,
+            this.site,
+            'testim_site'
+          ) || null,
+        publish_site:
+          this.translationService.getTranslation(
+            langId,
+            this.site,
+            'publish_site'
+          ) || false,
       };
-  }
-  // Mise à jour des valeurs du formulaire
-  this.siteForm.patchValue({
+    }
+    // Mise à jour des valeurs du formulaire
+    this.siteForm.patchValue({
       ref_site: this.site.ref_site,
       lng: this.site.geom[1].toFixed(6),
       lat: this.site.geom[0].toFixed(6),
@@ -803,26 +890,27 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       code_city_site: this.site.code_city_site,
       main_theme_id: this.site.main_theme_id,
       id_observatory: this.site.id_observatory,
-  });
+    });
 
-  for (const lang of this.availableLang) {
-    const langId = lang.id;
-    const { name_site, desc_site, legend_site, testim_site, publish_site } = translatedValues.translations[langId];
+    for (const lang of this.availableLang) {
+      const langId = lang.id;
+      const { name_site, desc_site, legend_site, testim_site, publish_site } =
+        translatedValues.translations[langId];
 
-    // Mise à jour de chaque champ dans le formGroup correspondant à langId
-    this.siteForm.get(`translations.${langId}`).patchValue({
+      // Mise à jour de chaque champ dans le formGroup correspondant à langId
+      this.siteForm.get(`translations.${langId}`).patchValue({
         name_site,
         desc_site,
         legend_site,
         testim_site,
         publish_site,
-    });
-}
+      });
+    }
 
     if (this.site.path_file_guide_site) {
-        this.noticeName = this.site.path_file_guide_site;
+      this.noticeName = this.site.path_file_guide_site;
     }
-}
+  }
 
   layerUrl(key, layer) {
     return (
@@ -836,7 +924,6 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     );
   }
 
-
   ngOnDestroy() {
     this.spinner.hide();
     if (this.mySubscription) {
@@ -844,17 +931,19 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     }
   }
 
-
- // Méthode appelée lors du changement d'onglet
+  // Méthode appelée lors du changement d'onglet
   changeTab(event: NgbTabChangeEvent): void {
     this.currentTabLangId = event.activeId;
   }
 
   private generateErrorMessage(): string {
-     return this.formService.generateErrorMessage(this.siteForm,[], formLabels.site);
+    return this.formService.generateErrorMessage(
+      this.siteForm,
+      [],
+      formLabels.site
+    );
   }
 
-  
   isObservatoryEditable(): boolean {
     return (
       !this.site ||
@@ -865,7 +954,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     );
   }
 
-  canEditPublish():boolean {
+  canEditPublish(): boolean {
     return (
       !this.site ||
       this.observatoriesSrv.isUserAdmin(
@@ -875,13 +964,13 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     );
   }
 
-  canDelete():boolean {
+  canDelete(): boolean {
     return (
       this.site &&
       this.observatoriesSrv.isUserAdmin(
         this.site.id_observatory,
         this.currentUser
       )
-    ); 
+    );
   }
 }
