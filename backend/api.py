@@ -167,9 +167,7 @@ def patchObservatory(id):
                 if not id_role or not group_name:
                     continue
                 new_cor_role = models.CorRolesObservatory(
-                    id_observatory=id,
-                    id_role=id_role,
-                    group_name=group_name
+                    id_observatory=id, id_role=id_role, group_name=group_name
                 )
                 db.session.add(new_cor_role)
 
@@ -369,10 +367,14 @@ def returnAllLicences():
 @api.route("/api/users", methods=["GET"])
 @login_required
 def returnAllUsers():
-    a = db.session.query(Application).filter_by(
-        code_application=current_app.config["CODE_APPLICATION"]
-    ).one()
-    all_users = db.session.query(AppUser).filter_by(id_application=a.id_application).all()
+    a = (
+        db.session.query(Application)
+        .filter_by(code_application=current_app.config["CODE_APPLICATION"])
+        .one()
+    )
+    all_users = (
+        db.session.query(AppUser).filter_by(id_application=a.id_application).all()
+    )
 
     return jsonify([u.as_dict() for u in all_users])
 
