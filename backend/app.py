@@ -1,10 +1,14 @@
 # coding: utf-8
-from pypnusershub import routes
-from pypnusershub.login_manager import login_manager
+from authlib.jose import JsonWebToken
+from authlib.jose.errors import ExpiredTokenError, JoseError
+#from pypnusershub import routes
+#from pypnusershub.login_manager import login_manager
+from pypnusershub.db import models
 from routes import main as main_blueprint
-from flask import Flask
+from flask import Flask, current_app
 from flask_babel import Babel
 from flask_cors import CORS
+from flask_login import LoginManager
 from api import api
 import config
 import utils
@@ -12,6 +16,36 @@ import os
 import custom_app
 
 from env import db, migrate
+
+def decode_token(payload):
+    jwt = JsonWebToken(["HS256"])
+    key = current_app.config["SECRET_KEY"].encode("UTF-8")
+    claims = jwt.decode(payload, key)
+    claims.validate()
+    return dict(claims)
+
+login_manager = LoginManager()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(models.User, user_id)
+
+
+@login_manager.request_loader
+def load_user_from_request(request):
+    bearer = request.headers.get("Authorization", default=None, type=str)
+    if bearer:
+        jwt = bearer.replace("Bearer ", "")
+    else:
+        return None
+    try:
+        user_dict = decode_token(jwt)
+        user = db.session.get(models.User, user_dict["id_role"])
+        g.login_via_request = True
+        return user
+    except (ExpiredTokenError, JoseError):
+        return None
 
 
 class ReverseProxied(object):
@@ -73,7 +107,7 @@ def determine_locale():
 app.register_blueprint(main_blueprint)
 app.register_blueprint(api)
 app.register_blueprint(custom_app.custom)
-app.register_blueprint(routes.routes, url_prefix="/api/auth")
+#app.register_blueprint(routes.routes, url_prefix="/api/auth")
 
 app.config.from_pyfile("config.py")
 db.init_app(app)

@@ -7,16 +7,18 @@ from flask import (
     abort,
     Response,
     current_app,
+    redirect,
 )
 from flask_login import login_required, current_user, login_user
+from functools import wraps
 from sqlalchemy import text, and_
 from sqlalchemy.orm import exc
-from werkzeug.exceptions import BadRequest, NotFound
+from werkzeug.exceptions import BadRequest, Forbidden, NotFound
 from werkzeug.wsgi import FileWrapper
 from markupsafe import escape
 
-from pypnusershub import routes as fnauth
-from pypnusershub.db.models import AppUser, Application, User as UserhubUser
+#from pypnusershub import routes as fnauth
+from pypnusershub.db.models import AppUser, Application, User
 from pypnusershub.schemas import UserSchema
 import models
 import json
@@ -42,6 +44,27 @@ licences_schema = models.LicencePhotoSchema(many=True)
 corThemeStheme_Schema = models.CorThemeSthemeSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)
 cor_roles_observatory_schema = models.CorRolesObservatorySchema(many=True)
+
+def check_auth(
+    level,
+):
+    def _check_auth(view_func):
+        @wraps(view_func)
+        def decorated_view(*args, **kwargs):
+            if not current_user.is_authenticated:
+                return current_app.login_manager.unauthorized()
+            if int(current_user.max_level_profil) < level:
+                if "REDIRECT_ON_FORBIDDEN" in current_app.config:
+                    return redirect(current_app.config["REDIRECT_ON_FORBIDDEN"])
+                raise Forbidden(
+                    f"""User {current_user.id_role} is not authorized to to this action. 
+                        Required profil level is f{level} """
+                )
+            return view_func(*args, **kwargs)
+
+        return decorated_view
+
+    return _check_auth
 
 
 @api.route("/api/thumbor/presets/<name>/<filename>", methods=["GET"])
@@ -76,7 +99,7 @@ def thumborPreset(name, filename):
 
 
 @api.route("/api/conf", methods=["GET"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def returnDdConf():
     dbconf = utils.getDbConf()
 
@@ -105,7 +128,7 @@ def returnAllObservatories():
 
 
 @api.route("/api/observatories", methods=["POST"])
-@fnauth.check_auth(6)
+@check_auth(6)
 def postObservatory():
     try:
         data = dict(request.get_json())
@@ -154,7 +177,7 @@ def returnObservatoryById(id):
 
 
 @api.route("/api/observatories/<int:id>", methods=["PATCH"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def patchObservatory(id):
     utils.userAdminInObservatoryGuard(id)
     observatory = models.Observatory.query.filter_by(id=id).first()
@@ -221,7 +244,7 @@ def patchObservatory(id):
 
 
 @api.route("/api/observatories/<int:id>/image", methods=["PATCH"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def patchObservatoryImage(id):
     utils.userAdminInObservatoryGuard(id)
     field = request.form.get("field")
@@ -385,8 +408,8 @@ def login():
         if not app:
             raise BadRequest(f"No app for id {id_app}")
         user = db.session.execute(
-            db.session.query(UserhubUser)
-            .where(UserhubUser.identifiant == login)
+            db.session.query(User)
+            .where(User.identifiant == login)
             #.where(UserhubUser.filter_by_app())
         ).scalar_one()
         user_dict = UserSchema(exclude=["remarques"], only=["+max_level_profil"]).dump(
@@ -447,7 +470,7 @@ def returnAllUsers():
 
 
 @api.route("/api/me", methods=["GET"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def returnCurrentUser():
     a = (
         db.session.query(Application)
@@ -478,7 +501,7 @@ def returnCurrentUser():
 
 
 @api.route("/api/sites/<int:id_site>", methods=["DELETE"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def deleteSite(id_site):
     site = models.TSite.query.filter_by(id_site=id_site).first()
     if site is None:
@@ -505,7 +528,7 @@ def deleteSite(id_site):
 
 
 @api.route("/api/sites", methods=["POST"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def add_site():
     data = dict(request.get_json())
     id_observatory = data.get("id_observatory")
@@ -547,7 +570,7 @@ def add_site():
 
 
 @api.route("/api/sites/<int:id_site>", methods=["PATCH"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def update_site(id_site):
     site_data = request.get_json()
 
@@ -609,7 +632,7 @@ def update_site(id_site):
 
 
 @api.route("/api/sites/<int:id_site>/themes", methods=["POST"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def add_cor_site_theme_stheme(id_site):
     site = models.TSite.query.filter_by(id_site=id_site).first()
     if site is None:
@@ -631,7 +654,7 @@ def add_cor_site_theme_stheme(id_site):
 
 
 @api.route("/api/sites/<int:id_site>/photos", methods=["POST"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def post_photos(id_site):
     base_path = "/app/static/upload/images/"
     data = request.form.getlist("data")
@@ -675,7 +698,7 @@ def post_photos(id_site):
 
 
 @api.route("/api/addNotices", methods=["POST"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def upload_notice():
     base_path = "./static/upload/notice-photo/"
     notice = request.files.get("notice")
@@ -685,7 +708,7 @@ def upload_notice():
 
 
 @api.route("/api/deleteNotice/<notice>", methods=["DELETE"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def delete_notice(notice):
     base_path = "./static/upload/notice-photo/"
     for fileName in os.listdir(base_path):
@@ -696,7 +719,7 @@ def delete_notice(notice):
 
 
 @api.route("/api/photos/<int:id_photo>", methods=["PATCH"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def update_photo(id_photo):
     base_path = "/app/static/upload/images/"
     data = request.form.get("data")
@@ -733,7 +756,7 @@ def update_photo(id_photo):
 
 
 @api.route("/api/photos", methods=["DELETE"])
-@fnauth.check_auth(2)
+@check_auth(2)
 def deletePhotos():
     base_path = "/app/static/upload/images/"
     ids = json.loads(request.args.get("ids"))
@@ -786,7 +809,7 @@ def get_one_lang(id):
 
 
 @api.route("/api/langs", methods=["POST"])
-@fnauth.check_auth(6)
+@check_auth(6)
 def add_langs():
     lang = request.get_json()
     try:
@@ -844,7 +867,7 @@ def add_langs():
 
 
 @api.route("/api/langs/<string:lang_id>", methods=["PATCH"])
-@fnauth.check_auth(6)
+@check_auth(6)
 def update_lang(lang_id):
     data = request.get_json()
     try:
@@ -919,7 +942,7 @@ def update_lang(lang_id):
 
 
 @api.route("/api/langs/<string:id>", methods=["DELETE"])
-@fnauth.check_auth(6)
+@check_auth(6)
 def delete_lang(id):
     try:
         models.Lang.query.filter_by(id=id).delete()
