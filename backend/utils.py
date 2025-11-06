@@ -16,7 +16,7 @@ import urllib.parse
 from pypnusershub.db.models import AppUser, Application
 import models
 
-db = SQLAlchemy()
+from env import db
 
 photo_schema = models.TPhotoSchema(many=True)
 themes_sthemes_schema = models.CorSthemeThemeSchema(many=True)

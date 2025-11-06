@@ -1,3 +1,4 @@
+from authlib.jose import JsonWebToken
 from flask import (
     request,
     Blueprint,
@@ -7,13 +8,16 @@ from flask import (
     Response,
     current_app,
 )
-from flask_login import login_required, current_user
+from flask_login import login_required, current_user, login_user
 from sqlalchemy import text, and_
-from werkzeug.exceptions import NotFound
+from sqlalchemy.orm import exc
+from werkzeug.exceptions import BadRequest, NotFound
 from werkzeug.wsgi import FileWrapper
+from markupsafe import escape
 
 from pypnusershub import routes as fnauth
-from pypnusershub.db.models import AppUser, Application
+from pypnusershub.db.models import AppUser, Application, User as UserhubUser
+from pypnusershub.schemas import UserSchema
 import models
 import json
 import utils
@@ -22,6 +26,7 @@ import requests
 from mimetypes import guess_type
 from io import BytesIO
 import urllib.parse
+import datetime
 
 from env import db
 
@@ -362,6 +367,68 @@ def returnAllLicences():
     get_all_licences = models.DicoLicencePhoto.query.all()
     licences = licences_schema.dump(get_all_licences)
     return jsonify(licences), 200
+
+
+@api.route("/api/users/login", methods=["POST"])
+def login():
+    user_data = request.json
+    try:
+        login = user_data.get("login")
+        password = user_data.get("password")
+        id_app = current_app.config["USERSHUB_ID_APP"]
+        if id_app is None or login is None or password is None:
+            msg = json.dumps(
+                "One of the following parameter is required ['id_application', 'login', 'password']"
+            )
+            return Response(msg, status=400)
+        app = db.session.get(Application, id_app)
+        if not app:
+            raise BadRequest(f"No app for id {id_app}")
+        user = db.session.execute(
+            db.session.query(UserhubUser)
+            .where(UserhubUser.identifiant == login)
+            #.where(UserhubUser.filter_by_app())
+        ).scalar_one()
+        user_dict = UserSchema(exclude=["remarques"], only=["+max_level_profil"]).dump(
+            user
+        )
+    except exc.NoResultFound as e:
+        msg = json.dumps(
+            {
+                "type": "login",
+                "msg": (
+                    'No user found with the username "{login}" for '
+                    'the application with id "{id_app}"'
+                ).format(login=escape(login), id_app=id_app),
+            }
+        )
+        #log.info(msg)
+        status_code = current_app.config.get("BAD_LOGIN_STATUS_CODE", 490)
+        return Response(msg, status=status_code)
+
+    if not user.check_password(user_data["password"]):
+        msg = json.dumps({"type": "password", "msg": "Mot de passe invalide"})
+        #log.info(msg)
+        status_code = current_app.config.get("BAD_LOGIN_STATUS_CODE", 490)
+        return Response(msg, status=status_code)
+    login_user(user)
+    # Génération d'un token
+    token = encode_token(user_dict)
+    token_exp = datetime.datetime.now(datetime.timezone.utc)
+    token_exp += datetime.timedelta(seconds=current_app.config["COOKIE_EXPIRATION"])
+    return jsonify(
+        {"user": user_dict, "expires": token_exp.isoformat(), "token": token.decode()}
+    )
+
+def encode_token(payload):
+    expire = datetime.datetime.now() + datetime.timedelta(seconds=current_app.config["COOKIE_EXPIRATION"])
+    header = {
+        "alg": "HS256",
+        "exp": int(datetime.datetime.timestamp(expire)),
+    }
+    jwt = JsonWebToken(["HS256"])
+    key = current_app.config["SECRET_KEY"].encode("UTF-8")
+    return jwt.encode(header, payload, key)
 
 
 @api.route("/api/users", methods=["GET"])
