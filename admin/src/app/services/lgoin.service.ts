@@ -11,7 +11,7 @@ export class LoginService {
 
   login(user: any) {
     return this.http
-      .post<UserResponse>(Conf.apiUrl + 'auth/login', user, {
+      .post<UserResponse>(Conf.apiUrl + 'users/login', user, {
         withCredentials: true,
       })
       .pipe(switchMap(() => this.getMe()));

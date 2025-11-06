@@ -20,3 +20,4 @@ COMPARATOR_VERSION = 2
 
 # Application code for UsersHub-Authentification-Module needs
 CODE_APPLICATION = os.getenv("CODE_APPLICATION")
+USERSHUB_ID_APP = os.getenv("USERSHUB_ID_APP")
