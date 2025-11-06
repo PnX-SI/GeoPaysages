@@ -11,6 +11,8 @@ from enum import Enum
 from env import db, ma
 from sqlalchemy.dialects import postgresql
 
+from pypnusershub.db.models import User
+
 
 class Conf(db.Model):
     __tablename__ = "conf"
@@ -102,10 +104,12 @@ class CorRolesObservatory(db.Model):
     __tablename__ = "cor_roles_observatory"
     __table_args__ = {"schema": "geopaysages"}
 
-    id_role = db.Column(db.ForeignKey("utilisateurs.t_roles.id_role"), primary_key=True)
-    t_role = db.relationship(
+    #id_role = db.Column(db.ForeignKey("utilisateurs.t_roles.id_role"), primary_key=True)
+    id_role = db.Column(db.ForeignKey(User.id_role), primary_key=True)
+    """ t_role = db.relationship(
         "TRole", primaryjoin="CorRolesObservatory.id_role == TRole.id_role"
-    )
+    ) """
+    t_role = db.relationship(User, primaryjoin=id_role == User.id_role)
     id_observatory = db.Column(
         db.ForeignKey("geopaysages.t_observatory.id"), primary_key=True
     )
@@ -279,7 +283,7 @@ class DicoThemeTranslation(db.Model):
     lang = db.relationship("Lang", back_populates="dico_theme_translations")
 
 
-class TRole(db.Model):
+""" class TRole(db.Model):
     __tablename__ = "t_roles"
     __table_args__ = {"schema": "utilisateurs", "extend_existing": True}
 
@@ -317,7 +321,7 @@ class TRole(db.Model):
         postgresql.JSONB(astext_type=db.Text()),
         autoincrement=False,
         nullable=True,
-    )
+    ) """
 
 
 class TPhoto(db.Model):
@@ -328,7 +332,7 @@ class TPhoto(db.Model):
     id_site = db.Column(db.ForeignKey("geopaysages.t_site.id_site"))
     id_observatory = db.Column(db.ForeignKey("geopaysages.t_observatory.id"))
     path_file_photo = db.Column(db.String)
-    id_role = db.Column(db.ForeignKey("utilisateurs.t_roles.id_role"))
+    id_role = db.Column(db.ForeignKey(User.id_role))
     date_photo = db.Column(db.String)
     filter_date = db.Column(db.Date)
     legende_photo = db.Column(db.String)
@@ -343,7 +347,7 @@ class TPhoto(db.Model):
         backref="t_photos",
     )
     t_role = db.relationship(
-        "TRole", primaryjoin="TPhoto.id_role == TRole.id_role", backref="t_photos"
+        User, primaryjoin=id_role == User.id_role, backref="t_photos"
     )
     t_site = db.relationship(
         "TSite", primaryjoin="TPhoto.id_site == TSite.id_site", backref="t_photos"
