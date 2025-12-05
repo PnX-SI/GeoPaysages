@@ -1,7 +1,7 @@
 version: "3"
 services:
   proxy:
-    image: traefik:v2.10.4
+    image: traefik:v3.6.2
     restart: always
     # depends_on:
     #   - backend
