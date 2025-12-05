@@ -398,15 +398,18 @@ def login():
     try:
         login = user_data.get("login")
         password = user_data.get("password")
-        id_app = current_app.config["USERSHUB_ID_APP"]
-        if id_app is None or login is None or password is None:
+        if login is None or password is None:
             msg = json.dumps(
-                "One of the following parameter is required ['id_application', 'login', 'password']"
+                "One of the following parameter is required ['login', 'password']"
             )
             return Response(msg, status=400)
-        app = db.session.get(Application, id_app)
-        if not app:
-            raise BadRequest(f"No app for id {id_app}")
+        code_app = current_app.config["CODE_APPLICATION"]
+        try:
+            db.session.query(Application).filter_by(
+                code_application=code_app
+            ).one()
+        except exc.NoResultFound as e:
+            return Response(f"No app for code {code_app}", status=500)
         user = db.session.execute(
             db.session.query(User)
             .where(User.identifiant == login)
@@ -421,8 +424,8 @@ def login():
                 "type": "login",
                 "msg": (
                     'No user found with the username "{login}" for '
-                    'the application with id "{id_app}"'
-                ).format(login=escape(login), id_app=id_app),
+                    'the application with code "{code_app}"'
+                ).format(login=escape(login), code_app=code_app),
             }
         )
         #log.info(msg)
