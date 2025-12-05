@@ -479,7 +479,7 @@ class TSiteTranslationSchema(ma.SQLAlchemyAutoSchema):
 
     class Meta:
         model = TSiteTranslation
-        fields = ("name_site", "desc_site", "legend_site", "publish_site", "lang_id")
+        fields = ("name_site", "desc_site", "testim_site", "legend_site", "publish_site", "lang_id")
 
 
 class DicoThemeTranslationSchema(ma.SQLAlchemyAutoSchema):
