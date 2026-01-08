@@ -82,7 +82,7 @@
         <div class="row mt-4">
           <div class="col-lg-{{ '6' if site.testim_site else '12' }}">
             <div class="info rounded p-3">
-              <h5 class="text-uppercase">Mots clés</h5>
+              <h5 class="text-uppercase">{{ _('obs_point.keywords') }}</h5>
               <div class="text-collapse" ref="text_collapse_stheme" v-bind:class="textCollapseClsStheme">
                 <div class="target">
                 {% for un_sous_theme in site.stheme %}

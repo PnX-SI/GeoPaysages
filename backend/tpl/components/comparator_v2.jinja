@@ -160,7 +160,7 @@
       <b-button variant="primary" v-on:click="onNextBtnClick()">&gt;</b-button>
       {% if dbconf.comparator_date_step_button == 'False': %}
       {% else %}
-      <b-dropdown variant="primary" :text="'Pas : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
+      <b-dropdown variant="primary" :text="'{{_('comparatorv2.date.step')}} : ' + selectedStep?.label" toggle-class="btn-no-uppercase" class="d-block d-md-inline-block mt-1 mt-md-0" no-flip :right="right">
         <b-dropdown-item-button v-for="step in steps" v-bind:key="step.value" v-on:click="onStepClick(step)">
           <span :inner-html.prop="step.label"></span>
         </b-dropdown-item-button>
@@ -177,6 +177,7 @@
         dbconf: {{dbconf | tojson}},
         site: {{site | tojson}},
         photos: {{photos | tojson}},
+        locale: "{{locale}}",
         translations: {
           'mode_sidebyside': "{{ _('comparatorv2.mode.sidebyside') }}",
           'mode_split': "{{ _('comparatorv2.mode.split') }}",

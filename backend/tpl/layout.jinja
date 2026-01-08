@@ -36,7 +36,7 @@
 
 {% set active_page = active_page|default('') -%}
 
-<body class="{% block bodyClassNames %}{% endblock %}">
+<body class="{% block bodyClassNames %}{% endblock %} {{ "is-multi-langs" if isMultiLangs else "" }}">
 
     <header id="header">
       <b-navbar class="p-2 p-md-0 h-100" toggleable="md" type="{{'dark' if dbconf.header_bg_primary else 'light' }}" variant="{{'primary' if dbconf.header_bg_primary else 'light' }}">
@@ -51,8 +51,24 @@
         </b-navbar-brand>
 
         <b-collapse id="nav-collapse" is-nav class="p-3 py-md-0 pl-md-0 border">
-          <b-navbar-nav>
+          <b-navbar-nav  class="align-items-baseline">
             {% include getCustomTpl('main_menu') %}
+            {% if isMultiLangs %}
+            {% for lang in langs %}
+            <li class="nav-item {{ "mt-3" if loop.index0 == 0 else "mt-1" }} d-md-none">
+              <a href="{{ getLocalizedRequestEndpoint(lang.id) }}" class="nav-link p-0">
+                <span class="px-3">{{ lang.label }}</span>
+              </a>
+            </li>
+            {% endfor %}
+            <div class="d-none d-md-block language-selector">
+              <b-dropdown text="{{ locale }}" variant="secondary" right>
+                {% for lang in langs %}
+                <b-dropdown-item href="{{ getLocalizedRequestEndpoint(lang.id) }}">{{ lang.label }}</b-dropdown-item>
+                {% endfor %}
+              </b-dropdown>
+            </div>
+            {% endif %}
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
@@ -72,17 +88,17 @@
           <h6>{{ _('footer.internal_title') }}</h6>
           <ul class="mb-4">
             <li>
-              <a href="/">
+              <a href="{{getLocalizedLink('/')}}">
                 {{ _('footer.internal_links.home') }}
               </a>
             </li>
             <li>
-              <a href="/sites">
+              <a href="{{getLocalizedLink('/sites')}}">
                 {{ _('footer.internal_links.sites') }}
               </a>
             </li>
             <li>
-              <a href="/gallery">
+              <a href="{{getLocalizedLink('/gallery')}}">
                 {{ _('footer.internal_links.gallery') }}
               </a>
             </li>

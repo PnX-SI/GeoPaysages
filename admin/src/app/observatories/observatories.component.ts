@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ObservatoriesService } from '../services/observatories.service';
-import { ObservatoryType } from '../types';
+import { Language, ObservatoryType } from '../types';
+import { TranslateService } from '@ngx-translate/core';
+import { LanguageService } from '../services/language.service';
+import { AuthService } from '../services/auth.service';
 
 type ObservatoryRowType = {
   observatory: ObservatoryType;
@@ -26,6 +29,8 @@ type ObservatoryRowType = {
 export class ObservatoriesComponent implements OnInit, OnDestroy {
   rows: ObservatoryRowType[] = [];
   itemsLoaded = false;
+  defaultLangDB: Language | undefined;
+  currentUser: any;
 
   constructor(
     private observatoriesSrv: ObservatoriesService,
@@ -33,15 +38,20 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private spinner: NgxSpinnerService,
     private toastr: ToastrService,
+    private translate: TranslateService,
+    private languageService: LanguageService,
+    private authService: AuthService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.currentUser = this.authService.currentUser;
+    await this.initializeLangDB();
     this.getAll();
   }
 
   getAll() {
     this.spinner.show();
-    this.observatoriesSrv.getAll().subscribe(
+    this.observatoriesSrv.getAll({ filterPresets: ['is_admin'] }).subscribe(
       (items) => {
         _.forEach(items, (observatory) => {
           observatory.logo = Conf.img_srv + '50x50/' + observatory.logo;
@@ -52,12 +62,18 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.spinner.hide();
-        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-          positionClass: 'toast-bottom-right',
-        });
+        this.translate.get('ERRORS.SERVER_ERROR').subscribe((message: string) => {
+          this.toastr.error(message, '', {
+            positionClass: 'toast-bottom-right',
+          });
+        })
         console.log('get items error: ', err);
       }
     );
+  }
+
+  canAdd(): boolean {
+    return this.currentUser.max_level_profil > 5
   }
 
   onSelect({ selected }: { selected: ObservatoryRowType[] }) {
@@ -74,5 +90,11 @@ export class ObservatoriesComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.changeDetector.detach();
     this.spinner.hide();
+  }
+
+  async initializeLangDB() {
+    await this.languageService.loadLanguagesSorted();
+    this.languageService.getLanguagesDB();
+    this.defaultLangDB = this.languageService.getDefaultLanguageDB();
   }
 }

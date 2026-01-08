@@ -284,3 +284,18 @@ h6 .light {
 .custom-popup {
   bottom: 26px !important;
 }
+
+
+.error-message-container {
+  background-color: rgba(255, 0, 0, 0.1); /* Fond rouge clair */
+  border: 1px solid red; /* Bordure rouge */
+  padding: 10px; /* Espacement interne */
+  margin-bottom: 15px; /* Espacement sous le message d'erreur */
+  border-radius: 5px; /* Coins arrondis */
+  margin-top: 15px;
+}
+
+.error-message {
+  color: red; /* Texte rouge */
+  margin: 0; /* Supprime le marges par défaut du paragraphe */
+}

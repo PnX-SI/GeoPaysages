@@ -73,3 +73,23 @@ li {
     font-size: 26px
   }
 }
+.language{
+  padding-bottom: 3px;
+  padding-left: 0px;
+  padding-right: 30px;
+  .icon-earth{
+    font-size: 26px
+  }
+}
+.selected-language {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 20px;
+}

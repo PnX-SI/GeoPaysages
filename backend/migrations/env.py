@@ -14,26 +14,28 @@ config = context.config
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 fileConfig(config.config_file_name)
-logger = logging.getLogger('alembic.env')
+logger = logging.getLogger("alembic.env")
 
 
 def include_name(name, type_, parent_names):
     if type_ == "schema":
         return name in ["geopaysages", "utilisateurs"]
     elif type_ == "table":
-        return parent_names['schema_name'] == "geopaysages" or name == "t_roles"
+        return parent_names["schema_name"] == "geopaysages" or name == "t_roles"
     elif type_ != "column":
-        return parent_names['table_name'] != "t_roles"
+        return parent_names["table_name"] != "t_roles"
     return ["column", "index", "unique_constraint", "foreign_key_constraint"]
+
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 config.set_main_option(
-    'sqlalchemy.url',
-    str(current_app.extensions['migrate'].db.get_engine().url).replace(
-        '%', '%%'))
-target_metadata = current_app.extensions['migrate'].db.metadata
+    "sqlalchemy.url",
+    str(current_app.extensions["migrate"].db.get_engine().url).replace("%", "%%"),
+)
+target_metadata = current_app.extensions["migrate"].db.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -55,12 +57,12 @@ def run_migrations_offline():
     """
     url = config.get_main_option("sqlalchemy.url")
     context.configure(
-        url = url,
-        target_metadata = target_metadata,
-        literal_binds = True,
-        include_schemas = True,
-        include_name = include_name,
-        version_table_schema = 'geopaysages'
+        url=url,
+        target_metadata=target_metadata,
+        literal_binds=True,
+        include_schemas=True,
+        include_name=include_name,
+        version_table_schema="geopaysages",
     )
 
     with context.begin_transaction():
@@ -79,13 +81,13 @@ def run_migrations_online():
     # when there are no changes to the schema
     # reference: http://alembic.zzzcomputing.com/en/latest/cookbook.html
     def process_revision_directives(context, revision, directives):
-        if getattr(config.cmd_opts, 'autogenerate', False):
+        if getattr(config.cmd_opts, "autogenerate", False):
             script = directives[0]
             if script.upgrade_ops.is_empty():
                 directives[:] = []
-                logger.info('No changes in schema detected.')
+                logger.info("No changes in schema detected.")
 
-    connectable = current_app.extensions['migrate'].db.get_engine()
+    connectable = current_app.extensions["migrate"].db.get_engine()
     current_tenant = context.get_x_argument(as_dictionary=True).get("tenant")
 
     with connectable.connect() as connection:
@@ -93,13 +95,13 @@ def run_migrations_online():
             connection=connection,
             target_metadata=target_metadata,
             process_revision_directives=process_revision_directives,
-            include_schemas = True,
-            include_name = include_name,
-            version_table_schema = 'geopaysages',
-            **current_app.extensions['migrate'].configure_args
+            include_schemas=True,
+            include_name=include_name,
+            version_table_schema="geopaysages",
+            **current_app.extensions["migrate"].configure_args
         )
 
-        connection.execute('ALTER ROLE ALL SET search_path = public')
+        connection.execute("ALTER ROLE ALL SET search_path = public")
         connection.dialect.default_schema_name = current_tenant
         with context.begin_transaction():
             context.run_migrations()

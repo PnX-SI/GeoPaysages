@@ -14,10 +14,26 @@ geopsg.initHomeMulti = (options) => {
     zoomControl: false,
     zoomSnap: 0,
   });
-  const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+
+  let confLayers = _.get(options.dbconf, 'home_map_layers', _.get(options.dbconf, 'map_layers', []));
+  if (!Array.isArray(confLayers)) {
+    confLayers = [];
+  }
+  if (!confLayers.length) {
+    confLayers = [
+      {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        },
+      },
+    ];
+  }
+
+  confLayers.forEach((confLayer) => {
+    const fct = confLayer.isWMS ? L.tileLayer.wms : L.tileLayer;
+    fct(confLayer.url, confLayer.options).addTo(map);
   });
-  tileLayer.addTo(map);
 
   const layers = options.sites.map((site) => L.marker(site.geom, { icon: utils.getMarkerIcon(site) }));
   options.observatories.forEach((observatory) => {

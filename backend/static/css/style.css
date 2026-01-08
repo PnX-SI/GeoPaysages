@@ -280,11 +280,13 @@ html {
   font-family: Roboto;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 1.75rem;
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: 1.25rem;
 }
 
@@ -443,13 +445,13 @@ h6 .light {
 /* HEADER */
 
 #header {
-  z-index: 1002;
+  z-index: 1003;
   box-shadow: 0px 2px 2px #00000044;
   position: relative;
 }
 @media (min-width: 768px) {
   #header {
-    height: var(--header-h)
+    height: var(--header-h);
   }
 }
 
@@ -459,6 +461,10 @@ h6 .light {
 
 #header .navbar-light .nav-link.active {
   color: var(--color-primary) !important;
+}
+
+#header .language-selector .dropdown-menu {
+  height: auto !important;
 }
 
 .navbar-collapse {

@@ -1,0 +1,270 @@
+# German translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-06 08:10+0000\n"
+"PO-Revision-Date: 2018-12-21 11:34+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: de\n"
+"Language-Team: de <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: utils.py:229
+msgid "sites.filter.themes"
+msgstr "Thema"
+
+#: utils.py:232
+msgid "sites.filter.subthemes"
+msgstr "Unterthema"
+
+#: utils.py:238
+msgid "sites.filter.township"
+msgstr "Gemeinde"
+
+#: utils.py:244
+msgid "sites.filter.years"
+msgstr "Jahr"
+
+#: utils.py:391
+msgid "sites.filter.obervatories"
+msgstr "Observatorium"
+
+#: tpl/gallery.jinja:3
+msgid "gallery.meta_title"
+msgstr "Fotogalerie"
+
+#: tpl/gallery.jinja:18
+msgid "gallery.title"
+msgstr "Fotogalerie"
+
+#: tpl/components/sites-filter.jinja:8 tpl/components/sites-filter.jinja:15
+#: tpl/gallery.jinja:76 tpl/sites.jinja:52
+msgid "sites.filters.nb_result"
+msgstr "Filter: %(nb)s Ergebnis(se)"
+
+#: tpl/home_mono_obs.jinja:3 tpl/home_multi_obs.jinja:3
+msgid "home.meta_title"
+msgstr "GeoPaysages: Fotografisches Landschaftsobservatorium"
+
+#: tpl/home_mono_obs.jinja:17 tpl/home_multi_obs.jinja:19
+msgid "home.title_mobile"
+msgstr "Startseite"
+
+#: tpl/components/home-carousel.jinja:3 tpl/components/home-carousel.jinja:24
+#: tpl/home_mono_obs.jinja:22 tpl/home_multi_obs.jinja:24
+msgid "home.title"
+msgstr "Fotografisches Landschaftsobservatorium"
+
+#: tpl/home_mono_obs.jinja:36 tpl/home_multi_obs.jinja:61
+msgid "home.block.explore_sites"
+msgstr "Beobachtungsstandorte erkunden"
+
+#: tpl/home_mono_obs.jinja:43
+msgid "home.block.discover"
+msgstr "Diesen Beobachtungsstandort entdecken"
+
+#: tpl/home_mono_obs.jinja:46
+msgid "home.block.photography"
+msgstr "Fotografie"
+
+#: tpl/home_multi_obs.jinja:48
+msgid "home.block.discover_observatories"
+msgstr "Entdecken Sie unsere Observatorien"
+
+#: tpl/layout.jinja:90
+msgid "footer.internal_title"
+msgstr "Die Website"
+
+#: tpl/layout.jinja:94
+msgid "footer.internal_links.home"
+msgstr "Startseite"
+
+#: tpl/layout.jinja:99
+msgid "footer.internal_links.sites"
+msgstr "Beobachtungsstandorte"
+
+#: tpl/layout.jinja:104
+msgid "footer.internal_links.gallery"
+msgstr "Fotogalerie"
+
+#: tpl/layout.jinja:110
+msgid "footer.internal_links.contact"
+msgstr "Kontaktieren Sie uns"
+
+#: tpl/layout.jinja:119
+msgid "footer.external_title"
+msgstr "Unser Gebiet"
+
+#: tpl/site.jinja:31
+msgid "site.title_mobile"
+msgstr "Beobachtungsstandort"
+
+#: tpl/site.jinja:58
+msgid "obs_point.buttons.notice"
+msgstr "Technische Hinweise für den Fotografen"
+
+#: tpl/site.jinja:63
+msgid "obs_point.buttons.obs"
+msgstr "Eine Beobachtung machen"
+
+#: tpl/site.jinja:68
+msgid "obs_point.description"
+msgstr "Standortbeschreibung"
+
+#: tpl/site.jinja:75 tpl/site.jinja:94 tpl/site.jinja:111
+msgid "obs_point.buttons.read_more"
+msgstr "Mehr lesen"
+
+#: tpl/site.jinja:76 tpl/site.jinja:95 tpl/site.jinja:112
+msgid "obs_point.buttons.read_less"
+msgstr "Weniger lesen"
+
+#: tpl/site.jinja:85
+msgid "obs_point.keywords"
+msgstr "Schlüsselwörter"
+
+#: tpl/site.jinja:104
+msgid "obs_point.testimonials"
+msgstr "Erfahrungsberichte"
+
+#: tpl/sites.jinja:4
+msgid "sites.meta_title"
+msgstr "Beobachtungsstandorte"
+
+#: tpl/sites.jinja:29
+msgid "sites.title"
+msgstr "Beobachtungsstandorte"
+
+#: tpl/sites.jinja:51
+msgid "sites.observation_points.title"
+msgstr "Beobachtungsstandorte"
+
+#: tpl/sites.jinja:80
+msgid "sites.observation_points.item"
+msgstr "Beobachtungsstandort(e)"
+
+#: tpl/sites.jinja:118 tpl/sites.jinja:121
+msgid "map.share.button"
+msgstr "Teilen"
+
+#: tpl/sites.jinja:127
+msgid "map.legend.obervatories"
+msgstr "Observatorium(en)"
+
+#: tpl/sites.jinja:133
+msgid "map.legend.themes"
+msgstr "Thema(en)"
+
+#: tpl/sites.jinja:145
+msgid "map.legend.title"
+msgstr "Legende"
+
+#: tpl/sites.jinja:155
+msgid "map.share.dialog.title"
+msgstr "Teilen"
+
+#: tpl/sites.jinja:156
+msgid "map.share.dialog.message"
+msgstr "Kopieren und Link oben teilen"
+
+#: tpl/sites.jinja:173
+msgid "map.share.copy_success.title"
+msgstr "Kopiert!"
+
+#: tpl/sites.jinja:174
+msgid "map.share.copy.copy_success.message"
+msgstr "Der Link ist zum Einfügen bereit"
+
+#: tpl/components/comparator_v1.jinja:8
+msgid "obs_point.buttons.download"
+msgstr "Herunterladen"
+
+#: tpl/components/comparator_v2.jinja:78
+msgid "comparatorv2.loading"
+msgstr "Laden"
+
+#: tpl/components/comparator_v2.jinja:120
+msgid "comparatorv2.date.filter.title"
+msgstr "Nach Datum filtern"
+
+#: tpl/components/comparator_v2.jinja:122
+msgid "comparatorv2.date.filter.start"
+msgstr "Start"
+
+#: tpl/components/comparator_v2.jinja:131
+msgid "comparatorv2.date.filter.end"
+msgstr "Ende"
+
+#: tpl/components/comparator_v2.jinja:163
+msgid "comparatorv2.date.step"
+msgstr "Schritt"
+
+#: tpl/components/comparator_v2.jinja:182
+msgid "comparatorv2.mode.sidebyside"
+msgstr "Überlagerung"
+
+#: tpl/components/comparator_v2.jinja:183
+msgid "comparatorv2.mode.split"
+msgstr "Nebeneinander"
+
+#: tpl/components/comparator_v2.jinja:184
+msgid "comparatorv2.date.steps.none"
+msgstr "0"
+
+#: tpl/components/comparator_v2.jinja:185
+msgid "comparatorv2.date.steps.1d"
+msgstr "1 Tag"
+
+#: tpl/components/comparator_v2.jinja:186
+msgid "comparatorv2.date.steps.1w"
+msgstr "1 Woche"
+
+#: tpl/components/comparator_v2.jinja:187
+msgid "comparatorv2.date.steps.1m"
+msgstr "1 Monat"
+
+#: tpl/components/comparator_v2.jinja:188
+msgid "comparatorv2.date.steps.1y"
+msgstr "1 Jahr"
+
+#: tpl/components/legal-footer.jinja:1
+msgid "footer.copyright"
+msgstr "© 2023 - GeoPaysages, freie und Open-Source-Software"
+
+#: tpl/components/legal-footer.jinja:5
+msgid "footer.legal_notices"
+msgstr "Rechtliche Hinweise"
+
+#: tpl/components/sites-filter.jinja:22
+msgid "map.filters.title"
+msgstr "Filtern nach"
+
+#: tpl/components/sites-filter.jinja:53
+msgid "sites.filters.reset"
+msgstr "Zurücksetzen"
+
+#: tpl/custom/main_menu.jinja:3
+msgid "header.nav.home"
+msgstr "Startseite"
+
+#: tpl/custom/main_menu.jinja:8
+msgid "header.nav.about"
+msgstr "Über uns"
+
+#: tpl/custom/main_menu.jinja:13
+msgid "header.nav.sites"
+msgstr "Beobachtungsstandorte"
+
+#: tpl/custom/main_menu.jinja:18
+msgid "header.nav.gallery"
+msgstr "Fotogalerie"
+

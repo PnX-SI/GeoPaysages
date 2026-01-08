@@ -68,7 +68,8 @@
         }
       });
       geopsg.initHomeMono({
-        sites: {{sites | tojson}}
+        sites: {{sites | tojson}},
+        dbconf: {{ dbconf | tojson }},
       })
     }
   }

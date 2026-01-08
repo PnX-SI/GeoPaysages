@@ -67,7 +67,7 @@ geopsg.site = (options) => {
           this.textCollapseds.push(name)
       },
       initMap() {
-        let layersConf = _.get(options.dbconf, 'map_layers', []);
+        let layersConf = _.get(options.dbconf, 'site_map_layers', _.get(options.dbconf, 'map_layers', []));
         if (!Array.isArray(layersConf)) {
           layersConf = [];
         }
@@ -82,9 +82,10 @@ geopsg.site = (options) => {
           })
         }
         let mapLayers = layersConf.map(layer => {
+          const fct = layer.isWMS ? L.tileLayer.wms : L.tileLayer;
           return {
             label: layer.label,
-            layer: L.tileLayer(layer.url, layer.options)
+            layer: fct(layer.url, layer.options)
           }
         })
 

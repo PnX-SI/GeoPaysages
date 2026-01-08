@@ -1,0 +1,66 @@
+<ngx-spinner size="medium" type="ball-spin">
+    <p style="color: white">{{'COMMONS.LOADING' | translate}}...</p>
+  </ngx-spinner>
+  <app-header></app-header>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 col-table">
+        <div>
+          <button class="blue-btn btn-add" (click)="onAddClick()">
+            {{ 'ACTIONS.ADD' | translate: {article:('ARTICLES.UNE' | translate), varname: ('LANG_MNGMT.LANGUAGE_2' | translate) }  }}
+          </button>
+          <ngx-datatable
+            *ngIf="itemsLoaded"
+            class="material"
+            [rows]="rows"
+            [headerHeight]="40"
+            [footerHeight]="40"
+            [limit]="7"
+            [rowHeight]="'auto'"
+            [scrollbarH]="true"
+            [reorderable]="reorderable"
+            [selectionType]="'single'"
+            (select)="onSelect($event)"
+          >
+            <!-- <ngx-datatable-column prop="flag" name="" width="100">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                <img
+                  class="main-photo"
+                  [src]="'https://flagcdn.com/48x36/' + row.id + '.png'"
+                  alt="..."
+                />
+              </ng-template>
+            </ngx-datatable-column> -->
+  
+            <ngx-datatable-column prop="lang.id" name="{{ 'LANG_MNGMT.ID' | translate}}" width="100">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.id }}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column
+              prop="lang.label"
+              name="{{ 'LANG_MNGMT.LABEL' | translate}}"
+              width="320"
+            >
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                {{ row.label}}
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="lang.is_published" name="{{ 'COMMONS.IS_PUBLISHED' | translate}}">
+              <ng-template let-row="row" ngx-datatable-cell-template>
+                  <div *ngIf="row.is_published; else elseBlock"><span class="icon-checkmark text-success"></span></div>
+                  <ng-template #elseBlock><span class="icon-cross text-danger"></span></ng-template>
+              </ng-template>
+            </ngx-datatable-column>
+            <ngx-datatable-column prop="lang.is_default" name="{{ 'LANG_MNGMT.DEFAULT_LANGUAGE' | translate}} ?">
+                <ng-template let-row="row" ngx-datatable-cell-template>
+                    <div *ngIf="row.is_default; else elseBlock"><span class="icon-checkmark text-success"></span></div>
+                    <ng-template #elseBlock><span class="icon-cross text-danger"></span></ng-template>
+                </ng-template>
+              </ngx-datatable-column>
+          </ngx-datatable>
+        </div>
+      </div>
+    </div>
+  </div>
+  

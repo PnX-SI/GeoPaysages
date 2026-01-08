@@ -46,9 +46,12 @@ Certains paramètres sont dans la table `conf` :
     les points sur la carte interactive. Ce paramètre évite que le zoom
     soit trop important lorsque les points restant sont très rapprochés.
 
-- `map_layers` les différentes couches disponibles sur la carte
-    interactive. Voir [ce lien](https://leafletjs.com/reference-1.5.0.html#tilelayer) pour connaitre toutes les options de
-    configuration ex :
+- `map_layers` les différentes couches disponibles sur les cartes.  
+   Voir [ce lien](https://leafletjs.com/reference-1.5.0.html#tilelayer) pour connaitre toutes les options de configuration.  
+   ⚠️ Attention, ajouter `"isWMS": true` si la couche utilise un service WMS (cf. 3ème exemple)  
+   Ces couches s'appliqueront à toutes les cartes sauf si vous les surchargées via ces paramètres :  
+   `home_map_layers` pour la page d'accueil  
+   `site_map_layers` pour la page d'un site d'observation
 
 ```json
 [
@@ -67,9 +70,20 @@ Certains paramètres sont dans la table `conf` :
             "maxZoom": 18,
             "attribution": "&copy; <div>IgnMap</div>"
         }
+    },
+    {
+        "url": "https://geoservices.wallonie.be/arcgis/services/IMAGERIE/ORTHO_2023_ETE_IR/MapServer/WMSServer",
+        "isWMS": true,
+        "options": {
+            "layers": "0",
+            "format": "image/png",
+            "transparent": true,
+            "attribution": "&copy; <a href=\"https://geoservices.wallonie.be/\">Geoservices Wallonie</a>"
+        }
     }
 ]
 ```
+___
 
 Vous pouvez personnaliser le comparateur photos selon votre contexte. Notamment le simplifier dans le cas de série de photos sur des pas temps plutôt espacés (reconductions pluri-annuelles, annuelles voire mensuelles) :
 

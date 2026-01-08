@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule,HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +31,15 @@ import { ObservatoriesService } from './services/observatories.service';
 import { ObservatoryComponent } from './observatory/observatory.component';
 import { DbConfService } from './services/dbconf.service';
 import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { DynamicTranslatePipe } from './pipes/translate-items.pipe';
+import { ListLanguagesComponent } from './list-languages/list-languages.component';
+import { FormLanguagesComponent } from './form-languages/form-languages.component';
+
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -45,6 +54,9 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
     GalleryComponent,
     ObservatoriesComponent,
     ObservatoryComponent,
+    ListLanguagesComponent,
+    FormLanguagesComponent,
+    DynamicTranslatePipe
   ],
   imports: [
     BrowserModule,
@@ -61,6 +73,13 @@ import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor'
     ToastrModule.forRoot(),
     NgxSpinnerModule,
     RichTextEditorAllModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     LoginService,

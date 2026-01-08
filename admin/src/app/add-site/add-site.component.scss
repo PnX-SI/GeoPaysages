@@ -131,3 +131,23 @@
 .alert{
   margin-top: 8px
 }
+
+.custom-card {
+  padding: 20px;
+  border-top: none; /* Supprime la bordure supérieure */
+  border-radius: 0.25rem; /* Pour les coins arrondis (optionnel) */
+}
+
+/* Si vous voulez un style particulier pour les éléments internes */
+.custom-card .form-item {
+  border-bottom: 1px solid #e9ecef; /* Bordure inférieure pour chaque champ (optionnel) */
+  padding-bottom: 15px; /* Espacement interne */
+}
+
+.custom-card .form-item:last-child {
+  border-bottom: none; /* Supprime la bordure inférieure du dernier élément */
+}
+
+.e-rte-fontcolor-element {
+  display: none !important;
+}

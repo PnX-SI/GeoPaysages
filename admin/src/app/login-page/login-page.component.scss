@@ -1,20 +1,18 @@
+
 .login-page {
   display: flex;
-  flex: 1 0 auto;
-  width: 100%;
-  min-height: 100vh;
-  background: url('/assets/images/dark-material-bg.jpg') no-repeat;
-  background-size: cover;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: 1 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  background: url('/assets/images/dark-material-bg.jpg') no-repeat center center;
+  background-size: cover;
 }
 
 .logo {
-  position: absolute;
-  left: 20px;
-  top: 20px;
-  max-width: 30%;
+  max-width: 50%;
 }
 
 .form-control {
@@ -81,4 +79,68 @@
   left: 6px;
   z-index: 1;
   font-size: 25px;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px; /* ajustez la hauteur selon vos besoins */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+  padding: 10px 20px; /* espace autour du logo et de l'icône */
+  z-index: 1000; /* pour s'assurer que le header est au-dessus du reste */
+}
+
+.container {
+  padding-top: 80px;
+}
+
+
+.dropdown-container {
+  display: flex;
+  align-items: center;
+}
+
+
+.icon-language-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.selected-language {
+  color: white;
+  font-size: 14px;
+  margin-top: 5px; /* Espace entre l'icône et la langue */
+}
+
+.icon-language-toggle {
+  color:white;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon-language-toggle .icon-earth {
+  font-size: 24px;
+}
+
+.icon-language-toggle .selected-language {
+  margin-left: 8px;
+}
+
+.icon-language-toggle .dropdown-arrow {
+  font-size: 24px; /* Ajustez selon vos préférences */
+}
+
+.icon-wrapper {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0px 10px 2px 2px;
 }

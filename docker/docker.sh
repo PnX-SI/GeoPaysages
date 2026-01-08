@@ -56,7 +56,7 @@ then
 fi
 
 if [ "$HTTPS_IN_PROXY" == "1" ]; then
-    ${launch_compose} --project-name="geopaysages" -f ./docker/docker-compose.yml -f ./docker/docker-compose.https.yml "$@"
+    ${launch_compose} --project-name="${PROJECT}" -f ./docker/docker-compose.yml -f ./docker/docker-compose.https.yml "$@"
 else
-    ${launch_compose} --project-name="geopaysages" --project-directory=./docker "$@"
+    ${launch_compose} --project-name="${PROJECT}" --project-directory=./docker "$@"
 fi

@@ -1,0 +1,158 @@
+{
+  "USER_ROLES": {
+    "TITLE": "Rôles des utilisateurs",
+    "USER_NAME": "Identifiant",
+    "ROLE": "Rôle",
+    "NO_MORE_SELECTABLES": "Rôles attribués à tous les utilisateurs.",
+    "DOWNGRADE_ME_CONFIRM": "Attention : Si vous enregistrez, vous ne serez plus admin de cet observatoire !"
+  },
+    "SITE_MNGMT":{
+        "OBSERVATION_POINT":"Point d'observation",
+        "SITE": "Site",
+        "OBSERVATORY": "Observatoire",
+        "CITY": "Commune",
+        "REFERENCE": "Référence",
+        "THEME": "Thème",
+        "SUBTOPIC": "Sous thème",
+        "MAIN_THEME": "Thème principal",
+        "TESTIMONIALS": "Témoignages",
+        "NOTICE_LABEL": "Notice technique",
+        "DESCRIPTION": "Description",
+        "LEGEND":"Légende",
+        "LONGITUDE": "Longitude",
+        "LATITUDE": "Latitude",
+        "SITE_PHOTO": "Photo de site",
+        "JPEG_INSTRUCTIONS": "Utiliser des jpeg de même ratio, assez grand mais larg. < 5000px, poids < 5Mo",
+        "PLACEHOLDER_LEGEND":"Ecrivez ici la légende du site",
+        "PLACEHOLDER_DESC":"Ecrivez ici la description du site",
+        "PLACEHOLDER_TESTIMONIALS":"Ecrivez ici les témoignages",
+        "CONFIRM_DELETE": {
+          "TITLE": "Supprimer le site",
+          "BODY": "Êtes-vous sûr de vouloir supprimer ce Site ? Sa suppression sera définitive.",
+          "CANCEL": "Annuler",
+          "CONFIRM": "Oui"
+        }
+      },
+  "OBSERVATORIES_MNGMT":{
+    "OBSERVATORY": "Observatoire",
+    "ZONING": "Zonage",
+    "THEME_COLOR": "Couleur de thème",
+    "TOOLTIP_THEME_COLOR":"S'applique sur les pins et le zonage",
+    "TOOLTIP_THUMBNAIL":"S'applique sur la vignette en page d’accueil",
+    "ADVICE_THUMBNAIL":"JPG, taille conseillée 200x200px",
+    "ADVICE_LOGO":"PNG, taille conseillée 150x150px",
+    "PLACEHOLDER_ZONING":"Coller ici la géométrie de la zone de l’observatoire au format WKT de type MultiPolygon",
+    "TOOLTIP_LOGO":"S’applique sur les différentes listes des observatoires (page gestion des observatoires et sur la carte) ainsi que sur la fiche des sites",
+    "THUMBNAIL_SELECTED":"Vignette sélectionnée",
+    "LOGO_SELECTED":"Logo sélectionné"
+    },
+    "GALLERY_MNGMT":{
+      "GALLERY": "Gallerie",
+      "PICTURE_CREDITS": "Crédits photographiques",
+      "THUMBNAIL_MAIN_MESSAGE": "Définir comme vignette principale",
+      "APPROXIMATE_DATE":"Date approximative",
+      "SHOOTING_DATE":"Date de prise de vue",
+      "CONFIRM_DELETE": {
+        "TITLE": "Supprimer la photo",
+        "BODY": "Êtes-vous sûr de vouloir supprimer cette photo ?<br> Sa suppression sera définitive",
+        "CANCEL": "Annuler",
+        "CONFIRM": "Oui"
+      }
+  },
+  "LANG_MNGMT":{
+    "LANGUAGE_1": "Langage",
+    "LANGUAGE_2": "Langue",
+     "DEFAULT_LANGUAGE": "Langue par défaut",
+     "LABEL": "Libellé",
+     "ID" : "Identifiant"
+},
+    "NAV": {
+        "OBSERVATORIES": "Gestion des observatoires",
+        "SITES": "Gestion des sites d'observation",
+        "GALLERY": "Gestion de la galerie photos",
+        "LANGUAGES_DB": "Gestion des langues",
+        "LANGUAGE": "Langue"
+      },
+      "LANGUAGES": {
+        "en": "Anglais",
+        "fr": "Français"
+      },
+      "BUTTONS":{
+        "ADD": "Ajouter",
+        "SUBMIT": "Enregistrer",
+        "CANCEL": "Annuler",
+        "EDIT": "Editer",
+        "BACK_TO_LIST": "Retour à la liste"
+    },
+    "COMMONS":{
+      "ADVICE":"Conseil",
+      "IS_PUBLISHED":"Est publié?",
+      "NAME":"Nom",
+      "REFERENCE":"Référence",
+      "LOGO":"Logo",
+      "PICTURE":"Photo",
+      "THUMBNAIL":"Vignette",
+      "CONNECTION": "Connexion",
+      "CONNECT": "Se connecter",
+      "LOGIN": "Identifiant",
+      "PASSWORD": "Mot de passe",
+      "YES": "Oui",
+      "NO": "Non",
+      "LOADING": "Chargement"
+    },
+    "FIELDS":{
+      "NAME": "Nom {{article}} {{ varname }}"
+    },
+    "ARTICLES": {
+      "LE": "le",
+      "LA": "la",
+      "LES": "les",
+      "L": "l'",
+      "DE": "de",
+      "DU": "du",
+      "UN": "un",
+      "UNE": "une",
+      "DES": "des",
+      "DE_L": "de l'"
+},
+"ACTIONS": {
+    "SELECT": "Sélectionner {{ article }} {{ varname }}",
+    "IMPORT": "Importer {{ article }} {{ varname }}",
+    "ADD": "Ajouter {{ article }} {{ varname }}",
+    "EDIT": "Editer {{ article }} {{ varname }}",
+    "DELETE": "Supprimer {{ article }} {{ varname }}",
+    "MODIFY": "Modifier {{ article }} {{ varname }}",
+    "MODIFY_DEFAULT":"Modifier",
+    "PUBLISH": "Publier {{ article }} {{ varname }}",
+    "PUBLISH_DEFAULT":"Publier"
+  },
+  "ERRORS": {
+    "EXPIRED_SESSION": "Votre session a expirée, veuillez vous reconnecter.",
+    "SERVER_ERROR": "Erreur survenue sur le serveur, veuillez rafraîchir la page.",
+    "INVALID_GEOM": "La geometrie est invalide",
+     "MUST_GET_ONE_DEFAULT_LANG": "Aucune autre langue par défaut existe, vous devez avoir au moins une langue par défaut.",
+     "MUST_HAVE_ONE_SITE_IN_LANG": "Vous devez avoir au moins un site publié dans cette langue.",
+     "MUST_HAVE_ONE_OBSERVATORY_IN_LANG": "Vous devez avoir au moins un observatoire publié dans cette langue.",
+     "LANG_MUST_BE_PUBLISHED": "La langue doit être publiée pour être définie comme langue par défaut.",
+     "FORMS": {
+      "REQUIRED": "Ce champs est requis.",
+      "INVALID_DEFAULT": "\"{{ field_default }}\" ne peut pas être activé si \"{{ field_published }}\" est désactivé."
+    }
+  },
+ "INFO_MESSAGE":{
+  "NO_PICTURE": "Veuillez importer une photo",
+  "RECENTER_MAP": "Recentrer la map",
+  "SUCESS_ADDED_SITE": "Point d'observation ajouté avec succès",
+  "SUCCESS_UPDATED_SITE":"Point d'observation mis à jour avec succès",
+  "SUCCESS_ADDED_OBSERVATORY": "Observatoire ajouté avec succès",
+  "SUCCESS_UPDATED_OBSERVATORY": "Observatoire mis à jour avec succès",
+  "GEOM_SHOULD_BE_MULTIPOLYGON": "La geometrie doit être un Multipolygon",
+  "SUCCESS_ADDED_LANG": "Langue ajoutée avec succès.",
+  "SUCCESS_UPDATED_LANG": "Langue mise à jour avec succès."
+ },
+ "ALERTS":{
+  "ITEM_EXISTS":"« {{ item }} » existe déjà"
+ }
+
+}
+  

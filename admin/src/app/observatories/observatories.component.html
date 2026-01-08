@@ -1,13 +1,13 @@
 <ngx-spinner size="medium" type="ball-spin">
-  <p style="color: white">Loading...</p>
+  <p style="color: white">{{'COMMONS.LOADING' | translate}}...</p>
 </ngx-spinner>
 <app-header></app-header>
 <div class="container-fluid">
   <div class="row">
     <div class="col-12 col-table">
       <div>
-        <button class="blue-btn btn-add" (click)="onAddClick()">
-          Ajouter un observatoire
+        <button *ngIf="canAdd()" class="blue-btn btn-add" (click)="onAddClick()">
+          {{ 'ACTIONS.ADD' | translate: {article:('ARTICLES.UN' | translate), varname: ('SITE_MNGMT.OBSERVATORY' | translate) }  }}
         </button>
         <ngx-datatable
           *ngIf="itemsLoaded"
@@ -22,7 +22,7 @@
           [selectionType]="'single'"
           (select)="onSelect($event)"
         >
-          <ngx-datatable-column prop="photo" name="Logo" width="100">
+          <ngx-datatable-column prop="photo" name="{{'COMMONS.LOGO' | translate }}" width="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
               <img
                 class="main-photo"
@@ -31,23 +31,23 @@
             </ng-template>
           </ngx-datatable-column>
 
-          <ngx-datatable-column prop="observatory.ref" name="Référence" width="100">
+          <ngx-datatable-column prop="observatory.ref" name="{{'COMMONS.REFERENCE' | translate }}" width="100">
             <ng-template let-row="row" ngx-datatable-cell-template>
               {{ row.observatory.ref }}
             </ng-template>
           </ngx-datatable-column>
           <ngx-datatable-column
             prop="observatory.title"
-            name="Nom de l'observatoire"
+            name="{{ 'FIELDS.NAME' | translate: {article:('ARTICLES.DE_L' | translate), varname: ('OBSERVATORIES_MNGMT.OBSERVATORY' | translate) }  }}"
             width="320"
           >
             <ng-template let-row="row" ngx-datatable-cell-template>
-              {{ row.observatory.title }}
+              {{ row.observatory | dynamicTranslate:defaultLangDB.id:'getTranslation':'title'}}
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column prop="observatory.is_published" name="Est publié">
+          <ngx-datatable-column prop="observatory.is_published" name="{{ 'COMMONS.IS_PUBLISHED' | translate}} ({{defaultLangDB.label}})">
             <ng-template let-row="row" ngx-datatable-cell-template>
-                <div *ngIf="row.observatory.is_published; else elseBlock"><span class="icon-checkmark text-success"></span></div>
+                <div *ngIf="row.observatory | dynamicTranslate:defaultLangDB.id:'getTranslation':'is_published'; else elseBlock"><span class="icon-checkmark text-success"></span></div>
                 <ng-template #elseBlock><span class="icon-cross text-danger"></span></ng-template>
             </ng-template>
           </ngx-datatable-column>

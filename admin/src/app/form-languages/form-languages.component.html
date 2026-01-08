@@ -1,0 +1,133 @@
+<ngx-spinner size="medium" type="ball-spin"> </ngx-spinner>
+<app-header></app-header>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 col-table">
+      <div *ngIf="loadForm" class="language-block">
+        <form
+          [formGroup]="languageForm"
+          (submit)="submitlanguage(languageForm)"
+          disabled
+        >
+          <div class="inner-checkbox form-group" *ngIf="this.id_language">
+            <div class="label">
+              {{ 'ACTIONS.PUBLISH_DEFAULT' | translate }}:
+            </div>
+            <label class="switch">
+              <input
+                formControlName="is_published"
+                type="checkbox"
+                class="success form-control"
+              />
+              <span
+                [ngClass]="{
+                  'slider-disabled': !this.isEditing
+                }"
+                class="slider round"
+              ></span>
+            </label>
+          </div>
+          <div class="row mb-3">
+            <div class="col">
+              <label class="label" for="language-label"
+                >{{ 'LANG_MNGMT.LANGUAGE_2' | translate }}*</label
+              >
+              <input
+                InputFeedBack
+                type="text"
+                formControlName="label"
+                id="language-label"
+                class="form-control"
+                placeholder="{{ 'LANG_MNGMT.LANGUAGE_2' | translate }}"
+              />
+              <app-form-error
+                controlName="label"
+                errorKey="required"
+              ></app-form-error>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-6">
+              <label class="label" for="language-id">{{
+                'LANG_MNGMT.ID' | translate
+              }}</label>
+              <ng-select
+                [items]="libLocales"
+                bindLabel="displayLabel"
+                bindValue="id"
+                formControlName="id"
+                [placeholder]="'LANG_MNGMT.ID' | translate"
+                [searchable]="true"
+                [clearable]="true"
+                [disabled]="isIdDisabled"
+              >
+              </ng-select>
+              <app-form-error
+                controlName="id"
+                errorKey="required"
+              ></app-form-error>
+            </div>
+            <div class="col-6">
+              <div class="inner-checkbox form-group" *ngIf="this.id_language">
+                <div class="label">
+                  {{ 'LANG_MNGMT.DEFAULT_LANGUAGE' | translate }} 
+                  <span *ngIf="!this.language.is_default">?:</span>
+                </div>
+                <label *ngIf="!this.language.is_default" class="switch">
+                  <input
+                    formControlName="is_default"
+                    type="checkbox"
+                    class="success form-control"
+                  />
+                  <span
+                    [ngClass]="{
+                      'slider-disabled': !this.isEditing
+                    }"
+                    class="slider round"
+                  ></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <ngb-alert
+            class="alert"
+            *ngIf="alert"
+            [dismissible]="false"
+            [type]="alert.type"
+            >{{ alert.message }}
+          </ngb-alert>
+          <div class="submit-btn-group">
+            <button
+              type="button"
+              *ngIf="id_language"
+              class="btn btn-outline-warning btn-edit"
+              [class.active_edit]="isEditing"
+              (click)="editForm()"
+            >
+              <i class="icon-pencil"></i>{{ edit_btn_text | translate }}
+            </button>
+            <button
+              class="btn btn-outline-success btn-submit"
+              type="submit"
+              [disabled]="!isEditing"
+            >
+              {{ submit_btn_text | translate }}
+            </button>
+            <button
+              class="btn btn-outline-secondary btn-cancel"
+              type="button"
+              (click)="onCancel()"
+            >
+              {{ 'BUTTONS.BACK_TO_LIST' | translate }}
+            </button>
+          </div>
+          <div *ngIf="isInvalidForm" class="error-message-container">
+            <p class="error-message" [innerText]="errorMessage"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, Input, Host, SkipSelf } from '@angular/core';
-import { FormGroupDirective } from '@angular/forms';
+import { FormArray, FormGroup, FormGroupDirective } from '@angular/forms';
 
 @Component({
   selector: 'app-form-error',
@@ -16,8 +16,16 @@ export class FormErrorComponent {
   }
 
   get isInvalid() {
+    // Utilise la fonction récursive pour vérifier si ce contrôle et ses sous-contrôles contiennent des erreurs
     const control = this.form.form.get(this.controlName);
-    return control.hasError(this.errorKey) && (control.dirty || this.form.submitted);
+
+    if (control instanceof FormGroup || control instanceof FormArray) {
+      // Vérifie récursivement tous les contrôles à l'intérieur du FormGroup ou FormArray
+      return this.checkAllControlsInvalid(control, this.errorKey);
+    } else {
+      // Si c'est un contrôle unique, vérifie l'erreur directement
+      return control && control.hasError(this.errorKey) && (control.dirty || this.form.submitted);
+    }
   }
 
   get error_msg() {
@@ -51,5 +59,23 @@ export class FormErrorComponent {
     }
     return '* Champs requis';
 
+  }
+
+  checkAllControlsInvalid(formGroup: FormGroup | FormArray, errorKey: string): boolean {
+    let isInvalid = false;
+  
+    Object.keys(formGroup.controls).forEach(controlName => {
+      const control = formGroup.get(controlName);
+  
+      if (control instanceof FormGroup || control instanceof FormArray) {
+        if (this.checkAllControlsInvalid(control, errorKey)) {
+          isInvalid = true;
+        }
+      } else if (control && control.hasError(errorKey) && (control.dirty || control.touched)) {
+        isInvalid = true;
+      }
+    });
+  
+    return isInvalid;
   }
 }

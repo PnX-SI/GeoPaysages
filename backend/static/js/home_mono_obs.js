@@ -27,11 +27,25 @@ geopsg.initHomeMono = (options) => {
     tap: false,
     zoomControl: false,
   });
-  const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 18,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  let confLayers = _.get(options.dbconf, 'home_map_layers', _.get(options.dbconf, 'map_layers', []));
+  if (!Array.isArray(confLayers)) {
+    confLayers = [];
+  }
+  if (!confLayers.length) {
+    confLayers = [
+      {
+        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+        options: {
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        },
+      },
+    ];
+  }
+
+  confLayers.forEach((confLayer) => {
+    const fct = confLayer.isWMS ? L.tileLayer.wms : L.tileLayer;
+    fct(confLayer.url, confLayer.options).addTo(map);
   });
-  tileLayer.addTo(map);
 
   const lats = [];
   const lons = [];
@@ -41,10 +55,13 @@ geopsg.initHomeMono = (options) => {
     L.marker(site.geom).addTo(map);
     lats.sort();
     lons.sort();
-    map.fitBounds([
-      [lats[0], lons[0]],
-      [lats[lats.length - 1], lons[lons.length - 1]],
-    ]);
+    map.fitBounds(
+      [
+        [lats[0], lons[0]],
+        [lats[lats.length - 1], lons[lons.length - 1]],
+      ],
+      { paddingTopLeft: [40, 50], paddingBottomRight: [40, 30] },
+    );
   });
 
   function onResize() {

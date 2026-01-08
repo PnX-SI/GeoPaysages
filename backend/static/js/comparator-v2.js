@@ -31,17 +31,17 @@ geopsg.comparator = (options) => {
 
   const getFormatedDate = (value) => {
     if (options.dbconf.comparator_date_format == 'year') {
-      return value.toLocaleString('fr-FR', {
+      return value.toLocaleString(options.locale, {
         year: 'numeric',
       });
     }
     if (options.dbconf.comparator_date_format == 'month') {
-      return value.toLocaleString('fr-FR', {
+      return value.toLocaleString(options.locale, {
         month: '2-digit',
         year: 'numeric',
       });
     } else {
-      return value.toLocaleString('fr-FR', {
+      return value.toLocaleString(options.locale, {
         month: '2-digit',
         day: '2-digit',
         year: 'numeric',
@@ -76,7 +76,7 @@ geopsg.comparator = (options) => {
         comparedPhotos: [defaultItems[0], defaultItems[1]],
         thumbProps: thumbProps,
         thumbsListH: thumbProps.height + 30,
-        hiddenSelectors: [hideSelectorsOnInit, hideSelectorsOnInit]
+        hiddenSelectors: [hideSelectorsOnInit, hideSelectorsOnInit],
       };
     },
     mounted() {
@@ -145,7 +145,7 @@ geopsg.comparator = (options) => {
         }
         classNames.push('selected');
 
-        return classNames.join(' ')
+        return classNames.join(' ');
       },
       updateLayers() {
         this.$bvModal.show('comparatorLoading');
@@ -230,41 +230,41 @@ geopsg.comparator = (options) => {
       if (options.dbconf.comparator_date_format == 'year') {
         sharedData.steps = [
           {
-            label: '1 an',
+            label: options.translations.date_steps_1y,
             value: 3600 * 24 * 365,
           },
         ];
       } else if (options.dbconf.comparator_date_format == 'month') {
         sharedData.steps = [
           {
-            label: '1 mois',
+            label: options.translations.date_steps_1m,
             value: 3600 * 24 * 30,
           },
           {
-            label: '1 an',
+            label: options.translations.date_steps_1y,
             value: 3600 * 24 * 365,
           },
         ];
       } else {
         sharedData.steps = [
           {
-            label: '0',
+            label: options.translations.date_steps_none,
             value: 0,
           },
           {
-            label: '1 jour',
+            label: options.translations.date_steps_1d,
             value: 3600 * 24,
           },
           {
-            label: '1 semaine',
+            label: options.translations.date_steps_1w,
             value: 3600 * 24 * 7,
           },
           {
-            label: '1 mois',
+            label: options.translations.date_steps_1m,
             value: 3600 * 24 * 30,
           },
           {
-            label: '1 an',
+            label: options.translations.date_steps_1y,
             value: 3600 * 24 * 365,
           },
         ];

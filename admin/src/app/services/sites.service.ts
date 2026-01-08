@@ -1,44 +1,66 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { get } from 'lodash';
 import { Conf } from './../config';
+import { CorRole, GroupName } from '../types';
 
 @Injectable()
 export class SitesService {
+  constructor(public http: HttpClient) {}
 
-  constructor(public http: HttpClient) {
-  }
+  getAllSites(options?: { filterPresets?: ('is_contributor' | 'is_admin')[] }) {
+    const filterPresets = get(options || {}, 'filterPresets', []);
 
-  getAllSites() {
-    return this.http.get<any>(Conf.apiUrl + 'sites');
+    return this.http.get<any[]>(
+      Conf.apiUrl + `sites?filter_presets=${JSON.stringify(filterPresets)}`
+    );
   }
 
   getsiteById(id) {
-    return this.http.get<any>(Conf.apiUrl + 'site/' + id);
+    return this.http.get<any>(Conf.apiUrl + 'sites/' + id);
   }
 
   deleteSite(id) {
-    return this.http.delete<any>(Conf.apiUrl + 'site/' + id, { withCredentials: true });
+    return this.http.delete<any>(Conf.apiUrl + `sites/${id}`, {
+      withCredentials: true,
+    });
   }
 
-  addPhotos(image) {
-    return this.http.post<any>(Conf.apiUrl + 'addPhotos', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  addPhotos(id_site, image) {
+    return this.http.post<any>(Conf.apiUrl + `sites/${id_site}/photos`, image, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   addNotices(notice) {
-    return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, { withCredentials: true, reportProgress: true, observe: 'events' });
+    return this.http.post<any>(Conf.apiUrl + 'addNotices', notice, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
   deleteNotices(removed_notice) {
-    return this.http.delete<any>(Conf.apiUrl + 'deleteNotice/' + removed_notice, { withCredentials: true });
+    return this.http.delete<any>(
+      Conf.apiUrl + 'deleteNotice/' + removed_notice,
+      { withCredentials: true }
+    );
   }
 
-
-  updatePhoto(image) {
-    return this.http.patch<any>(Conf.apiUrl + 'updatePhoto', image, { withCredentials: true, reportProgress: true, observe: 'events' });
+  updatePhoto(id, image) {
+    return this.http.patch<any>(Conf.apiUrl + `photos/${id}`, image, {
+      withCredentials: true,
+      reportProgress: true,
+      observe: 'events',
+    });
   }
 
-  deletePhotos(images) {
-    return this.http.post<any>(Conf.apiUrl + 'deletePhotos', images, { withCredentials: true });
+  deletePhotos(ids) {
+    return this.http.delete<any>(
+      Conf.apiUrl + `photos?ids=${JSON.stringify(ids)}`
+    );
   }
 
   getThemes() {
@@ -54,7 +76,7 @@ export class SitesService {
   }
 
   getUsers() {
-    return this.http.get<any>(Conf.apiUrl + 'users/' + Conf.id_application);
+    return this.http.get<any>(Conf.apiUrl + 'users');
   }
 
   getCommunes() {
@@ -62,21 +84,34 @@ export class SitesService {
   }
 
   addSite(site) {
-    return this.http.post<any>(Conf.apiUrl + 'addSite', site, { withCredentials: true });
+    return this.http.post<any>(Conf.apiUrl + 'sites', site, {
+      withCredentials: true,
+    });
   }
 
-  updateSite(site) {
-    return this.http.patch<any>(Conf.apiUrl + 'updateSite', site, { withCredentials: true });
+  updateSite(id, site) {
+    return this.http.patch<any>(Conf.apiUrl + `sites/${id}`, site, {
+      withCredentials: true,
+    });
   }
 
-  addThemes(themes) {
-    return this.http.post<any>(Conf.apiUrl + 'addThemes', themes, { withCredentials: true });
+  addThemes(id_site, themes) {
+    return this.http.post<any>(
+      Conf.apiUrl + `sites/${id_site}/themes`,
+      themes,
+      { withCredentials: true }
+    );
   }
 
-  getgallery() {
-    return this.http.get<any>(Conf.apiUrl + 'gallery');
+  canUserAdd(currentUser) {
+    if (currentUser.max_level_profil > 5) {
+      return true;
+    }
+    const roles: CorRole[] =
+      (currentUser.gpays || {}).role_by_observatories || [];
+
+    return roles.some((r) =>
+      [GroupName.ADMIN, GroupName.CONTRIBUTOR].includes(r.group_name)
+    );
   }
 }
-
-
-

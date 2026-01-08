@@ -22,19 +22,46 @@
           class="nav-link"
           routerLink="/observatories"
           routerLinkActive="active"
-          >Gestion des observatoires</a
+          >{{ 'NAV.OBSERVATORIES' | translate }}</a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/sites" routerLinkActive="active"
-          >Gestion des sites d'observation</a
+          >{{ 'NAV.SITES' | translate }}</a
         >
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/gallery" routerLinkActive="active"
-          >Gestion de la galerie photos</a
+          >{{ 'NAV.GALLERY' | translate }}</a
         >
       </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/languages" routerLinkActive="active"
+          >{{ 'NAV.LANGUAGES_DB' | translate }}</a
+        >
+      </li>
+
+      <li class="nav-item dropdown language" ngbDropdown>
+        <a class="nav-link dropdown-toggle" ngbDropdownToggle>
+          <i class="icon-earth"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+          <div *ngFor="let lang of availableLanguages">
+            <div class="icon-wrapper">
+              <button class="dropdown-item" (click)="changeLanguage(lang)">
+                {{ 'LANGUAGES.' + lang | translate }}
+              </button>
+              <i *ngIf="lang === selectedLanguage" class="icon-checkmark"></i>
+            </div>
+          </div>
+        </div>
+        <div class="selected-language">
+          {{ 'LANGUAGES.'+selectedLanguage | translate }}
+        </div>
+      </li>
+      
+      
+      
       <li class="nav-item logout" (click)="logout()">
         <a class="nav-link">
           <span class="icon-exit"></span>

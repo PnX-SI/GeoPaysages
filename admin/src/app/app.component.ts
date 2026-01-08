@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LanguageService } from './services/language.service';
 
 
 @Component({
@@ -8,6 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
+  constructor(private languageService: LanguageService) { }
   title = 'admin';
+
+  async ngOnInit() {
+    await this.languageService.loadLanguagesSorted();
+  }
 
 }

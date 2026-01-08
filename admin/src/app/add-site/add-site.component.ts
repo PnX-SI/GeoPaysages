@@ -2,7 +2,11 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SitesService } from '../services/sites.service';
 import { HttpEventType } from '@angular/common/http';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import {
+  NgbModal,
+  NgbModalRef,
+  NgbTabChangeEvent,
+} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup } from '@angular/forms';
 import { tileLayer, latLng, Map, Layer } from 'leaflet';
 import { FormService } from '../services/form.service';
@@ -14,9 +18,19 @@ import { forkJoin } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ObservatoriesService } from '../services/observatories.service';
-import { ObservatoryType } from '../types';
+import { Language, ObservatoryType } from '../types';
 import { DbConfService, IDBConf } from '../services/dbconf.service';
-import { ToolbarService, LinkService, ImageService, HtmlEditorService } from '@syncfusion/ej2-angular-richtexteditor';
+import {
+  ToolbarService,
+  LinkService,
+  ImageService,
+  HtmlEditorService,
+} from '@syncfusion/ej2-angular-richtexteditor';
+import { TranslateService } from '@ngx-translate/core';
+import { switchMap, tap } from 'rxjs/operators';
+import { TranslationService } from '../services/translation.service';
+import { FormConstants, formLabels } from '../constants/app.constants';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-add-site',
@@ -28,15 +42,36 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   /* RichTextEditor toolbar configuration --> Hide image upload tool */
   public tools: object = {
     type: 'Expand',
-    items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
-      'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
-      'LowerCase', 'UpperCase', '|',
-      'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
-      'Outdent', 'Indent', '|',
+    items: [
+      'Bold',
+      'Italic',
+      'Underline',
+      'StrikeThrough',
+      'FontName',
+      'FontSize',
+      'FontColor',
+      'BackgroundColor',
+      'LowerCase',
+      'UpperCase',
+      '|',
+      'Formats',
+      'Alignments',
+      'OrderedList',
+      'UnorderedList',
+      'Outdent',
+      'Indent',
+      '|',
       'CreateLink',
       /*'Image', */
-      '|', 'ClearFormat', 'Print',
-      'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+      '|',
+      'ClearFormat',
+      'Print',
+      'SourceCode',
+      'FullScreen',
+      '|',
+      'Undo',
+      'Redo',
+    ],
   };
   selectedFile: File[];
   modalRef: NgbModalRef;
@@ -86,19 +121,27 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   alert: { type: string; message: string };
   site: any;
   edit_btn = false;
-  edit_btn_text = 'Éditer';
-  submit_btn_text = 'Ajouter';
+  edit_btn_text = 'BUTTONS.EDIT';
+  submit_btn_text = 'BUTTONS.ADD';
   initPhotos: any[] = [];
   deleted_photos = [];
   new_photos = [];
   marker: Layer[] = [];
   center: any;
   toast_msg: string;
-  communes: undefined;
+  communes: any;
   observatories: ObservatoryType[] = [];
   currentUser: any;
   zoom = 10;
   removed_notice: any = null;
+
+  currentLang: Language;
+  activeTab: string;
+  availableLang: Language[];
+  currentTabLangId: string;
+  errorMessage: string = '';
+  defaultLang: Language;
+
   constructor(
     private sitesService: SitesService,
     private observatoriesSrv: ObservatoriesService,
@@ -109,28 +152,36 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private authService: AuthService,
     private spinner: NgxSpinnerService,
-    private dbConfSrv: DbConfService
+    private dbConfSrv: DbConfService,
+    private translate: TranslateService,
+    private translationService: TranslationService,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit() {
+    this.availableLang = this.languageService.getLanguagesDB();
+    this.defaultLang = this.languageService.getDefaultLanguageDB();
+    this.currentTabLangId = this.availableLang[0].id;
     this.currentUser = this.authService.currentUser;
     this.id_site = this.route.snapshot.params['id'];
-    this.siteForm = this.formService.initFormSite();
+    this.siteForm = this.formService.initFormSite(this.availableLang);
     this.siteForm.controls['id_stheme'].disable();
+
     forkJoin([
       this.sitesService.getThemes(),
       this.sitesService.getSubthemes(),
       this.sitesService.getCommunes(),
-      this.observatoriesSrv.getAll(),
+      this.observatoriesSrv.getAll({ filterPresets: ['is_contributor'] }),
     ]).subscribe((results) => {
       this.themes = results[0];
       this.subthemes = results[1];
       this.communes = results[2];
       this.selectedSubthemes = this.subthemes;
       this.observatories = results[3];
+
       if (this.id_site) {
         this.getSite(this.id_site);
-        this.submit_btn_text = 'Enregistrer';
+        this.submit_btn_text = 'BUTTONS.SUBMIT';
       } else {
         this.edit_btn = true;
         this.loadForm = true;
@@ -182,7 +233,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       container.innerHTML =
         '<i style="line-height: unset" class="icon-full_screen"> </i>';
       container.style.backgroundColor = 'white';
-      container.title = 'Recentrer la carte';
+      this.translate
+        .get('INFO_MESSAGE.RECENTER_MAP')
+        .subscribe((translatedMessage) => {
+          container.title = translatedMessage;
+        });
       container.onclick = () => {
         this.center = latLng(this.site.geom);
         this.zoom = 10;
@@ -293,6 +348,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         'lat',
         'lng',
         'id_stheme',
+        'translations',
       ]);
       this.siteJson.geom =
         'SRID=4326;POINT(' +
@@ -301,18 +357,28 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         siteForm.value.lat +
         ')';
       this.siteJson.path_file_guide_site = path_file_guide_site;
+
+      // Créer l'objet de traductions
+      this.siteJson.translations = this.formService.createTranslationsObject(
+        siteForm.value,
+        this.availableLang,
+        FormConstants.mandatoryFieldsSite
+      );
       this.uploadNotice();
       this.spinner.show();
       if (!this.id_site) {
         this.sitesService.addSite(this.siteJson).subscribe(
           (site) => {
             // tslint:disable-next-line:quotemark
-            this.toast_msg = "Point d'observation ajouté avec succès";
+            this.translate
+              .get('INFO_MESSAGE.SUCESS_ADDED_SITE')
+              .subscribe((translatedMessage: string) => {
+                this.toast_msg = translatedMessage;
+              });
             this.addThemes(
               Number(site.id_site),
               siteForm.value.id_theme,
-              siteForm.value.id_stheme,
-              true
+              siteForm.value.id_stheme
             );
           },
           (err) => {
@@ -320,14 +386,21 @@ export class AddSiteComponent implements OnInit, OnDestroy {
             this.edit_btn = true;
             if (err.status === 403) {
               this.router.navigate(['']);
-              this.toastr.error('votre session est expirée', '', {
-                positionClass: 'toast-bottom-right',
-              });
-            } else {
-              this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-                positionClass: 'toast-bottom-right',
-              });
-            }
+              this.translate
+                .get('ERRORS.EXPIRED_SESSION')
+                .subscribe((translatedMessage: string) => {
+                  this.toastr.error(translatedMessage, '', {
+                    positionClass: 'toast-bottom-right',
+                  });
+                });
+            } else
+              this.translate
+                .get('ERRORS.SERVER_ERROR')
+                .subscribe((translatedMessage: string) => {
+                  this.toastr.error(translatedMessage, '', {
+                    positionClass: 'toast-bottom-right',
+                  });
+                });
           }
         );
       } else {
@@ -339,6 +412,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       }
     } else {
       this.edit_btn = true;
+      this.errorMessage = this.generateErrorMessage();
     }
   }
 
@@ -355,7 +429,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.photos.push(photo);
   }
 
-  addPhotos(id_site, new_site) {
+  addPhotos(id_site) {
     const photosData: FormData = new FormData();
     let photoJson;
     let photos;
@@ -366,13 +440,11 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     }
     _.forEach(photos, (photo) => {
       photoJson = _.omit(photo, ['photo_file', 'imgUrl', 'filePhoto', 'name']);
-      photoJson.id_site = Number(id_site);
       photosData.append('image', photo.filePhoto);
-      photosData.append('new_site', new_site);
       photosData.append('data', JSON.stringify(photoJson));
     });
     if (photos.length > 0) {
-      this.sitesService.addPhotos(photosData).subscribe(
+      this.sitesService.addPhotos(id_site, photosData).subscribe(
         (res) => {
           if (res.type === HttpEventType.UploadProgress) {
             // console.log('resUplod', res.loaded);
@@ -382,18 +454,26 @@ export class AddSiteComponent implements OnInit, OnDestroy {
           console.log('err upload photo', err);
           this.spinner.hide();
           if (err.error.error === 'image_already_exist') {
-            this.edit_btn_text = 'Annuler';
+            this.edit_btn_text = 'BUTTONS.CANCEL';
             this.edit_btn = true;
             this.setAlert(err.error.image);
           } else if (err.status === 403) {
-            this.router.navigate(['']);
-            this.toastr.error('votre session est expirée', '', {
-              positionClass: 'toast-bottom-right',
-            });
+            this.translate
+              .get('ERRORS.SESSION_EXPIRED')
+              .subscribe((translatedMessage: string) => {
+                this.router.navigate(['']);
+                this.toastr.error(translatedMessage, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
           } else {
-            this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-              positionClass: 'toast-bottom-right',
-            });
+            this.translate
+              .get('ERRORS.SERVER_ERROR')
+              .subscribe((translatedMessage: string) => {
+                this.toastr.error(translatedMessage, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
           }
         },
         () => {
@@ -433,7 +513,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.router.navigate(['/sites/details/', id_site]);
     }
   }
-  addThemes(id_site, themes, sthemes, new_site) {
+  addThemes(id_site, themes, sthemes) {
     // tslint:disable-next-line:prefer-const
     let tab_stheme = [];
     _.forEach(sthemes, (sub) => {
@@ -445,43 +525,56 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       _.forEach(stheme.themes, (item) => {
         if (_.includes(themes, item)) {
           stheme_theme.push({
-            id_site: id_site,
             id_theme: item,
             id_stheme: stheme.id_stheme,
           });
         }
       });
     });
-    this.sitesService.addThemes({ data: stheme_theme }).subscribe(
+    this.sitesService.addThemes(id_site, stheme_theme).subscribe(
       (response) => {
-        this.addPhotos(id_site, new_site);
+        this.addPhotos(id_site);
       },
       (err) => {
         this.spinner.hide();
         if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', {
-            positionClass: 'toast-bottom-right',
-          });
-        } else
-          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-            positionClass: 'toast-bottom-right',
-          });
+          this.translate
+            .get('ERRORS.SESSION_EXPIRED')
+            .subscribe((message: string) => {
+              this.router.navigate(['']);
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
+            });
+        } else {
+          this.translate
+            .get('ERRORS.SERVER_ERROR')
+            .subscribe((message: string) => {
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
+            });
+        }
       }
     );
   }
 
-  setAlert(message) {
-    this.alert = {
-      type: 'danger',
-      message: 'La ' + message + ' existe déjà',
-    };
+  setAlert(message: string) {
+    this.translate
+      .get('ALERTS.ITEM_EXISTS')
+      .subscribe((translatedMessage: string) => {
+        // Concaténer le message traduit avec la variable non traduite
+        this.alert = {
+          type: 'danger',
+          message: `${translatedMessage.replace('{{ item }}', message)}`,
+        };
+      });
   }
 
   getSite(id_site) {
     this.sitesService.getsiteById(id_site).subscribe(
       (site) => {
-        this.site = site.site[0];
+        console.log('site', site), (this.site = site.site[0]);
         _.forEach(site.photos, (photo) => {
           this.initPhotos.push({
             id_photo: photo.id_photo,
@@ -496,9 +589,10 @@ export class AddSiteComponent implements OnInit, OnDestroy {
         });
       },
       (err) => {
-        console.log('err', err);
-        this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-          positionClass: 'toast-bottom-right',
+        this.translate.get('ERRORS.SERVER_ERROR').subscribe((res: string) => {
+          this.toastr.error(res, '', {
+            positionClass: 'toast-bottom-right',
+          });
         });
       },
       () => {
@@ -604,43 +698,65 @@ export class AddSiteComponent implements OnInit, OnDestroy {
   }
 
   patchSite(siteJson, themes, sthemes) {
-    siteJson.id_site = this.id_site;
     siteJson.main_theme_id = siteJson.main_theme_id || null;
     _.forEach(this.photos, (photo) => {
       if (_.has(photo, 'filePhoto')) {
         this.new_photos.push(photo);
       }
     });
-    this.sitesService.updateSite(siteJson).subscribe(
-      (res) => {
-        // tslint:disable-next-line:quotemark
-        this.toast_msg = "Point d'observation mis à jour";
-        this.edit_btn_text = 'Éditer';
-        if (this.deleted_photos.length > 0) {
-          this.sitesService.deletePhotos(this.deleted_photos).subscribe();
+    this.sitesService
+      .updateSite(this.id_site, siteJson)
+      .pipe(
+        switchMap((res) => {
+          return this.translate
+            .get(['INFO_MESSAGE.SUCCESS_UPDATED_SITE', 'BUTTONS.EDIT'])
+            .pipe(
+              tap((translations) => {
+                this.toast_msg =
+                  translations['INFO_MESSAGE.SUCCESS_UPDATED_SITE'];
+                this.edit_btn_text = translations['BUTTONS.EDIT'];
+
+                if (this.deleted_photos.length > 0) {
+                  this.sitesService
+                    .deletePhotos(this.deleted_photos.map((p) => p.id_photo))
+                    .subscribe();
+                }
+                this.addThemes(Number(this.id_site), themes, sthemes);
+              })
+            );
+        })
+      )
+      .subscribe(
+        () => {}, // Success handler (déjà géré dans `tap`)
+        (err) => {
+          this.spinner.hide();
+          if (err.status === 403) {
+            this.translate
+              .get('ERRORS.SESSION_EXPIRED')
+              .subscribe((message: string) => {
+                this.router.navigate(['']);
+                this.toastr.error(message, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
+          } else {
+            this.translate
+              .get('ERRORS.SERVER_ERROR')
+              .subscribe((message: string) => {
+                this.toastr.error(message, '', {
+                  positionClass: 'toast-bottom-right',
+                });
+              });
+          }
         }
-        this.addThemes(Number(this.id_site), themes, sthemes, false);
-      },
-      (err) => {
-        this.spinner.hide();
-        if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', {
-            positionClass: 'toast-bottom-right',
-          });
-        } else
-          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-            positionClass: 'toast-bottom-right',
-          });
-      }
-    );
+      );
   }
 
   editForm() {
     this.edit_btn = !this.edit_btn;
     if (!this.edit_btn) {
       this.map.removeControl(this.drawControl);
-      this.edit_btn_text = 'Éditer';
+      this.edit_btn_text = 'BUTTONS.EDIT';
       this.patchForm();
       this.alert = null;
       this.photos = this.initPhotos;
@@ -648,7 +764,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       this.initMarker(this.site.geom[0], this.site.geom[1]);
     } else {
       this.map.addControl(this.drawControl);
-      this.edit_btn_text = 'Annuler';
+      this.edit_btn_text = 'BUTTONS.CANCEL';
       this.siteForm.enable();
     }
     this.siteForm.controls['id_stheme'].setValue(this.site.subthemes);
@@ -689,6 +805,7 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     this.deleted_photos.push(photo);
   }
 
+  // TODO: Traduire les messages liés aux toasts
   deleteSite() {
     this.sitesService.deleteSite(this.id_site).subscribe(
       (res) => {
@@ -696,14 +813,23 @@ export class AddSiteComponent implements OnInit, OnDestroy {
       },
       (err) => {
         if (err.status === 403) {
-          this.router.navigate(['']);
-          this.toastr.error('votre session est expirée', '', {
-            positionClass: 'toast-bottom-right',
-          });
-        } else
-          this.toastr.error('Une erreur est survenue sur le serveur.', '', {
-            positionClass: 'toast-bottom-right',
-          });
+          this.translate
+            .get('ERRORS.SESSION_EXPIRED')
+            .subscribe((message: string) => {
+              this.router.navigate(['']);
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
+            });
+        } else {
+          this.translate
+            .get('ERRORS.SERVER_ERROR')
+            .subscribe((message: string) => {
+              this.toastr.error(message, '', {
+                positionClass: 'toast-bottom-right',
+              });
+            });
+        }
       }
     );
     this.modalRef.close();
@@ -711,29 +837,81 @@ export class AddSiteComponent implements OnInit, OnDestroy {
 
   onCancel() {
     this.siteForm.reset();
+    this.errorMessage = '';
     this.router.navigate(['sites']);
   }
 
   patchForm() {
+    // Initialisation d'un objet pour stocker les valeurs
+    const translatedValues = {
+      translations: {}, // Créer une structure pour stocker les traductions
+    };
+    // Parcours de toutes les langues disponibles
+    for (const lang of this.availableLang) {
+      const langId = lang.id; // Utilisation de langId directement depuis l'objet lang
+      // Récupératio n des traductions pour chaque langue
+      translatedValues.translations[langId] = {
+        name_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'name_site'
+        ),
+        desc_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'desc_site'
+        ),
+        legend_site: this.translationService.getTranslation(
+          langId,
+          this.site,
+          'legend_site'
+        ),
+        testim_site:
+          this.translationService.getTranslation(
+            langId,
+            this.site,
+            'testim_site'
+          ) || null,
+        publish_site:
+          this.translationService.getTranslation(
+            langId,
+            this.site,
+            'publish_site'
+          ) || false,
+      };
+    }
+    // Mise à jour des valeurs du formulaire
     this.siteForm.patchValue({
-      name_site: this.site.name_site,
-      desc_site: this.site.desc_site,
       ref_site: this.site.ref_site,
-      testim_site: this.site.testim_site,
-      publish_site: this.site.publish_site,
       lng: this.site.geom[1].toFixed(6),
       lat: this.site.geom[0].toFixed(6),
       id_theme: this.site.themes,
       id_stheme: this.site.subthemes,
       code_city_site: this.site.code_city_site,
       main_theme_id: this.site.main_theme_id,
-      legend_site: this.site.legend_site,
       id_observatory: this.site.id_observatory,
     });
+
+    for (const lang of this.availableLang) {
+      const langId = lang.id;
+      const { name_site, desc_site, legend_site, testim_site, publish_site } =
+        translatedValues.translations[langId];
+
+      // Mise à jour de chaque champ dans le formGroup correspondant à langId
+      this.siteForm.get(`translations.${langId}`).patchValue({
+        name_site,
+        desc_site,
+        legend_site,
+        testim_site,
+        publish_site,
+      });
+    }
+
     if (this.site.path_file_guide_site) {
       this.noticeName = this.site.path_file_guide_site;
     }
   }
+
   layerUrl(key, layer) {
     return (
       'http://wxs.ign.fr/' +
@@ -751,5 +929,48 @@ export class AddSiteComponent implements OnInit, OnDestroy {
     if (this.mySubscription) {
       this.mySubscription.unsubscribe();
     }
+  }
+
+  // Méthode appelée lors du changement d'onglet
+  changeTab(event: NgbTabChangeEvent): void {
+    this.currentTabLangId = event.activeId;
+  }
+
+  private generateErrorMessage(): string {
+    return this.formService.generateErrorMessage(
+      this.siteForm,
+      [],
+      formLabels.site
+    );
+  }
+
+  isObservatoryEditable(): boolean {
+    return (
+      !this.site ||
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    );
+  }
+
+  canEditPublish(): boolean {
+    return (
+      !this.site ||
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    );
+  }
+
+  canDelete(): boolean {
+    return (
+      this.site &&
+      this.observatoriesSrv.isUserAdmin(
+        this.site.id_observatory,
+        this.currentUser
+      )
+    );
   }
 }

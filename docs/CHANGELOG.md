@@ -1,6 +1,23 @@
 CHANGELOG
 =========
 
+1.5.4 (2025-05-12)
+------------------
+
+**🚀 Nouveautés**
+
+**Multi-langues :**
+
+- Il est désormais possible de traduire l’ensemble des contenus (observatoires, sites, ...) en plusieurs langues.
+- Lors de la mise à jour, tous les contenus existants sont automatiquement associés à la langue Français.
+- Tant qu’une seule langue est publiée, aucun changement visible n’apparaît dans GeoPaysages.
+
+**Gestion des droits utilisateurs :**
+
+- Les droits sont définis au niveau de chaque observatoire.
+- Un même utilisateur peut avoir des rôles différents selon l’observatoire.
+- Voir la [documentation](./administration.md)
+
 1.3.0 (2024-04-10)
 ------------------
 

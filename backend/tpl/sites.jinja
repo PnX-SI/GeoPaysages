@@ -54,63 +54,71 @@
           <i class="icon ion-ios-arrow-down visible-collapsed"></i>
           <i class="icon ion-ios-arrow-up hidden-collapsed"></i>
         </a>
-        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse" :visible="isSitesListOpen">
-          <div v-if="observatories.length" class="list-observatories">
+        <b-collapse id="app_map_list_sites_collapse" class="list-sites-collapse" v-model="isSitesListOpen">
+          {% if observatories|length %}
+          
+          <div class="list-observatories">
+            {% for observatory in observatories %}
             <b-card
               no-body
-              class="m-0 rounded-0 border-0 p-2"
-              v-for="(observatory) in observatories"
-              v-bind:key="observatory.id">
+              class="m-0 rounded-0 border-0 p-2">
               <b-card-header header-tag="header" class="p-0 border-0">
                 <b-btn
                   block
                   href="#"
-                  @click="onBtnObservatoryClick(observatory)"
-                  v-b-toggle="'app_map_observatory_' + observatory.id"
+                  @click="onBtnObservatoryClick(observatories[{{ loop.index0 }}])"
                   variant="link"
                   class="rounded-0 text-left btn-observatory border-0 text-decoration-none d-flex align-items-center">
                   <div class="icon d-inline-block mr-2">
-                    <img :src="'/api/thumbor/presets/100x100/' + observatory.data.logo" />
+                    <img src="/api/thumbor/presets/100x100/{{ observatory.data.logo }}" />
                   </div>
                   <div class="d-inline-block align-middle">
-                    <span class="d-block text-capitalize" v-html="observatory.label"></span>
-                    <small class="d-block text-lowercase text-black-50" v-html="observatory.selectedSites && observatory.selectedSites.length + ' site(s) d\'observation(s)'"></small>
+                    <span class="d-block text-capitalize">{{ observatory.label }}</span>
+                    <small class="d-block text-lowercase text-black-50">
+                      <span  v-html="!observatories[{{ loop.index0 }}].selectedSites ? 0 : observatories[{{ loop.index0 }}].selectedSites.length"></span> 
+
+                      {{_('sites.observation_points.item')}}
+                    </small>
                   </div>
                   <i class="ion-ios-arrow-down visible-collapsed ml-auto justify-content-center align-items-center"></i>
                   <i class="ion-ios-arrow-up hidden-collapsed ml-auto justify-content-center align-items-center"></i>
                 </b-btn>
               </b-card-header>
               <b-collapse
-                :id="'app_map_observatory_' + observatory.id"
-                v-model="observatory.isOpen">
+                v-model="observatories[{{ loop.index0 }}].isOpen">
                 <b-card-body class="p-0" v-bind:class="{'pl-5': isMultiObservatories}">
-                  <b-button-group v-if="observatory.selectedSites && observatory.selectedSites.length" vertical class="w-100">
-                    <a v-for="site in observatory.selectedSites"
-                      class="btn btn-sm btn-block text-left btn-site rounded-0 btn-no-uppercase"
-                      @mouseenter="onSiteMousover(site)"
-                      @mouseleave="onSiteMouseout(site)"
-                      @click="onSiteClick(site)">
-                      <span class="d-block font-weight-bold" v-html="site.name_site"></span>
-                      <span class="d-block text-black-50" v-html="site.ville.label"></span>
-                      {% if dbconf.show_site_ref: %}
-                      <span class="d-block text-black-50"
-                            v-if="site.ref_site"
-                            v-html="'(réf. : ' + site.ref_site + ')'"></span>
+                  <b-button-group 
+                    v-if="observatories[{{ loop.index0 }}].selectedSites && observatories[{{ loop.index0 }}].selectedSites.length"
+                    vertical class="w-100">
+                    {% for site in observatory.sites %}
+                    <a class="btn btn-sm btn-block text-left btn-site rounded-0 btn-no-uppercase"
+                      @mouseenter="onSiteMousover({{ site.id_site }})"
+                      @mouseleave="onSiteMouseout({{ site.id_site }})"
+                      @click="onSiteClick($event)"
+                      href="{{getLocalizedLink('/sites/' + (site.id_site|tojson) )}}"
+                      >
+                      <span class="d-block font-weight-bold">{{ site.name_site }}</span>
+                      <span class="d-block text-black-50">{{ site.ville.label }}</span>
+                      {% if dbconf.show_site_ref and site.ref_site: %}
+                      <span class="d-block text-black-50">(réf. : {{ site.ref_site }})</span>
                       {% endif %}
                     </a>
+                    {% endfor %}
                     <hr class="w-100 m-1"/>
                   </b-button-group>
                 </b-card-body>
               </b-collapse>
             </b-card>
+            {% endfor %}
           </div>
+          {% endif %}
         </b-collapse>
       </div>
       <div class="maptools-top-right">
-        <b-button class="d-none d-md-inline-block" @click="onShareClick()" variant="primary">Partager</b-button>
+        <b-button class="d-none d-md-inline-block" @click="onShareClick()" variant="primary">{{_('map.share.button')}}</b-button>
       </div>
       <div class="maptools-bottom">
-        <b-button class="d-md-none" @click="onShareClick()" variant="primary">Partager</b-button>
+        <b-button class="d-md-none" @click="onShareClick()" variant="primary">{{_('map.share.button')}}</b-button>
       </div>
       <div class="maptools-bottom-right">
         <div class="block-legend d-none d-md-block">
@@ -134,7 +142,7 @@
             class="btn d-flex justify-content-between p-3 btn-toggle"
             v-b-toggle="'app_map_legend_collapse'"
           >
-            <span class="mr-3">Légende</span>
+            <span class="mr-3">{{_('map.legend.title')}}</span>
             <i class="icon ion-ios-arrow-up visible-collapsed"></i>
             <i class="icon ion-ios-arrow-down hidden-collapsed"></i>
           </a>
@@ -144,8 +152,8 @@
         <div class="map-wrapper h-100" ref="map"></div>
       </div>
     </div>
-    <b-modal ref="modal-copy-url" title="Partager" modal-class="modal-copy-url" hide-footer centered>
-      <p>Copier et partager le lien ci-dessus</p>
+    <b-modal ref="modal-copy-url" title="{{_('map.share.dialog.title')}}" modal-class="modal-copy-url" hide-footer centered>
+      <p>{{_('map.share.dialog.message')}}</p>
       <b-form-textarea
         v-model="shareUrl"
         rows="3"
@@ -158,9 +166,13 @@
     if (document.readyState == 'complete') {
       geopsg.initSites({
         observatories: {{observatories | tojson}},
-        sites: {{sites | tojson}},
         filters: {{filters | tojson}},
         dbconf: {{dbconf | tojson}},
+        siteUrlPrefixe: "{{getLocalizedLink('/sites')}}",
+        translations: {
+          share_copy_success_title: "{{_('map.share.copy_success.title')}}",
+          share_copy_success_message: "{{_('map.share.copy.copy_success.message')}}",
+        }
       })
     }
   };

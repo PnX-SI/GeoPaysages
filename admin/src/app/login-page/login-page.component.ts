@@ -5,6 +5,7 @@ import { User } from '../shared/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Conf } from '../config';
+import { LanguageService } from '../services/language.service';
 
 @Component({
   selector: 'app-login-page',
@@ -16,15 +17,22 @@ export class LoginPageComponent implements OnInit {
   userForm: any;
   currentUser: User;
   logoUrl: string;
+  availableLanguages: string[] = [];
+  selectedLanguage: string;
 
   constructor(
     private loginService: LoginService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private route: Router
+    private route: Router,
+    private languageService: LanguageService
   ) {}
 
   ngOnInit() {
+    this.selectedLanguage = this.languageService.getCurrentLang();
+    this.languageService.getAvailableLanguages().subscribe(languages => {
+      this.availableLanguages = languages;
+    });
     this.logoUrl = `${Conf.customFiles}images/logo_txt_blanc.png`;
     this.loginForm = this.formBuilder.group({
       login: ['', Validators.required],
@@ -71,5 +79,10 @@ export class LoginPageComponent implements OnInit {
       return 'password';
     }
     return 'required';
+  }
+
+  changeLanguage(lang: string) {
+    this.languageService.changeLanguage(lang);
+    this.selectedLanguage = lang;
   }
 }

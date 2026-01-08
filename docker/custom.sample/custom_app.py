@@ -22,8 +22,10 @@ def custom_inject_to_tpl():
         getHomeBlock1Data = getHomeBlock1Data
     )
 
-@custom.route('/about')
-def about():
+@custom.route("/about/")
+@custom.route("/<string:locale>/about/")
+@utils.localeGuard
+def about(locale=None):
     tpl = utils.getCustomTpl('about')
     if not tpl:
         abort(404)

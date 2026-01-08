@@ -1,0 +1,279 @@
+# English translations for PROJECT.
+# Copyright (C) 2018 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2018.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-11-06 08:10+0000\n"
+"PO-Revision-Date: 2018-12-21 11:34+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.16.0\n"
+
+#: utils.py:229
+msgid "sites.filter.themes"
+msgstr "Topic"
+
+#: utils.py:232
+msgid "sites.filter.subthemes"
+msgstr "Sub-topic"
+
+#: utils.py:238
+msgid "sites.filter.township"
+msgstr "City"
+
+#: utils.py:244
+msgid "sites.filter.years"
+msgstr "Year"
+
+#: utils.py:391
+msgid "sites.filter.obervatories"
+msgstr "City"
+
+#: tpl/gallery.jinja:3
+msgid "gallery.meta_title"
+msgstr "Photo Gallery"
+
+#: tpl/gallery.jinja:18
+msgid "gallery.title"
+msgstr "Photo Gallery"
+
+#: tpl/components/sites-filter.jinja:8 tpl/components/sites-filter.jinja:15
+#: tpl/gallery.jinja:76 tpl/sites.jinja:52
+msgid "sites.filters.nb_result"
+msgstr "Filter: %(nb)s result(s)"
+
+#: tpl/home_mono_obs.jinja:3 tpl/home_multi_obs.jinja:3
+msgid "home.meta_title"
+msgstr "GeoPaysages: Photographic Observatory of Landscapes"
+
+#: tpl/home_mono_obs.jinja:17 tpl/home_multi_obs.jinja:19
+msgid "home.title_mobile"
+msgstr "Home"
+
+#: tpl/components/home-carousel.jinja:3 tpl/components/home-carousel.jinja:24
+#: tpl/home_mono_obs.jinja:22 tpl/home_multi_obs.jinja:24
+msgid "home.title"
+msgstr "Nature-Based Solutions Education Network"
+
+#: tpl/home_mono_obs.jinja:36 tpl/home_multi_obs.jinja:61
+msgid "home.block.explore_sites"
+msgstr "Explore Observation Sites"
+
+#: tpl/home_mono_obs.jinja:43
+msgid "home.block.discover"
+msgstr "Discover this Observation Site"
+
+#: tpl/home_mono_obs.jinja:46
+msgid "home.block.photography"
+msgstr "Photography"
+
+#: tpl/home_multi_obs.jinja:48
+msgid "home.block.discover_observatories"
+msgstr "Discover this Observation Site"
+
+#: tpl/layout.jinja:90
+msgid "footer.internal_title"
+msgstr "The Site"
+
+#: tpl/layout.jinja:94
+msgid "footer.internal_links.home"
+msgstr "Home"
+
+#: tpl/layout.jinja:99
+msgid "footer.internal_links.sites"
+msgstr "Observation Sites"
+
+#: tpl/layout.jinja:104
+msgid "footer.internal_links.gallery"
+msgstr "Photo Gallery"
+
+#: tpl/layout.jinja:110
+msgid "footer.internal_links.contact"
+msgstr "Contact Us"
+
+#: tpl/layout.jinja:119
+msgid "footer.external_title"
+msgstr "Our Territory"
+
+#: tpl/site.jinja:31
+msgid "site.title_mobile"
+msgstr "Observation Site"
+
+#: tpl/site.jinja:58
+msgid "obs_point.buttons.notice"
+msgstr "Technical Notice for the Photographer"
+
+#: tpl/site.jinja:63
+msgid "obs_point.buttons.obs"
+msgstr "Make an Observation"
+
+#: tpl/site.jinja:68
+msgid "obs_point.description"
+msgstr "Site Presentation"
+
+#: tpl/site.jinja:75 tpl/site.jinja:94 tpl/site.jinja:111
+msgid "obs_point.buttons.read_more"
+msgstr "Read More"
+
+#: tpl/site.jinja:76 tpl/site.jinja:95 tpl/site.jinja:112
+msgid "obs_point.buttons.read_less"
+msgstr "Read Less"
+
+#: tpl/site.jinja:85
+msgid "obs_point.keywords"
+msgstr "Keywords"
+
+#: tpl/site.jinja:104
+msgid "obs_point.testimonials"
+msgstr "Testimonials"
+
+#: tpl/sites.jinja:4
+msgid "sites.meta_title"
+msgstr "Observation Sites"
+
+#: tpl/sites.jinja:29
+msgid "sites.title"
+msgstr "Observation Sites"
+
+#: tpl/sites.jinja:51
+msgid "sites.observation_points.title"
+msgstr "Observation Sites"
+
+#: tpl/sites.jinja:80
+msgid "sites.observation_points.item"
+msgstr "observation site(s)"
+
+#: tpl/sites.jinja:118 tpl/sites.jinja:121
+msgid "map.share.button"
+msgstr "Share"
+
+#: tpl/sites.jinja:127
+msgid "map.legend.obervatories"
+msgstr "city(ies)"
+
+#: tpl/sites.jinja:133
+msgid "map.legend.themes"
+msgstr "Theme(s)"
+
+#: tpl/sites.jinja:145
+msgid "map.legend.title"
+msgstr "Legend"
+
+#: tpl/sites.jinja:155
+msgid "map.share.dialog.title"
+msgstr "Share"
+
+#: tpl/sites.jinja:156
+msgid "map.share.dialog.message"
+msgstr "Copy and share the link above"
+
+#: tpl/sites.jinja:173
+msgid "map.share.copy_success.title"
+msgstr "Copied!"
+
+#: tpl/sites.jinja:174
+msgid "map.share.copy.copy_success.message"
+msgstr "The link is ready to paste."
+
+#: tpl/components/comparator_v1.jinja:8
+msgid "obs_point.buttons.download"
+msgstr "Download"
+
+#: tpl/components/comparator_v2.jinja:78
+msgid "comparatorv2.loading"
+msgstr "Loading"
+
+#: tpl/components/comparator_v2.jinja:120
+msgid "comparatorv2.date.filter.title"
+msgstr "Filter by Date"
+
+#: tpl/components/comparator_v2.jinja:122
+msgid "comparatorv2.date.filter.start"
+msgstr "Start"
+
+#: tpl/components/comparator_v2.jinja:131
+msgid "comparatorv2.date.filter.end"
+msgstr "End"
+
+#: tpl/components/comparator_v2.jinja:163
+msgid "comparatorv2.date.step"
+msgstr "Step"
+
+#: tpl/components/comparator_v2.jinja:182
+msgid "comparatorv2.mode.sidebyside"
+msgstr "Overlay"
+
+#: tpl/components/comparator_v2.jinja:183
+msgid "comparatorv2.mode.split"
+msgstr "Side by Side"
+
+#: tpl/components/comparator_v2.jinja:184
+msgid "comparatorv2.date.steps.none"
+msgstr "0"
+
+#: tpl/components/comparator_v2.jinja:185
+msgid "comparatorv2.date.steps.1d"
+msgstr "1 day"
+
+#: tpl/components/comparator_v2.jinja:186
+msgid "comparatorv2.date.steps.1w"
+msgstr "1 week"
+
+#: tpl/components/comparator_v2.jinja:187
+msgid "comparatorv2.date.steps.1m"
+msgstr "1 month"
+
+#: tpl/components/comparator_v2.jinja:188
+msgid "comparatorv2.date.steps.1y"
+msgstr "1 year"
+
+#: tpl/components/legal-footer.jinja:1
+msgid "footer.copyright"
+msgstr "© 2023 - GeoLandscapes, free and open-source software"
+
+#: tpl/components/legal-footer.jinja:5
+msgid "footer.legal_notices"
+msgstr "Legal notices"
+
+#: tpl/components/sites-filter.jinja:22
+msgid "map.filters.title"
+msgstr "Filter by"
+
+#: tpl/components/sites-filter.jinja:53
+msgid "sites.filters.reset"
+msgstr "Reset"
+
+#: tpl/custom/main_menu.jinja:3
+msgid "header.nav.home"
+msgstr "Home"
+
+#: tpl/custom/main_menu.jinja:8
+msgid "header.nav.about"
+msgstr "About"
+
+#: tpl/custom/main_menu.jinja:13
+msgid "header.nav.sites"
+msgstr "Observation Sites"
+
+#: tpl/custom/main_menu.jinja:18
+msgid "header.nav.gallery"
+msgstr "Photo Gallery"
+
+#~ msgid "home.map_block_title"
+#~ msgstr "Map of cities"
+
+#~ msgid "header.nav.about"
+#~ msgstr "About"
+
+#~ msgid "header.nav.gallery"
+#~ msgstr "Photo Gallery"
+

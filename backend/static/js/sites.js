@@ -77,6 +77,9 @@ geopsg.initSites = (options) => {
       isOpen: !isMultiObservatories,
     };
   });
+  const sites = observatories.reduce((sites, observatory) => {
+    return sites.concat(observatory.sites);
+  }, []);
 
   Vue.component('v-multiselect', window.VueMultiselect.default);
 
@@ -118,9 +121,10 @@ geopsg.initSites = (options) => {
           });
         }
         let mapLayers = layersConf.map((layer) => {
+          const fct = layer.isWMS ? L.tileLayer.wms : L.tileLayer;
           return {
             label: layer.label,
-            layer: L.tileLayer(layer.url, layer.options),
+            layer: fct(layer.url, layer.options),
           };
         });
 
@@ -263,7 +267,7 @@ geopsg.initSites = (options) => {
           }
         });
 
-        let selectedSites = options.sites;
+        let selectedSites = sites;
         cascadingFilters.forEach((filterName) => {
           const filter = filters.find((filter) => {
             return filter.name == filterName;
@@ -308,7 +312,7 @@ geopsg.initSites = (options) => {
           });
         });
 
-        options.sites.forEach((site) => {
+        sites.forEach((site) => {
           site.marker = null;
         });
 
@@ -341,7 +345,9 @@ geopsg.initSites = (options) => {
           }
           imgUrl = `/api/thumbor/presets/200x150/${site.photo}`;
           marker.bindPopup(
-            '<a href="/sites/' +
+            '<a href="' +
+              options.siteUrlPrefixe +
+              '/' +
               site.id_site +
               '" style="text-decoration: none; color: black;"><div class="img" style="background-image: url(\'' +
               imgUrl +
@@ -360,7 +366,7 @@ geopsg.initSites = (options) => {
           });
           marker.on('click', (e) => {
             if (window.innerWidth >= 768) {
-              window.location.href = `/sites/${site.id_site}`;
+              window.location.href = `${options.siteUrlPrefixe}/${site.id_site}`;
             } else {
               this.onSiteMousover(site);
             }
@@ -383,7 +389,7 @@ geopsg.initSites = (options) => {
             map.getBounds();
             return;
           } catch (error) {
-            options.sites.forEach((site) => {
+            sites.forEach((site) => {
               lats.push(site.latlon[0]);
               lons.push(site.latlon[1]);
             });
@@ -402,16 +408,30 @@ geopsg.initSites = (options) => {
         };
         map.fitBounds(mapBounds.bbox, mapBounds.options);
       },
-      onSiteMousover(site) {
+      isSiteSelected(id) {
+        return this.selectedSites.find((site) => {
+          return site.id_site == id;
+        });
+      },
+      getObservatoryById(id) {
+        const observatory = this.observatories.find((observatory) => observatory.id == id);
+        return observatory;
+      },
+      onSiteMousover(id) {
+        const site = sites.find((site) => site.id_site == id);
         site.marker.openPopup();
         map.panTo(site.latlon);
+        if (window.innerWidth < 768) {
+          this.isSitesListOpen = false;
+        }
       },
-      onSiteMouseout(site) {
+      onSiteMouseout(id) {
+        const site = sites.find((site) => site.id_site == id);
         site.marker.closePopup();
       },
-      onSiteClick(site) {
-        if (window.innerWidth >= 768) {
-          window.location.href = `/sites/${site.id_site}`;
+      onSiteClick(e) {
+        if (window.innerWidth < 768) {
+          e.preventDefault();
         }
       },
       async onShareClick() {
@@ -434,8 +454,8 @@ geopsg.initSites = (options) => {
 
         try {
           await navigator.clipboard.writeText(this.shareUrl);
-          this.$bvToast.toast('Le lien est prêt à être coller.', {
-            title: 'Copié !',
+          this.$bvToast.toast(options.translations.share_copy_success_message, {
+            title: options.translations.share_copy_success_title,
             variant: 'success',
             solid: true,
           });
@@ -444,6 +464,12 @@ geopsg.initSites = (options) => {
         }
       },
       onBtnObservatoryClick(observatory) {
+        if (!observatory.selectedSites || !observatory.selectedSites.length) {
+          return;
+        }
+        const observatoryIndex = this.observatories.findIndex((item) => item.id == observatory.id);
+        observatory.isOpen = !observatory.isOpen;
+        Vue.set(this.observatories, observatoryIndex, observatory);
         const layerRef = observatory.layer || observatory.markers;
         map.fitBounds(layerRef.getBounds(), {
           maxZoom: options.dbconf.zoom_max_fitbounds_map,

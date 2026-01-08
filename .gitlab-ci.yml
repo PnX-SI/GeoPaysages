@@ -1,0 +1,98 @@
+.kaniko_template:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  variables:
+    GODEBUG: "http2client=0"
+    DOCKER_CONFIG: /kaniko/.docker
+    DOCKER_CONFIG_TPL: '{"auths": {"harbor.naturaliens.cloud": {"auth": "<NS_DOCKER_TOKEN>"}}}'
+  script:
+    - mkdir -p /kaniko/.docker
+    - |
+      printf '%s\n' "$DOCKER_CONFIG_TPL" | sed "s|<NS_DOCKER_TOKEN>|${NS_DOCKER_TOKEN}|g" > /kaniko/.docker/config.json
+    - >
+      /kaniko/executor
+      --context "${CONTEXT_DIR}"
+      --dockerfile "${DOCKERFILE_PATH}"
+      --build-arg APP_VERSION=$(cat VERSION)
+      --destination "harbor.naturaliens.cloud/geopaysages/${IMAGE_NAME}:$(cat VERSION)"
+      --destination "harbor.naturaliens.cloud/geopaysages/${IMAGE_NAME}:${CI_COMMIT_BRANCH}"
+      --cache=true      
+  tags:
+    - NSCICDK8S
+
+build_db:
+  extends: .kaniko_template
+  variables:
+    CONTEXT_DIR: "${CI_PROJECT_DIR}/db"
+    DOCKERFILE_PATH: "${CI_PROJECT_DIR}/db/Dockerfile"
+    IMAGE_NAME: db
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "preprod"'
+      changes:
+        - db/**
+        #- .gitlab-ci.yml
+
+build_admin:
+  extends: .kaniko_template
+  variables:
+    CONTEXT_DIR: "${CI_PROJECT_DIR}/admin"
+    DOCKERFILE_PATH: "${CI_PROJECT_DIR}/admin/Dockerfile"
+    IMAGE_NAME: admin
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "preprod"'
+      changes:
+        - admin/**/*
+        - admin/*
+        #- .gitlab-ci.yml
+
+build_backend:
+  extends: .kaniko_template
+  variables:
+    CONTEXT_DIR: "${CI_PROJECT_DIR}/backend"
+    DOCKERFILE_PATH: "${CI_PROJECT_DIR}/backend/Dockerfile"
+    IMAGE_NAME: backend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "preprod"'
+      changes:
+        - backend/**
+        #- .gitlab-ci.yml
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/natural-solutions/ns-ansible-infrastructure
+  id_tokens:
+    NATURALIENS_ID_TOKEN:
+      aud: https://vault.naturaliens.cloud
+  tags:
+    - NSCICDDOCKER
+  # needs:
+  #   - job: build_db
+  #     optional: true
+  #   - job: build_keycloak
+  #     optional: true
+  #   - job: build_hasura
+  #     optional: true
+  #   - job: build_python
+  #     optional: true
+  #   - job: build_app
+  #     optional: true
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "preprod"'
+      changes:
+        # - .gitlab-ci.yml
+        - db/**
+        - keycloak/**
+        - hasura/**
+        - python/**
+        - app/**
+  script:
+    - export VAULT_TOKEN="$(vault write -field=token auth/jwt/login role=gitlab-runner-geopaysages jwt=$NATURALIENS_ID_TOKEN)"
+    - cd /home/ansible
+    - vault kv get -format=json -mount=devops inventories/ns/projects/geopaysages | jq -r '.data.data.hosts.dev.private_key' | base64 -d > private_key
+    - chmod 600 private_key
+    - ansible-playbook -i inventory.py playbooks/geopaysages.yml -t geopaysages
+  variables:
+    GIT_STRATEGY: none
+    INVENTORY_PATH: inventories/ns/projects/geopaysages

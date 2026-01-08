@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2022-09-14 10:23+0000\n"
+"POT-Creation-Date: 2024-11-06 08:10+0000\n"
 "PO-Revision-Date: 2018-12-21 11:34+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: fr\n"
@@ -16,25 +16,25 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.16.0\n"
 
-#: utils.py:215
+#: utils.py:229
 msgid "sites.filter.themes"
 msgstr "Thème"
 
-#: utils.py:219
+#: utils.py:232
 msgid "sites.filter.subthemes"
 msgstr "Sous-thème"
 
-#: utils.py:224
+#: utils.py:238
 msgid "sites.filter.township"
 msgstr "Commune"
 
-#: utils.py:229
+#: utils.py:244
 msgid "sites.filter.years"
 msgstr "Année"
 
-#: utils.py:348
+#: utils.py:391
 msgid "sites.filter.obervatories"
 msgstr "Observatoire"
 
@@ -42,12 +42,12 @@ msgstr "Observatoire"
 msgid "gallery.meta_title"
 msgstr "Galerie photo"
 
-#: tpl/gallery.jinja:19
+#: tpl/gallery.jinja:18
 msgid "gallery.title"
 msgstr "Galerie photo"
 
 #: tpl/components/sites-filter.jinja:8 tpl/components/sites-filter.jinja:15
-#: tpl/gallery.jinja:75 tpl/sites.jinja:52
+#: tpl/gallery.jinja:76 tpl/sites.jinja:52
 msgid "sites.filters.nb_result"
 msgstr "Filtre(s) : %(nb)s résultat(s)"
 
@@ -55,56 +55,56 @@ msgstr "Filtre(s) : %(nb)s résultat(s)"
 msgid "home.meta_title"
 msgstr "GeoPaysages : Observatoire photographique des paysages"
 
-#: tpl/components/home-carousel.jinja:2 tpl/components/home-carousel.jinja:20
-#: tpl/home_mono_obs.jinja:19 tpl/home_multi_obs.jinja:21
-msgid "home.title"
-msgstr "Observatoire photographique des paysages"
-
-#: tpl/home_mono_obs.jinja:23 tpl/home_multi_obs.jinja:25
+#: tpl/home_mono_obs.jinja:17 tpl/home_multi_obs.jinja:19
 msgid "home.title_mobile"
 msgstr "Accueil"
 
-#: tpl/home_mono_obs.jinja:39 tpl/home_multi_obs.jinja:94
+#: tpl/components/home-carousel.jinja:3 tpl/components/home-carousel.jinja:24
+#: tpl/home_mono_obs.jinja:22 tpl/home_multi_obs.jinja:24
+msgid "home.title"
+msgstr "Observatoire photographique des paysages"
+
+#: tpl/home_mono_obs.jinja:36 tpl/home_multi_obs.jinja:61
 msgid "home.block.explore_sites"
 msgstr "Explorer les sites d'observation"
 
-#: tpl/home_mono_obs.jinja:46
+#: tpl/home_mono_obs.jinja:43
 msgid "home.block.discover"
 msgstr "Découvrir ce site d'observation"
 
-#: tpl/home_mono_obs.jinja:49
+#: tpl/home_mono_obs.jinja:46
 msgid "home.block.photography"
 msgstr "Photographie"
 
-#: tpl/home_multi_obs.jinja:90
-msgid "home.map_block_title"
-msgstr "Carte des observatoires"
+#: tpl/home_multi_obs.jinja:48
+msgid "home.block.discover_observatories"
+msgstr "Découvrez nos observatoires"
 
-#: tpl/layout.jinja:75
+#: tpl/layout.jinja:90
 msgid "footer.internal_title"
 msgstr "Le site"
 
-#: tpl/layout.jinja:79
+#: tpl/layout.jinja:94
 msgid "footer.internal_links.home"
 msgstr "Accueil"
 
-#: tpl/layout.jinja:84
+#: tpl/layout.jinja:99
 msgid "footer.internal_links.sites"
 msgstr "Sites d'observation"
 
-#: tpl/layout.jinja:89
+#: tpl/layout.jinja:104
 msgid "footer.internal_links.gallery"
 msgstr "Galerie photo"
 
-#: tpl/layout.jinja:95
+#: tpl/layout.jinja:110
 msgid "footer.internal_links.contact"
 msgstr "Contactez-nous"
 
-#: tpl/layout.jinja:104
+#: tpl/layout.jinja:119
 msgid "footer.external_title"
 msgstr "Notre territoire"
 
-#: tpl/site.jinja:41
+#: tpl/site.jinja:31
 msgid "site.title_mobile"
 msgstr "site d'observation"
 
@@ -120,15 +120,19 @@ msgstr "Faire une observation"
 msgid "obs_point.description"
 msgstr "Présentation du site"
 
-#: tpl/site.jinja:75 tpl/site.jinja:93 tpl/site.jinja:106
+#: tpl/site.jinja:75 tpl/site.jinja:94 tpl/site.jinja:111
 msgid "obs_point.buttons.read_more"
 msgstr "Lire plus"
 
-#: tpl/site.jinja:76 tpl/site.jinja:94 tpl/site.jinja:107
+#: tpl/site.jinja:76 tpl/site.jinja:95 tpl/site.jinja:112
 msgid "obs_point.buttons.read_less"
 msgstr "Lire moins"
 
-#: tpl/site.jinja:99
+#: tpl/site.jinja:85
+msgid "obs_point.keywords"
+msgstr "Mots clés"
+
+#: tpl/site.jinja:104
 msgid "obs_point.testimonials"
 msgstr "Témoignages"
 
@@ -144,59 +148,91 @@ msgstr "Sites d'observation"
 msgid "sites.observation_points.title"
 msgstr "Sites d'observation"
 
-#: tpl/sites.jinja:117
+#: tpl/sites.jinja:80
+msgid "sites.observation_points.item"
+msgstr "site(s) d'observation"
+
+#: tpl/sites.jinja:118 tpl/sites.jinja:121
+msgid "map.share.button"
+msgstr "Partager"
+
+#: tpl/sites.jinja:127
 msgid "map.legend.obervatories"
 msgstr "Observatoire(s)"
 
-#: tpl/sites.jinja:123
+#: tpl/sites.jinja:133
 msgid "map.legend.themes"
 msgstr "Thème(s)"
+
+#: tpl/sites.jinja:145
+msgid "map.legend.title"
+msgstr "Légende"
+
+#: tpl/sites.jinja:155
+msgid "map.share.dialog.title"
+msgstr "Partager"
+
+#: tpl/sites.jinja:156
+msgid "map.share.dialog.message"
+msgstr "Copier et partager le lien ci-dessus"
+
+#: tpl/sites.jinja:173
+msgid "map.share.copy_success.title"
+msgstr "Copié !"
+
+#: tpl/sites.jinja:174
+msgid "map.share.copy.copy_success.message"
+msgstr "Le lien est prêt à être coller."
 
 #: tpl/components/comparator_v1.jinja:8
 msgid "obs_point.buttons.download"
 msgstr "Télécharger"
 
-#: tpl/components/comparator_v2.jinja:57
+#: tpl/components/comparator_v2.jinja:78
 msgid "comparatorv2.loading"
 msgstr "Chargement"
 
-#: tpl/components/comparator_v2.jinja:95
+#: tpl/components/comparator_v2.jinja:120
 msgid "comparatorv2.date.filter.title"
 msgstr "Filtrer par date"
 
-#: tpl/components/comparator_v2.jinja:97
+#: tpl/components/comparator_v2.jinja:122
 msgid "comparatorv2.date.filter.start"
 msgstr "Début"
 
-#: tpl/components/comparator_v2.jinja:106
+#: tpl/components/comparator_v2.jinja:131
 msgid "comparatorv2.date.filter.end"
 msgstr "Fin"
 
-#: tpl/components/comparator_v2.jinja:156
+#: tpl/components/comparator_v2.jinja:163
+msgid "comparatorv2.date.step"
+msgstr "Pas"
+
+#: tpl/components/comparator_v2.jinja:182
 msgid "comparatorv2.mode.sidebyside"
 msgstr "Superposition"
 
-#: tpl/components/comparator_v2.jinja:157
+#: tpl/components/comparator_v2.jinja:183
 msgid "comparatorv2.mode.split"
 msgstr "Côte à côte"
 
-#: tpl/components/comparator_v2.jinja:158
+#: tpl/components/comparator_v2.jinja:184
 msgid "comparatorv2.date.steps.none"
 msgstr "0"
 
-#: tpl/components/comparator_v2.jinja:159
+#: tpl/components/comparator_v2.jinja:185
 msgid "comparatorv2.date.steps.1d"
 msgstr "1 jour"
 
-#: tpl/components/comparator_v2.jinja:160
+#: tpl/components/comparator_v2.jinja:186
 msgid "comparatorv2.date.steps.1w"
 msgstr "1 semaine"
 
-#: tpl/components/comparator_v2.jinja:161
+#: tpl/components/comparator_v2.jinja:187
 msgid "comparatorv2.date.steps.1m"
 msgstr "1 mois"
 
-#: tpl/components/comparator_v2.jinja:162
+#: tpl/components/comparator_v2.jinja:188
 msgid "comparatorv2.date.steps.1y"
 msgstr "1 an"
 
@@ -204,25 +240,33 @@ msgstr "1 an"
 msgid "footer.copyright"
 msgstr "© 2023 - GeoPaysages, logiciel libre et open-source"
 
-#: tpl/components/main-nav.jinja:3
-msgid "header.nav.home"
-msgstr "Accueil"
-
-#: tpl/components/main-nav.jinja:7
-msgid "header.nav.about"
-msgstr "À propos"
-
-#: tpl/components/main-nav.jinja:11
-msgid "header.nav.sites"
-msgstr "Sites d'observation"
-
-#: tpl/components/main-nav.jinja:14
-msgid "header.nav.gallery"
-msgstr "Galerie photo"
+#: tpl/components/legal-footer.jinja:5
+msgid "footer.legal_notices"
+msgstr "Mentions légales"
 
 #: tpl/components/sites-filter.jinja:22
 msgid "map.filters.title"
 msgstr "Filtrer par"
+
+#: tpl/components/sites-filter.jinja:53
+msgid "sites.filters.reset"
+msgstr "Réinitialiser"
+
+#: tpl/custom/main_menu.jinja:3
+msgid "header.nav.home"
+msgstr "Accueil"
+
+#: tpl/custom/main_menu.jinja:8
+msgid "header.nav.about"
+msgstr "À propos"
+
+#: tpl/custom/main_menu.jinja:13
+msgid "header.nav.sites"
+msgstr "Sites d'observation"
+
+#: tpl/custom/main_menu.jinja:18
+msgid "header.nav.gallery"
+msgstr "Galerie photo"
 
 #~ msgid "map.filter.themes"
 #~ msgstr "Thème"
@@ -268,4 +312,13 @@ msgstr "Filtrer par"
 
 #~ msgid "comparatorv2.mode.title"
 #~ msgstr "Disposition des photos"
+
+#~ msgid "home.map_block_title"
+#~ msgstr "Carte des observatoires"
+
+#~ msgid "header.nav.about"
+#~ msgstr "À propos"
+
+#~ msgid "header.nav.gallery"
+#~ msgstr "Galerie photo"
 

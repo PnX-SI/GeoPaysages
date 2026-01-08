@@ -1,15 +1,39 @@
 <div class="login-page" >
-    <img class="logo" [src]="logoUrl"  > 
+  <div class="header">
+    <div><img class="logo" [src]="logoUrl" alt="Logo"></div>
+    <div class="dropdown-container" ngbDropdown>
+      <div class="icon-language-toggle">
+        <a class="dropdown-toggle" ngbDropdownToggle>
+          <i class="icon-earth"></i>
+        </a>
+          <div class="selected-language">
+            {{ 'LANGUAGES.'+selectedLanguage | translate }}
+          </div>
+      </div>
+      <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+        <div *ngFor="let lang of availableLanguages">
+          <div class="icon-wrapper">
+          <button class="dropdown-item" (click)="changeLanguage(lang)">
+            {{ 'LANGUAGES.' + lang | translate }}
+          </button>
+          <i *ngIf="lang === selectedLanguage" class="icon-checkmark"></i>
+        </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">Connexion</h5>
+            <h5 class="card-title text-center">{{'COMMONS.LOGIN' | translate}}</h5>
             <form class="form-signin" [formGroup]="loginForm" (ngSubmit)="submit(loginForm)" >
               <div class="form-group">
                 <span class='addon icon-user'></span>
-                <input InputFeedBack type="text" id="login" class="form-control" formControlName="login" placeholder="Identifiant"
+                <input InputFeedBack type="text" id="login" class="form-control" formControlName="login" placeholder="{{'COMMONS.LOGIN' | translate}}"
                   autofocus>
                   <app-form-error controlName="login"
                   errorKey={{loginError}}></app-form-error>
@@ -17,11 +41,11 @@
               <div class="form-group">
                   <span class='addon icon-lock'></span>
                 <input InputFeedBack type="password" id="password" class="form-control" formControlName="password"
-                  placeholder="Mot de passe">
+                  placeholder="{{'COMMONS.PASSWORD' | translate}}">
                   <app-form-error controlName="password"
                   errorKey={{passwordError}}></app-form-error>
               </div>
-              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">Se connecter</button>
+              <button class="btn btn-lg btn-info btn-block text-uppercase" type="submit">{{'COMMONS.CONNECT' | translate}}</button>
             </form>
           </div>
         </div>

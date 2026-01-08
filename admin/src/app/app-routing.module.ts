@@ -8,6 +8,8 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { AuthGuard } from './services/auth.guard';
 import { ObservatoriesComponent } from './observatories/observatories.component';
 import { ObservatoryComponent } from './observatory/observatory.component';
+import { ListLanguagesComponent } from './list-languages/list-languages.component';
+import { FormLanguagesComponent } from './form-languages/form-languages.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
@@ -30,9 +32,21 @@ const routes: Routes = [
   { path: 'sites', component: ManageSitesComponent, canActivate: [AuthGuard] },
   { path: 'gallery', component: GalleryComponent, canActivate: [AuthGuard] },
   { path: 'sites/form', component: AddSiteComponent, canActivate: [AuthGuard] },
+  { path: 'languages', component: ListLanguagesComponent, canActivate: [AuthGuard] },
+  {
+    path: 'languages/form',
+    component: FormLanguagesComponent,
+    canActivate: [AuthGuard],
+  },
   {
     path: 'sites/details/:id',
     component: AddSiteComponent,
+    canActivate: [AuthGuard],
+    runGuardsAndResolvers: 'always',
+  },
+  {
+    path: 'languages/details/:id',
+    component: FormLanguagesComponent,
     canActivate: [AuthGuard],
     runGuardsAndResolvers: 'always',
   },
