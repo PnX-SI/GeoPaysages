@@ -133,9 +133,12 @@ def localeGuard(f):
             return redirect(getLocalizedRequestEndpoint(defaultLang.id))
 
         if isMultiLangs() and locale is None:
-            userLang = request.accept_languages[0][0].split("-")[0]
-            if userLang in lang_ids:
-                return redirect(getLocalizedRequestEndpoint(userLang))
+            try:
+                userLang = request.accept_languages[0][0].split("-")[0]
+                if userLang in lang_ids:
+                    return redirect(getLocalizedRequestEndpoint(userLang))
+            except:
+                pass
             return redirect(getLocalizedRequestEndpoint(defaultLang.id))
         return f(*args, **kwargs)
 
